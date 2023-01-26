@@ -1,6 +1,7 @@
 package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -16,7 +17,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, columnDefinition = "timestamp without time zone")
+    @NotNull
+    @Column(columnDefinition = "timestamp without time zone")
     private LocalDateTime time;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -53,7 +55,8 @@ public class Comment {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User author;
 
-    @Column(nullable = false, columnDefinition = "text")
+    @NotNull
+    @Column(columnDefinition = "text")
     private String commentText;
 
     @Column(nullable = false)

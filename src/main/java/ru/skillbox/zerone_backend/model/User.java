@@ -1,6 +1,7 @@
 package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import ru.skillbox.zerone_backend.enums.MessagePermissions;
 import ru.skillbox.zerone_backend.enums.UserStatus;
@@ -18,13 +19,16 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, columnDefinition = "text")
+    @NotNull
+    @Column(columnDefinition = "text")
     private String firstName;
 
-    @Column(nullable = false, columnDefinition = "text")
+    @NotNull
+    @Column(columnDefinition = "text")
     private String lastName;
 
-    @Column(nullable = false, columnDefinition = "timestamp without time zone")
+    @NotNull
+    @Column(columnDefinition = "timestamp without time zone")
     private LocalDateTime regDate;
 
     @Column(nullable = false)
@@ -44,7 +48,8 @@ public class User {
     @Column(columnDefinition =  "text")
     private String about;
 
-    @Column(nullable = false, columnDefinition = "user_status")
+    @NotNull
+    @Column(columnDefinition = "user_status")
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
@@ -60,7 +65,8 @@ public class User {
     @Column(nullable = false)
     private boolean isApproved;
 
-    @Column(nullable = false, columnDefinition = "message_permissions")
+    @NotNull
+    @Column(columnDefinition = "message_permissions")
     @Enumerated(EnumType.STRING)
     private MessagePermissions messagePermissions;
 

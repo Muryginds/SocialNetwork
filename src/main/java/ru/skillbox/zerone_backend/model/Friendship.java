@@ -1,6 +1,7 @@
 package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -38,6 +39,7 @@ public class Friendship {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private User dstPerson;
 
-    @Column(nullable = false, columnDefinition = "timestamp without time zone")
+    @NotNull
+    @Column(columnDefinition = "timestamp without time zone")
     private LocalDateTime time;
 }

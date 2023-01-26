@@ -1,6 +1,7 @@
 package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import ru.skillbox.zerone_backend.enums.UserStatus;
 import ru.skillbox.zerone_backend.enums.UserType;
@@ -20,7 +21,8 @@ public class Admin {
     @Column(nullable = false)
     private String password;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "user_type")
+    @Column(columnDefinition = "user_type")
     private UserType type;
 }

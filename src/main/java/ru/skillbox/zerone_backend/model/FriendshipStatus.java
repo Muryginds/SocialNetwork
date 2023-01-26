@@ -1,6 +1,7 @@
 package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import ru.skillbox.zerone_backend.enums.FriendshipCode;
 
@@ -15,12 +16,14 @@ public class FriendshipStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, columnDefinition = "timestamp without time zone")
+    @NotNull
+    @Column(columnDefinition = "timestamp without time zone")
     private LocalDateTime time;
 
     @Column(nullable = false)
     private String name;
 
+    @NotNull
     @Column(nullable = false, columnDefinition = "friendship_code")
     @Enumerated(EnumType.STRING)
     private FriendshipCode code;

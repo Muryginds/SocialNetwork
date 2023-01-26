@@ -1,6 +1,7 @@
 package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -15,7 +16,8 @@ public class BlockHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
+    @NotNull
+    @Column(columnDefinition = "timestamp without time zone")
     private LocalDateTime time;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -42,7 +44,8 @@ public class BlockHistory {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Comment comment;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, columnDefinition = "action_type")
+    @Column(columnDefinition = "action_type")
     private ActionType action;
 }
