@@ -7,61 +7,58 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "comment")
 @Data
 public class Comment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name =  "id")
   private long id;
 
   @NotNull
-  @Column(columnDefinition = "timestamp without time zone")
+  @Column(name = "time", columnDefinition = "timestamp without time zone")
   private LocalDateTime time;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "post_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "post_id", nullable = false, referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "comment_post_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Post post;
 
-  @OneToMany(
-      mappedBy = "comment",
-      fetch = FetchType.LAZY)
-  private Set<BlockHistory> blockHistories = new HashSet<>();
+  @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+  private List<BlockHistory> blockHistories = new ArrayList<>();
 
-  @OneToMany(
-      mappedBy = "parent",
-      fetch = FetchType.LAZY)
-  private Set<Comment> parents = new HashSet<>();
+  @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
+  private List<Comment> parents = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "parent_id",
-      referencedColumnName = "id",
+  @JoinColumn(name = "parent_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "comment_parent_comment_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Comment parent;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "author_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "comment_author_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)
   private User author;
 
   @NotNull
-  @Column(columnDefinition = "text")
+  @Column(name = "comment_test", columnDefinition = "text")
   private String commentText;
 
-  @Column(nullable = false)
+  @NotNull
+  @Column(name = "is_blocked")
   private boolean isBlocked;
 
-  @Column(nullable = false)
+  @NotNull
+  @Column(name = "is_deleted")
   private boolean isDeleted;
 }

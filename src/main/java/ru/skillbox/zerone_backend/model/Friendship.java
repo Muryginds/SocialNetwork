@@ -9,10 +9,12 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "friendship")
 @Data
 public class Friendship {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private long id;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -40,6 +42,6 @@ public class Friendship {
   private User dstPerson;
 
   @NotNull
-  @Column(columnDefinition = "timestamp without time zone")
+  @Column(name = "time", columnDefinition = "timestamp without time zone")
   private LocalDateTime time;
 }

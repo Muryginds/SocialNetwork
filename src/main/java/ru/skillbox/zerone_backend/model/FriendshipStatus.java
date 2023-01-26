@@ -3,34 +3,34 @@ package ru.skillbox.zerone_backend.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import ru.skillbox.zerone_backend.enumerated.FriendshipCode;
+import ru.skillbox.zerone_backend.model.enumerated.FriendshipCode;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "friendship_status")
 @Data
 public class FriendshipStatus {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private long id;
 
   @NotNull
-  @Column(columnDefinition = "timestamp without time zone")
+  @Column(name = "time", columnDefinition = "timestamp without time zone")
   private LocalDateTime time;
 
-  @Column(nullable = false)
+  @NotNull
+  @Column(name = "name")
   private String name;
 
   @NotNull
-  @Column(nullable = false, columnDefinition = "friendship_code")
+  @Column(name = "code", columnDefinition = "friendship_code")
   @Enumerated(EnumType.STRING)
   private FriendshipCode code;
 
-  @OneToMany(
-      mappedBy = "status",
-      fetch = FetchType.LAZY)
-  private Set<Friendship> friendships = new HashSet<>();
-
+  @OneToMany(mappedBy = "status", fetch = FetchType.LAZY)
+  private List<Friendship> friendships = new ArrayList<>();
 }

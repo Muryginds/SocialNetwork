@@ -1,0 +1,40 @@
+package ru.skillbox.zerone_backend.model;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import ru.skillbox.zerone_backend.model.enumerated.ReadStatus;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "message")
+@Data
+public class Message {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
+  private long id;
+
+  @NotNull
+  @Column(name = "sent_time", columnDefinition = "timestamp without time zone")
+  private LocalDateTime sentTime;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "dialog_id", nullable = false,
+      referencedColumnName = "id",
+      foreignKey = @ForeignKey(name = "message_dialog_fk")
+  )
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private Dialog dialog;
+
+  @NotNull
+  @Column(name = "message_text", columnDefinition = "text")
+  private String messageText;
+
+  @NotNull
+  @Column(name = "read_status", columnDefinition = "read_status")
+  private ReadStatus readStatus;
+}

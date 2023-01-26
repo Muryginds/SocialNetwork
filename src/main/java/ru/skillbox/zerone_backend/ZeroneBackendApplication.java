@@ -4,8 +4,8 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import ru.skillbox.zerone_backend.enumerated.MessagePermissions;
-import ru.skillbox.zerone_backend.enumerated.UserStatus;
+import ru.skillbox.zerone_backend.model.enumerated.MessagePermissions;
+import ru.skillbox.zerone_backend.model.enumerated.UserStatus;
 import ru.skillbox.zerone_backend.model.User;
 import ru.skillbox.zerone_backend.repository.UserRepository;
 

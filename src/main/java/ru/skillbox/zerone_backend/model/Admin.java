@@ -3,25 +3,31 @@ package ru.skillbox.zerone_backend.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import ru.skillbox.zerone_backend.enumerated.UserType;
+import ru.skillbox.zerone_backend.model.enumerated.UserType;
 
 @Entity
+@Table(name = "admin")
 @Data
 public class Admin {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private long id;
 
+  @NotNull
+  @Column(name = "name")
   private String name;
 
-  @Column(nullable = false)
+  @NotNull
+  @Column(name = "email")
   private String email;
 
-  @Column(nullable = false)
+  @NotNull
+  @Column(name = "password")
   private String password;
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  @Column(columnDefinition = "user_type")
+  @Column(name = "type", columnDefinition = "user_type")
   private UserType type;
 }

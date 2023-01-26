@@ -7,18 +7,20 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Table(name = "post")
 @Data
 public class Post {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id")
   private long id;
 
   @NotNull
-  @Column(columnDefinition = "timestamp without time zone")
+  @Column(name = "time", columnDefinition = "timestamp without time zone")
   private LocalDateTime time;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -29,30 +31,31 @@ public class Post {
   @OnDelete(action = OnDeleteAction.CASCADE)
   private User author;
 
-  @Column(nullable = false)
+  @NotNull
+  @Column(name = "title")
   private String title;
 
   @NotNull
-  @Column(columnDefinition = "text")
+  @Column(name = "post_text", columnDefinition = "text")
   private String postText;
 
   @NotNull
-  @Column(columnDefinition = "timestamp without time zone")
+  @Column(name = "update_date", columnDefinition = "timestamp without time zone")
   private LocalDateTime updateDate;
 
-  @Column(nullable = false)
+  @NotNull
+  @Column(name = "is_blocked")
   private boolean isBlocked;
 
-  @Column(nullable = false)
+  @NotNull
+  @Column(name = "is_deleted")
   private boolean isDeleted;
 
   @OneToMany(
       mappedBy = "post",
       fetch = FetchType.LAZY)
-  private Set<BlockHistory> blockHistories = new HashSet<>();
+  private List<BlockHistory> blockHistories = new ArrayList<>();
 
-  @OneToMany(
-      mappedBy = "post",
-      fetch = FetchType.LAZY)
-  private Set<Comment> comments = new HashSet<>();
+  @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+  private List<Comment> comments = new ArrayList<>();
 }
