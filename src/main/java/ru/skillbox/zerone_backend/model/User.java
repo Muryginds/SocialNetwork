@@ -87,4 +87,14 @@ public class User {
             mappedBy = "author",
             fetch = FetchType.LAZY)
     private Set<Post> posts = new HashSet<>();
+
+    @OneToMany(
+            mappedBy = "srcPerson",
+            fetch = FetchType.LAZY)
+    private Set<Friendship> srcFiendships = new HashSet<>();
+
+    @OneToMany(
+            mappedBy = "dstPerson",
+            fetch = FetchType.LAZY)
+    private Set<Friendship> dstFriendships = new HashSet<>();
 }
