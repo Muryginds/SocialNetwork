@@ -2,12 +2,13 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.hibernate.annotations.Type;
 import ru.skillbox.zerone_backend.enums.MessagePermissions;
 import ru.skillbox.zerone_backend.enums.UserStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "`user`")
@@ -43,6 +44,7 @@ public class User {
     @Column(columnDefinition =  "text")
     private String about;
 
+    @Column(nullable = false, columnDefinition = "user_status")
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
@@ -58,14 +60,31 @@ public class User {
     @Column(nullable = false)
     private boolean isApproved;
 
+    @Column(nullable = false, columnDefinition = "message_permissions")
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private MessagePermissions messagePermissions;
 
     @Column(columnDefinition = "timestamp without time zone")
     private LocalDateTime lastOnlineTime;
 
+    @Column(nullable = false)
     private boolean isBlocked;
 
+    @Column(nullable = false)
     private boolean isDeleted;
+
+    @OneToMany(
+            mappedBy = "user",
+            fetch = FetchType.LAZY)
+    private Set<BlockHistory> blockHistories = new HashSet<>();
+
+    @OneToMany(
+            mappedBy = "author",
+            fetch = FetchType.LAZY)
+    private Set<Comment> comments = new HashSet<>();
+
+    @OneToMany(
+            mappedBy = "author",
+            fetch = FetchType.LAZY)
+    private Set<Post> posts = new HashSet<>();
 }

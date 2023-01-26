@@ -1,15 +1,15 @@
 spring:
   datasource:
     password: password
-    url: jdbc:postgresql://localhost:5432/skillbox
+    url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
     username: skillbox
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: false
+        format_sql: true
         jdbc.lob.non_contextual_creation: true
     show-sql: true
   sql:

@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import ru.skillbox.zerone_backend.enums.MessagePermissions;
 import ru.skillbox.zerone_backend.enums.UserStatus;
 import ru.skillbox.zerone_backend.model.User;
-import ru.skillbox.zerone_backend.model.UserRepository;
+import ru.skillbox.zerone_backend.repositories.UserRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

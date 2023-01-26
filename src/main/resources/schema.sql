@@ -3,3 +3,6 @@ CREATE TYPE user_status AS ENUM ('ACTIVE', 'INACTIVE');
 
 DROP TYPE IF EXISTS message_permissions CASCADE;
 CREATE TYPE message_permissions AS ENUM ('ALL', 'FRIENDS');
+
+DROP TYPE IF EXISTS action_type CASCADE;
+CREATE TYPE action_type AS ENUM ('BLOCK', 'UNBLOCK');
