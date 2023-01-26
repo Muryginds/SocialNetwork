@@ -1,0 +1,10 @@
+[*.java]
+max_line_length = 220
+indent_size = 2
+indent_style = space
+tab_width = 2
+ij_continuation_indent_size = 4
+ij_java_keep_simple_blocks_in_one_line = true
+ij_java_keep_simple_classes_in_one_line = true
+ij_java_keep_simple_lambdas_in_one_line = true
+ij_java_keep_simple_methods_in_one_line = true

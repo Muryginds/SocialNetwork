@@ -1,4 +1,4 @@
-package ru.skillbox.zerone_backend.repositories;
+package ru.skillbox.zerone_backend.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.skillbox.zerone_backend.model.User;
