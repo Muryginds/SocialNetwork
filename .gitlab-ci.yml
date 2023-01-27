@@ -1,31 +1,12 @@
-stages:          # List of stages for jobs, and their order of execution
+stages:
   - build
-  - test
-  - deploy
 
-  stages:
-    - build
-
-  java-build:
-    # select the most appropriate image for your project
-    image: maven:3.8-openjdk-11
-    stage: build
-    script:
-      - mvn package -DskipTests=true
-
-  tags:
-    - prod
-
-Unit tests:
-  stage: test
+java-build:
+  # select the most appropriate image for your project
+  image: maven:3.8-openjdk-11
+  stage: build
   script:
-    - echo 'this is unit test!'
-  tags:
-    - prod
+    - mvn package -DskipTests=true
 
-Deploy to Dev:
-  stage: deploy
-  script:
-    - echo '${(}CI_PROJECT_NAME} from branch ${CI_COMMIT_REF_SLUG}' [#${CI_COMMIT_SHORT_SHA}]>> ~/build.txt
   tags:
     - prod
