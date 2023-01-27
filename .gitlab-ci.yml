@@ -8,7 +8,7 @@ Docker build:
   script:
     - echo 'docker build is successfull'
   tags:
-    - docker
+    - prod
 
 Unit tests:
   stage: test
@@ -20,4 +20,4 @@ Deploy to Dev:
   script:
     - echo '${(}CI_PROJECT_NAME} from branch ${CI_COMMIT_REF_SLUG}' [#${CI_COMMIT_SHORT_SHA}]>> ~/build.txt
   tags:
-    - dev-shell
+    - prod
