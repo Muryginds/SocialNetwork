@@ -31,9 +31,9 @@ public class Post {
   @Column(name = "time", columnDefinition = "timestamp without time zone")
   private LocalDateTime time;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "author_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "author_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "post_author_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)

@@ -30,9 +30,9 @@ public class Notification {
   @Column(name = "id")
   private long id;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "type_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "type_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "notification_notification_type_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)
@@ -42,17 +42,17 @@ public class Notification {
   @Column(name = "sent_time", columnDefinition = "timestamp without time zone")
   private LocalDateTime sentTime;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "person_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "person_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "notification_person_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)
   private User person;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "entity_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "entity_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "notification_entity_type_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)

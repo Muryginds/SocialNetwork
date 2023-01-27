@@ -34,25 +34,25 @@ public class BlockHistory {
   @Column(name = "time", columnDefinition = "timestamp without time zone")
   private LocalDateTime time;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "user_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "block_history_user_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)
   private User user;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "post_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "block_history_post_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Post post;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "comment_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "comment_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "block_history_comment_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)

@@ -21,8 +21,9 @@ public class PostFile {
   @Column(name = "id")
   private long id;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "post_id", nullable = false, referencedColumnName = "id",
+  @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = " post_file_post_fk")
   )
   private Post post;

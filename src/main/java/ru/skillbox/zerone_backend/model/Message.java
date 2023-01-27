@@ -30,9 +30,9 @@ public class Message {
   @Column(name = "sent_time", columnDefinition = "timestamp without time zone")
   private LocalDateTime sentTime;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "dialog_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "dialog_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "message_dialog_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)

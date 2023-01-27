@@ -38,8 +38,9 @@ public class Like {
   @Column(name = "type", columnDefinition = "like_type")
   private LikeType type;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id",
+  @JoinColumn(name = "user_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "like_user_fk")
   )
   private User user;

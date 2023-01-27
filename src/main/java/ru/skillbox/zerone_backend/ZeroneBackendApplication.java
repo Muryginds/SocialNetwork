@@ -39,15 +39,15 @@ public class ZeroneBackendApplication {
           .password("A password code")
 //          .photo("SomeUri")
           .about("Что-то о себе")
-          .status(UserStatus.ACTIVE)
+//          .status(UserStatus.ACTIVE)
           .country("Россия")
           .city("Москва")
           .confirmationCode("Confirmation code")
-          .messagePermissions(MessagePermissions.FRIENDS)
-          .isApproved(true)
+//          .messagePermissions(MessagePermissions.FRIENDS)
+//          .isApproved(true)
           .lastOnlineTime(LocalDateTime.now())
-          .isBlocked(false)
-          .isDeleted(true)
+//          .isBlocked(false)
+//          .isDeleted(true)
           .build();
 
       userRepository.saveAndFlush(user);

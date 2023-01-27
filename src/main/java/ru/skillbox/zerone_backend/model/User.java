@@ -38,16 +38,20 @@ public class User {
   @Column(name = "reg_date", columnDefinition = "timestamp without time zone")
   private LocalDateTime regDate;
 
-  @Column(name = "birth_date", nullable = false)
+  @NotNull
+  @Column(name = "birth_date")
   private LocalDate birthDate;
 
-  @Column(name = "email", nullable = false)
+  @NotNull
+  @Column(name = "email")
   private String email;
 
-  @Column(name = "phone", nullable = false)
+  @NotNull
+  @Column(name = "phone")
   private String phone;
 
-  @Column(name = "password", nullable = false)
+  @NotNull
+  @Column(name = "password")
   private String password;
 
   @Column(name = "photo")
@@ -56,35 +60,35 @@ public class User {
   @Column(name = "about", columnDefinition = "text")
   private String about;
 
-  @NotNull
-  @Column(name = "status", columnDefinition = "user_status")
+  @Column(name = "status", columnDefinition = "user_status default 'INACTIVE'")
   @Enumerated(EnumType.STRING)
   private UserStatus status;
 
-  @Column(name = "country", nullable = false)
+  @NotNull
+  @Column(name = "country")
   private String country;
 
   @Column(name = "city", nullable = false)
   private String city;
 
-  @Column(name = "confirmation_code", nullable = false)
+  @NotNull
+  @Column(name = "confirmation_code")
   private String confirmationCode;
 
-  @Column(name = "is_approved", nullable = false)
+  @Column(name = "is_approved", columnDefinition = "boolean default false")
   private boolean isApproved;
 
-  @NotNull
-  @Column(name = "message_permissions", columnDefinition = "message_permissions")
+  @Column(name = "message_permissions", columnDefinition = "message_permissions default 'ALL'")
   @Enumerated(EnumType.STRING)
   private MessagePermissions messagePermissions;
 
   @Column(name = "last_online_time", columnDefinition = "timestamp without time zone")
   private LocalDateTime lastOnlineTime;
 
-  @Column(name = "is_blocked", nullable = false)
+  @Column(name = "is_blocked", columnDefinition = "boolean default false")
   private boolean isBlocked;
 
-  @Column(name = "is_deleted", nullable = false)
+  @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private boolean isDeleted;
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

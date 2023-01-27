@@ -35,8 +35,9 @@ public class Comment {
   @Column(name = "time", columnDefinition = "timestamp without time zone")
   private LocalDateTime time;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "post_id", nullable = false, referencedColumnName = "id",
+  @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "comment_post_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)

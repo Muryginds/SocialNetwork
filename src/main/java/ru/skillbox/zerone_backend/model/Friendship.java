@@ -29,25 +29,25 @@ public class Friendship {
   @Column(name = "id")
   private long id;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "status_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "status_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "friendship_friendship_status_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)
   private FriendshipStatus status;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "src_person_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "src_person_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "friendship_src_person_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)
   private User srcPerson;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "dst_person_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "dst_person_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "friendship_dst_person_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)

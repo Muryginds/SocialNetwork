@@ -1,6 +1,7 @@
 package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,16 +24,16 @@ public class PostToTag {
   @Column(name = "id")
   private long id;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "post_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "post_to_tag_post_fk")
   )
   private Post post;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "tag_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "tag_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "post_to_tag_tag_fk")
   )
   private Tag tag;

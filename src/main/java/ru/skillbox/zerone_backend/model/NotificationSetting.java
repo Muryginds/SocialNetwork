@@ -23,9 +23,9 @@ public class NotificationSetting {
   @Column(name = "id")
   private long id;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", nullable = false,
-      referencedColumnName = "id",
+  @JoinColumn(name = "user_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "notification_setting_user_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)

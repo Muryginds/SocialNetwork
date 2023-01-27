@@ -22,6 +22,6 @@ public class NotificationType {
   private long id;
 
   @NotNull
-  @Column(name = "name", nullable = false)
+  @Column(name = "name")
   private String name;
 }
