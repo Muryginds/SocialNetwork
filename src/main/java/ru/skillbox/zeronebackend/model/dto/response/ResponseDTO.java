@@ -8,7 +8,10 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BasicResponse {
-    private String error;
-    private LocalDateTime timestamp;
+@Builder
+public class ResponseDTO <T> {
+
+  T data;
+  private String error;
+  private LocalDateTime timestamp;
 }

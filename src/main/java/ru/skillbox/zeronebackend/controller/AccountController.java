@@ -6,13 +6,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.skillbox.zeronebackend.model.dto.request.RegisterRequest;
-import ru.skillbox.zeronebackend.model.dto.response.AccountResponse;
-import ru.skillbox.zeronebackend.model.entity.User;
+import ru.skillbox.zeronebackend.model.dto.request.RegisterRequestDTO;
+import ru.skillbox.zeronebackend.model.dto.response.ResponseDTO;
 import ru.skillbox.zeronebackend.service.UserService;
-
-import java.time.LocalDateTime;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,26 +18,7 @@ public class AccountController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<AccountResponse> register (@RequestBody RegisterRequest request) {
-        var response = new AccountResponse();
-        response.setData(Map.of("Message", "ok"));
-        if (userService.findUserByEmail(request.getEmail()).isPresent()) {
-            response.setError(String.format("User with email: %s already exists", request.getEmail()));
-            response.setTimestamp(LocalDateTime.now());
-
-            return ResponseEntity.ok().body(response);
-        }
-        var user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .regDate(LocalDateTime.now())
-                .lastOnlineTime(LocalDateTime.now())
-                .password(request.getPasswd1())
-                .build();
-
-        userService.save(user);
-
-        return ResponseEntity.ok().body(response);
+    public ResponseEntity<ResponseDTO<Object>> register (@RequestBody RegisterRequestDTO request) {
+      return ResponseEntity.ok(userService.registerAccount(request));
     }
 }
