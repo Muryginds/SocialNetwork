@@ -2,8 +2,10 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -11,6 +13,8 @@ import java.util.List;
 @Table(name = "notification_type")
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class NotificationType {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

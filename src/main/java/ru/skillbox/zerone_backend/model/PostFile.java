@@ -2,13 +2,19 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "post_file")
+@Table(name = "post_file",
+    indexes = @Index(name = "post_file_post_id_idx", columnList = "post_id")
+)
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostFile {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

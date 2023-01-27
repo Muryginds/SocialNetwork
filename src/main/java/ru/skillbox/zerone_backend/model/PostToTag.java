@@ -1,13 +1,22 @@
 package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "post_to_tag")
+@Table(name = "post_to_tag",
+    indexes = {
+        @Index(name = "post_to_tag_post_id_idx", columnList = "post_id"),
+        @Index(name = "post_to_tag_tag_id_idx", columnList = "tag_id")
+    }
+)
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostToTag {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

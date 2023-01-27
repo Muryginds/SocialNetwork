@@ -2,15 +2,21 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "notification_setting")
+@Table(name = "notification_setting",
+    indexes = @Index(name = "notification_setting_user_id_idx", columnList = "user_id")
+)
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class NotificationSetting {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

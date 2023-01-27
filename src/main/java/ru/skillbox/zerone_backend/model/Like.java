@@ -2,16 +2,23 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.skillbox.zerone_backend.model.enumerated.LikeType;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "`like`", indexes = @Index(name = "entity_id_idx", columnList = "entity_id"))
+@Table(name = "`like`", indexes = {
+    @Index(name = "like_entity_id_idx", columnList = "entity_id"),
+    @Index(name = "like_user_id_idx", columnList = "user_id")
+})
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Like {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

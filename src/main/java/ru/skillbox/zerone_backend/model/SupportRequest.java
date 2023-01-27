@@ -2,8 +2,10 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.skillbox.zerone_backend.model.enumerated.SupportRequestStatus;
 import ru.skillbox.zerone_backend.model.enumerated.UserStatus;
 
@@ -13,6 +15,8 @@ import java.time.LocalDateTime;
 @Table(name = "support_request")
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class SupportRequest {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

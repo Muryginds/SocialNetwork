@@ -2,17 +2,27 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "friendship")
+@Table(name = "friendship",
+    indexes = {
+        @Index(name = "friendship_status_id_idx", columnList = "status_id"),
+        @Index(name = "friendship_src_person_id_idx", columnList = "src_person_id"),
+        @Index(name = "friendship_dst_person_id_idx", columnList = "dst_person_id")
+    }
+)
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Friendship {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

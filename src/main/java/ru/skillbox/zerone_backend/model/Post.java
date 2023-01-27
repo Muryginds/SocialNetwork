@@ -2,8 +2,10 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -12,9 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "post")
+@Table(name = "post",
+    indexes = @Index(name = "post_author_id_idx", columnList = "author_id")
+)
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Post {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -18,6 +18,8 @@ import java.util.List;
 @Table(name = "`user`")
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

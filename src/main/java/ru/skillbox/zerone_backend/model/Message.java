@@ -2,8 +2,10 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import ru.skillbox.zerone_backend.model.enumerated.ReadStatus;
@@ -11,9 +13,13 @@ import ru.skillbox.zerone_backend.model.enumerated.ReadStatus;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "message")
+@Table(name = "message",
+    indexes = @Index(name = "message_dialog_id_idx", columnList = "dialog_id")
+)
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Message {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

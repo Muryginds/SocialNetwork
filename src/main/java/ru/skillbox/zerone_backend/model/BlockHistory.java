@@ -2,8 +2,10 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import ru.skillbox.zerone_backend.model.enumerated.ActionType;
@@ -11,9 +13,17 @@ import ru.skillbox.zerone_backend.model.enumerated.ActionType;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "block_history")
+@Table(name = "block_history",
+    indexes = {
+        @Index(name = "block_history_user_id_idx", columnList = "user_id"),
+        @Index(name = "block_history_post_id_idx", columnList = "post_id"),
+        @Index(name = "block_history_comment_id_idx", columnList = "comment_id")
+    }
+)
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BlockHistory {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
