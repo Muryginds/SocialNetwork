@@ -11,10 +11,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-        jdbc:
-          lob:
-            non_contextual_creation: true
+        jdbc.lob.non_contextual_creation: true
     show-sql: true
   sql:
     init:
       mode: always
+  liquibase:
+    enabled: false

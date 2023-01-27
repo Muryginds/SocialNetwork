@@ -3,6 +3,7 @@ services:
     container_name: postgres
     image: postgres
     environment:
+      POSTGRES_DB: skillbox
       POSTGRES_USER: skillbox
       POSTGRES_PASSWORD: password
       PGDATA: /data/postgres
