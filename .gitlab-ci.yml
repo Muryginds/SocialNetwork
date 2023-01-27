@@ -3,10 +3,16 @@ stages:          # List of stages for jobs, and their order of execution
   - test
   - deploy
 
-Docker build:
-  stage: build
-  script:
-    - echo 'docker build is successfull'
+  stages:
+    - build
+
+  java-build:
+    # select the most appropriate image for your project
+    image: maven:3.8-openjdk-11
+    stage: build
+    script:
+      - mvn package -DskipTests=true
+
   tags:
     - prod
 
