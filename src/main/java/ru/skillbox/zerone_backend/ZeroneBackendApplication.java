@@ -29,25 +29,26 @@ public class ZeroneBackendApplication {
   @Bean
   public ApplicationRunner init() {
     return args -> {
-      User user = new User();
-      user.setFirstName("Vladimir");
-      user.setLastName("Panfilov");
-      user.setRegDate(LocalDateTime.now());
-      user.setBirthDate(LocalDate.now());
-      user.setEmail("vrpanfilov@yandex.ru");
-      user.setPhone("+9051234567");
-      user.setPassword("A password code");
-//			user.setPhoto("SomeUri");
-      user.setAbout("Что-то о себе");
-      user.setStatus(UserStatus.ACTIVE);
-      user.setCountry("Россия");
-      user.setCity("Москва");
-      user.setConfirmationCode("Confirmation code");
-      user.setApproved(true);
-      user.setMessagePermissions(MessagePermissions.FRIENDS);
-      user.setLastOnlineTime(LocalDateTime.now());
-      user.setBlocked(false);
-      user.setDeleted(true);
+      User user = User.builder()
+          .firstName("Vladimir")
+          .lastName("Panfilov")
+          .regDate(LocalDateTime.now())
+          .birthDate(LocalDate.now())
+          .email("vrpanfilov@yandex.ru")
+          .phone("+9051234567")
+          .password("A password code")
+//          .photo("SomeUri")
+          .about("Что-то о себе")
+          .status(UserStatus.ACTIVE)
+          .country("Россия")
+          .city("Москва")
+          .confirmationCode("Confirmation code")
+          .messagePermissions(MessagePermissions.FRIENDS)
+          .isApproved(true)
+          .lastOnlineTime(LocalDateTime.now())
+          .isBlocked(false)
+          .isDeleted(true)
+          .build();
 
       userRepository.saveAndFlush(user);
     };

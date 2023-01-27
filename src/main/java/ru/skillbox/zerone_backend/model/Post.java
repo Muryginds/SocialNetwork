@@ -2,6 +2,7 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "post")
 @Data
+@Builder
 public class Post {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,4 +60,10 @@ public class Post {
 
   @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
   private List<Comment> comments = new ArrayList<>();
+
+  @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+  private List<PostToTag> postToTags = new ArrayList<>();
+
+  @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+  private List<PostFile> postFiles = new ArrayList<>();
 }

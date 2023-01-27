@@ -2,6 +2,7 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "notification_setting")
 @Data
+@Builder
 public class NotificationSetting {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

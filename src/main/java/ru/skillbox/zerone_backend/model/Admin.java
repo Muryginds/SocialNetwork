@@ -2,12 +2,14 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 import ru.skillbox.zerone_backend.model.enumerated.UserType;
 
 @Entity
 @Table(name = "admin")
 @Data
+@Builder
 public class Admin {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

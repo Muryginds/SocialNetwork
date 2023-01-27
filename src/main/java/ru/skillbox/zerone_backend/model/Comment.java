@@ -2,6 +2,7 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -13,6 +14,7 @@ import java.util.List;
 @Entity
 @Table(name = "comment")
 @Data
+@Builder
 public class Comment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

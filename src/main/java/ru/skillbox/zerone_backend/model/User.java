@@ -3,6 +3,7 @@ package ru.skillbox.zerone_backend.model;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.zerone_backend.model.enumerated.MessagePermissions;
@@ -16,6 +17,7 @@ import java.util.List;
 @Entity
 @Table(name = "`user`")
 @Data
+@Builder
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -109,4 +111,7 @@ public class User {
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<NotificationSetting> notificationSettings = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  private List<Like> likes = new ArrayList<>();
 }

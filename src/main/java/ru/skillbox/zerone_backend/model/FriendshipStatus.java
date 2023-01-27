@@ -2,6 +2,7 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import lombok.Data;
 import ru.skillbox.zerone_backend.model.enumerated.FriendshipCode;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "friendship_status")
 @Data
+@Builder
 public class FriendshipStatus {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

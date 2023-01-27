@@ -1,6 +1,7 @@
 package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.List;
 @Entity
 @Table(name = "dialog")
 @Data
+@Builder
 public class Dialog {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

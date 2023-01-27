@@ -18,3 +18,6 @@ CREATE TYPE read_status AS ENUM ('SENT', 'READ');
 
 DROP TYPE IF EXISTS support_request_status CASCADE;
 CREATE TYPE support_request_status AS ENUM ('NEW', 'IN_WORK', 'CLOSED');
+
+DROP TYPE IF EXISTS like_type CASCADE;
+CREATE TYPE like_type AS ENUM ('POST', 'COMMIT');
