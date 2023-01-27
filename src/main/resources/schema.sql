@@ -15,3 +15,6 @@ CREATE TYPE friendship_code AS ENUM ('REQUEST', 'FRIEND', 'BLOCKED', 'DECLINED',
 
 DROP TYPE IF EXISTS read_status CASCADE;
 CREATE TYPE read_status AS ENUM ('SENT', 'READ');
+
+DROP TYPE IF EXISTS support_request_status CASCADE;
+CREATE TYPE support_request_status AS ENUM ('NEW', 'IN_WORK', 'CLOSED');

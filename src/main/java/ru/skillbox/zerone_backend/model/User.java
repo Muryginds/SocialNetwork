@@ -2,7 +2,9 @@ package ru.skillbox.zerone_backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.skillbox.zerone_backend.model.enumerated.MessagePermissions;
 import ru.skillbox.zerone_backend.model.enumerated.UserStatus;
 
@@ -101,4 +103,10 @@ public class User {
 
   @OneToMany(mappedBy = "recipient", fetch = FetchType.LAZY)
   private List<Dialog> dialogRecipients = new ArrayList<>();
+
+  @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
+  private List<Notification> notifications = new ArrayList<>();
+
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  private List<NotificationSetting> notificationSettings = new ArrayList<>();
 }
