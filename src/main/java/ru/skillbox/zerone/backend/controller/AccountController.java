@@ -8,17 +8,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.service.UserService;
-import ru.skillbox.zerone.backend.model.dto.response.ResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/account")
 public class AccountController {
 
-    private final UserService userService;
+  private final UserService userService;
 
-    @PostMapping("/register")
-    public ResponseEntity<ResponseDTO<Object>> register (@RequestBody RegisterRequestDTO request) {
-      return ResponseEntity.ok(userService.registerAccount(request));
-    }
+  @PostMapping("/register")
+  public ResponseEntity<CommonResponseDTO<Object>> register(@RequestBody RegisterRequestDTO request) {
+    return ResponseEntity.ok(userService.registerAccount(request));
+  }
 }

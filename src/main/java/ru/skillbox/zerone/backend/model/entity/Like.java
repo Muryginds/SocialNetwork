@@ -23,7 +23,7 @@ public class Like {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private long id;
+  private Long id;
 
   @NotNull
   @Column(name = "time", columnDefinition = "timestamp without time zone")
@@ -31,7 +31,7 @@ public class Like {
 
   @NotNull
   @Column(name = "entity_id")
-  private long entityId;
+  private Long entityId;
 
   @NotNull
   @Enumerated(EnumType.STRING)

@@ -20,7 +20,7 @@ public class SupportRequest {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private long id;
+  private Long id;
 
   @NotNull
   @Column(name = "first_name")

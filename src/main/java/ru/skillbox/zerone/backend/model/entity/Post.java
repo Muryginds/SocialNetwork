@@ -25,7 +25,7 @@ public class Post {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private long id;
+  private Long id;
 
   @NotNull
   @Column(name = "time", columnDefinition = "timestamp without time zone")

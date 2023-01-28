@@ -1,17 +1,14 @@
 package ru.skillbox.zerone.backend.model.dto.request;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
-@AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class RegisterRequestDTO {
   private String firstName;
   private String lastName;
-  private String passwd1;
+  @JsonProperty("passwd1")
+  private String password;
   private String email;
-  private String passwd2;
 }

@@ -27,7 +27,7 @@ public class Friendship {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private long id;
+  private Long id;
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)

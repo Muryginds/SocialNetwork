@@ -38,7 +38,6 @@ public class User {
   @Column(name = "reg_date", columnDefinition = "timestamp without time zone")
   private LocalDateTime regDate;
 
-  @NotNull
   @Column(name = "birth_date")
   private LocalDate birthDate;
 
@@ -46,7 +45,6 @@ public class User {
   @Column(name = "email")
   private String email;
 
-  @NotNull
   @Column(name = "phone")
   private String phone;
 
@@ -61,39 +59,41 @@ public class User {
   private String about;
 
   @Builder.Default
-  @Column(name = "status", columnDefinition = "user_status default 'INACTIVE'")
+  @Column(name = "status", columnDefinition = "user_status")
   @Enumerated(EnumType.STRING)
   private UserStatus status = UserStatus.INACTIVE;
 
-  @NotNull
   @Column(name = "country")
   private String country;
 
-  @Column(name = "city", nullable = false)
+  @Column(name = "city")
   private String city;
 
-  @NotNull
   @Column(name = "confirmation_code")
   private String confirmationCode;
 
   @Builder.Default
-  @Column(name = "is_approved", columnDefinition = "boolean default false")
+  @NotNull
+  @Column(name = "is_approved", columnDefinition = "boolean")
   private boolean isApproved = false;
 
   @Builder.Default
-  @Column(name = "message_permissions", columnDefinition = "message_permissions default 'ALL'")
+  @Column(name = "message_permissions", columnDefinition = "message_permissions")
   @Enumerated(EnumType.STRING)
   private MessagePermissions messagePermissions = MessagePermissions.ALL;
 
+  @NotNull
   @Column(name = "last_online_time", columnDefinition = "timestamp without time zone")
   private LocalDateTime lastOnlineTime;
 
   @Builder.Default
-  @Column(name = "is_blocked", columnDefinition = "boolean default false")
+  @NotNull
+  @Column(name = "is_blocked", columnDefinition = "boolean")
   private boolean isBlocked = false;
 
   @Builder.Default
-  @Column(name = "is_deleted", columnDefinition = "boolean default false")
+  @NotNull
+  @Column(name = "is_deleted", columnDefinition = "boolean")
   private boolean isDelete = false;
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

@@ -24,7 +24,7 @@ public class Message {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private long id;
+  private Long id;
 
   @NotNull
   @Column(name = "sent_time", columnDefinition = "timestamp without time zone")

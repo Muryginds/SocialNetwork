@@ -3,6 +3,8 @@ package ru.skillbox.zerone.backend.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
@@ -15,29 +17,30 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @Configuration
 class SecurityConfiguration {
 
-//  @Bean
-//  public PasswordEncoder passwordEncoder() {
-//    return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
-//  }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new Argon2PasswordEncoder(16, 32, 1, 4096, 1);
+  }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http
-        .csrf().disable()
+        .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests((authz) -> authz
             .anyRequest().permitAll()
         )
-        .logout().permitAll()
+        .formLogin().permitAll()
         .and()
+        .logout(LogoutConfigurer::permitAll)
         .httpBasic(withDefaults());
     return http.build();
   }
 
   @Bean
   public InMemoryUserDetailsManager userDetailsService() {
-    UserDetails user = User.withDefaultPasswordEncoder()
-        .username("user")
-        .password("password")
+    UserDetails user = User
+        .withUsername("user")
+        .password("$argon2id$v=19$m=4096,t=1,p=1$c3Nzc3Nzc3Nzc3Nzc3Nzcw$qBVgfMDGwbZoGUD/jNb8Vc5aNc1c3mD7B7iLpjMDL9Y")
         .roles("USER")
         .build();
     return new InMemoryUserDetailsManager(user);
