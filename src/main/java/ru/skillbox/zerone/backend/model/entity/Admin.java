@@ -1,4 +1,4 @@
-package ru.skillbox.zerone.backend.model;
+package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
