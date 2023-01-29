@@ -36,7 +36,6 @@ public class User {
   @Column(name = "reg_date", columnDefinition = "timestamp without time zone")
   private LocalDateTime regDate = LocalDateTime.now();
 
-  @NotNull
   @Column(name = "birth_date")
   private LocalDate birthDate;
 
@@ -44,7 +43,6 @@ public class User {
   @Column(name = "email")
   private String email;
 
-  @NotNull
   @Column(name = "phone")
   private String phone;
 
@@ -63,14 +61,12 @@ public class User {
   @Enumerated(EnumType.STRING)
   private UserStatus status = UserStatus.INACTIVE;
 
-  @NotNull
   @Column(name = "country")
   private String country;
 
   @Column(name = "city", nullable = false)
   private String city;
 
-  @NotNull
   @Column(name = "confirmation_code")
   private String confirmationCode;
 

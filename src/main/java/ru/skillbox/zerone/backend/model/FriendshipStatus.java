@@ -39,4 +39,18 @@ public class FriendshipStatus {
 
   @OneToMany(mappedBy = "status", fetch = FetchType.LAZY)
   private List<Friendship> friendships = new ArrayList<>();
+
+  public void addFriendship(Friendship friendship) {
+    if (!friendships.contains(friendship)) {
+      friendships.add(friendship);
+      friendship.setStatus(this);
+    }
+  }
+
+  public void removeFriendship(Friendship friendship) {
+    if (friendships.contains(friendship)) {
+      friendships.remove(friendship);
+      friendship.setStatus(null);
+    }
+  }
 }

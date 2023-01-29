@@ -43,4 +43,18 @@ public class Dialog {
       foreignKey = @ForeignKey(name = "dialog_recipient_user_fk")
   )
   private User recipient;
+
+  public void addMessage(Message message) {
+    if (!messages.contains(message)) {
+      messages.add(message);
+      message.setDialog(this);
+    }
+  }
+
+  public void removeMessage(Message message) {
+    if (messages.contains(message)) {
+      messages.remove(message);
+      message.setDialog(null);
+    }
+  }
 }
