@@ -38,8 +38,8 @@ public class SupportRequest {
   @Column(name = "time", columnDefinition = "timestamp without time zone")
   private LocalDateTime time;
 
-  @NotNull
-  @Column(name = "status", columnDefinition = "support_request_status")
+  @Builder.Default
+  @Column(name = "status", columnDefinition = "support_request_status default 'NEW'")
   @Enumerated(EnumType.STRING)
-  private SupportRequestStatus status;
+  private SupportRequestStatus status = SupportRequestStatus.NEW;
 }
