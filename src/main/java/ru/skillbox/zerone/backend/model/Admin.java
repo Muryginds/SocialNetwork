@@ -32,8 +32,8 @@ public class Admin {
   @Column(name = "password")
   private String password;
 
-  @NotNull
+  @Builder.Default
+  @Column(name = "type", columnDefinition = "user_type default 'MODERATOR'")
   @Enumerated(EnumType.STRING)
-  @Column(name = "type", columnDefinition = "user_type")
-  private UserType type;
+  private UserType type = UserType.MODERATOR;
 }

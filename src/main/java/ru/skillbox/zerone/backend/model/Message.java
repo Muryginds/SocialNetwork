@@ -27,8 +27,9 @@ public class Message {
   private Long id;
 
   @NotNull
+  @Builder.Default
   @Column(name = "sent_time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime sentTime;
+  private LocalDateTime sentTime = LocalDateTime.now();
 
   @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
@@ -42,7 +43,8 @@ public class Message {
   @Column(name = "message_text", columnDefinition = "text")
   private String messageText;
 
-  @NotNull
-  @Column(name = "read_status", columnDefinition = "read_status")
-  private ReadStatus readStatus;
+  @Builder.Default
+  @Column(name = "read_status", columnDefinition = "read_status default 'SENT'")
+  @Enumerated(EnumType.STRING)
+  private ReadStatus readStatus = ReadStatus.SENT;
 }

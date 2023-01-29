@@ -2,10 +2,7 @@ package ru.skillbox.zerone.backend.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.skillbox.zerone.backend.model.enumerated.MessagePermissions;
 import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 
@@ -126,4 +123,145 @@ public class User {
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<Like> likes = new ArrayList<>();
+
+
+  public void addBlockHistory(BlockHistory blockHistory) {
+    if (!blockHistories.contains(blockHistory)) {
+      blockHistories.add(blockHistory);
+      blockHistory.setUser(this);
+    }
+  }
+
+  public void revmoveBlockHistory(BlockHistory blockHistory) {
+    if (blockHistories.contains(blockHistory)) {
+      blockHistories.remove(blockHistory);
+      blockHistory.setUser(null);
+    }
+  }
+
+  public void addComment(Comment comment) {
+    if (!comments.contains(comment)) {
+      comments.add(comment);
+      comment.setAuthor(this);
+    }
+  }
+
+  public void removeComment(Comment comment) {
+    if (comments.contains(comment)) {
+      comments.remove(comment);
+      comment.setAuthor(null);
+    }
+  }
+
+  public void addPost(Post post) {
+    if (!posts.contains(post)) {
+      posts.add(post);
+      post.setAuthor(this);
+    }
+  }
+
+  public void removePost(Post post) {
+    if (posts.contains(post)) {
+      posts.remove(post);
+      post.setAuthor(null);
+    }
+  }
+
+  public void addSrcFiendship(Friendship friendship) {
+    if (!srcFiendships.contains(friendship)) {
+      dstFriendships.add(friendship);
+      friendship.setSrcPerson(this);
+    }
+  }
+
+  public void removeSrcFiendship(Friendship friendship) {
+    if (srcFiendships.contains(friendship)) {
+      srcFiendships.remove(friendship);
+      friendship.setSrcPerson(null);
+    }
+  }
+
+  public void addDstFiendship(Friendship friendship) {
+    if (!dstFriendships.contains(friendship)) {
+      dstFriendships.add(friendship);
+      friendship.setSrcPerson(this);
+    }
+  }
+
+  public void removeDstFiendship(Friendship friendship) {
+    if (dstFriendships.contains(friendship)) {
+      dstFriendships.remove(friendship);
+      friendship.setSrcPerson(null);
+    }
+  }
+
+  public void addDialogSender(Dialog dialog) {
+    if (!dialogSenders.contains(dialog)) {
+      dialogSenders.add(dialog);
+      dialog.setSender(this);
+    }
+  }
+
+  public void removeDialogSender(Dialog dialog) {
+    if (dialogSenders.contains(dialog)) {
+      dialogSenders.remove(dialog);
+      dialog.setSender(null);
+    }
+  }
+
+  public void addDialogRecipient(Dialog dialog) {
+    if (!dialogRecipients.contains(dialog)) {
+      dialogRecipients.add(dialog);
+      dialog.setRecipient(this);
+    }
+  }
+
+  public void removeDialogRecipient(Dialog dialog) {
+    if (dialogRecipients.contains(dialog)) {
+      dialogRecipients.remove(dialog);
+      dialog.setRecipient(null);
+    }
+  }
+
+  public void addNotification(Notification notification) {
+    if (!notifications.contains(notification)) {
+      notifications.add(notification);
+      notification.setPerson(this);
+    }
+  }
+
+  public void removeNotification(Notification notification) {
+    if (notifications.contains(notification)) {
+      notifications.remove(notification);
+      notification.setPerson(null);
+    }
+  }
+
+  public void addNotificationSetting(NotificationSetting notificationSetting) {
+    if (!notificationSettings.contains(notificationSetting)) {
+      notificationSettings.add(notificationSetting);
+      notificationSetting.setUser(this);
+    }
+  }
+
+  public void removeNotificationSetting(NotificationSetting notificationSetting) {
+    if (notificationSettings.contains(notificationSetting)) {
+      notificationSettings.remove(notificationSetting);
+      notificationSetting.setUser(null);
+    }
+  }
+
+  public void addLike(Like like) {
+    if (!likes.contains(like)) {
+      likes.add(like);
+      like.setUser(this);
+    }
+  }
+
+  public void removeLike(Like like) {
+    if (likes.contains(like)) {
+      likes.remove(like);
+      like.setUser(null);
+    }
+  }
 }
