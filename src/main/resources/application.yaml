@@ -4,7 +4,6 @@ spring:
     password: password
     username: skillbox
   jpa:
-    database: postgresql
     hibernate:
       ddl-auto: create-drop
     properties:
