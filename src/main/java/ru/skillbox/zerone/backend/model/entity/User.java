@@ -35,8 +35,9 @@ public class User {
   private String lastName;
 
   @NotNull
+  @Builder.Default
   @Column(name = "reg_date", columnDefinition = "timestamp without time zone")
-  private LocalDateTime regDate;
+  private LocalDateTime regDate = LocalDateTime.now();
 
   @Column(name = "birth_date")
   private LocalDate birthDate;
@@ -59,7 +60,7 @@ public class User {
   private String about;
 
   @Builder.Default
-  @Column(name = "status", columnDefinition = "user_status")
+  @Column(name = "status", columnDefinition = "user_status default 'INACTIVE'")
   @Enumerated(EnumType.STRING)
   private UserStatus status = UserStatus.INACTIVE;
 
@@ -72,13 +73,13 @@ public class User {
   @Column(name = "confirmation_code")
   private String confirmationCode;
 
-  @Builder.Default
   @NotNull
-  @Column(name = "is_approved", columnDefinition = "boolean")
-  private boolean isApproved = false;
+  @Builder.Default
+  @Column(name = "is_approved", columnDefinition = "boolean default false")
+  private Boolean isApproved = false;
 
   @Builder.Default
-  @Column(name = "message_permissions", columnDefinition = "message_permissions")
+  @Column(name = "message_permissions", columnDefinition = "message_permissions default 'ALL'")
   @Enumerated(EnumType.STRING)
   private MessagePermissions messagePermissions = MessagePermissions.ALL;
 
@@ -86,15 +87,15 @@ public class User {
   @Column(name = "last_online_time", columnDefinition = "timestamp without time zone")
   private LocalDateTime lastOnlineTime;
 
-  @Builder.Default
   @NotNull
-  @Column(name = "is_blocked", columnDefinition = "boolean")
-  private boolean isBlocked = false;
+  @Builder.Default
+  @Column(name = "is_blocked", columnDefinition = "boolean default false")
+  private Boolean isBlocked = false;
 
-  @Builder.Default
   @NotNull
-  @Column(name = "is_deleted", columnDefinition = "boolean")
-  private boolean isDelete = false;
+  @Builder.Default
+  @Column(name = "is_deleted", columnDefinition = "boolean default false")
+  private Boolean isDelete = false;
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<BlockHistory> blockHistories = new ArrayList<>();

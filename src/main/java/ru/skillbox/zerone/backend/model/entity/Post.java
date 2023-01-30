@@ -53,11 +53,11 @@ public class Post {
 
   @NotNull
   @Column(name = "is_blocked")
-  private boolean isBlocked;
+  private Boolean isBlocked;
 
   @NotNull
   @Column(name = "is_deleted")
-  private boolean isDeleted;
+  private Boolean isDeleted;
 
   @OneToMany(
       mappedBy = "post",

@@ -33,25 +33,25 @@ public class NotificationSetting {
 
   @NotNull
   @Column(name = "post_enabled")
-  private boolean postEnabled;
+  private Boolean postEnabled;
 
   @NotNull
   @Column(name = "post_comment_enabled")
-  private boolean postCommentEnabled;
+  private Boolean postCommentEnabled;
 
   @NotNull
   @Column(name = "comment_comment_enabled")
-  private boolean commentCommentEnabled;
+  private Boolean commentCommentEnabled;
 
   @NotNull
   @Column(name = "friend_request_enabled")
-  private boolean friendRequestEnabled;
+  private Boolean friendRequestEnabled;
 
   @NotNull
   @Column(name = "messages_enabled")
-  private boolean messagesEnabled;
+  private Boolean messagesEnabled;
 
   @NotNull
   @Column(name = "friend_birthday_enabled")
-  private boolean friendBirthdayEnabled;
+  private Boolean friendBirthdayEnabled;
 }

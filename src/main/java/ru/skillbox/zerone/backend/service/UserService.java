@@ -18,14 +18,14 @@ public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
 
-  public CommonResponseDTO<Object> registerAccount(RegisterRequestDTO request) {
+  public CommonResponseDTO<MessageResponseDTO> registerAccount(RegisterRequestDTO request) {
 
     if (userRepository.findByEmail(request.getEmail()).isPresent()) {
       throw new UserAlreadyExistException(request.getEmail());
     }
-    var response = CommonResponseDTO.builder()
-        .data(new MessageResponseDTO("ok"))
-        .build();
+    CommonResponseDTO<MessageResponseDTO> response = new CommonResponseDTO<>();
+    response.setData(new MessageResponseDTO("ok"));
+
     User user = createUserFromRequest(request);
     userRepository.save(user);
 
@@ -37,7 +37,6 @@ public class UserService {
         .firstName(request.getFirstName())
         .lastName(request.getLastName())
         .email(request.getEmail())
-        .regDate(LocalDateTime.now())
         .lastOnlineTime(LocalDateTime.now())
         .password(passwordEncoder.encode(request.getPassword()))
         .build();

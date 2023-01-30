@@ -3,6 +3,7 @@ package ru.skillbox.zerone.backend.configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.User;
@@ -27,10 +28,9 @@ class SecurityConfiguration {
     http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests((authz) -> authz
-            .anyRequest().permitAll()
+            .anyRequest().authenticated()
         )
-        .formLogin().permitAll()
-        .and()
+        .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
         .logout(LogoutConfigurer::permitAll)
         .httpBasic(withDefaults());
     return http.build();
