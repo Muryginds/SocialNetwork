@@ -1,12 +1,20 @@
-stages:
+variables:
+  MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
+
+image: maven:latest
+
+stages:          # List of stages for jobs, and their order of execution
   - build
 
-java-build:
-  # select the most appropriate image for your project
-  image: maven:3.10.1-openjdk-19
-  stage: build
-  script:
-    - mvn package -DskipTests=true
+cache:
+  paths:
+    - .m2/repository
+    - target
 
+build-job:       # This job runs in the build stage, which runs first.
+  stage: build
   tags:
-    - prod
+    - Ims
+  script:
+    - echo "Compiling the code..."
+    - "mvn compile"
