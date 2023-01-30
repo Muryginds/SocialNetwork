@@ -14,7 +14,7 @@ cache:
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
   tags:
-    - Ims
+    - prod
   script:
     - echo "Compiling the code..."
     - "mvn compile"
