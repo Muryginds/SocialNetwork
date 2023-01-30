@@ -5,6 +5,7 @@ image: maven:3.8.7-amazoncorretto-19
 
 stages:          # List of stages for jobs, and their order of execution
   - build
+  - package
 
 cache:
   paths:
@@ -15,6 +16,16 @@ build-job:       # This job runs in the build stage, which runs first.
   stage: build
   tags:
     - prod
+
   script:
     - echo "Compiling the code..."
     - "mvn compile"
+
+package-job:       # This job runs in the build stage, which runs first.
+  stage: package
+  tags:
+    - prod
+
+  script:
+    - echo "Maven packaging started"
+    - "mvn package"
