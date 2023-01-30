@@ -1,7 +1,7 @@
 variables:
   MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
 
-image: maven:latest
+image: 3.8.7-amazoncorretto-19
 
 stages:          # List of stages for jobs, and their order of execution
   - build
