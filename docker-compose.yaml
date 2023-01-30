@@ -30,6 +30,12 @@ services:
       - postgres
     restart: unless-stopped
 
+  frontend:
+    image: dimok82/zeone
+    restart: always
+    ports:
+      - "80:80"
+
 networks:
   postgres:
     driver: bridge
