@@ -49,8 +49,12 @@ package-job:       # This job runs in the package stage, which runs third.
   artifacts:
     paths:
       - target/*.jar
-    cache:
-      policy: pull
+  cache:
+    policy: pull
+    paths:
+      - .m2/repository
+      - target
+
 
 deploy-job:       # This job runs in the deploy stage, which runs fourth.
   stage: deploy
