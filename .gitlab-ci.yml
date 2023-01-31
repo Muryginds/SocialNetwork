@@ -15,7 +15,7 @@ build-job:       # This job runs in the build stage, which runs first.
     - prod
 
   script:
-    - echo "Compiling the code... $DEV_USER"
+    - echo "Compiling the code $CI_JOB_STAGE... DEV_USER"
     - "mvn compile"
 
   cache:
