@@ -1,5 +1,5 @@
 variables:
-  MAVEN_OPTS: -Dmaven.repo.local=.m2/repository
+  MAVEN_OPTS: -Dmaven.repo.local=.m2/repository   # place storage for cache
 
 image: maven:3.8.7-amazoncorretto-19
 
@@ -8,11 +8,6 @@ stages:          # List of stages for jobs, and their order of execution
   - test
   - package
   - deploy
-
-cache:
-  paths:
-    - .m2/repository
-    - target
 
 build-job:       # This job runs in the build stage, which runs first.
   stage: build
@@ -23,6 +18,11 @@ build-job:       # This job runs in the build stage, which runs first.
     - echo "Compiling the code..."
     - "mvn compile"
 
+  cache:
+    paths:
+      - .m2/repository
+      - target
+
 test-job:       # This job runs in the test stage, which runs second.
   stage: test
   tags:
@@ -32,6 +32,11 @@ test-job:       # This job runs in the test stage, which runs second.
     - echo "Maven test started"
     - "mvn test -Dmaven.test.skip"
 
+  cache:
+    paths:
+      - .m2/repository
+      - target
+
 package-job:       # This job runs in the package stage, which runs third.
   stage: package
   tags:
@@ -40,6 +45,12 @@ package-job:       # This job runs in the package stage, which runs third.
   script:
     - echo "Maven packaging started"
     - "mvn package -Dmaven.test.skip"
+
+  artifacts:
+    paths:
+      - target/*.jar
+    cache:
+      policy: pull
 
 deploy-job:       # This job runs in the deploy stage, which runs fourth.
   stage: deploy
