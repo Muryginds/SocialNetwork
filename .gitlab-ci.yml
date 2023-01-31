@@ -56,16 +56,10 @@ package-job:       # This job runs in the package stage, which runs third.
       - target
 
 
-deploy-job:       # This job runs in the deploy stage, which runs fourth.
+deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
   stage: deploy
   tags:
     - prod
-
-  script:
-    - echo "Maven deploy started"
-
-deploy_dev_server:
-  stage: deploy
 
   before_script:
     - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
