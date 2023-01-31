@@ -1,5 +1,4 @@
 package ru.skillbox.zerone.backend.model.entity;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -23,23 +22,24 @@ public class Like {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private Long id;
+  private long id;
 
   @NotNull
+  @Builder.Default
   @Column(name = "time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime time;
+  private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
   @Column(name = "entity_id")
-  private Long entityId;
+  private long entityId;
 
-  @NotNull
+  @Builder.Default
   @Enumerated(EnumType.STRING)
-  @Column(name = "type", columnDefinition = "like_type")
-  private LikeType type;
+  @Column(name = "type", columnDefinition = "like_type default 'POST'")
+  private LikeType type = LikeType.POST;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "like_user_fk")
   )

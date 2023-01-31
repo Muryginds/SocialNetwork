@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
 
 @Entity
 @Table(name = "post_to_tag",
@@ -25,14 +26,15 @@ public class PostToTag {
   private Long id;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
+//  @Fetch()
   @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "post_to_tag_post_fk")
   )
   private Post post;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "tag_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "post_to_tag_tag_fk")
   )

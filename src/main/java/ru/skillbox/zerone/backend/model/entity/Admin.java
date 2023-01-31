@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.zerone.backend.model.enumerated.UserType;
+import ru.skillbox.zerone.backend.model.enumerated.AdminType;
 
 @Entity
 @Table(name = "admin")
@@ -35,5 +35,5 @@ public class Admin {
   @Builder.Default
   @Column(name = "type", columnDefinition = "user_type default 'MODERATOR'")
   @Enumerated(EnumType.STRING)
-  private UserType type = UserType.MODERATOR;
+  private AdminType type = AdminType.MODERATOR;
 }

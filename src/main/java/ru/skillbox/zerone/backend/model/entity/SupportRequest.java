@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -35,8 +36,13 @@ public class SupportRequest {
   private String email;
 
   @NotNull
+  @Column(name = "message", columnDefinition = "text")
+  private String message;
+
+  @NotNull
+  @Builder.Default
   @Column(name = "time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime time;
+  private LocalDateTime time = LocalDateTime.now();
 
   @Builder.Default
   @Column(name = "status", columnDefinition = "support_request_status default 'NEW'")

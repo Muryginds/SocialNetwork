@@ -32,7 +32,7 @@ public class Message {
   private LocalDateTime sentTime = LocalDateTime.now();
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "dialog_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "message_dialog_fk")
   )

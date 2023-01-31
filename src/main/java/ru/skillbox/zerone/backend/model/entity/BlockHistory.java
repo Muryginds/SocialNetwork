@@ -31,11 +31,12 @@ public class BlockHistory {
   private Long id;
 
   @NotNull
+  @Builder.Default
   @Column(name = "time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime time;
+  private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "block_history_user_fk")
   )
@@ -43,7 +44,7 @@ public class BlockHistory {
   private User user;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "block_history_post_fk")
   )
@@ -51,15 +52,15 @@ public class BlockHistory {
   private Post post;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "comment_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "block_history_comment_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Comment comment;
 
-  @NotNull
+  @Builder.Default
   @Enumerated(EnumType.STRING)
-  @Column(name = "action", columnDefinition = "action_type")
-  private ActionType action;
+  @Column(name = "action", columnDefinition = "action_type default 'BLOCK'")
+  private ActionType action = ActionType.BLOCK;
 }

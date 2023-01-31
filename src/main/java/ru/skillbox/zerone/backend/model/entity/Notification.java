@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import ru.skillbox.zerone.backend.model.enumerated.NotificationType;
 import ru.skillbox.zerone.backend.model.enumerated.ReadStatus;
 
 import java.time.LocalDateTime;
@@ -15,9 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "notification",
     indexes = {
-        @Index(name = "notification_type_id_idx", columnList = "type_id"),
-        @Index(name = "notification_person_id_idx", columnList = "person_id"),
-        @Index(name = "notification_entity_id_idx", columnList = "entity_id")
+        @Index(name = "notification_person_id_idx", columnList = "person_id")
     }
 )
 @Data
@@ -30,20 +29,18 @@ public class Notification {
   @Column(name = "id")
   private Long id;
 
-  @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "type_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "notification_notification_type_fk")
-  )
-  @OnDelete(action = OnDeleteAction.CASCADE)
-  private NotificationType typeId;
+  @Builder.Default
+  @Enumerated(EnumType.STRING)
+  @Column(name = "type_id", columnDefinition = "notification_type default 'POST'")
+  private NotificationType typeId = NotificationType.POST;
 
   @NotNull
+  @Builder.Default
   @Column(name = "sent_time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime sentTime;
+  private LocalDateTime sentTime = LocalDateTime.now();
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "person_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "notification_person_fk")
   )
@@ -51,14 +48,11 @@ public class Notification {
   private User person;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "entity_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "notification_entity_type_fk")
-  )
-  @OnDelete(action = OnDeleteAction.CASCADE)
-  private EntityType entity;
+  @Column(name = "entity_id")
+  private Long entityId;
 
-  @NotNull
-  @Column(name = "status", columnDefinition = "read_status")
-  private ReadStatus status;
+  @Builder.Default
+  @Enumerated(EnumType.STRING)
+  @Column(name = "status", columnDefinition = "read_status default 'SENT'")
+  private ReadStatus status = ReadStatus.SENT;
 }

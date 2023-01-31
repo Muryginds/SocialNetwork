@@ -32,31 +32,26 @@ public class Comment {
   private Long id;
 
   @NotNull
+  @Builder.Default
   @Column(name = "time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime time;
+  private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "comment_post_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Post post;
 
-  @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
-  private List<BlockHistory> blockHistories = new ArrayList<>();
-
-  @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
-  private List<Comment> parents = new ArrayList<>();
-
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "parent_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "comment_parent_comment_fk")
   )
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Comment parent;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "comment_author_fk")
   )
@@ -67,11 +62,11 @@ public class Comment {
   @Column(name = "comment_test", columnDefinition = "text")
   private String commentText;
 
-  @NotNull
-  @Column(name = "is_blocked")
-  private Boolean isBlocked;
+  @Builder.Default
+  @Column(name = "is_blocked", columnDefinition = "boolean default false")
+  private Boolean isBlocked = false;
 
-  @NotNull
-  @Column(name = "is_deleted")
-  private Boolean isDeleted;
+  @Builder.Default
+  @Column(name = "is_deleted", columnDefinition = "boolean default false")
+  private Boolean isDeleted = false;
 }

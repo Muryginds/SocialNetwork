@@ -21,3 +21,8 @@ CREATE TYPE support_request_status AS ENUM ('NEW', 'IN_WORK', 'CLOSED');
 
 DROP TYPE IF EXISTS like_type CASCADE;
 CREATE TYPE like_type AS ENUM ('POST', 'COMMIT');
+
+DROP TYPE IF EXISTS notification_type CASCADE;
+CREATE TYPE notification_type AS ENUM (
+    'POST', 'POST_COMMENT', 'COMMENT_COMMENT', 'FRIEND_REQUEST',
+    'MESSAGE', 'FRIEND_BIRTHDAY');

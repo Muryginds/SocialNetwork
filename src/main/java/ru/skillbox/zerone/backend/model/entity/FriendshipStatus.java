@@ -6,11 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.zerone.backend.model.enumerated.FriendshipCode;
+import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatusCode;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "friendship_status")
@@ -25,32 +23,16 @@ public class FriendshipStatus {
   private Long id;
 
   @NotNull
+  @Builder.Default
   @Column(name = "time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime time;
+  private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
   @Column(name = "name")
   private String name;
 
-  @NotNull
-  @Column(name = "code", columnDefinition = "friendship_code")
+  @Builder.Default
+  @Column(name = "code", columnDefinition = "friendship_code default 'REQUEST'")
   @Enumerated(EnumType.STRING)
-  private FriendshipCode code;
-
-  @OneToMany(mappedBy = "status", fetch = FetchType.LAZY)
-  private List<Friendship> friendships = new ArrayList<>();
-
-  public void addFriendship(Friendship friendship) {
-    if (!friendships.contains(friendship)) {
-      friendships.add(friendship);
-      friendship.setStatus(this);
-    }
-  }
-
-  public void removeFriendship(Friendship friendship) {
-    if (friendships.contains(friendship)) {
-      friendships.remove(friendship);
-      friendship.setStatus(null);
-    }
-  }
+  private FriendshipStatusCode code = FriendshipStatusCode.REQUEST;
 }

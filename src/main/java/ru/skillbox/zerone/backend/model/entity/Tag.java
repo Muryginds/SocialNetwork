@@ -25,21 +25,4 @@ public class Tag {
   @NotNull
   @Column(name = "tag")
   private String tag;
-
-  @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
-  private List<PostToTag> postToTags = new ArrayList<>();
-
-  public void addPostToTag(PostToTag postToTag) {
-    if (!postToTags.contains(postToTag)) {
-      postToTags.add(postToTag);
-      postToTag.setTag(this);
-    }
-  }
-
-  public void removePostToTag(PostToTag postToTag) {
-    if (postToTags.contains(postToTag)) {
-      postToTags.remove(postToTag);
-      postToTag.setTag(null);
-    }
-  }
 }
