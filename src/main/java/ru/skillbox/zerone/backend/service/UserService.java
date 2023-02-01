@@ -2,13 +2,12 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.MailMessage;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.skillbox.zerone.backend.controller.MailService;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
@@ -24,41 +23,30 @@ import java.util.UUID;
 public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
-  private final JavaMailSender emailSender;
-  @Value("${spring.mail.username}")
-  private String senderMail;
+  private final MailService mailService;
+
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registerAccount(RegisterRequestDTO request) {
 
-    if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+    if (userRepository.existsByEmail(request.getEmail())) {
       throw new UserAlreadyExistException(request.getEmail());
     }
 
-    var user = createUserFromRequest(request);
+    User user = createUserFromRequest(request);
     var verificationUuid = UUID.randomUUID();
     user.setConfirmationCode(verificationUuid.toString());
 
     userRepository.save(user);
 
-    var message = createVerificationMessage(user.getEmail(), verificationUuid.toString());
-    emailSender.send(message);
+    mailService.sendVerificationEmail(user.getEmail(), verificationUuid.toString());
 
     CommonResponseDTO<MessageResponseDTO> response = new CommonResponseDTO<>();
     response.setData(new MessageResponseDTO("ok"));
     return response;
   }
 
-  public SimpleMailMessage createVerificationMessage(String mailToSend, String verifyCode) {
-    var message = new SimpleMailMessage();
-    message.setFrom(senderMail);
-    message.setTo(mailToSend);
-    message.setSubject("Verification message");
-    message.setText(String.format("Verification code that you need to input: %s", verifyCode));
-    return message;
-  }
-
-  public User createUserFromRequest(RegisterRequestDTO request) {
+  private User createUserFromRequest(RegisterRequestDTO request) {
     return User.builder()
         .firstName(request.getFirstName())
         .lastName(request.getLastName())

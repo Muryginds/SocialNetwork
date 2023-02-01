@@ -70,6 +70,7 @@ public class User {
   @Column(name = "city")
   private String city;
 
+  @NotNull
   @Column(name = "confirmation_code")
   private String confirmationCode;
 
