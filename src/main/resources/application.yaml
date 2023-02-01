@@ -10,10 +10,24 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
-        jdbc.lob.non_contextual_creation: true
     show-sql: true
   sql:
     init:
       mode: always
   liquibase:
     enabled: false
+  mail:
+    host: smtp.mail.ru
+    port: 465
+    username: zerone34@mail.ru
+    password: TmtUuTw4r3yp2C3AS36M
+    test-connection: true
+    properties:
+      mail:
+        debug: false
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            enable: true
