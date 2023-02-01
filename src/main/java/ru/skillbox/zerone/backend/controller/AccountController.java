@@ -2,10 +2,7 @@ package ru.skillbox.zerone.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.service.UserService;
@@ -21,5 +18,10 @@ public class AccountController {
   @PostMapping("/register")
   public ResponseEntity<CommonResponseDTO<MessageResponseDTO>> register(@RequestBody RegisterRequestDTO request) {
     return ResponseEntity.ok(userService.registerAccount(request));
+  }
+
+  @GetMapping("/registration_complete")
+  public ResponseEntity<CommonResponseDTO<MessageResponseDTO>> registrationComplete(@RequestParam String key, @RequestParam String email) {
+    return userService.registrationComplete(key, email);
   }
 }

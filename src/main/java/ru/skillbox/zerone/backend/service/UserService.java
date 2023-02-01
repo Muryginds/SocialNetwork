@@ -2,12 +2,10 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.skillbox.zerone.backend.controller.MailService;
+import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
@@ -54,5 +52,26 @@ public class UserService {
         .lastOnlineTime(LocalDateTime.now())
         .password(passwordEncoder.encode(request.getPassword()))
         .build();
+  }
+
+  public ResponseEntity<CommonResponseDTO<MessageResponseDTO>> registrationComplete(String confirmationKey, String email) {
+    var userOptional = userRepository.findUserByEmail(email);
+    if (userOptional.isEmpty()) {
+      throw new RegistrationCompleteException();
+    }
+    User user = userOptional.get();
+    CommonResponseDTO<MessageResponseDTO> response = new CommonResponseDTO<>();
+
+    if (!user.getConfirmationCode().equals(confirmationKey)) {
+      response.setData(new MessageResponseDTO("Wrong confirmation key"));
+      return ResponseEntity.badRequest().body(response);
+    }
+
+    user.setIsApproved(true);
+    userRepository.save(user);
+
+    response.setData(new MessageResponseDTO("ok"));
+
+    return ResponseEntity.ok(response);
   }
 }
