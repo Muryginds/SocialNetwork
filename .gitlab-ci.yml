@@ -56,7 +56,7 @@ package-job:       # This job runs in the package stage, which runs third.
       - target
 
 
-deploy_dev_server:  # This job runs in the deploy stage,which runs fourth.
+deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
   stage: deploy
   tags:
     - prod
