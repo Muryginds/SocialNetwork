@@ -2,7 +2,6 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
@@ -55,17 +54,16 @@ public class UserService {
   }
 
   @Transactional
-  public ResponseEntity<CommonResponseDTO<MessageResponseDTO>> registrationComplete(String confirmationKey, String email) {
+  public CommonResponseDTO<MessageResponseDTO> registrationComplete(String confirmationKey, String email) {
     var userOptional = userRepository.findUserByEmail(email);
     if (userOptional.isEmpty()) {
-      throw new RegistrationCompleteException();
+      throw new RegistrationCompleteException("wrong input");
     }
     User user = userOptional.get();
     CommonResponseDTO<MessageResponseDTO> response = new CommonResponseDTO<>();
 
     if (!user.getConfirmationCode().equals(confirmationKey)) {
-      response.setData(new MessageResponseDTO("Wrong confirmation key"));
-      return ResponseEntity.badRequest().body(response);
+      throw new RegistrationCompleteException("wrong confirmation key");
     }
 
     user.setIsApproved(true);
@@ -73,6 +71,6 @@ public class UserService {
 
     response.setData(new MessageResponseDTO("ok"));
 
-    return ResponseEntity.ok(response);
+    return response;
   }
 }
