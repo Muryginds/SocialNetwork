@@ -62,8 +62,10 @@ deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
     - prod
 
   before_script:
-    - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
-    - eval $(ssh-agent -s)
+    - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y ) # which ищет исполняемый файл
+  #|| если выполнение первой команды статус 1 (не удачно), то переход ко второй.
+  #update - Обновление базы данных пакетов. install - устанавливает пакет openssh-client
+    - eval $(ssh-agent -s) #типо execute immediate запускает ssh_agent в дочернем процессе от оболочки
     - echo "$SSH_PRIVATE_KEY" | ssh-add -
     - mkdir -p ~/.ssh
     - chmod 700 ~/.ssh
