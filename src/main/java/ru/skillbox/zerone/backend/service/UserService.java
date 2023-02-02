@@ -54,6 +54,7 @@ public class UserService {
         .build();
   }
 
+  @Transactional
   public ResponseEntity<CommonResponseDTO<MessageResponseDTO>> registrationComplete(String confirmationKey, String email) {
     var userOptional = userRepository.findUserByEmail(email);
     if (userOptional.isEmpty()) {
