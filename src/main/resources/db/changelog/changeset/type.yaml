@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Riddle (generated)
+      changes:
+        -  sql:
+             sql: CREATE TYPE USER_STATUS AS ENUM ('ACTIVE', 'INACTIVE');
+
+  - changeSet:
+      id: 2
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: CREATE TYPE MESSAGE_PERMISSIONS AS ENUM ('ALL', 'FRIENDS');
+
+  - changeSet:
+      id: 3
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: CREATE TYPE ACTION_TYPE AS ENUM ('BLOCK', 'UNBLOCK');
+
+  - changeSet:
+      id: 4
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: CREATE TYPE USER_TYPE AS ENUM ('MODERATOR', 'ADMIN');
+
+  - changeSet:
+      id: 5
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: CREATE TYPE FRIENDSHIP_CODE AS ENUM ('REQUEST', 'FRIEND', 'BLOCKED', 'DECLINED', 'SUBSCRIBED');
+
+  - changeSet:
+      id: 6
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: CREATE TYPE READ_STATUS AS ENUM ('SENT', 'READ');
+
+  - changeSet:
+      id: 7
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: CREATE TYPE SUPPORT_REQUEST_STATUS AS ENUM ('NEW', 'IN_WORK', 'CLOSED');
+
+  - changeSet:
+      id: 8
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: CREATE TYPE LIKE_TYPE AS ENUM ('POST', 'COMMIT');

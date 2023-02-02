@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/type.yaml
+  - include:
+      file: db/changelog/changeset/entity.yaml
