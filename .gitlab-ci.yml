@@ -9,21 +9,33 @@ stages:          # List of stages for jobs, and their order of execution
   - package
   - deploy
 
-build-job:       # This job runs in the build stage, which runs first. 
+build-job:       # This job runs in the build stage, which runs first.
   stage: build
   tags:
     - prod
 
   script:
-    - echo "Maven build started"
+    - echo "Compiling the code $CI_JOB_STAGE... $DEV_USER"
+    - "mvn compile"
 
-test-job:       # This job runs in the test stage, which runs second   .
+  cache:
+    paths:
+      - .m2/repository
+      - target
+
+test-job:       # This job runs in the test stage, which runs second.
   stage: test
   tags:
     - prod
 
   script:
     - echo "Maven test started"
+    - "mvn test -Dmaven.test.skip"
+
+  cache:
+    paths:
+      - .m2/repository
+      - target
 
 package-job:       # This job runs in the package stage, which runs third.
   stage: package
@@ -32,6 +44,16 @@ package-job:       # This job runs in the package stage, which runs third.
 
   script:
     - echo "Maven packaging started"
+    - "mvn package -Dmaven.test.skip"
+
+  artifacts:
+    paths:
+      - target/*.jar
+  cache:
+    policy: pull
+    paths:
+      - .m2/repository
+      - target
 
 
 deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
@@ -40,10 +62,19 @@ deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
     - prod
 
   before_script:
-    - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y ) #which ищет исполняемый файл
-    #|| если выполнение первой команды статус 1 (не удачно), то переход ко второй.
-    #update - Обновление базы данных пакетов. install - устанавливает пакет openssh-client
+    - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y ) # which ищет исполняемый файл
+  #|| если выполнение первой команды статус 1 (не удачно), то переход ко второй.
+  #update - Обновление базы данных пакетов. install - устанавливает пакет openssh-client
     - eval $(ssh-agent -s) #типо execute immediate запускает ssh_agent в дочернем процессе от оболочки
-    - echo "${SSH_PRIVATE_KEY}" | ssh-add -  # |выходн данные первой команды передает во вторую
+    - echo "$SSH_PRIVATE_KEY" | ssh-add -  # |-выходн данные первой команды передает во вторую 
+    #приватный ключ передаёт во вторую команду ssh-add, т.е. для авторизации в агенте
+    - mkdir -p ~/.ssh #создание директории, если такой нет. -p создаст все директории, указанные в пути. Check: ls -la
+    - chmod 700 ~/.ssh #выдаём права только владельцу на чтение, запись и выполнение
+    - ssh-keyscan $DEV_HOST >> ~/.ssh/known_hosts #собирает ключи с хоста 195.161.62.32
+    #и перенаправляет вывод в файл, но не перезаписывает его, а добавляет в конец
+    - chmod 644 ~/.ssh/known_hosts #владельцу чтение, запись. Для группы и других - чтение
   script:
-    -echo "empty"
+    - ssh $DEV_USER@$DEV_HOST "[ ! -f $DEV_APP_PATH/app_name.jar ] || mv $DEV_APP_PATH/app_name.jar $DEV_APP_PATH/app_name-build-$CI_PIPELINE_ID.jar"
+    #подключ. ч/з ssh.        check path exists and он стандартный
+    - scp target/app_name.jar $DEV_USER@$DEV_HOST:$DEV_APP_PATH/
+    - ssh $DEV_USER@$DEV_HOST "sudo systemctl stop app_name_service && sudo systemctl start app_name_service"
