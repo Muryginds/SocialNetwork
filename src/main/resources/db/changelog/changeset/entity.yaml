@@ -336,6 +336,7 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
+              unique: true
             name: email
             type: VARCHAR(255)
         - column:
@@ -681,6 +682,7 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
+              unique: true
             name: email
             type: VARCHAR(255)
         - column:
@@ -828,6 +830,7 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
+              unique: true
             name: email
             type: VARCHAR(255)
         - column:
