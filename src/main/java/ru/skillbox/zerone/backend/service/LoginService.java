@@ -35,7 +35,6 @@ public class LoginService {
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, requestDto.getPassword()));
 
         String token = jwtTokenProvider.createToken(email, user.getRoles());
-        System.out.println(token);
 
         UserDto userDto = userService.fromUser(user);
         userDto.setToken(token);
