@@ -17,7 +17,7 @@ build-job:       # This job runs in the build stage, which runs first.
   script:
     - echo "Maven build started"
 
-test-job:       # This job runs in the test stage, which runs second.
+test-job:       # This job runs in the test stage, which runs second .
   stage: test
   tags:
     - prod
