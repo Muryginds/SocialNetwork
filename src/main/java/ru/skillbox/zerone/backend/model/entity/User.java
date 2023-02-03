@@ -127,4 +127,10 @@ public class User {
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<Like> likes = new ArrayList<>();
+
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "user2role",
+      joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+      inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+  private List<Role> roles;
 }

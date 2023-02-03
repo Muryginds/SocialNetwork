@@ -1,0 +1,43 @@
+databaseChangeLog:
+  -  changeSet:
+       id:  3
+       author:  ddg
+       changes:
+         -  createTable:
+              tableName:  user2role
+              columns:
+                - column:
+                     name: id
+                     type: int
+                     autoIncrement: true
+                     constraints:
+                         primaryKey: true
+                         nullable: false
+                -  column:
+                     name:  user_id
+                     type:  int
+
+                -  column:
+                     name:  role_id
+                     type:  int
+         -  addForeignKeyConstraint:
+              baseColumnNames: user_id
+              baseTableName: user2role
+              baseTableSchemaName: public
+              constraintName: fk_user_roles_user
+              onDelete: CASCADE
+              onUpdate: RESTRICT
+              referencedColumnNames: id
+              referencedTableName: user
+              referencedTableSchemaName: public
+         -  addForeignKeyConstraint:
+              baseColumnNames: role_id
+              baseTableName: user2role
+              baseTableSchemaName: public
+              constraintName: fk_user_roles_roles
+              onDelete: CASCADE
+              onUpdate: RESTRICT
+              referencedColumnNames: id
+              referencedTableName: role
+              referencedTableSchemaName: public
+
