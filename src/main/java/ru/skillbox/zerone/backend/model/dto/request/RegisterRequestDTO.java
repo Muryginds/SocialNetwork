@@ -8,9 +8,6 @@ import ru.skillbox.zerone.backend.util.ValidationUtils;
 
 @Data
 public class RegisterRequestDTO {
-
-
-
   @Size(min = 2, message = "user name should have at least 2 characters")
   @Pattern(regexp = ValidationUtils.LETTERS_PATTERN, message = "user name should contain only alphabetic characters")
   private String firstName;

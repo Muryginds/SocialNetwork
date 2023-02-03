@@ -7,7 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
-import ru.skillbox.zerone.backend.model.UserDto;
+import ru.skillbox.zerone.backend.model.dto.UserDto;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
@@ -25,7 +25,6 @@ public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final MailService mailService;
-
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registerAccount(RegisterRequestDTO request) {
@@ -83,41 +82,18 @@ public class UserService {
     try {
       JwtUser currentUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-      User user = findByEmail(currentUser.getEmail());
+      var userOptional = userRepository.findUserByEmail(currentUser.getEmail());
 
+      if (userOptional.isEmpty()) {
+        throw new UserAlreadyExistException(currentUser.getEmail());
+      }
 
       CommonResponseDTO<UserDto> responseDto = new CommonResponseDTO<>();
-      responseDto.setData(fromUser(user));
+      responseDto.setData(UserDto.fromUser(userOptional.get()));
       return responseDto;
 
     } catch (ClassCastException e) {
-
       throw new BadCredentialsException("Invalid username or password");
     }
-  }
-
-  public UserDto fromUser(User user) {
-    UserDto userDto = new UserDto();
-    userDto.setId(user.getId());
-    userDto.setFirstName(user.getFirstName());
-    userDto.setLastName(user.getLastName());
-    userDto.setEmail(user.getEmail());
-    userDto.setCountry(user.getCountry());
-    userDto.setCity(user.getCity());
-    userDto.setBirthDate(user.getBirthDate());
-    userDto.setRegDate(user.getRegDate());
-    userDto.setPhoto(user.getPhoto());
-    userDto.setAbout(user.getAbout());
-    userDto.setBlocked(user.getIsBlocked());
-    userDto.setDeleted(user.getIsDelete());
-    userDto.setMessagesPermission(user.getMessagePermissions());
-    userDto.setLastOnlineTime(user.getLastOnlineTime());
-    userDto.setPhone(user.getPhone());
-
-    return userDto;
-  }
-
-  public User findByEmail(String email) {
-    return userRepository.findByEmail(email);
   }
 }

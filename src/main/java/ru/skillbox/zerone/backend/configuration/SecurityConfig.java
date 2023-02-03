@@ -24,31 +24,29 @@ import ru.skillbox.zerone.backend.security.jwt.JwtTokenFilter;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtTokenFilter jwtFilter;
+  private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
+  private static final String LOGOUT_ENDPOINT = "/api/v1/auth/logout";
+  private final JwtTokenFilter jwtFilter;
 
-    private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
-    private static final String LOGOUT_ENDPOINT = "/api/v1/auth/logout";
-
-    @Bean
-    public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
-    }
+  @Bean
+  public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
+    return configuration.getAuthenticationManager();
+  }
 
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new Argon2PasswordEncoder(16, 32, 1, 4096, 1);
   }
 
-
   @Bean
-    WebMvcConfigurer webMvcConfigurer() {
-        return new WebMvcConfigurer() {
-        @Override
-        public void addCorsMappings(CorsRegistry registry) {
-            registry.addMapping("/**").allowedMethods("*").allowedHeaders("*");
-        }
-      };
-    }
+  WebMvcConfigurer webMvcConfigurer() {
+    return new WebMvcConfigurer() {
+      @Override
+      public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**").allowedMethods("*").allowedHeaders("*");
+      }
+    };
+  }
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
