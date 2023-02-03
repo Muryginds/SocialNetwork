@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.model.entity.User;
-import ru.skillbox.zerone.backend.security.jwt.JwtUser;
 import ru.skillbox.zerone.backend.security.jwt.JwtUserFactory;
 import ru.skillbox.zerone.backend.service.UserService;
 
@@ -31,8 +30,6 @@ public class JwtUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User with email: " + email + " not found");
         }
 
-        JwtUser jwtUser = JwtUserFactory.create(user);
-        log.info("IN loadUserByUsername - user with username: {} successfully loaded", email);
-        return jwtUser;
+      return JwtUserFactory.create(user);
     }
 }

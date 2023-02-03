@@ -34,7 +34,7 @@ public class JwtTokenProvider {
     private final UserDetailsService userDetailsService;
 
     @Autowired
-  public JwtTokenProvider(@Lazy UserDetailsService userDetailsService) {
+    public JwtTokenProvider(@Lazy UserDetailsService userDetailsService) {
       this.userDetailsService = userDetailsService;}
 
 
