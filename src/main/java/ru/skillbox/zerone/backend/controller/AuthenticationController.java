@@ -18,7 +18,6 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public CommonResponseDTO<UserDto> login(@RequestBody AuthRequestDto requestDto) {
-      System.out.println(requestDto.getEmail());
 
       return loginService.login(requestDto);
     }

@@ -11,10 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -36,12 +34,13 @@ public class SecurityConfig {
         return configuration.getAuthenticationManager();
     }
 
-    @Bean
-    public Argon2PasswordEncoder passwordEncoder() {
-        return Argon2PasswordEncoder.defaultsForSpringSecurity_v5_8();
-    }
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new Argon2PasswordEncoder(16, 32, 1, 4096, 1);
+  }
 
-    @Bean
+
+  @Bean
     WebMvcConfigurer webMvcConfigurer() {
         return new WebMvcConfigurer() {
         @Override
@@ -66,17 +65,4 @@ public class SecurityConfig {
         .httpBasic(Customizer.withDefaults());
     return http.build();
   }
-
-
-
-
-  /*@Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-      UserDetails user = User
-        .withUsername("user")
-        .password("$argon2id$v=19$m=4096,t=1,p=1$c3Nzc3Nzc3Nzc3Nzc3Nzcw$qBVgfMDGwbZoGUD/jNb8Vc5aNc1c3mD7B7iLpjMDL9Y")
-        .roles("USER")
-        .build();
-      return new InMemoryUserDetailsManager(user);
-   }*/
 }
