@@ -30,6 +30,7 @@ class SecurityConfiguration {
         .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
         .logout(LogoutConfigurer::permitAll)
         .authorizeHttpRequests((authz) -> authz
+            .requestMatchers("/api/v1/account/registration_complete", "/api/v1/account/register").permitAll()
             .anyRequest().authenticated()
         )
         .httpBasic(withDefaults());

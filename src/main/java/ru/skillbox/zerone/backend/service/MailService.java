@@ -1,4 +1,4 @@
-package ru.skillbox.zerone.backend.controller;
+package ru.skillbox.zerone.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
