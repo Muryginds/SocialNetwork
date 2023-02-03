@@ -33,7 +33,7 @@ public class EntityTests {
   private final BlockHistoryRepository blockHistoryRepository;
   private final SupportRequestRepository supportRequestRepository;
 
-  @Bean
+//  @Bean
   public ApplicationRunner Tests() {
     return args -> {
       userTest();
