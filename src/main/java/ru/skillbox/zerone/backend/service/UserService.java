@@ -2,15 +2,19 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
+import ru.skillbox.zerone.backend.model.UserDto;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.User;
+import ru.skillbox.zerone.backend.security.jwt.JwtUser;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -72,5 +76,48 @@ public class UserService {
     response.setData(new MessageResponseDTO("ok"));
 
     return response;
+  }
+
+  public CommonResponseDTO<UserDto> getCurrentUser() {
+
+    try {
+      JwtUser currentUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+      User user = findByEmail(currentUser.getEmail());
+
+
+      CommonResponseDTO<UserDto> responseDto = new CommonResponseDTO<>();
+      responseDto.setData(fromUser(user));
+      return responseDto;
+
+    } catch (ClassCastException e) {
+
+      throw new BadCredentialsException("Invalid username or password");
+    }
+  }
+
+  public UserDto fromUser(User user) {
+    UserDto userDto = new UserDto();
+    userDto.setId(user.getId());
+    userDto.setFirstName(user.getFirstName());
+    userDto.setLastName(user.getLastName());
+    userDto.setEmail(user.getEmail());
+    userDto.setCountry(user.getCountry());
+    userDto.setCity(user.getCity());
+    userDto.setBirthDate(user.getBirthDate());
+    userDto.setRegDate(user.getRegDate());
+    userDto.setPhoto(user.getPhoto());
+    userDto.setAbout(user.getAbout());
+    userDto.setBlocked(user.getIsBlocked());
+    userDto.setDeleted(user.getIsDelete());
+    userDto.setMessagesPermission(user.getMessagePermissions());
+    userDto.setLastOnlineTime(user.getLastOnlineTime());
+    userDto.setPhone(user.getPhone());
+
+    return userDto;
+  }
+
+  public User findByEmail(String email) {
+    return userRepository.findByEmail(email);
   }
 }

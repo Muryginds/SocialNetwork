@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
-    password: password
-    username: skillbox
+    url: jdbc:postgresql://localhost:5432/bookstore
+    password: 123
+    username: root
   jpa:
     hibernate:
       ddl-auto: validate
@@ -16,6 +16,7 @@ spring:
       mode: never
   liquibase:
     enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
   mail:
     host: smtp.mail.ru
     port: 465
@@ -31,3 +32,7 @@ spring:
             enable: true
           ssl:
             enable: true
+jwt:
+  token:
+    secret: tyiuroiuopyiuioytidgfhdfqwerzxcqwer
+    expired: 360000000

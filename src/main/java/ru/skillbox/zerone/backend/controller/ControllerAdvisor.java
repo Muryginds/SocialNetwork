@@ -2,6 +2,7 @@ package ru.skillbox.zerone.backend.controller;
 
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
@@ -25,6 +26,16 @@ public class ControllerAdvisor {
   ResponseEntity<Object> handleException(Exception e) {
     var response = CommonResponseDTO.builder()
         .error(e.getLocalizedMessage())
+        .build();
+
+    return ResponseEntity.badRequest().body(response);
+  }
+
+  @ExceptionHandler(BadCredentialsException.class)
+  public ResponseEntity<Object> getWrongInputMessage(BadCredentialsException ex) {
+
+    var response = CommonResponseDTO.builder()
+        .error(ex.getLocalizedMessage())
         .build();
 
     return ResponseEntity.badRequest().body(response);
