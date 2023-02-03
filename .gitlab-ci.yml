@@ -14,6 +14,8 @@ build-job:       # This job runs in the build stage, which runs first.
   tags:
     - prod
 
+  script:
+    - echo "Maven build started"
 
 test-job:       # This job runs in the test stage, which runs second.
   stage: test
@@ -39,7 +41,9 @@ deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
 
   before_script:
     - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y ) # which ищет исполняемый файл
-  #|| если выполнение первой команды статус 1 (не удачно), то переход ко второй.
-  #update - Обновление базы данных пакетов. install - устанавливает пакет openssh-client
+    #|| если выполнение первой команды статус 1 (не удачно), то переход ко второй.
+    #update - Обновление базы данных пакетов. install - устанавливает пакет openssh-client
     - eval $(ssh-agent -s) #типо execute immediate запускает ssh_agent в дочернем процессе от оболочки
     - echo ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDCadeaPiQdGODbAmH/jOMP2QTFL+BJuSv7E2nFxr1+DHjMAPuNllguC1p05SslH7Ur3LKs116uegm6IXcTUqxYWGNBTXZcXY5pkrg4QNM6eStpl2ymGeVUbR20W1LFvxPj7YzsncCQrmx/WOQ4AZX851TkmX5ehSGM9WlwWorpLoxzyT2bbOVD6GLtFiIALIe/zKj8I8WUeeHu0+QRZn1rqNSOCBIl9myVYcwGvicU5KvYwrwRBw7qVwQuvfvDdBHnRgSOy317oxuvqtjDtJHV1gWh1BiI2Jf2n2GQ2g0vf+YL7tBMpp0Cf3YXAumOjCx9/RMFM4tRZqI/GlHnPA4h7MNTsTUfobe8WaFTb2CorVxAO5NyuKwSd762yh331qJP548RKX00seZYGrmlyt92n7coo+HdU+P2JwS0tJlnLX0pOVww7+KHBJP0WpG7nNVHF7GTQjywRBYBEggmCKHKBVc2HCPw5EKE35Mx33V9TwSwCMEdr7oUdJaZXJQTIAM= 1@DESKTOP-1AH2LVK  | ssh-add -
+  script:
+    -echo "empty"
