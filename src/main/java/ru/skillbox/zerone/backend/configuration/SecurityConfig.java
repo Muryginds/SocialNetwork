@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
@@ -48,26 +51,26 @@ public class SecurityConfig {
       };
     }
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        return http.cors().and()
-            .httpBasic(AbstractHttpConfigurer::disable)
-            .csrf(AbstractHttpConfigurer::disable)
-            .formLogin(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(
-                authz -> authz
-                    .requestMatchers(LOGIN_ENDPOINT).permitAll()
-                    .requestMatchers(LOGOUT_ENDPOINT).permitAll()
-                    .anyRequest().authenticated()
-            )
-            .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-            .build();
-
-    }
-
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http.cors().and()
+        .csrf(AbstractHttpConfigurer::disable)
+        .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+        .logout(LogoutConfigurer::permitAll)
+        .authorizeHttpRequests((authz) -> authz
+            .requestMatchers("/api/v1/account/registration_complete", "/api/v1/account/register").permitAll()
+            .requestMatchers(LOGIN_ENDPOINT).permitAll()
+            .requestMatchers(LOGOUT_ENDPOINT).permitAll()
+            .anyRequest().authenticated()
+        ).addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+        .httpBasic(Customizer.withDefaults());
+    return http.build();
+  }
 
 
-    /*@Bean
+
+
+  /*@Bean
     public InMemoryUserDetailsManager userDetailsService() {
       UserDetails user = User
         .withUsername("user")
@@ -75,5 +78,5 @@ public class SecurityConfig {
         .roles("USER")
         .build();
       return new InMemoryUserDetailsManager(user);
-  }*/
+   }*/
 }
