@@ -92,7 +92,7 @@ public class UserService {
 
     } catch (ClassCastException e) {
 
-      throw new BadCredentialsException("Invalid username or password");
+        throw new BadCredentialsException("Invalid username or password");
     }
   }
 
@@ -118,6 +118,6 @@ public class UserService {
   }
 
   public User findByEmail(String email) {
-    return userRepository.findByEmail(email);
+    return userRepository.findUserByEmail(email).orElse(null);
   }
 }
