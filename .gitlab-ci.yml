@@ -77,5 +77,5 @@ deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
   script:
     - ssh $DEV_USER@$DEV_HOST "[ ! -f $DEV_APP_PATH/app_name.jar ] || mv $DEV_APP_PATH/app_name.jar $DEV_APP_PATH/app_name-build-$CI_PIPELINE_ID.jar"
     #подключ. ч/з ssh.        check path exists and он стандартный
-    - scp target/app_name.jar $DEV_USER@$DEV_HOST:$DEV_APP_PATH/
+    - scp target/zerone_backend-0.0.1-SNAPSHOT.jar $DEV_USER@$DEV_HOST:$DEV_APP_PATH/
     - ssh $DEV_USER@$DEV_HOST "sudo systemctl stop app_name_service && sudo systemctl start app_name_service"
