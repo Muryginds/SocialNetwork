@@ -72,6 +72,7 @@ deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
     - chmod 700 ~/.ssh #выдаём права только владельцу на чтение, запись и выполнение
     - ssh-keyscan $DEV_HOST >> ~/.ssh/known_hosts #собирает ключи с хоста 195.161.62.32
     #и перенаправляет вывод в файл, но не перезаписывает его, а добавляет в конец
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - chmod 644 ~/.ssh/known_hosts #владельцу чтение, запись. Для группы и других - чтение
   script:
     - ssh $DEV_USER@$DEV_HOST "[ ! -f $DEV_APP_PATH/app_name.jar ] || mv $DEV_APP_PATH/app_name.jar $DEV_APP_PATH/app_name-build-$CI_PIPELINE_ID.jar"
