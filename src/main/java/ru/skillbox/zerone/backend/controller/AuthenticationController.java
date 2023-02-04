@@ -3,8 +3,8 @@ package ru.skillbox.zerone.backend.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skillbox.zerone.backend.model.dto.UserDto;
-import ru.skillbox.zerone.backend.model.dto.request.AuthRequestDto;
+import ru.skillbox.zerone.backend.model.dto.UserDTO;
+import ru.skillbox.zerone.backend.model.dto.request.AuthRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.service.LoginService;
 
@@ -16,7 +16,7 @@ public class AuthenticationController {
 
   private final LoginService loginService;
   @PostMapping("/login")
-  public CommonResponseDTO<UserDto> login(@RequestBody AuthRequestDto requestDto) {
+  public CommonResponseDTO<UserDTO> login(@RequestBody AuthRequestDTO requestDto) {
     return loginService.login(requestDto);
   }
 

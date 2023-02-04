@@ -2,12 +2,13 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
-import ru.skillbox.zerone.backend.model.dto.UserDto;
+import ru.skillbox.zerone.backend.model.dto.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
@@ -19,6 +20,7 @@ import ru.skillbox.zerone.backend.security.jwt.JwtUser;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -43,7 +45,46 @@ public class UserService {
 
     CommonResponseDTO<MessageResponseDTO> response = new CommonResponseDTO<>();
     response.setData(new MessageResponseDTO("ok"));
+
+    log.info("IN registerAccount - user with username: {} successfully registered", request.getEmail());
     return response;
+  }
+
+  @Transactional
+  public CommonResponseDTO<MessageResponseDTO> registrationComplete(String confirmationKey, String email) {
+    var userOptional = userRepository.findUserByEmail(email);
+    if (userOptional.isEmpty()) {
+      throw new RegistrationCompleteException("wrong input");
+    }
+    User user = userOptional.get();
+
+    if (!user.getConfirmationCode().equals(confirmationKey)) {
+      throw new RegistrationCompleteException("wrong confirmation key");
+    }
+
+    user.setIsApproved(true);
+    userRepository.save(user);
+
+    CommonResponseDTO<MessageResponseDTO> response = new CommonResponseDTO<>();
+    response.setData(new MessageResponseDTO("ok"));
+
+    log.info("IN registrationComplete - user with username: {} successfully confirmed registration", email);
+    return response;
+  }
+
+  public CommonResponseDTO<UserDTO> getCurrentUser() {
+
+    JwtUser currentUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+    var userOptional = userRepository.findUserByEmail(currentUser.getEmail());
+
+    if (userOptional.isEmpty()) {
+      throw new BadCredentialsException("Invalid username or password");
+    }
+
+    CommonResponseDTO<UserDTO> responseDto = new CommonResponseDTO<>();
+    responseDto.setData(UserDTO.fromUser(userOptional.get()));
+    return responseDto;
   }
 
   private User createUserFromRequest(RegisterRequestDTO request) {
@@ -54,46 +95,5 @@ public class UserService {
         .lastOnlineTime(LocalDateTime.now())
         .password(passwordEncoder.encode(request.getPassword()))
         .build();
-  }
-
-  @Transactional
-  public CommonResponseDTO<MessageResponseDTO> registrationComplete(String confirmationKey, String email) {
-    var userOptional = userRepository.findUserByEmail(email);
-    if (userOptional.isEmpty()) {
-      throw new RegistrationCompleteException("wrong input");
-    }
-    User user = userOptional.get();
-    CommonResponseDTO<MessageResponseDTO> response = new CommonResponseDTO<>();
-
-    if (!user.getConfirmationCode().equals(confirmationKey)) {
-      throw new RegistrationCompleteException("wrong confirmation key");
-    }
-
-    user.setIsApproved(true);
-    userRepository.save(user);
-
-    response.setData(new MessageResponseDTO("ok"));
-
-    return response;
-  }
-
-  public CommonResponseDTO<UserDto> getCurrentUser() {
-
-    try {
-      JwtUser currentUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-      var userOptional = userRepository.findUserByEmail(currentUser.getEmail());
-
-      if (userOptional.isEmpty()) {
-        throw new UserAlreadyExistException(currentUser.getEmail());
-      }
-
-      CommonResponseDTO<UserDto> responseDto = new CommonResponseDTO<>();
-      responseDto.setData(UserDto.fromUser(userOptional.get()));
-      return responseDto;
-
-    } catch (ClassCastException e) {
-      throw new BadCredentialsException("Invalid username or password");
-    }
   }
 }

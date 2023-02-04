@@ -11,7 +11,6 @@ import java.util.Collection;
 @Data
 @RequiredArgsConstructor
 public class JwtUser implements UserDetails {
-
   private final Long id;
   private final String email;
   private final String password;
@@ -56,5 +55,4 @@ public class JwtUser implements UserDetails {
   public boolean isEnabled() {
     return enabled;
   }
-
 }

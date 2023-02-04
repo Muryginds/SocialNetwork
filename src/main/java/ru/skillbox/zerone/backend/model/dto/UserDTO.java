@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class UserDto {
+public class UserDTO {
   private Long id;
   @JsonProperty("first_name")
   private String firstName;
@@ -39,8 +39,8 @@ public class UserDto {
   private LocalDateTime lastOnlineTime;
   private String phone;
 
-  public static UserDto fromUser(User user) {
-    return UserDto.builder()
+  public static UserDTO fromUser(User user) {
+    return UserDTO.builder()
         .id(user.getId())
         .firstName(user.getFirstName())
         .lastName(user.getLastName())

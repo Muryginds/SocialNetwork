@@ -7,8 +7,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.skillbox.zerone.backend.model.dto.UserDto;
-import ru.skillbox.zerone.backend.model.dto.request.AuthRequestDto;
+import ru.skillbox.zerone.backend.model.dto.UserDTO;
+import ru.skillbox.zerone.backend.model.dto.request.AuthRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.repository.UserRepository;
@@ -22,7 +22,7 @@ public class LoginService {
   private final JwtTokenProvider jwtTokenProvider;
   private final UserRepository userRepository;
 
-  public CommonResponseDTO<UserDto> login(AuthRequestDto requestDto) {
+  public CommonResponseDTO<UserDTO> login(AuthRequestDTO requestDto) {
 
     try {
       String email = requestDto.getEmail();
@@ -37,12 +37,13 @@ public class LoginService {
       User user = userOptional.get();
       String token = jwtTokenProvider.createToken(email, user.getRoles());
 
-      UserDto userDto = UserDto.fromUser(user);
-      userDto.setToken(token);
-      CommonResponseDTO<UserDto> responseDto = new CommonResponseDTO<>();
-      responseDto.setData(userDto);
+      UserDTO userDTO = UserDTO.fromUser(user);
+      userDTO.setToken(token);
 
-      return responseDto;
+      CommonResponseDTO<UserDTO> responseDTO = new CommonResponseDTO<>();
+      responseDTO.setData(userDTO);
+
+      return responseDTO;
 
     } catch (AuthenticationException e) {
       throw new BadCredentialsException("Invalid username or password");
