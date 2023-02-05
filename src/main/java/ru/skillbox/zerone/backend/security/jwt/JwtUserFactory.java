@@ -5,7 +5,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import ru.skillbox.zerone.backend.model.entity.Role;
 import ru.skillbox.zerone.backend.model.entity.User;
-import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +19,7 @@ public final class JwtUserFactory {
         user.getPassword(),
         mapToGrantedAuthorities(user.getRoles()),
         user.getIsBlocked(),
-        user.getStatus().equals(UserStatus.ACTIVE)
+        user.getIsApproved()
     );
   }
 
