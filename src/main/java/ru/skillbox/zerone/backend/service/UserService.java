@@ -9,7 +9,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.model.dto.UserDTO;
+import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
+import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
@@ -51,24 +53,25 @@ public class UserService {
   }
 
   @Transactional
-  public CommonResponseDTO<MessageResponseDTO> registrationComplete(String confirmationKey, String email) {
-    var userOptional = userRepository.findUserByEmail(email);
+  public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
+    var userOptional = userRepository.findUserByEmail(request.getUserId());
     if (userOptional.isEmpty()) {
       throw new RegistrationCompleteException("wrong input");
     }
     User user = userOptional.get();
 
-    if (!user.getConfirmationCode().equals(confirmationKey)) {
+    if (!user.getConfirmationCode().equals(request.getToken())) {
       throw new RegistrationCompleteException("wrong confirmation key");
     }
 
     user.setIsApproved(true);
+    user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
 
     CommonResponseDTO<MessageResponseDTO> response = new CommonResponseDTO<>();
     response.setData(new MessageResponseDTO("ok"));
 
-    log.info("IN registrationComplete - user with username: {} successfully confirmed registration", email);
+    log.info("IN registrationConfirm - user with username: {} successfully confirmed registration", request.getUserId());
     return response;
   }
 
