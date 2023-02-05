@@ -1,6 +1,5 @@
 package ru.skillbox.zerone.backend.security.jwt;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,27 +14,24 @@ public class JwtUser implements UserDetails {
   private final String email;
   private final String password;
   private final Collection<? extends GrantedAuthority> authorities;
-  private final boolean enabled;
+  private final boolean isBlocked;
+  private final boolean isActive;
 
-  @JsonIgnore
   @Override
   public boolean isAccountNonExpired() {
     return true;
   }
 
-  @JsonIgnore
   @Override
   public boolean isAccountNonLocked() {
-    return true;
+    return !isBlocked;
   }
 
-  @JsonIgnore
   @Override
   public boolean isCredentialsNonExpired() {
     return true;
   }
 
-  @JsonIgnore
   @Override
   public String getPassword() {
     return password;
@@ -53,6 +49,6 @@ public class JwtUser implements UserDetails {
 
   @Override
   public boolean isEnabled() {
-    return enabled;
+    return isActive;
   }
 }

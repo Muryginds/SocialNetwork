@@ -55,7 +55,7 @@ public class SecurityConfig {
         .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
         .logout(LogoutConfigurer::permitAll)
         .authorizeHttpRequests((authz) -> authz
-            .requestMatchers("/api/v1/account/registration_complete", "/api/v1/account/register").permitAll()
+            .requestMatchers("/api/v1/account/register/confirm", "/api/v1/account/register").permitAll()
             .requestMatchers(LOGIN_ENDPOINT).permitAll()
             .requestMatchers(LOGOUT_ENDPOINT).permitAll()
             .anyRequest().authenticated()
