@@ -7,44 +7,46 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.skillbox.zerone.backend.model.UserDto;
-import ru.skillbox.zerone.backend.model.dto.request.AuthRequestDto;
+import ru.skillbox.zerone.backend.model.dto.UserDTO;
+import ru.skillbox.zerone.backend.model.dto.request.AuthRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.User;
+import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.security.jwt.JwtTokenProvider;
 
 @Service
 @RequiredArgsConstructor
 public class LoginService {
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
+  private final AuthenticationManager authenticationManager;
+  private final JwtTokenProvider jwtTokenProvider;
+  private final UserRepository userRepository;
 
+  public CommonResponseDTO<UserDTO> login(AuthRequestDTO requestDto) {
 
-    public CommonResponseDTO<UserDto> login(AuthRequestDto requestDto) {
+    try {
+      String email = requestDto.getEmail();
+      var userOptional = userRepository.findUserByEmail(email);
 
-      try {
-        String email = requestDto.getEmail();
-        User user = userService.findByEmail(email);
-
-        if (user == null) {
-          throw new UsernameNotFoundException("User with email: " + email + " not found");
-        }
-
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, requestDto.getPassword()));
-
-        String token = jwtTokenProvider.createToken(email, user.getRoles());
-
-        UserDto userDto = userService.fromUser(user);
-        userDto.setToken(token);
-        CommonResponseDTO<UserDto> responseDto = new CommonResponseDTO<>();
-        responseDto.setData(userDto);
-
-        return responseDto;
-
-      } catch (AuthenticationException e) {
-        throw new BadCredentialsException("Invalid username or password");
+      if (userOptional.isEmpty()) {
+        throw new UsernameNotFoundException(String.format("User with email: %s not found", email));
       }
+
+      authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, requestDto.getPassword()));
+
+      User user = userOptional.get();
+      String token = jwtTokenProvider.createToken(email, user.getRoles());
+
+      UserDTO userDTO = UserDTO.fromUser(user);
+      userDTO.setToken(token);
+
+      CommonResponseDTO<UserDTO> responseDTO = new CommonResponseDTO<>();
+      responseDTO.setData(userDTO);
+
+      return responseDTO;
+
+    } catch (AuthenticationException e) {
+      throw new BadCredentialsException("Invalid username or password");
     }
+  }
 }
