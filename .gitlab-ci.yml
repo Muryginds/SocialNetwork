@@ -79,4 +79,4 @@ deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
     #подключ. ч/з ssh.        check path exists and он стандартный
     - scp target/zerone_backend-0.0.1-SNAPSHOT.jar $DEV_USER@$DEV_HOST:$DEV_APP_PATH/
     #подключ. ч/з ssh.        check path exists and он стандартный.   Перемещение файла из одной директори в другую
-    - ssh $DEV_USER@$DEV_HOST "cd ~/apps/ && docker rm postgres && docker compose up -d"
+    - ssh $DEV_USER@$DEV_HOST "cd ~/apps/ && docker compose up -d"
