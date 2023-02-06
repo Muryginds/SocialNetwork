@@ -1,7 +1,6 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +11,11 @@ import ru.skillbox.zerone.backend.model.enumerated.SupportRequestStatus;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "support_request")
+@Table(name = "support_request",
+    indexes = {
+        @Index(name = "support_request_status_idx", columnList = "status")
+    }
+)
 @Data
 @Builder
 @AllArgsConstructor
