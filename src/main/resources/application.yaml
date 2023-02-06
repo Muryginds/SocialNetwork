@@ -38,3 +38,6 @@ jwt:
   token:
     secret: tyiuroiuopyiuioytidgfhdfqwerzxcqwer
     expired: 360000000
+
+mail_service:
+  server_address: http://localhost:8080

@@ -21,6 +21,8 @@ public class MailService {
   private final JavaMailSender emailSender;
   @Value("${spring.mail.username}")
   private String senderMail;
+  @Value("${mail_service.server_address}")
+  private String serverAddress;
 
   public void sendVerificationEmail(String email, String verifyCode) {
     var message = createVerificationMessage(
@@ -34,8 +36,7 @@ public class MailService {
 
   private String createVerificationLink(String userId, String token) {
     return UriComponentsBuilder
-        .fromHttpUrl("http://localhost")
-        .port("8080")
+        .fromHttpUrl(serverAddress)
         .path("/registration/complete")
         .queryParam("userId", URLEncoder.encode(userId, StandardCharsets.UTF_8))
         .queryParam("token", URLEncoder.encode(token, StandardCharsets.UTF_8))
