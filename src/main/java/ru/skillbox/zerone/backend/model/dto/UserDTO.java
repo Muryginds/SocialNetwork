@@ -9,7 +9,6 @@ import ru.skillbox.zerone.backend.model.enumerated.MessagePermissions;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 @Data
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -38,7 +37,6 @@ public class UserDTO {
   @JsonProperty("last_online_time")
   private LocalDateTime lastOnlineTime;
   private String phone;
-
   public static UserDTO fromUser(User user) {
     return UserDTO.builder()
         .id(user.getId())
@@ -55,7 +53,7 @@ public class UserDTO {
         .isDeleted(user.getIsDelete())
         .messagesPermission(user.getMessagePermissions())
         .lastOnlineTime(user.getLastOnlineTime())
-        .photo(user.getPhone())
+        .phone(user.getPhone())
         .build();
   }
 }
