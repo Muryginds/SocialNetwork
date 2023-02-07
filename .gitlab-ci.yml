@@ -3,13 +3,13 @@ variables:
 
 image: maven:3.8.7-eclipse-temurin-19
 
-stages:          # List of stages for jobs, and their order of execution 
+stages:          # List of stages for jobs, and their order of execution
   - build
   - test
   - package
   - deploy
 
-build-job:       # This job runs in the build stage, which runs first.  
+build-job:       # This job runs in the build stage, which runs first.
   stage: build
   tags:
     - prod
@@ -63,10 +63,10 @@ deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
 
   before_script:
     - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y ) # which ищет исполняемый файл
-  #|| если выполнение первой команды статус 1 (не удачно), то переход ко второй.
-  #update - Обновление базы данных пакетов. install - устанавливает пакет openssh-client
+    #|| если выполнение первой команды статус 1 (не удачно), то переход ко второй.
+    #update - Обновление базы данных пакетов. install - устанавливает пакет openssh-client
     - eval $(ssh-agent -s) #типо execute immediate запускает ssh_agent в дочернем процессе от оболочки
-    - echo "$SSH_PRIVATE_KEY" | ssh-add -  # |-выходн данные первой команды передает во вторую 
+    - echo "$SSH_PRIVATE_KEY" | ssh-add -  # |-выходн данные первой команды передает во вторую
     #приватный ключ передаёт во вторую команду ssh-add, т.е. для авторизации в агенте
     - mkdir -p ~/.ssh #создание директории, если такой нет. -p создаст все директории, указанные в пути. Check: ls -la
     - chmod 700 ~/.ssh #выдаём права только владельцу на чтение, запись и выполнение
@@ -75,8 +75,8 @@ deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
     - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
     - chmod 644 ~/.ssh/known_hosts #владельцу чтение, запись. Для группы и других - чтение
   script:
-    - ssh $DEV_USER@$DEV_HOST "[ ! -f $DEV_APP_PATH/app_name.jar ] || mv $DEV_APP_PATH/app_name.jar $DEV_APP_PATH/app_name-build-$CI_PIPELINE_ID.jar"
-    #подключ. ч/з ssh.        check path exists and он стандартный
-    - scp target/zerone_backend-0.0.1-SNAPSHOT.jar $DEV_USER@$DEV_HOST:$DEV_APP_PATH/
-    #подключ. ч/з ssh.        check path exists and он стандартный.   Перемещение файла из одной директори в другую
+    - ssh $DEV_USER@$DEV_HOST "[ ! -f $DEV_APP_PATH/backend.jar ] || mv $DEV_APP_PATH/backend.jar $BACKUP/backend-build-$CI_PIPELINE_ID.jar"
+    #подключ. ч/з ssh.        check path exists and он стандартный.   Перемещение файла из одной директори в другую с переименованием(бэкап)
+    - scp target/zerone_backend-0.0.1-SNAPSHOT.jar $DEV_USER@$DEV_HOST:$DEV_APP_PATH/backend
+    #копирование файла из репо на сервер
     - ssh $DEV_USER@$DEV_HOST "cd ~/apps/ && docker compose up -d"
