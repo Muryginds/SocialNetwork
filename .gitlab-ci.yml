@@ -65,6 +65,7 @@ package-job:       # This job runs in the package stage, which runs third.
     paths:
       - .m2/repository
       - target
+      - yaml
 
 
 deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
