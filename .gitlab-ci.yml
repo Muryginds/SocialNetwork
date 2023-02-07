@@ -14,6 +14,9 @@ build-job:       # This job runs in the build stage, which runs first.
   tags:
     - prod
 
+  only:
+    - master
+
   script:
     - echo "Compiling the code $CI_JOB_STAGE... $DEV_USER"
     - "mvn compile"
@@ -42,6 +45,9 @@ package-job:       # This job runs in the package stage, which runs third.
   tags:
     - prod
 
+  only:
+    - master
+
   script:
     - echo "Maven packaging started"
     - "mvn package -Dmaven.test.skip"
@@ -61,6 +67,9 @@ deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
   tags:
     - prod
 
+  only:
+    - master
+
   before_script:
     - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y ) # which ищет исполняемый файл
     #|| если выполнение первой команды статус 1 (не удачно), то переход ко второй.
@@ -78,7 +87,5 @@ deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
     - ssh $DEV_USER@$DEV_HOST "[ ! -f $DEV_APP_PATH/backend.jar ] || mv $DEV_APP_PATH/backend.jar $BACKUP/backend-build-$CI_PIPELINE_ID.jar"
     #подключ. ч/з ssh.        check path exists and он стандартный.   Перемещение файла из одной директори в другую с переименованием(бэкап)
     - scp target/zerone_backend-0.0.1-SNAPSHOT.jar $DEV_USER@$DEV_HOST:$DEV_APP_PATH/backend.jar
-    #копирование файла из репо на сервер
-    - scp .m2/repository/zerone_backend/docker-compose.yaml $DEV_USER@$DEV_HOST:$DEV_APP_PATH/
     #копирование файла из репо на сервер
     - ssh $DEV_USER@$DEV_HOST "cd ~/jars/ && docker compose up -d"
