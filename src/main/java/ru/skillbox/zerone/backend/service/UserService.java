@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
+import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
@@ -18,8 +18,6 @@ import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.security.jwt.JwtUser;
-
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Slf4j
@@ -27,8 +25,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserService {
   private final UserRepository userRepository;
-  private final PasswordEncoder passwordEncoder;
   private final MailService mailService;
+  private final UserMapper userMapper;
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registerAccount(RegisterRequestDTO request) {
@@ -37,7 +35,7 @@ public class UserService {
       throw new UserAlreadyExistException(request.getEmail());
     }
 
-    User user = createUserFromRequest(request);
+    User user = userMapper.registerRequestDTOToUser(request);
     var verificationUuid = UUID.randomUUID();
     user.setConfirmationCode(verificationUuid.toString());
 
@@ -56,12 +54,14 @@ public class UserService {
   public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
     var userOptional = userRepository.findUserByEmail(request.getUserId());
     if (userOptional.isEmpty()) {
+      log.info("IN registrationConfirm - user with username: {} put wrong user name", request.getUserId());
       throw new RegistrationCompleteException("wrong input");
     }
     User user = userOptional.get();
 
     if (!user.getConfirmationCode().equals(request.getToken())) {
-      throw new RegistrationCompleteException("wrong confirmation key");
+      log.info("IN registrationConfirm - user with username: {} put wrong confirmation key", request.getUserId());
+      throw new RegistrationCompleteException("wrong input");
     }
 
     user.setIsApproved(true);
@@ -86,17 +86,7 @@ public class UserService {
     }
 
     CommonResponseDTO<UserDTO> responseDto = new CommonResponseDTO<>();
-    responseDto.setData(UserDTO.fromUser(userOptional.get()));
+    responseDto.setData(userMapper.userToUserDTO(userOptional.get()));
     return responseDto;
-  }
-
-  private User createUserFromRequest(RegisterRequestDTO request) {
-    return User.builder()
-        .firstName(request.getFirstName())
-        .lastName(request.getLastName())
-        .email(request.getEmail())
-        .lastOnlineTime(LocalDateTime.now())
-        .password(passwordEncoder.encode(request.getPassword()))
-        .build();
   }
 }
