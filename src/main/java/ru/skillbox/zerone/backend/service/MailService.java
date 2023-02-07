@@ -21,7 +21,7 @@ public class MailService {
   private final JavaMailSender emailSender;
   @Value("${spring.mail.username}")
   private String senderMail;
-  @Value("${mail_service.server_address}")
+  @Value("${mail-service.server-address}")
   private String serverAddress;
 
   public void sendVerificationEmail(String email, String verifyCode) {

@@ -2,5 +2,5 @@ spring:
   jpa:
     show-sql: false
 
-mail_service:
-  server_address: http://zerone-network.ru
+mail-service:
+  server-address: http://zerone-network.ru
