@@ -1,10 +1,9 @@
 package ru.skillbox.zerone.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.model.dto.request.SupportRequestDTO;
-import ru.skillbox.zerone.backend.model.dto.response.BaseResponse;
-import ru.skillbox.zerone.backend.model.dto.response.SupportRequestResponse;
 import ru.skillbox.zerone.backend.model.entity.SupportRequest;
 import ru.skillbox.zerone.backend.repository.SupportRequestRepository;
 
@@ -13,7 +12,7 @@ import ru.skillbox.zerone.backend.repository.SupportRequestRepository;
 public class SupportRequestService {
   private final SupportRequestRepository supportRequestRepository;
 
-  public BaseResponse registerSupportRequest(SupportRequestDTO requestDTO) {
+  public ResponseEntity<Object> registerSupportRequest(SupportRequestDTO requestDTO) {
     var supportRequest = SupportRequest.builder()
         .firstName(requestDTO.getFirstName())
         .lastName(requestDTO.getLastName())
@@ -23,8 +22,6 @@ public class SupportRequestService {
 
     supportRequestRepository.saveAndFlush(supportRequest);
 
-    BaseResponse response = new SupportRequestResponse("Some message");
-
-    return response;
+    return ResponseEntity.ok().build();
   }
 }
