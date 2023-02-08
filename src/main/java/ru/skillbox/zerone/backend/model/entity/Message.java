@@ -43,6 +43,7 @@ public class Message {
   @Column(name = "message_text", columnDefinition = "text")
   private String messageText;
 
+  @NotNull
   @Builder.Default
   @Column(name = "read_status", columnDefinition = "read_status default 'SENT'")
   @Enumerated(EnumType.STRING)

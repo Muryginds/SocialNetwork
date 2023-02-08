@@ -59,6 +59,7 @@ public class BlockHistory {
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Comment comment;
 
+  @NotNull
   @Builder.Default
   @Enumerated(EnumType.STRING)
   @Column(name = "action", columnDefinition = "action_type default 'BLOCK'")

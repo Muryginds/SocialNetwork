@@ -31,26 +31,32 @@ public class NotificationSetting {
   @OnDelete(action = OnDeleteAction.CASCADE)
   private User user;
 
+  @NotNull
   @Builder.Default
   @Column(name = "post_enabled", columnDefinition = "boolean default false")
   private Boolean postEnabled = true;
 
+  @NotNull
   @Builder.Default
   @Column(name = "post_comment_enabled", columnDefinition = "boolean default false")
   private Boolean postCommentEnabled = true;
 
+  @NotNull
   @Builder.Default
   @Column(name = "comment_comment_enabled", columnDefinition = "boolean default false")
   private Boolean commentCommentEnabled = true;
 
+  @NotNull
   @Builder.Default
   @Column(name = "friend_request_enabled", columnDefinition = "boolean default false")
   private Boolean friendRequestEnabled = true;
 
+  @NotNull
   @Builder.Default
   @Column(name = "messages_enabled", columnDefinition = "boolean default false")
   private Boolean messagesEnabled = true;
 
+  @NotNull
   @Builder.Default
   @Column(name = "friend_birthday_enabled")
   private Boolean friendBirthdayEnabled = true;

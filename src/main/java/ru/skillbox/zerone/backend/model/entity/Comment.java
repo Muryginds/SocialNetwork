@@ -51,6 +51,7 @@ public class Comment {
   @OnDelete(action = OnDeleteAction.CASCADE)
   private Comment parent;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "comment_author_fk")
@@ -62,10 +63,12 @@ public class Comment {
   @Column(name = "comment_test", columnDefinition = "text")
   private String commentText;
 
+  @NotNull
   @Builder.Default
   @Column(name = "is_blocked", columnDefinition = "boolean default false")
   private Boolean isBlocked = false;
 
+  @NotNull
   @Builder.Default
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private Boolean isDeleted = false;

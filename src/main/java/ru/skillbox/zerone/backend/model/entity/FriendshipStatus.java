@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatusCode;
+import ru.skillbox.zerone.backend.model.enumerated.FriendshipCode;
 
 import java.time.LocalDateTime;
 
@@ -35,5 +35,5 @@ public class FriendshipStatus {
   @Builder.Default
   @Column(name = "code", columnDefinition = "friendship_code default 'REQUEST'")
   @Enumerated(EnumType.STRING)
-  private FriendshipStatusCode code = FriendshipStatusCode.REQUEST;
+  private FriendshipCode code = FriendshipCode.REQUEST;
 }

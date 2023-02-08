@@ -51,6 +51,7 @@ public class Notification {
   @Column(name = "entity_id")
   private Long entityId;
 
+  @NotNull
   @Builder.Default
   @Enumerated(EnumType.STRING)
   @Column(name = "status", columnDefinition = "read_status default 'SENT'")

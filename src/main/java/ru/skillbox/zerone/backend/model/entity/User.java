@@ -99,4 +99,9 @@ public class User {
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private Boolean isDeleted = false;
 
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "user2role",
+      joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
+      inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
+  private List<Role> roles;
 }

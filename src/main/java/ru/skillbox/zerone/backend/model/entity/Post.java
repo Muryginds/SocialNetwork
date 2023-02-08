@@ -60,6 +60,7 @@ public class Post {
   @Column(name = "is_blocked", columnDefinition = "boolean default false")
   private Boolean isBlocked = false;
 
+  @NotNull
   @Builder.Default
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private Boolean isDeleted = false;

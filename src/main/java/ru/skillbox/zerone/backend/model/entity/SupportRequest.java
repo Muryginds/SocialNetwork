@@ -47,6 +47,7 @@ public class SupportRequest {
   @Column(name = "time", columnDefinition = "timestamp without time zone")
   private LocalDateTime time = LocalDateTime.now();
 
+  @NotNull
   @Builder.Default
   @Column(name = "status", columnDefinition = "support_request_status default 'NEW'")
   @Enumerated(EnumType.STRING)
