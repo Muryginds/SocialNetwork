@@ -59,6 +59,7 @@ public class User {
   @Column(name = "about", columnDefinition = "text")
   private String about;
 
+  @NotNull
   @Builder.Default
   @Column(name = "status", columnDefinition = "user_status default 'INACTIVE'")
   @Enumerated(EnumType.STRING)
@@ -79,14 +80,16 @@ public class User {
   @Column(name = "is_approved", columnDefinition = "boolean default false")
   private Boolean isApproved = false;
 
+  @NotNull
   @Builder.Default
   @Column(name = "message_permissions", columnDefinition = "message_permissions default 'ALL'")
   @Enumerated(EnumType.STRING)
   private MessagePermissions messagePermissions = MessagePermissions.ALL;
 
   @NotNull
+  @Builder.Default
   @Column(name = "last_online_time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime lastOnlineTime;
+  private LocalDateTime lastOnlineTime = LocalDateTime.now();
 
   @NotNull
   @Builder.Default
@@ -96,7 +99,7 @@ public class User {
   @NotNull
   @Builder.Default
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
-  private Boolean isDelete = false;
+  private Boolean isDeleted = false;
 
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private List<BlockHistory> blockHistories = new ArrayList<>();

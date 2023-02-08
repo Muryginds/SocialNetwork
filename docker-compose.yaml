@@ -11,14 +11,14 @@ services:
       - postgres:/data/postgres
     ports:
       - "5432:5432"
-    restart: on-failure[5]
+    restart: on-failure:5
 
   frontend:
     container_name: frontend
     image: dimok82/zeone
     ports:
       - "80:80"
-    restart: on-failure[5]
+    restart: on-failure:5
 
   backend:
     container_name: backend
@@ -35,8 +35,8 @@ services:
     working_dir: /app
     command: java -jar backend.jar
     depends_on:
-      -  postgres
-    restart: on-failure[5]
+      - postgres
+    restart: on-failure:5
 
 volumes:
   postgres:

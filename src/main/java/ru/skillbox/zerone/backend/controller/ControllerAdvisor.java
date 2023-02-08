@@ -12,30 +12,15 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 @ControllerAdvice
 public class ControllerAdvisor {
 
-  @ExceptionHandler(UserAlreadyExistException.class)
-  public ResponseEntity<Object> handleUserAlreadyExistException(UserAlreadyExistException exception) {
-
-    var response = CommonResponseDTO.builder()
-        .error(exception.getLocalizedMessage())
-        .build();
-
-    return ResponseEntity.ok(response);
-  }
-
-  @ExceptionHandler({RegistrationCompleteException.class, ConstraintViolationException.class})
+  @ExceptionHandler({
+      RegistrationCompleteException.class,
+      ConstraintViolationException.class,
+      BadCredentialsException.class,
+      UserAlreadyExistException.class
+  })
   ResponseEntity<Object> handleException(Exception e) {
     var response = CommonResponseDTO.builder()
         .error(e.getLocalizedMessage())
-        .build();
-
-    return ResponseEntity.badRequest().body(response);
-  }
-
-  @ExceptionHandler(BadCredentialsException.class)
-  public ResponseEntity<Object> getWrongInputMessage(BadCredentialsException ex) {
-
-    var response = CommonResponseDTO.builder()
-        .error(ex.getLocalizedMessage())
         .build();
 
     return ResponseEntity.badRequest().body(response);
