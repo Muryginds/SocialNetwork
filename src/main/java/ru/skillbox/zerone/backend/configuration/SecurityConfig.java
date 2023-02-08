@@ -15,13 +15,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import ru.skillbox.zerone.backend.security.jwt.JwtTokenFilter;
+import ru.skillbox.zerone.backend.security.JwtTokenFilter;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
   private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
   private static final String LOGOUT_ENDPOINT = "/api/v1/auth/logout";
   private final JwtTokenFilter jwtFilter;
@@ -43,7 +42,9 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.cors().and()
+    http
+        .cors()
+        .and()
         .csrf(AbstractHttpConfigurer::disable)
         .formLogin(AbstractAuthenticationFilterConfigurer::disable)
         .logout(LogoutConfigurer::disable)
