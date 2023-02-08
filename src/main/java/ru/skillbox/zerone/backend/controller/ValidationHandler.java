@@ -1,17 +1,16 @@
 package ru.skillbox.zerone.backend.controller;
 
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class ValidationHandler extends ResponseEntityExceptionHandler {
@@ -19,17 +18,12 @@ public class ValidationHandler extends ResponseEntityExceptionHandler {
   @Override
   protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
                                                                 HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-    Map<String, String> errors = new HashMap<>();
-    ex.getBindingResult().getAllErrors().forEach(error ->
-    {
-      String fieldName = ((FieldError) error).getField();
-      String message = error.getDefaultMessage();
-      errors.put(fieldName, message);
-    });
+    var errorText = ex.getBindingResult().getAllErrors().stream()
+        .map(DefaultMessageSourceResolvable::getDefaultMessage)
+        .collect(Collectors.joining(" и "));
 
     var response = CommonResponseDTO.builder()
-        .data(errors)
-        .error(ex.getLocalizedMessage())
+        .error(errorText)
         .build();
     return ResponseEntity.badRequest().body(response);
   }

@@ -8,15 +8,15 @@ import ru.skillbox.zerone.backend.util.ValidationUtils;
 
 @Data
 public class RegisterRequestDTO {
-  @Size(min = 3, message = "user name " + ValidationUtils.SIZE_PATTERN_DESCRIPTION)
+  @Size(min = 3, message = "user name " + ValidationUtils.SIZE_3_PATTERN_DESCRIPTION)
   @Pattern(regexp = ValidationUtils.LETTERS_PATTERN, message = "user name " + ValidationUtils.LETTERS_PATTERN_DESCRIPTION)
   private String firstName;
 
-  @Size(min = 3, message = "last name " + ValidationUtils.SIZE_PATTERN_DESCRIPTION)
+  @Size(min = 3, message = "last name " + ValidationUtils.SIZE_3_PATTERN_DESCRIPTION)
   @Pattern(regexp = ValidationUtils.LETTERS_PATTERN, message = "last name " + ValidationUtils.LETTERS_PATTERN_DESCRIPTION)
   private String lastName;
 
-  @Size(min = 8, message = "password must have at least 8 characters")
+  @Size(min = 8, message = "password " + ValidationUtils.SIZE_8_PATTERN_DESCRIPTION)
   @Pattern(regexp = ValidationUtils.PASSWORD_PATTERN, message = ValidationUtils.PASSWORD_PATTERN_DESCRIPTION)
   @JsonProperty("passwd1")
   private String password;
