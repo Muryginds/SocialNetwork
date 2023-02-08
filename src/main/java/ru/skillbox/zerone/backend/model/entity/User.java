@@ -72,6 +72,7 @@ public class User {
   @Column(name = "city", nullable = false)
   private String city;
 
+  @NotNull
   @Column(name = "confirmation_code")
   private String confirmationCode;
 
@@ -86,8 +87,10 @@ public class User {
   @Enumerated(EnumType.STRING)
   private MessagePermissions messagePermissions = MessagePermissions.ALL;
 
+  @NotNull
+  @Builder.Default
   @Column(name = "last_online_time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime lastOnlineTime;
+  private LocalDateTime lastOnlineTime = LocalDateTime.now();
 
   @NotNull
   @Builder.Default
