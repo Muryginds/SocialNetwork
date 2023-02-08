@@ -2,20 +2,19 @@ package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.skillbox.zerone.backend.model.enumerated.MessagePermissions;
 import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "`user`")
+@Table(name = "`user`",
+    uniqueConstraints = {
+    @UniqueConstraint(name = "user_email_uk", columnNames = {"email"})}
+)
 @Data
 @Builder
 @AllArgsConstructor
@@ -100,36 +99,6 @@ public class User {
   @Builder.Default
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private Boolean isDeleted = false;
-
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-  private List<BlockHistory> blockHistories = new ArrayList<>();
-
-  @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-  private  List<Comment> comments = new ArrayList<>();
-
-  @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-  private List<Post> posts = new ArrayList<>();
-
-  @OneToMany(mappedBy = "srcPerson", fetch = FetchType.LAZY)
-  private List<Friendship> srcFriendships = new ArrayList<>();
-
-  @OneToMany(mappedBy = "dstPerson", fetch = FetchType.LAZY)
-  private List<Friendship> dstFriendships = new ArrayList<>();
-
-  @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
-  private List<Dialog> dialogSenders = new ArrayList<>();
-
-  @OneToMany(mappedBy = "recipient", fetch = FetchType.LAZY)
-  private List<Dialog> dialogRecipients = new ArrayList<>();
-
-  @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
-  private List<Notification> notifications = new ArrayList<>();
-
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-  private List<NotificationSetting> notificationSettings = new ArrayList<>();
-
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-  private List<Like> likes = new ArrayList<>();
 
   @ManyToMany(fetch = FetchType.LAZY)
   @JoinTable(name = "user2role",

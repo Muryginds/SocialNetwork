@@ -45,10 +45,14 @@ public class SecurityConfig {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.cors().and()
         .csrf(AbstractHttpConfigurer::disable)
-        .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-        .logout(LogoutConfigurer::permitAll)
+        .formLogin(AbstractAuthenticationFilterConfigurer::disable)
+        .logout(LogoutConfigurer::disable)
         .authorizeHttpRequests((authz) -> authz
-            .requestMatchers("/api/v1/account/register/confirm", "/api/v1/account/register").permitAll()
+            .requestMatchers(
+                "/api/v1/account/register/confirm",
+                "/api/v1/account/register",
+                "/api/v1/support"
+            ).permitAll()
             .requestMatchers(LOGIN_ENDPOINT).permitAll()
             .requestMatchers(LOGOUT_ENDPOINT).permitAll()
             .anyRequest().authenticated()
