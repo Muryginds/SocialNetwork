@@ -29,10 +29,10 @@ public class Notification {
   @Column(name = "id")
   private Long id;
 
-  @Builder.Default
+  @NotNull
   @Enumerated(EnumType.STRING)
-  @Column(name = "type_id", columnDefinition = "notification_type default 'POST'")
-  private NotificationType typeId = NotificationType.POST;
+  @Column(name = "type_id", columnDefinition = "notification_type")
+  private NotificationType typeId;
 
   @NotNull
   @Builder.Default

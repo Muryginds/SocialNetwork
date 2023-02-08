@@ -11,31 +11,32 @@ services:
       - postgres:/data/postgres
     ports:
       - "5432:5432"
-    networks:
-      - postgres
-    restart: unless-stopped
+    restart: on-failure:5
 
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-      - pgadmin:/var/lib/pgadmin
+  frontend:
+    container_name: frontend
+    image: dimok82/zeone
     ports:
-      - "5050:80"
-    networks:
-      - postgres
-    restart: unless-stopped
+      - "80:80"
+    restart: on-failure:5
 
-networks:
-  postgres:
-    driver: bridge
-  spring:
-    driver: bridge
+  backend:
+    container_name: backend
+    image: eclipse-temurin:19-jdk-jammy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified
+      SPRING_DATASOURCE_USERNAME: skillbox
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_PROFILES_ACTIVE: prod
+    ports:
+      -  "8086:8086"
+    volumes:
+      - ./jars:/app
+    working_dir: /app
+    command: java -jar backend.jar
+    depends_on:
+      - postgres
+    restart: on-failure:5
 
 volumes:
   postgres:
-  pgadmin:

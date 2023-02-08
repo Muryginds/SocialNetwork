@@ -33,10 +33,10 @@ public class Like {
   @Column(name = "entity_id")
   private long entityId;
 
-  @Builder.Default
+  @NotNull
   @Enumerated(EnumType.STRING)
-  @Column(name = "type", columnDefinition = "like_type default 'POST'")
-  private LikeType type = LikeType.POST;
+  @Column(name = "type", columnDefinition = "like_type")
+  private LikeType type;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)

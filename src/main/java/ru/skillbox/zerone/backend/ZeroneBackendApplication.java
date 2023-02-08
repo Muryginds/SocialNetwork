@@ -9,5 +9,4 @@ public class ZeroneBackendApplication {
   public static void main(String[] args) {
     SpringApplication.run(ZeroneBackendApplication.class, args);
   }
-
 }

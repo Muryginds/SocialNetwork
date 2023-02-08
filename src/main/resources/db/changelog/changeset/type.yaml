@@ -1,0 +1,64 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Riddle (generated)
+      changes:
+        -  sql:
+             sql: DROP TYPE IF EXISTS user_status CASCADE;
+                  CREATE TYPE USER_STATUS AS ENUM ('ACTIVE', 'INACTIVE');
+
+  - changeSet:
+      id: 2
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: DROP TYPE IF EXISTS message_permissions CASCADE;
+                 CREATE TYPE MESSAGE_PERMISSIONS AS ENUM ('ALL', 'FRIENDS');
+
+  - changeSet:
+      id: 3
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: DROP TYPE IF EXISTS action_type CASCADE;
+                 CREATE TYPE ACTION_TYPE AS ENUM ('BLOCK', 'UNBLOCK');
+
+  - changeSet:
+      id: 4
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: DROP TYPE IF EXISTS user_type CASCADE;
+                 CREATE TYPE USER_TYPE AS ENUM ('MODERATOR', 'ADMIN');
+
+  - changeSet:
+      id: 5
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: DROP TYPE IF EXISTS friendship_code CASCADE;
+                 CREATE TYPE FRIENDSHIP_CODE AS ENUM ('REQUEST', 'FRIEND', 'BLOCKED', 'DECLINED', 'SUBSCRIBED');
+
+  - changeSet:
+      id: 6
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: DROP TYPE IF EXISTS read_status CASCADE;
+                 CREATE TYPE READ_STATUS AS ENUM ('SENT', 'READ');
+
+  - changeSet:
+      id: 7
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: DROP TYPE IF EXISTS support_request_status CASCADE;
+                 CREATE TYPE SUPPORT_REQUEST_STATUS AS ENUM ('NEW', 'IN_WORK', 'CLOSED');
+
+  - changeSet:
+      id: 8
+      author: Riddle (generated)
+      changes:
+        - sql:
+            sql: DROP TYPE IF EXISTS like_type CASCADE;
+                 CREATE TYPE LIKE_TYPE AS ENUM ('POST', 'COMMIT');

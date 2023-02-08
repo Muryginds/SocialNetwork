@@ -60,6 +60,7 @@ public class User {
   @Column(name = "about", columnDefinition = "text")
   private String about;
 
+  @NotNull
   @Builder.Default
   @Column(name = "status", columnDefinition = "user_status default 'INACTIVE'")
   @Enumerated(EnumType.STRING)
@@ -74,10 +75,12 @@ public class User {
   @Column(name = "confirmation_code")
   private String confirmationCode;
 
+  @NotNull
   @Builder.Default
   @Column(name = "is_approved", columnDefinition = "boolean default false")
   private Boolean isApproved = false;
 
+  @NotNull
   @Builder.Default
   @Column(name = "message_permissions", columnDefinition = "message_permissions default 'ALL'")
   @Enumerated(EnumType.STRING)
@@ -86,10 +89,12 @@ public class User {
   @Column(name = "last_online_time", columnDefinition = "timestamp without time zone")
   private LocalDateTime lastOnlineTime;
 
+  @NotNull
   @Builder.Default
   @Column(name = "is_blocked", columnDefinition = "boolean default false")
   private Boolean isBlocked = false;
 
+  @NotNull
   @Builder.Default
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private Boolean isDeleted = false;
