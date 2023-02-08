@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public interface UserMapper {
 
   UserDTO userToUserDTO (User user);
-//  @Mapping(target = "authorities", source = "roles", qualifiedByName = "setAuthorities")
+  @Mapping(target = "authorities", source = "roles", qualifiedByName = "setAuthorities")
   JwtUser userToUserJwt (User user);
   User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO);
 
