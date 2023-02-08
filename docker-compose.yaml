@@ -34,7 +34,8 @@ services:
       - ./jars:/app
     working_dir: /app
     command: java -jar backend.jar
-    depends_on: postgres
+    depends_on:
+      -  postgres
     restart: on-failure[5]
 
 volumes:
