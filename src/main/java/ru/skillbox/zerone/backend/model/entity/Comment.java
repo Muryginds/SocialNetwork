@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -60,6 +61,7 @@ public class Comment {
   private User author;
 
   @NotNull
+  @NotBlank
   @Column(name = "comment_test", columnDefinition = "text")
   private String commentText;
 

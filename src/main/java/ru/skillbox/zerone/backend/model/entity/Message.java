@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -40,6 +41,7 @@ public class Message {
   private Dialog dialog;
 
   @NotNull
+  @NotBlank
   @Column(name = "message_text", columnDefinition = "text")
   private String messageText;
 

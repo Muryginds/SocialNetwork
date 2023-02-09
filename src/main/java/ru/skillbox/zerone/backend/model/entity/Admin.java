@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,14 +22,17 @@ public class Admin {
   private Long id;
 
   @NotNull
+  @NotBlank
   @Column(name = "name")
   private String name;
 
   @NotNull
+  @NotBlank
   @Column(name = "email")
   private String email;
 
   @NotNull
+  @NotBlank
   @Column(name = "password")
   private String password;
 

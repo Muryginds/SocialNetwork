@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -48,12 +49,15 @@ public class Post {
   private String title;
 
   @NotNull
+  @NotBlank
   @Column(name = "post_text", columnDefinition = "text")
   private String postText;
 
+  @NotNull
+  @Builder.Default
   @Column(name = "update_date", columnDefinition = "timestamp without time zone")
   @UpdateTimestamp
-  private LocalDateTime updateTime;
+  private LocalDateTime updateTime = LocalDateTime.now();
 
   @NotNull
   @Builder.Default

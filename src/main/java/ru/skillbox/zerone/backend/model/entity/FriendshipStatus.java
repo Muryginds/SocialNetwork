@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +29,7 @@ public class FriendshipStatus {
   private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
+  @NotBlank
   @Column(name = "name")
   private String name;
 

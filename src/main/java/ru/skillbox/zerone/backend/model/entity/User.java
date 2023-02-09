@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,11 +29,13 @@ public class User {
   private Long id;
 
   @NotNull
-  @Column(name = "first_name", columnDefinition = "text")
+  @NotBlank
+  @Column(name = "first_name")
   private String firstName;
 
   @NotNull
-  @Column(name = "last_name", columnDefinition = "text")
+  @NotBlank
+  @Column(name = "last_name")
   private String lastName;
 
   @NotNull
@@ -44,6 +47,7 @@ public class User {
   private LocalDate birthDate;
 
   @NotNull
+  @NotBlank
   @Column(name = "email")
   private String email;
 
@@ -51,6 +55,7 @@ public class User {
   private String phone;
 
   @NotNull
+  @NotBlank
   @Column(name = "password")
   private String password;
 
@@ -73,6 +78,7 @@ public class User {
   private String city;
 
   @NotNull
+  @NotBlank
   @Column(name = "confirmation_code")
   private String confirmationCode;
 
