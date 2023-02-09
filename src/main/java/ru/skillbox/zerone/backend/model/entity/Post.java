@@ -31,10 +31,10 @@ public class Post {
   @Column(name = "id")
   private Long id;
 
-//  @NotNull
-//  @Builder.Default
-//  @Column(name = "time", columnDefinition = "timestamp without time zone")
-//  private LocalDateTime time = LocalDateTime.now();
+  @NotNull
+  @Builder.Default
+  @Column(name = "time", columnDefinition = "timestamp without time zone")
+  private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
