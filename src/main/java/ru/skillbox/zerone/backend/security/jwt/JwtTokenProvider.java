@@ -73,6 +73,7 @@ public class JwtTokenProvider {
 
   private List<String> getRoleNames(List<Role> userRoles) {
     return userRoles.stream()
-        .map(Role::getName).collect(Collectors.toList());
+        .map(Role::getName)
+        .collect(Collectors.toList());
   }
 }

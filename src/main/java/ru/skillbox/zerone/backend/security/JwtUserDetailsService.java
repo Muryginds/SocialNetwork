@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.repository.UserRepository;
-import ru.skillbox.zerone.backend.security.jwt.JwtUserFactory;
 
 @Service
 @Slf4j
@@ -16,6 +16,7 @@ import ru.skillbox.zerone.backend.security.jwt.JwtUserFactory;
 public class JwtUserDetailsService implements UserDetailsService {
 
   private final UserRepository userRepository;
+  private final UserMapper userMapper;
 
   @Override
   @Transactional
@@ -27,7 +28,7 @@ public class JwtUserDetailsService implements UserDetailsService {
       throw new UsernameNotFoundException(String.format("User with email: %s not found", email));
     }
 
-    var jwtUser = JwtUserFactory.create(userOptional.get());
+    var jwtUser = userMapper.userToUserJwt(userOptional.get());
     log.info("IN loadUserByUsername - user with username: {} successfully loaded", email);
 
     return jwtUser;
