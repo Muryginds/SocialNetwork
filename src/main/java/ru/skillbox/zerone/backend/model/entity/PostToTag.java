@@ -25,7 +25,6 @@ public class PostToTag {
   @Column(name = "id")
   private Long id;
 
-  @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "post_to_tag_post_fk")

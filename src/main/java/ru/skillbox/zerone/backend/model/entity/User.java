@@ -108,7 +108,7 @@ public class User {
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private Boolean isDeleted = false;
 
-  @ManyToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.EAGER)
   @JoinTable(name = "user2role",
       joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
       inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})

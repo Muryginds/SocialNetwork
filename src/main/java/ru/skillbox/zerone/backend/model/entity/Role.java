@@ -11,7 +11,6 @@ import java.util.List;
 @Table(name = "role")
 @Data
 public class Role {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -21,8 +20,4 @@ public class Role {
     @NotBlank
     @Column(name = "name")
     private String name;
-
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private List<User> users;
-
 }

@@ -34,8 +34,7 @@ public class FriendshipStatus {
   private String name;
 
   @NotNull
-  @Builder.Default
-  @Column(name = "code", columnDefinition = "friendship_code default 'REQUEST'")
+  @Column(name = "code", columnDefinition = "friendship_code")
   @Enumerated(EnumType.STRING)
-  private FriendshipCode code = FriendshipCode.REQUEST;
+  private FriendshipCode code;
 }

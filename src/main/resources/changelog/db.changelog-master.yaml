@@ -3,11 +3,3 @@ databaseChangeLog:
       file: db/changelog/changeset/type.yaml
   - include:
       file: db/changelog/changeset/entity.yaml
-  - include:
-      file: db/changelog/changeset/create-table-role.yaml
-
-  - include:
-      file: db/changelog/changeset/create-table-user2role.yaml
-
-  - include:
-      file: db/changelog/changeset/insert-into-role.yaml

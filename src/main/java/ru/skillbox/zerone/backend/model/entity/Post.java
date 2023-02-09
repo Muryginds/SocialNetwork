@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -30,10 +31,10 @@ public class Post {
   @Column(name = "id")
   private Long id;
 
-  @NotNull
-  @Builder.Default
-  @Column(name = "time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime time = LocalDateTime.now();
+//  @NotNull
+//  @Builder.Default
+//  @Column(name = "time", columnDefinition = "timestamp without time zone")
+//  private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
@@ -44,7 +45,7 @@ public class Post {
   private User author;
 
   @NotNull
-  @NotEmpty
+  @NotBlank
   @Column(name = "title")
   private String title;
 
