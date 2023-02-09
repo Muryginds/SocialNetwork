@@ -69,7 +69,7 @@ public class User {
   @Column(name = "country")
   private String country;
 
-  @Column(name = "city", nullable = false)
+  @Column(name = "city")
   private String city;
 
   @NotNull
