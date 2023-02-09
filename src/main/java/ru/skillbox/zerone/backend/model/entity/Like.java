@@ -5,13 +5,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import ru.skillbox.zerone.backend.model.enumerated.LikeType;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "`like`", indexes = {
-    @Index(name = "like_entity_id_idx", columnList = "entity_id"),
+    @Index(name = "like_post_id_idx", columnList = "post_id"),
+    @Index(name = "like_comment_id_idx", columnList = "comment_id"),
     @Index(name = "like_user_id_idx", columnList = "user_id")
 })
 @Data
@@ -29,9 +32,19 @@ public class Like {
   @Column(name = "time", columnDefinition = "timestamp without time zone")
   private LocalDateTime time = LocalDateTime.now();
 
-  @NotNull
-  @Column(name = "entity_id")
-  private long entityId;
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "post_id", referencedColumnName = "id",
+      foreignKey = @ForeignKey(name = "like_post_fk")
+  )
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private Post post;
+
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "comment_id", referencedColumnName = "id",
+      foreignKey = @ForeignKey(name = "like_comment_fk")
+  )
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  private Comment comment;
 
   @NotNull
   @Enumerated(EnumType.STRING)
