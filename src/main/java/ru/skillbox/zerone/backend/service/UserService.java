@@ -42,11 +42,11 @@ public class UserService {
 
     mailService.sendVerificationEmail(user.getEmail(), verificationUuid.toString());
 
-    CommonResponseDTO<MessageResponseDTO> response = new CommonResponseDTO<>();
-    response.setData(new MessageResponseDTO("ok"));
-
     log.info("IN registerAccount - user with username: {} successfully registered", request.getEmail());
-    return response;
+
+    return CommonResponseDTO.<MessageResponseDTO>builder()
+        .data(new MessageResponseDTO("ok"))
+        .build();
   }
 
   @Transactional
@@ -67,21 +67,21 @@ public class UserService {
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
 
-    CommonResponseDTO<MessageResponseDTO> response = new CommonResponseDTO<>();
-    response.setData(new MessageResponseDTO("ok"));
-
     log.info("IN registrationConfirm - user with username: {} successfully confirmed registration", request.getUserId());
-    return response;
+
+    return CommonResponseDTO.<MessageResponseDTO>builder()
+        .data(new MessageResponseDTO("ok"))
+        .build();
   }
 
   public CommonResponseDTO<UserDTO> getCurrentUser() {
 
     User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-    CommonResponseDTO<UserDTO> response = new CommonResponseDTO<>();
-    response.setData(userMapper.userToUserDTO(user));
-
     log.info("IN getCurrentUser - user with username: {} successfully loaded", user.getEmail());
-    return response;
+
+    return CommonResponseDTO.<UserDTO>builder()
+        .data(userMapper.userToUserDTO(user))
+        .build();
   }
 }
