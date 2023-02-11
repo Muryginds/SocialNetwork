@@ -2,10 +2,10 @@ package ru.skillbox.zerone.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.skillbox.zerone.backend.mapstruct.SupportRequestMapper;
 import ru.skillbox.zerone.backend.model.dto.request.SupportRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
-import ru.skillbox.zerone.backend.model.entity.SupportRequest;
 import ru.skillbox.zerone.backend.repository.SupportRequestRepository;
 
 @Service
@@ -13,16 +13,12 @@ import ru.skillbox.zerone.backend.repository.SupportRequestRepository;
 public class SupportRequestService {
   private final SupportRequestRepository supportRequestRepository;
 
-  public CommonResponseDTO<MessageResponseDTO> registerSupportRequest(SupportRequestDTO requestDTO) {
-    var supportRequest = SupportRequest.builder()
-        .firstName(requestDTO.getFirstName())
-        .lastName(requestDTO.getLastName())
-        .email(requestDTO.getEmail())
-        .message(requestDTO.getMessage())
-        .build();
+  public CommonResponseDTO<MessageResponseDTO> registerSupportRequest(SupportRequestDTO requestDto) {
+    var supportRequest = SupportRequestMapper.INSTANCE
+        .supportRequestDtoToSupportRequest(requestDto);
 
     supportRequestRepository.save(supportRequest);
 
-    return CommonResponseDTO.<MessageResponseDTO>builder().data(new MessageResponseDTO("Ok")).build();
+    return CommonResponseDTO.<MessageResponseDTO>builder().data(new MessageResponseDTO("ok")).build();
   }
 }
