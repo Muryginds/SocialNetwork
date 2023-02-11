@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/changeset/type.yaml
   - include:
       file: db/changelog/changeset/entity.yaml
+  - include:
+      file: db/changelog/changeset/insert-into-role.yaml

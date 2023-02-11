@@ -21,11 +21,13 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
+            defaultValueBoolean: false
             name: is_blocked
             type: BOOLEAN
         - column:
             constraints:
               nullable: false
+            defaultValueBoolean: false
             name: is_deleted
             type: BOOLEAN
         - column:
@@ -83,27 +85,6 @@ databaseChangeLog:
             constraints:
               nullable: false
               primaryKey: true
-              primaryKeyName: entity_type_pkey
-            name: id
-            startWith: 5
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-            name: name
-            type: VARCHAR(255)
-        tableName: entity_type
-- changeSet:
-    id: 4
-    author: Riddle (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              nullable: false
-              primaryKey: true
               primaryKeyName: friendship_pkey
             name: id
             type: BIGINT
@@ -129,7 +110,7 @@ databaseChangeLog:
             type: BIGINT
         tableName: friendship
 - changeSet:
-    id: 5
+    id: 4
     author: Riddle (generated)
     changes:
     - createTable:
@@ -145,6 +126,7 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
+            defaultValueBoolean: false
             name: comment_comment_enabled
             type: BOOLEAN
         - column:
@@ -155,21 +137,25 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
+            defaultValueBoolean: false
             name: friend_request_enabled
             type: BOOLEAN
         - column:
             constraints:
               nullable: false
+            defaultValueBoolean: false
             name: messages_enabled
             type: BOOLEAN
         - column:
             constraints:
               nullable: false
+            defaultValueBoolean: false
             name: post_comment_enabled
             type: BOOLEAN
         - column:
             constraints:
               nullable: false
+            defaultValueBoolean: false
             name: post_enabled
             type: BOOLEAN
         - column:
@@ -179,28 +165,7 @@ databaseChangeLog:
             type: BIGINT
         tableName: notification_setting
 - changeSet:
-    id: 6
-    author: Riddle (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: notification_type_pkey
-            name: id
-            startWith: 7
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-            name: name
-            type: VARCHAR(255)
-        tableName: notification_type
-- changeSet:
-    id: 7
+    id: 5
     author: Riddle (generated)
     changes:
     - createTable:
@@ -216,11 +181,13 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
+            defaultValueBoolean: false
             name: is_blocked
             type: BOOLEAN
         - column:
             constraints:
               nullable: false
+            defaultValueBoolean: false
             name: is_deleted
             type: BOOLEAN
         - column:
@@ -250,7 +217,7 @@ databaseChangeLog:
             type: BIGINT
         tableName: post
 - changeSet:
-    id: 8
+    id: 6
     author: Riddle (generated)
     changes:
     - createTable:
@@ -275,7 +242,7 @@ databaseChangeLog:
             type: BIGINT
         tableName: post_file
 - changeSet:
-    id: 9
+    id: 7
     author: Riddle (generated)
     changes:
     - createTable:
@@ -289,18 +256,34 @@ databaseChangeLog:
             name: id
             type: BIGINT
         - column:
-            constraints:
-              nullable: false
             name: post_id
             type: BIGINT
         - column:
-            constraints:
-              nullable: false
             name: tag_id
             type: BIGINT
         tableName: post_to_tag
 - changeSet:
-    id: 10
+    id: 8
+    author: ddg (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: role_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(255)
+        tableName: role
+- changeSet:
+    id: 9
     author: Riddle (generated)
     changes:
     - createTable:
@@ -320,43 +303,7 @@ databaseChangeLog:
             type: VARCHAR(255)
         tableName: tag
 - changeSet:
-    id: 11
-    author: Riddle (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: admin_pkey
-            name: id
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-              unique: true
-            name: email
-            type: VARCHAR(255)
-        - column:
-            constraints:
-              nullable: false
-            name: name
-            type: VARCHAR(255)
-        - column:
-            constraints:
-              nullable: false
-            name: password
-            type: VARCHAR(255)
-        - column:
-            constraints:
-              nullable: false
-            name: type
-            type: USER_TYPE
-        tableName: admin
-- changeSet:
-    id: 12
+    id: 10
     author: Riddle (generated)
     changes:
     - createTable:
@@ -369,11 +316,6 @@ databaseChangeLog:
               primaryKeyName: block_history_pkey
             name: id
             type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-            name: action
-            type: ACTION_TYPE
         - column:
             constraints:
               nullable: false
@@ -394,9 +336,15 @@ databaseChangeLog:
               nullable: false
             name: user_id
             type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: BLOCK
+            name: action
+            type: ACTION_TYPE
         tableName: block_history
 - changeSet:
-    id: 13
+    id: 11
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -406,7 +354,7 @@ databaseChangeLog:
         indexName: comment_post_id_idx
         tableName: comment
 - changeSet:
-    id: 14
+    id: 12
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -416,7 +364,7 @@ databaseChangeLog:
         indexName: comment_parent_id_idx
         tableName: comment
 - changeSet:
-    id: 15
+    id: 13
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -426,7 +374,7 @@ databaseChangeLog:
         indexName: comment_author_id_idx
         tableName: comment
 - changeSet:
-    id: 16
+    id: 14
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -436,7 +384,7 @@ databaseChangeLog:
         indexName: dialog_sender_id_idx
         tableName: dialog
 - changeSet:
-    id: 17
+    id: 15
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -446,7 +394,7 @@ databaseChangeLog:
         indexName: dialog_recipient_id_idx
         tableName: dialog
 - changeSet:
-    id: 18
+    id: 16
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -456,7 +404,7 @@ databaseChangeLog:
         indexName: friendship_status_id_idx
         tableName: friendship
 - changeSet:
-    id: 19
+    id: 17
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -466,7 +414,7 @@ databaseChangeLog:
         indexName: friendship_src_person_id_idx
         tableName: friendship
 - changeSet:
-    id: 20
+    id: 18
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -476,7 +424,7 @@ databaseChangeLog:
         indexName: friendship_dst_person_id_idx
         tableName: friendship
 - changeSet:
-    id: 21
+    id: 19
     author: Riddle (generated)
     changes:
     - createTable:
@@ -492,11 +440,6 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
-            name: code
-            type: FRIENDSHIP_CODE
-        - column:
-            constraints:
-              nullable: false
             name: name
             type: VARCHAR(255)
         - column:
@@ -504,9 +447,14 @@ databaseChangeLog:
               nullable: false
             name: time
             type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: code
+            type: FRIENDSHIP_CODE
         tableName: friendship_status
 - changeSet:
-    id: 22
+    id: 20
     author: Riddle (generated)
     changes:
     - createTable:
@@ -522,101 +470,27 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
-            name: entity_id
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
             name: time
             type: TIMESTAMP WITHOUT TIME ZONE
         - column:
-            constraints:
-              nullable: false
-            name: type
-            type: LIKE_TYPE
+            name: comment_id
+            type: BIGINT
+        - column:
+            name: post_id
+            type: BIGINT
         - column:
             constraints:
               nullable: false
             name: user_id
             type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: type
+            type: LIKE_TYPE
         tableName: like
 - changeSet:
-    id: 23
-    author: Riddle (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: message_pkey
-            name: id
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-            name: message_text
-            type: TEXT
-        - column:
-            constraints:
-              nullable: false
-            name: read_status
-            type: READ_STATUS
-        - column:
-            constraints:
-              nullable: false
-            name: sent_time
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            constraints:
-              nullable: false
-            name: dialog_id
-            type: BIGINT
-        tableName: message
-- changeSet:
-    id: 24
-    author: Riddle (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: notification_pkey
-            name: id
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-            name: sent_time
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            constraints:
-              nullable: false
-            name: status
-            type: READ_STATUS
-        - column:
-            constraints:
-              nullable: false
-            name: entity_id
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-            name: person_id
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-            name: type_id
-            type: BIGINT
-        tableName: notification
-- changeSet:
-    id: 25
+    id: 21
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -626,7 +500,7 @@ databaseChangeLog:
         indexName: notification_setting_user_id_idx
         tableName: notification_setting
 - changeSet:
-    id: 26
+    id: 22
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -636,7 +510,7 @@ databaseChangeLog:
         indexName: post_author_id_idx
         tableName: post
 - changeSet:
-    id: 27
+    id: 23
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -646,7 +520,7 @@ databaseChangeLog:
         indexName: post_file_post_id_idx
         tableName: post_file
 - changeSet:
-    id: 28
+    id: 24
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -656,7 +530,7 @@ databaseChangeLog:
         indexName: post_to_tag_post_id_idx
         tableName: post_to_tag
 - changeSet:
-    id: 29
+    id: 25
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -666,7 +540,7 @@ databaseChangeLog:
         indexName: post_to_tag_tag_id_idx
         tableName: post_to_tag
 - changeSet:
-    id: 30
+    id: 26
     author: Riddle (generated)
     changes:
     - createTable:
@@ -697,16 +571,22 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
-            name: status
-            type: SUPPORT_REQUEST_STATUS
+            name: message
+            type: TEXT
         - column:
             constraints:
               nullable: false
             name: time
             type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: NEW
+            name: status
+            type: SUPPORT_REQUEST_STATUS
         tableName: support_request
 - changeSet:
-    id: 31
+    id: 27
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -716,7 +596,7 @@ databaseChangeLog:
         indexName: block_history_user_id_idx
         tableName: block_history
 - changeSet:
-    id: 32
+    id: 28
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -726,7 +606,7 @@ databaseChangeLog:
         indexName: block_history_post_id_idx
         tableName: block_history
 - changeSet:
-    id: 33
+    id: 29
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -736,17 +616,27 @@ databaseChangeLog:
         indexName: block_history_comment_id_idx
         tableName: block_history
 - changeSet:
-    id: 34
+    id: 30
     author: Riddle (generated)
     changes:
     - createIndex:
         columns:
         - column:
-            name: entity_id
-        indexName: like_entity_id_idx
+            name: post_id
+        indexName: like_post_id_idx
         tableName: like
 - changeSet:
-    id: 35
+    id: 31
+    author: Riddle (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: comment_id
+        indexName: like_comment_id_idx
+        tableName: like
+- changeSet:
+    id: 32
     author: Riddle (generated)
     changes:
     - createIndex:
@@ -756,47 +646,94 @@ databaseChangeLog:
         indexName: like_user_id_idx
         tableName: like
 - changeSet:
-    id: 36
+    id: 33
     author: Riddle (generated)
     changes:
     - createIndex:
         columns:
         - column:
+            name: status
+        indexName: support_request_status_idx
+        tableName: support_request
+- changeSet:
+    id: 34
+    author: Riddle (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: message_pkey
+            name: id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: message_text
+            type: TEXT
+        - column:
+            constraints:
+              nullable: false
+            name: sent_time
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
             name: dialog_id
-        indexName: message_dialog_id_idx
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: SENT
+            name: read_status
+            type: READ_STATUS
         tableName: message
 - changeSet:
-    id: 37
+    id: 35
     author: Riddle (generated)
     changes:
-    - createIndex:
+    - createTable:
         columns:
         - column:
-            name: type_id
-        indexName: notification_type_id_idx
-        tableName: notification
-- changeSet:
-    id: 38
-    author: Riddle (generated)
-    changes:
-    - createIndex:
-        columns:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: notification_pkey
+            name: id
+            type: BIGINT
         - column:
-            name: person_id
-        indexName: notification_person_id_idx
-        tableName: notification
-- changeSet:
-    id: 39
-    author: Riddle (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
+            constraints:
+              nullable: false
             name: entity_id
-        indexName: notification_entity_id_idx
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: sent_time
+            type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            constraints:
+              nullable: false
+            name: person_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            defaultValue: SENT
+            name: status
+            type: READ_STATUS
+        - column:
+            constraints:
+              nullable: false
+            name: type_id
+            type: NOTIFICATION_TYPE
         tableName: notification
 - changeSet:
-    id: 40
+    id: 36
     author: Riddle (generated)
     changes:
     - createTable:
@@ -808,6 +745,7 @@ databaseChangeLog:
               primaryKey: true
               primaryKeyName: user_pkey
             name: id
+            startWith: 2
             type: BIGINT
         - column:
             name: about
@@ -829,14 +767,13 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
-              unique: true
             name: email
             type: VARCHAR(255)
         - column:
             constraints:
               nullable: false
             name: first_name
-            type: TEXT
+            type: VARCHAR(255)
         - column:
             constraints:
               nullable: false
@@ -859,16 +796,12 @@ databaseChangeLog:
             constraints:
               nullable: false
             name: last_name
-            type: TEXT
+            type: VARCHAR(255)
         - column:
             constraints:
               nullable: false
             name: last_online_time
             type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            defaultValue: ALL
-            name: message_permissions
-            type: MESSAGE_PERMISSIONS
         - column:
             constraints:
               nullable: false
@@ -886,12 +819,75 @@ databaseChangeLog:
             name: reg_date
             type: TIMESTAMP WITHOUT TIME ZONE
         - column:
+            constraints:
+              nullable: false
+            defaultValue: ALL
+            name: message_permissions
+            type: MESSAGE_PERMISSIONS
+        - column:
+            constraints:
+              nullable: false
             defaultValue: INACTIVE
             name: status
             type: USER_STATUS
         tableName: user
 - changeSet:
+    id: 37
+    author: ddg
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: user_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: role_id
+            type: BIGINT
+        tableName: user_to_role
+- changeSet:
+    id: 38
+    author: Riddle (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: email
+        constraintName: user_email_uk
+        tableName: user
+- changeSet:
+    id: 39
+    author: Riddle (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: dialog_id
+        indexName: message_dialog_id_idx
+        tableName: message
+- changeSet:
+    id: 40
+    author: Riddle (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: entity_id
+        indexName: notification_entity_id_idx
+        tableName: notification
+- changeSet:
     id: 41
+    author: Riddle (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: person_id
+        indexName: notification_person_id_idx
+        tableName: notification
+- changeSet:
+    id: 42
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -906,7 +902,7 @@ databaseChangeLog:
         referencedTableName: comment
         validate: true
 - changeSet:
-    id: 42
+    id: 43
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -921,7 +917,7 @@ databaseChangeLog:
         referencedTableName: post
         validate: true
 - changeSet:
-    id: 43
+    id: 44
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -936,7 +932,7 @@ databaseChangeLog:
         referencedTableName: user
         validate: true
 - changeSet:
-    id: 44
+    id: 45
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -951,7 +947,7 @@ databaseChangeLog:
         referencedTableName: user
         validate: true
 - changeSet:
-    id: 45
+    id: 46
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -966,7 +962,7 @@ databaseChangeLog:
         referencedTableName: comment
         validate: true
 - changeSet:
-    id: 46
+    id: 47
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -981,7 +977,7 @@ databaseChangeLog:
         referencedTableName: post
         validate: true
 - changeSet:
-    id: 47
+    id: 48
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -996,7 +992,7 @@ databaseChangeLog:
         referencedTableName: user
         validate: true
 - changeSet:
-    id: 48
+    id: 49
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -1011,7 +1007,37 @@ databaseChangeLog:
         referencedTableName: user
         validate: true
 - changeSet:
-    id: 49
+    id: 50
+    author: Riddle (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: user_to_role
+        constraintName: fk15hjywwnik6tnqius4p7mudyv
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: user
+        validate: true
+- changeSet:
+    id: 51
+    author: Riddle (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: role_id
+        baseTableName: user_to_role
+        constraintName: fkgyi0100t2eux3bvy4k0unfv8o
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: NO ACTION
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: role
+        validate: true
+- changeSet:
+    id: 52
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -1026,7 +1052,7 @@ databaseChangeLog:
         referencedTableName: user
         validate: true
 - changeSet:
-    id: 50
+    id: 53
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -1041,7 +1067,7 @@ databaseChangeLog:
         referencedTableName: friendship_status
         validate: true
 - changeSet:
-    id: 51
+    id: 54
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -1056,7 +1082,37 @@ databaseChangeLog:
         referencedTableName: user
         validate: true
 - changeSet:
-    id: 52
+    id: 55
+    author: Riddle (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: comment_id
+        baseTableName: like
+        constraintName: like_comment_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: comment
+        validate: true
+- changeSet:
+    id: 56
+    author: Riddle (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: post_id
+        baseTableName: like
+        constraintName: like_post_fk
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: CASCADE
+        onUpdate: NO ACTION
+        referencedColumnNames: id
+        referencedTableName: post
+        validate: true
+- changeSet:
+    id: 57
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -1071,7 +1127,7 @@ databaseChangeLog:
         referencedTableName: user
         validate: true
 - changeSet:
-    id: 53
+    id: 58
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -1086,37 +1142,7 @@ databaseChangeLog:
         referencedTableName: dialog
         validate: true
 - changeSet:
-    id: 54
-    author: Riddle (generated)
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: entity_id
-        baseTableName: notification
-        constraintName: notification_entity_type_fk
-        deferrable: false
-        initiallyDeferred: false
-        onDelete: CASCADE
-        onUpdate: NO ACTION
-        referencedColumnNames: id
-        referencedTableName: entity_type
-        validate: true
-- changeSet:
-    id: 55
-    author: Riddle (generated)
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: type_id
-        baseTableName: notification
-        constraintName: notification_notification_type_fk
-        deferrable: false
-        initiallyDeferred: false
-        onDelete: CASCADE
-        onUpdate: NO ACTION
-        referencedColumnNames: id
-        referencedTableName: notification_type
-        validate: true
-- changeSet:
-    id: 56
+    id: 59
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -1131,7 +1157,7 @@ databaseChangeLog:
         referencedTableName: user
         validate: true
 - changeSet:
-    id: 57
+    id: 60
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -1146,7 +1172,7 @@ databaseChangeLog:
         referencedTableName: user
         validate: true
 - changeSet:
-    id: 58
+    id: 61
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -1161,7 +1187,7 @@ databaseChangeLog:
         referencedTableName: user
         validate: true
 - changeSet:
-    id: 59
+    id: 62
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -1176,7 +1202,7 @@ databaseChangeLog:
         referencedTableName: post
         validate: true
 - changeSet:
-    id: 60
+    id: 63
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
@@ -1191,7 +1217,7 @@ databaseChangeLog:
         referencedTableName: post
         validate: true
 - changeSet:
-    id: 61
+    id: 64
     author: Riddle (generated)
     changes:
     - addForeignKeyConstraint:
