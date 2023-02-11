@@ -264,7 +264,7 @@ databaseChangeLog:
         tableName: post_to_tag
 - changeSet:
     id: 8
-    author: ddg (generated)
+    author: Riddle (generated)
     changes:
     - createTable:
         columns:
@@ -319,6 +319,12 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
+            defaultValue: BLOCK
+            name: action
+            type: ACTION_TYPE
+        - column:
+            constraints:
+              nullable: false
             name: time
             type: TIMESTAMP WITHOUT TIME ZONE
         - column:
@@ -336,12 +342,6 @@ databaseChangeLog:
               nullable: false
             name: user_id
             type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-            defaultValue: BLOCK
-            name: action
-            type: ACTION_TYPE
         tableName: block_history
 - changeSet:
     id: 11
@@ -440,6 +440,11 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
+            name: code
+            type: FRIENDSHIP_CODE
+        - column:
+            constraints:
+              nullable: false
             name: name
             type: VARCHAR(255)
         - column:
@@ -447,11 +452,6 @@ databaseChangeLog:
               nullable: false
             name: time
             type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            constraints:
-              nullable: false
-            name: code
-            type: FRIENDSHIP_CODE
         tableName: friendship_status
 - changeSet:
     id: 20
@@ -473,6 +473,11 @@ databaseChangeLog:
             name: time
             type: TIMESTAMP WITHOUT TIME ZONE
         - column:
+            constraints:
+              nullable: false
+            name: type
+            type: LIKE_TYPE
+        - column:
             name: comment_id
             type: BIGINT
         - column:
@@ -483,11 +488,6 @@ databaseChangeLog:
               nullable: false
             name: user_id
             type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-            name: type
-            type: LIKE_TYPE
         tableName: like
 - changeSet:
     id: 21
@@ -576,14 +576,14 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
-            name: time
-            type: TIMESTAMP WITHOUT TIME ZONE
-        - column:
-            constraints:
-              nullable: false
             defaultValue: NEW
             name: status
             type: SUPPORT_REQUEST_STATUS
+        - column:
+            constraints:
+              nullable: false
+            name: time
+            type: TIMESTAMP WITHOUT TIME ZONE
         tableName: support_request
 - changeSet:
     id: 27
@@ -677,6 +677,12 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
+            defaultValue: SENT
+            name: read_status
+            type: READ_STATUS
+        - column:
+            constraints:
+              nullable: false
             name: sent_time
             type: TIMESTAMP WITHOUT TIME ZONE
         - column:
@@ -684,12 +690,6 @@ databaseChangeLog:
               nullable: false
             name: dialog_id
             type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-            defaultValue: SENT
-            name: read_status
-            type: READ_STATUS
         tableName: message
 - changeSet:
     id: 35
@@ -718,11 +718,6 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
-            name: person_id
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
             defaultValue: SENT
             name: status
             type: READ_STATUS
@@ -731,6 +726,11 @@ databaseChangeLog:
               nullable: false
             name: type_id
             type: NOTIFICATION_TYPE
+        - column:
+            constraints:
+              nullable: false
+            name: person_id
+            type: BIGINT
         tableName: notification
 - changeSet:
     id: 36
@@ -745,7 +745,6 @@ databaseChangeLog:
               primaryKey: true
               primaryKeyName: user_pkey
             name: id
-            startWith: 2
             type: BIGINT
         - column:
             name: about
@@ -805,6 +804,12 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
+            defaultValue: ALL
+            name: message_permissions
+            type: MESSAGE_PERMISSIONS
+        - column:
+            constraints:
+              nullable: false
             name: password
             type: VARCHAR(255)
         - column:
@@ -821,19 +826,13 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
-            defaultValue: ALL
-            name: message_permissions
-            type: MESSAGE_PERMISSIONS
-        - column:
-            constraints:
-              nullable: false
             defaultValue: INACTIVE
             name: status
             type: USER_STATUS
         tableName: user
 - changeSet:
     id: 37
-    author: ddg
+    author: Riddle (generated)
     changes:
     - createTable:
         columns:
@@ -896,7 +895,7 @@ databaseChangeLog:
         constraintName: block_history_comment_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: comment
@@ -911,7 +910,7 @@ databaseChangeLog:
         constraintName: block_history_post_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: post
@@ -926,7 +925,7 @@ databaseChangeLog:
         constraintName: block_history_user_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: user
@@ -941,7 +940,7 @@ databaseChangeLog:
         constraintName: comment_author_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: user
@@ -956,7 +955,7 @@ databaseChangeLog:
         constraintName: comment_parent_comment_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: comment
@@ -971,7 +970,7 @@ databaseChangeLog:
         constraintName: comment_post_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: post
@@ -1013,7 +1012,7 @@ databaseChangeLog:
     - addForeignKeyConstraint:
         baseColumnNames: user_id
         baseTableName: user_to_role
-        constraintName: fk15hjywwnik6tnqius4p7mudyv
+        constraintName: fk18ncoyyb5djfffi6awmv80k5g
         deferrable: false
         initiallyDeferred: false
         onDelete: NO ACTION
@@ -1028,7 +1027,7 @@ databaseChangeLog:
     - addForeignKeyConstraint:
         baseColumnNames: role_id
         baseTableName: user_to_role
-        constraintName: fkgyi0100t2eux3bvy4k0unfv8o
+        constraintName: fkknk9kh09xew27k796uxnj1tbs
         deferrable: false
         initiallyDeferred: false
         onDelete: NO ACTION
@@ -1046,7 +1045,7 @@ databaseChangeLog:
         constraintName: friendship_dst_person_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: user
@@ -1061,7 +1060,7 @@ databaseChangeLog:
         constraintName: friendship_friendship_status_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: friendship_status
@@ -1076,7 +1075,7 @@ databaseChangeLog:
         constraintName: friendship_src_person_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: user
@@ -1091,7 +1090,7 @@ databaseChangeLog:
         constraintName: like_comment_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: comment
@@ -1106,7 +1105,7 @@ databaseChangeLog:
         constraintName: like_post_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: post
@@ -1136,7 +1135,7 @@ databaseChangeLog:
         constraintName: message_dialog_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: dialog
@@ -1151,7 +1150,7 @@ databaseChangeLog:
         constraintName: notification_person_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: user
@@ -1166,7 +1165,7 @@ databaseChangeLog:
         constraintName: notification_setting_user_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: user
@@ -1181,7 +1180,7 @@ databaseChangeLog:
         constraintName: post_author_fk
         deferrable: false
         initiallyDeferred: false
-        onDelete: CASCADE
+        onDelete: NO ACTION
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: user

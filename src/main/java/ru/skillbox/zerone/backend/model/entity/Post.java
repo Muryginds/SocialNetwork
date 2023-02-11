@@ -41,7 +41,6 @@ public class Post {
   @JoinColumn(name = "author_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "post_author_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private User author;
 
   @NotNull

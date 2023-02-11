@@ -37,7 +37,6 @@ public class Message {
   @JoinColumn(name = "dialog_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "message_dialog_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Dialog dialog;
 
   @NotNull

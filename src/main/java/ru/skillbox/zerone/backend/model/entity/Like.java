@@ -36,14 +36,12 @@ public class Like {
   @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "like_post_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Post post;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "comment_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "like_comment_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Comment comment;
 
   @NotNull

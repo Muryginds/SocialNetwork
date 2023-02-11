@@ -35,7 +35,6 @@ public class Friendship {
   @JoinColumn(name = "status_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "friendship_friendship_status_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private FriendshipStatus status;
 
   @NotNull
@@ -43,7 +42,6 @@ public class Friendship {
   @JoinColumn(name = "src_person_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "friendship_src_person_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private User srcPerson;
 
   @NotNull
@@ -51,7 +49,6 @@ public class Friendship {
   @JoinColumn(name = "dst_person_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "friendship_dst_person_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private User dstPerson;
 
   @NotNull

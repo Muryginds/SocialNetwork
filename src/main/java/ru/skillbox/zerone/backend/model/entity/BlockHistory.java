@@ -40,7 +40,6 @@ public class BlockHistory {
   @JoinColumn(name = "user_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "block_history_user_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private User user;
 
   @NotNull
@@ -48,7 +47,6 @@ public class BlockHistory {
   @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "block_history_post_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Post post;
 
   @NotNull
@@ -56,7 +54,6 @@ public class BlockHistory {
   @JoinColumn(name = "comment_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "block_history_comment_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Comment comment;
 
   @NotNull

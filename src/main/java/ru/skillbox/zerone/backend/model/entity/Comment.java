@@ -7,13 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "comment",
@@ -43,14 +40,12 @@ public class Comment {
   @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "comment_post_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Post post;
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "parent_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "comment_parent_comment_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Comment parent;
 
   @NotNull
@@ -58,7 +53,6 @@ public class Comment {
   @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "comment_author_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private User author;
 
   @NotNull

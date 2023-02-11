@@ -45,7 +45,6 @@ public class Notification {
   @JoinColumn(name = "person_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "notification_person_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private User person;
 
   @NotNull
