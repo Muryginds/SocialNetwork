@@ -28,6 +28,9 @@ test-job:       # This job runs in the test stage, which runs second.
   tags:
     - students
 
+  only:
+    - master
+
   script:
     - echo "Maven test started"
     - "mvn test"
