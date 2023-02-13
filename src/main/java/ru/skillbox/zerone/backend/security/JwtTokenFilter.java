@@ -1,4 +1,4 @@
-package ru.skillbox.zerone.backend.security.jwt;
+package ru.skillbox.zerone.backend.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

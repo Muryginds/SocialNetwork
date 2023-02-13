@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import ru.skillbox.zerone.backend.security.jwt.JwtTokenFilter;
+import ru.skillbox.zerone.backend.security.JwtTokenFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -48,8 +48,11 @@ public class SecurityConfig {
         .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
         .logout(LogoutConfigurer::permitAll)
         .authorizeHttpRequests((authz) -> authz
-            .requestMatchers("/api/v1/account/register/confirm", "/api/v1/account/register", "/api/v1/support")
-            .permitAll()
+            .requestMatchers(
+                "/api/v1/account/register/confirm",
+                "/api/v1/account/register",
+                "/api/v1/support"
+            ).permitAll()
             .requestMatchers(LOGIN_ENDPOINT).permitAll()
             .requestMatchers(LOGOUT_ENDPOINT).permitAll()
             .anyRequest().authenticated()

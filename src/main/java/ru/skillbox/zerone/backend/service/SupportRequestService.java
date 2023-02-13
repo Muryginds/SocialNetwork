@@ -12,10 +12,10 @@ import ru.skillbox.zerone.backend.repository.SupportRequestRepository;
 @RequiredArgsConstructor
 public class SupportRequestService {
   private final SupportRequestRepository supportRequestRepository;
+  private final SupportRequestMapper supportRequestMapper;
 
   public CommonResponseDTO<MessageResponseDTO> registerSupportRequest(SupportRequestDTO requestDto) {
-    var supportRequest = SupportRequestMapper.INSTANCE
-        .supportRequestDtoToSupportRequest(requestDto);
+    var supportRequest = supportRequestMapper.supportRequestDtoToSupportRequest(requestDto);
 
     supportRequestRepository.save(supportRequest);
 
