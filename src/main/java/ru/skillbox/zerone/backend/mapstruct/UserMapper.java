@@ -9,7 +9,6 @@ import ru.skillbox.zerone.backend.model.entity.User;
 @Mapper
 @DecoratedWith(UserMapperDecorator.class)
 public interface UserMapper {
-
   UserDTO userToUserDTO (User user);
   User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO);
 }
