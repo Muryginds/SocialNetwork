@@ -16,6 +16,7 @@ import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 import ru.skillbox.zerone.backend.repository.UserRepository;
+import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
 import java.util.UUID;
 
@@ -76,7 +77,7 @@ public class UserService {
 
   public CommonResponseDTO<UserDTO> getCurrentUser() {
 
-    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User user = CurrentUserUtils.getCurrentUser();
 
     log.info("IN getCurrentUser - user with username: {} successfully loaded", user.getEmail());
 
