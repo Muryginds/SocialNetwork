@@ -16,7 +16,6 @@ build-job:       # This job runs in the build stage, which runs first.
 
   only:
     - master
-    - boldyrev
 
   script:
     - echo "Compiling the code $CI_JOB_STAGE... $DEV_USER"
@@ -48,7 +47,6 @@ package-job:       # This job runs in the package stage, which runs third.
 
   only:
     - master
-    - boldyrev
 
   script:
     - echo "Maven packaging started"
@@ -71,7 +69,6 @@ deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
 
   only:
     - master
-    - boldyrev
 
   before_script:
     - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y ) # which ищет исполняемый файл
