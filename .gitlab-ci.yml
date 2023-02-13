@@ -12,7 +12,7 @@ stages:          # List of stages for jobs, and their order of execution
 build-job:       # This job runs in the build stage, which runs first. 
   stage: build
   tags:
-    - prod
+    - students
 
   only:
     - master
@@ -29,14 +29,14 @@ build-job:       # This job runs in the build stage, which runs first.
 test-job:       # This job runs in the test stage, which runs second.
   stage: test
   tags:
-    - prod
+    - students
 
   only:
     - master
 
   script:
     - echo "Maven test started"
-    - "mvn test -Dmaven.test.skip"
+    - "mvn test"
 
   cache:
     paths:
@@ -46,7 +46,7 @@ test-job:       # This job runs in the test stage, which runs second.
 package-job:       # This job runs in the package stage, which runs third.
   stage: package
   tags:
-    - prod
+    - students
 
   only:
     - master
@@ -68,7 +68,7 @@ package-job:       # This job runs in the package stage, which runs third.
 deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
   stage: deploy
   tags:
-    - prod
+    - students
 
   only:
     - master
