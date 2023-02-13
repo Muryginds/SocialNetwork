@@ -1,11 +1,10 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import ru.skillbox.zerone.backend.model.enumerated.MessagePermissions;
 import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 
@@ -15,7 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "`user`")
+@Table(name = "`user`",
+    uniqueConstraints = {
+    @UniqueConstraint(name = "user_email_uk", columnNames = {"email"})}
+)
 @Data
 @Builder
 @AllArgsConstructor
@@ -27,11 +29,13 @@ public class User {
   private Long id;
 
   @NotNull
-  @Column(name = "first_name", columnDefinition = "text")
+  @NotBlank
+  @Column(name = "first_name")
   private String firstName;
 
   @NotNull
-  @Column(name = "last_name", columnDefinition = "text")
+  @NotBlank
+  @Column(name = "last_name")
   private String lastName;
 
   @NotNull
@@ -43,6 +47,7 @@ public class User {
   private LocalDate birthDate;
 
   @NotNull
+  @NotBlank
   @Column(name = "email")
   private String email;
 
@@ -50,6 +55,7 @@ public class User {
   private String phone;
 
   @NotNull
+  @NotBlank
   @Column(name = "password")
   private String password;
 
@@ -72,6 +78,7 @@ public class User {
   private String city;
 
   @NotNull
+  @NotBlank
   @Column(name = "confirmation_code")
   private String confirmationCode;
 
@@ -101,38 +108,8 @@ public class User {
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private Boolean isDeleted = false;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-  private List<BlockHistory> blockHistories = new ArrayList<>();
-
-  @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-  private  List<Comment> comments = new ArrayList<>();
-
-  @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
-  private List<Post> posts = new ArrayList<>();
-
-  @OneToMany(mappedBy = "srcPerson", fetch = FetchType.LAZY)
-  private List<Friendship> srcFriendships = new ArrayList<>();
-
-  @OneToMany(mappedBy = "dstPerson", fetch = FetchType.LAZY)
-  private List<Friendship> dstFriendships = new ArrayList<>();
-
-  @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
-  private List<Dialog> dialogSenders = new ArrayList<>();
-
-  @OneToMany(mappedBy = "recipient", fetch = FetchType.LAZY)
-  private List<Dialog> dialogRecipients = new ArrayList<>();
-
-  @OneToMany(mappedBy = "person", fetch = FetchType.LAZY)
-  private List<Notification> notifications = new ArrayList<>();
-
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-  private List<NotificationSetting> notificationSettings = new ArrayList<>();
-
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-  private List<Like> likes = new ArrayList<>();
-
-  @ManyToMany(fetch = FetchType.LAZY)
-  @JoinTable(name = "user2role",
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(name = "user_to_role",
       joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
       inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
   private List<Role> roles;

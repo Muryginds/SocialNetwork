@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -30,30 +31,28 @@ public class Friendship {
   private Long id;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "status_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "friendship_friendship_status_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private FriendshipStatus status;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "src_person_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "friendship_src_person_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private User srcPerson;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "dst_person_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "friendship_dst_person_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private User dstPerson;
 
   @NotNull
+  @Builder.Default
   @Column(name = "time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime time;
+  private LocalDateTime time = LocalDateTime.now();
 }

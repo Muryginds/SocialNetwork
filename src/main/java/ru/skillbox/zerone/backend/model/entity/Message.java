@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,22 +28,25 @@ public class Message {
   private Long id;
 
   @NotNull
+  @Builder.Default
   @Column(name = "sent_time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime sentTime;
+  private LocalDateTime sentTime = LocalDateTime.now();
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "dialog_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "message_dialog_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private Dialog dialog;
 
   @NotNull
+  @NotBlank
   @Column(name = "message_text", columnDefinition = "text")
   private String messageText;
 
   @NotNull
-  @Column(name = "read_status", columnDefinition = "read_status")
-  private ReadStatus readStatus;
+  @Builder.Default
+  @Column(name = "read_status", columnDefinition = "read_status default 'SENT'")
+  @Enumerated(EnumType.STRING)
+  private ReadStatus readStatus = ReadStatus.SENT;
 }

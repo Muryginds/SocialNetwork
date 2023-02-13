@@ -24,34 +24,39 @@ public class NotificationSetting {
   private Long id;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "user_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "notification_setting_user_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private User user;
 
   @NotNull
-  @Column(name = "post_enabled")
-  private Boolean postEnabled;
+  @Builder.Default
+  @Column(name = "post_enabled", columnDefinition = "boolean default false")
+  private Boolean postEnabled = true;
 
   @NotNull
-  @Column(name = "post_comment_enabled")
-  private Boolean postCommentEnabled;
+  @Builder.Default
+  @Column(name = "post_comment_enabled", columnDefinition = "boolean default false")
+  private Boolean postCommentEnabled = true;
 
   @NotNull
-  @Column(name = "comment_comment_enabled")
-  private Boolean commentCommentEnabled;
+  @Builder.Default
+  @Column(name = "comment_comment_enabled", columnDefinition = "boolean default false")
+  private Boolean commentCommentEnabled = true;
 
   @NotNull
-  @Column(name = "friend_request_enabled")
-  private Boolean friendRequestEnabled;
+  @Builder.Default
+  @Column(name = "friend_request_enabled", columnDefinition = "boolean default false")
+  private Boolean friendRequestEnabled = true;
 
   @NotNull
-  @Column(name = "messages_enabled")
-  private Boolean messagesEnabled;
+  @Builder.Default
+  @Column(name = "messages_enabled", columnDefinition = "boolean default false")
+  private Boolean messagesEnabled = true;
 
   @NotNull
+  @Builder.Default
   @Column(name = "friend_birthday_enabled")
-  private Boolean friendBirthdayEnabled;
+  private Boolean friendBirthdayEnabled = true;
 }

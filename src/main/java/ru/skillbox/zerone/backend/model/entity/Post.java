@@ -1,6 +1,9 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,48 +32,40 @@ public class Post {
   private Long id;
 
   @NotNull
+  @Builder.Default
   @Column(name = "time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime time;
+  private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "author_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "post_author_fk")
   )
-  @OnDelete(action = OnDeleteAction.CASCADE)
   private User author;
 
   @NotNull
+  @NotBlank
   @Column(name = "title")
   private String title;
 
   @NotNull
+  @NotBlank
   @Column(name = "post_text", columnDefinition = "text")
   private String postText;
 
   @NotNull
+  @Builder.Default
   @Column(name = "update_date", columnDefinition = "timestamp without time zone")
-  private LocalDateTime updateDate;
+  @UpdateTimestamp
+  private LocalDateTime updateTime = LocalDateTime.now();
 
   @NotNull
-  @Column(name = "is_blocked")
-  private Boolean isBlocked;
+  @Builder.Default
+  @Column(name = "is_blocked", columnDefinition = "boolean default false")
+  private Boolean isBlocked = false;
 
   @NotNull
-  @Column(name = "is_deleted")
-  private Boolean isDeleted;
-
-  @OneToMany(
-      mappedBy = "post",
-      fetch = FetchType.LAZY)
-  private List<BlockHistory> blockHistories = new ArrayList<>();
-
-  @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-  private List<Comment> comments = new ArrayList<>();
-
-  @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-  private List<PostToTag> postToTags = new ArrayList<>();
-
-  @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
-  private List<PostFile> postFiles = new ArrayList<>();
+  @Builder.Default
+  @Column(name = "is_deleted", columnDefinition = "boolean default false")
+  private Boolean isDeleted = false;
 }
