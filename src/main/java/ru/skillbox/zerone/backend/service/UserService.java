@@ -51,15 +51,15 @@ public class UserService {
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
-    var userOptional = userRepository.findUserByEmail(request.getUserId());
+    var userOptional = userRepository.findUserByEmail(request.getEmail());
     if (userOptional.isEmpty()) {
-      log.info("IN registrationConfirm - user with username: {} put wrong user name", request.getUserId());
+      log.info("IN registrationConfirm - user with username: {} put wrong user name", request.getEmail());
       throw new RegistrationCompleteException("wrong email or key");
     }
     User user = userOptional.get();
 
-    if (!user.getConfirmationCode().equals(request.getToken())) {
-      log.info("IN registrationConfirm - user with username: {} put wrong confirmation key", request.getUserId());
+    if (!user.getConfirmationCode().equals(request.getConfirmationKey())) {
+      log.info("IN registrationConfirm - user with username: {} put wrong confirmation key", request.getEmail());
       throw new RegistrationCompleteException("wrong email or key");
     }
 
@@ -67,7 +67,7 @@ public class UserService {
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
 
-    log.info("IN registrationConfirm - user with username: {} successfully confirmed registration", request.getUserId());
+    log.info("IN registrationConfirm - user with username: {} successfully confirmed registration", request.getEmail());
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
