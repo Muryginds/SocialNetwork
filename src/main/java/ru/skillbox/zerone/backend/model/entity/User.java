@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,11 +30,13 @@ public class User implements UserDetails {
   private Long id;
 
   @NotNull
-  @Column(name = "first_name", columnDefinition = "text")
+  @NotBlank
+  @Column(name = "first_name")
   private String firstName;
 
   @NotNull
-  @Column(name = "last_name", columnDefinition = "text")
+  @NotBlank
+  @Column(name = "last_name")
   private String lastName;
 
   @NotNull
@@ -45,6 +48,7 @@ public class User implements UserDetails {
   private LocalDate birthDate;
 
   @NotNull
+  @NotBlank
   @Column(name = "email")
   private String email;
 
@@ -52,6 +56,7 @@ public class User implements UserDetails {
   private String phone;
 
   @NotNull
+  @NotBlank
   @Column(name = "password")
   private String password;
 
@@ -74,6 +79,7 @@ public class User implements UserDetails {
   private String city;
 
   @NotNull
+  @NotBlank
   @Column(name = "confirmation_code")
   private String confirmationCode;
 
@@ -104,7 +110,7 @@ public class User implements UserDetails {
   private Boolean isDeleted = false;
 
   @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "user2role",
+  @JoinTable(name = "user_to_role",
       joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
       inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
   private List<Role> roles;

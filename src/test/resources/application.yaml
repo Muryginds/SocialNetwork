@@ -1,21 +1,15 @@
-server:
-  port: 8086
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
-    password: password
-    username: skillbox
+    url: jdbc:tc:postgresql:11.1:///integration-tests-db
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
   jpa:
     hibernate:
       ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: false
-    show-sql: false
-  sql:
-    init:
-      mode: never
+        format_sql: true
+    show-sql: true
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml

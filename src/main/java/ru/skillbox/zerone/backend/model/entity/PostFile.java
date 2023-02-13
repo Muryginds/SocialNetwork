@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,13 +23,14 @@ public class PostFile {
   private Long id;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = " post_file_post_fk")
   )
   private Post post;
 
   @NotNull
+  @NotBlank
   @Column(name = "path")
   private String path;
 }

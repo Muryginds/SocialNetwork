@@ -21,6 +21,7 @@ import ru.skillbox.zerone.backend.security.JwtTokenFilter;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
+
   private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
   private static final String LOGOUT_ENDPOINT = "/api/v1/auth/logout";
   private final JwtTokenFilter jwtFilter;
@@ -42,12 +43,10 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http
-        .cors()
-        .and()
+    http.cors().and()
         .csrf(AbstractHttpConfigurer::disable)
-        .formLogin(AbstractAuthenticationFilterConfigurer::disable)
-        .logout(LogoutConfigurer::disable)
+        .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+        .logout(LogoutConfigurer::permitAll)
         .authorizeHttpRequests((authz) -> authz
             .requestMatchers(
                 "/api/v1/account/register/confirm",

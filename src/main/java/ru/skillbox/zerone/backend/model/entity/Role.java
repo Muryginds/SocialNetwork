@@ -1,10 +1,10 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
-
-import java.util.List;
 
 @Entity
 @Table(name = "role")
@@ -16,9 +16,8 @@ public class Role implements GrantedAuthority {
     @Column(name = "id")
     private Long id;
 
+    @NotNull
+    @NotBlank
     @Column(name = "name")
     private String authority;
-
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private List<User> users;
 }

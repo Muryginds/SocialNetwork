@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +12,11 @@ import ru.skillbox.zerone.backend.model.enumerated.SupportRequestStatus;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "support_request")
+@Table(name = "support_request",
+    indexes = {
+        @Index(name = "support_request_status_idx", columnList = "status")
+    }
+)
 @Data
 @Builder
 @AllArgsConstructor
@@ -23,23 +28,33 @@ public class SupportRequest {
   private Long id;
 
   @NotNull
+  @NotBlank
   @Column(name = "first_name")
   private String firstName;
 
   @NotNull
+  @NotBlank
   @Column(name = "last_name")
   private String lastName;
 
   @NotNull
+  @NotBlank
   @Column(name = "email")
   private String email;
 
   @NotNull
-  @Column(name = "time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime time;
+  @NotBlank
+  @Column(name = "message", columnDefinition = "text")
+  private String message;
 
   @NotNull
-  @Column(name = "status", columnDefinition = "support_request_status")
+  @Builder.Default
+  @Column(name = "time", columnDefinition = "timestamp without time zone")
+  private LocalDateTime time = LocalDateTime.now();
+
+  @NotNull
+  @Builder.Default
+  @Column(name = "status", columnDefinition = "support_request_status default 'NEW'")
   @Enumerated(EnumType.STRING)
-  private SupportRequestStatus status;
+  private SupportRequestStatus status = SupportRequestStatus.NEW;
 }
