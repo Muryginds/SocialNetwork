@@ -26,7 +26,7 @@ public class UserServiceLoggingAspect {
 
   @AfterReturning("args(request) && registrationConfirmPointcut()")
   public void registrationConfirmAdvice(RegisterConfirmRequestDTO request){
-    log.debug("IN registrationConfirm - user with username: {} successfully confirmed registration", request.getUserId());
+    log.debug("IN registrationConfirm - user with username: {} successfully confirmed registration", request.getEmail());
   }
 
   @Pointcut("execution(* getCurrentUser())")

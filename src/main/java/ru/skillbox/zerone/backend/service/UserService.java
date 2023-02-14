@@ -2,8 +2,6 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
@@ -20,7 +18,6 @@ import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
 import java.util.UUID;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -43,7 +40,6 @@ public class UserService {
 
     mailService.sendVerificationEmail(user.getEmail(), verificationUuid.toString());
 
-    log.info("IN registerAccount - user with username: {} successfully registered", request.getEmail());
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
@@ -54,13 +50,11 @@ public class UserService {
   public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
     var userOptional = userRepository.findUserByEmail(request.getEmail());
     if (userOptional.isEmpty()) {
-      log.info("IN registrationConfirm - user with username: {} put wrong user name", request.getEmail());
       throw new RegistrationCompleteException("wrong email or key");
     }
     User user = userOptional.get();
 
     if (!user.getConfirmationCode().equals(request.getConfirmationKey())) {
-      log.info("IN registrationConfirm - user with username: {} put wrong confirmation key", request.getEmail());
       throw new RegistrationCompleteException("wrong email or key");
     }
 
@@ -68,7 +62,6 @@ public class UserService {
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
 
-    log.info("IN registrationConfirm - user with username: {} successfully confirmed registration", request.getEmail());
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
@@ -79,7 +72,6 @@ public class UserService {
 
     User user = CurrentUserUtils.getCurrentUser();
 
-    log.info("IN getCurrentUser - user with username: {} successfully loaded", user.getEmail());
 
     return CommonResponseDTO.<UserDTO>builder()
         .data(userMapper.userToUserDTO(user))
