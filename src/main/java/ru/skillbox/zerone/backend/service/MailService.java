@@ -1,7 +1,6 @@
 package ru.skillbox.zerone.backend.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,7 +10,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MailService {
@@ -31,7 +29,6 @@ public class MailService {
         String.format("Please confirm your registration by clicking following link: %s", createVerificationLink(email, verifyCode))
     );
     emailSender.send(message);
-    log.info("IN sendVerificationEmail - user with username: {} mail sent successfully", email);
   }
 
   private String createVerificationLink(String userId, String token) {

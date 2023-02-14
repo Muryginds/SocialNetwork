@@ -2,7 +2,6 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
@@ -19,7 +18,6 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 
 import java.util.UUID;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -42,7 +40,6 @@ public class UserService {
 
     mailService.sendVerificationEmail(user.getEmail(), verificationUuid.toString());
 
-    log.info("IN registerAccount - user with username: {} successfully registered", request.getEmail());
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
@@ -53,13 +50,11 @@ public class UserService {
   public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
     var userOptional = userRepository.findUserByEmail(request.getUserId());
     if (userOptional.isEmpty()) {
-      log.info("IN registrationConfirm - user with username: {} put wrong user name", request.getUserId());
       throw new RegistrationCompleteException("wrong email or key");
     }
     User user = userOptional.get();
 
     if (!user.getConfirmationCode().equals(request.getToken())) {
-      log.info("IN registrationConfirm - user with username: {} put wrong confirmation key", request.getUserId());
       throw new RegistrationCompleteException("wrong email or key");
     }
 
@@ -67,7 +62,6 @@ public class UserService {
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
 
-    log.info("IN registrationConfirm - user with username: {} successfully confirmed registration", request.getUserId());
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
@@ -78,7 +72,6 @@ public class UserService {
 
     User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-    log.info("IN getCurrentUser - user with username: {} successfully loaded", user.getEmail());
 
     return CommonResponseDTO.<UserDTO>builder()
         .data(userMapper.userToUserDTO(user))
