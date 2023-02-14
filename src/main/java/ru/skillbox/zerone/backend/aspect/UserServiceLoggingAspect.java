@@ -5,8 +5,10 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
+import ru.skillbox.zerone.backend.model.dto.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
+import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 
 @Slf4j
 @Aspect
@@ -32,9 +34,9 @@ public class UserServiceLoggingAspect {
   @Pointcut("execution(* getCurrentUser())")
   public void getCurrentUserPointcut(){}
 
-  @AfterReturning("getCurrentUserPointcut()")
-  public void getCurrentUserAdvice(){
-    log.debug("IN getCurrentUser - current user successfully loaded");
+  @AfterReturning(value = "getCurrentUserPointcut()", returning = "response")
+  public void getCurrentUserAdvice(CommonResponseDTO<UserDTO> response){
+    log.debug("IN getCurrentUser - user with username: {} successfully loaded", response.getData().getEmail());
   }
 
   @Pointcut("execution(* loadUserByUsername(String))")
