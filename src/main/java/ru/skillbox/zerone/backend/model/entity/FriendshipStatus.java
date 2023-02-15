@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,8 +10,6 @@ import lombok.NoArgsConstructor;
 import ru.skillbox.zerone.backend.model.enumerated.FriendshipCode;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "friendship_status")
@@ -25,10 +24,12 @@ public class FriendshipStatus {
   private Long id;
 
   @NotNull
+  @Builder.Default
   @Column(name = "time", columnDefinition = "timestamp without time zone")
-  private LocalDateTime time;
+  private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
+  @NotBlank
   @Column(name = "name")
   private String name;
 
@@ -36,7 +37,4 @@ public class FriendshipStatus {
   @Column(name = "code", columnDefinition = "friendship_code")
   @Enumerated(EnumType.STRING)
   private FriendshipCode code;
-
-  @OneToMany(mappedBy = "status", fetch = FetchType.LAZY)
-  private List<Friendship> friendships = new ArrayList<>();
 }

@@ -1,4 +1,4 @@
-package ru.skillbox.zerone.backend.security.jwt;
+package ru.skillbox.zerone.backend.security;
 
 import io.jsonwebtoken.*;
 import jakarta.annotation.PostConstruct;
@@ -7,14 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import ru.skillbox.zerone.backend.model.entity.Role;
+import ru.skillbox.zerone.backend.service.JpaUserDetails;
 
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -24,7 +23,7 @@ public class JwtTokenProvider {
   private String secret;
   @Value("${jwt.token.expired}")
   private long validityInMilliseconds;
-  private final UserDetailsService userDetailsService;
+  private final JpaUserDetails jpaUserDetails;
 
   @PostConstruct
   protected void init() {
@@ -34,7 +33,7 @@ public class JwtTokenProvider {
   public String createToken(String email, List<Role> roles) {
 
     Claims claims = Jwts.claims().setSubject(email);
-    claims.put("roles", getRoleNames(roles));
+    claims.put("roles", roles);
 
     Date now = new Date();
     Date validity = new Date(now.getTime() + validityInMilliseconds);
@@ -48,8 +47,8 @@ public class JwtTokenProvider {
   }
 
   public Authentication getAuthentication(String token) {
-    var userDetails = userDetailsService.loadUserByUsername(getUsername(token));
-    return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+    var user = jpaUserDetails.loadUserByUsername(getUsername(token));
+    return new UsernamePasswordAuthenticationToken(user, "", user.getAuthorities());
   }
 
   public String getUsername(String token) {
@@ -69,11 +68,5 @@ public class JwtTokenProvider {
     } catch (JwtException | IllegalArgumentException e) {
       throw new JwtException("JWT token is expired or invalid");
     }
-  }
-
-  private List<String> getRoleNames(List<Role> userRoles) {
-    return userRoles.stream()
-        .map(Role::getName)
-        .collect(Collectors.toList());
   }
 }

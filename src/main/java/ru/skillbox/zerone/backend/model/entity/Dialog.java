@@ -27,18 +27,15 @@ public class Dialog {
   @Column(name = "id")
   private Long id;
 
-  @OneToMany(mappedBy = "dialog", fetch = FetchType.LAZY)
-  private List<Message> messages = new ArrayList<>();
-
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "sender_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "dialog_sender_user_fk")
   )
   private User sender;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "recipient_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "dialog_recipient_user_fk")
   )

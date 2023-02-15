@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,9 +24,7 @@ public class Tag {
   private Long id;
 
   @NotNull
+  @NotBlank
   @Column(name = "tag")
   private String tag;
-
-  @OneToMany(mappedBy = "tag", fetch = FetchType.LAZY)
-  private List<PostToTag> postToTags = new ArrayList<>();
 }

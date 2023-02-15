@@ -11,10 +11,10 @@ import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.request.AuthRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.repository.UserRepository;
-import ru.skillbox.zerone.backend.security.jwt.JwtTokenProvider;
-
+import ru.skillbox.zerone.backend.security.JwtTokenProvider;
 @Service
 @RequiredArgsConstructor
 public class LoginService {
@@ -45,9 +45,15 @@ public class LoginService {
     UserDTO userDTO = userMapper.userToUserDTO(user);
     userDTO.setToken(token);
 
-    CommonResponseDTO<UserDTO> responseDTO = new CommonResponseDTO<>();
-    responseDTO.setData(userDTO);
 
-    return responseDTO;
+    return CommonResponseDTO.<UserDTO>builder()
+        .data(userDTO)
+        .build();
+  }
+
+  public CommonResponseDTO<MessageResponseDTO> logout() {
+    return CommonResponseDTO.<MessageResponseDTO>builder()
+        .data(new MessageResponseDTO("logged out"))
+        .build();
   }
 }

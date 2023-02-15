@@ -2,25 +2,22 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
+import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
-import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
-import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
-import ru.skillbox.zerone.backend.repository.UserRepository;
-import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.User;
-import ru.skillbox.zerone.backend.security.jwt.JwtUser;
+import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
+import ru.skillbox.zerone.backend.repository.UserRepository;
+import ru.skillbox.zerone.backend.util.CurrentUserUtils;
+
 import java.util.UUID;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -43,50 +40,41 @@ public class UserService {
 
     mailService.sendVerificationEmail(user.getEmail(), verificationUuid.toString());
 
-    CommonResponseDTO<MessageResponseDTO> response = new CommonResponseDTO<>();
-    response.setData(new MessageResponseDTO("ok"));
 
-    log.info("IN registerAccount - user with username: {} successfully registered", request.getEmail());
-    return response;
+    return CommonResponseDTO.<MessageResponseDTO>builder()
+        .data(new MessageResponseDTO("ok"))
+        .build();
   }
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
-    var userOptional = userRepository.findUserByEmail(request.getUserId());
+    var userOptional = userRepository.findUserByEmail(request.getEmail());
     if (userOptional.isEmpty()) {
-      log.info("IN registrationConfirm - user with username: {} put wrong user name", request.getUserId());
-      throw new RegistrationCompleteException("wrong input");
+      throw new RegistrationCompleteException("wrong email or key");
     }
     User user = userOptional.get();
 
-    if (!user.getConfirmationCode().equals(request.getToken())) {
-      log.info("IN registrationConfirm - user with username: {} put wrong confirmation key", request.getUserId());
-      throw new RegistrationCompleteException("wrong input");
+    if (!user.getConfirmationCode().equals(request.getConfirmationKey())) {
+      throw new RegistrationCompleteException("wrong email or key");
     }
 
     user.setIsApproved(true);
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
 
-    CommonResponseDTO<MessageResponseDTO> response = new CommonResponseDTO<>();
-    response.setData(new MessageResponseDTO("ok"));
 
-    log.info("IN registrationConfirm - user with username: {} successfully confirmed registration", request.getUserId());
-    return response;
+    return CommonResponseDTO.<MessageResponseDTO>builder()
+        .data(new MessageResponseDTO("ok"))
+        .build();
   }
 
   public CommonResponseDTO<UserDTO> getCurrentUser() {
 
-    JwtUser currentUser = (JwtUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    User user = CurrentUserUtils.getCurrentUser();
 
-    var userOptional = userRepository.findUserByEmail(currentUser.getEmail());
 
-    if (userOptional.isEmpty()) {
-      throw new BadCredentialsException("Invalid username or password");
-    }
-
-    CommonResponseDTO<UserDTO> responseDto = new CommonResponseDTO<>();
-    responseDto.setData(userMapper.userToUserDTO(userOptional.get()));
-    return responseDto;
+    return CommonResponseDTO.<UserDTO>builder()
+        .data(userMapper.userToUserDTO(user))
+        .build();
   }
 }
