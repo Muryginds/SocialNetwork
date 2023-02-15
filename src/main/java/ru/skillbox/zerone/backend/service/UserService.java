@@ -1,12 +1,20 @@
 package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
+import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.UserDTO;
+import ru.skillbox.zerone.backend.model.dto.request.ChangeEmailDTO;
+import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordTokenDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
@@ -16,14 +24,91 @@ import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+
 public class UserService {
   private final UserRepository userRepository;
   private final MailService mailService;
   private final UserMapper userMapper;
+
+  private static User usertmp = new User();
+
+  @Autowired
+  private PasswordEncoder passwordEncoder;
+
+  @Transactional
+  public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordTokenDTO request) {
+
+    User user = CurrentUserUtils.getCurrentUser();
+    String password = request.getPassword();
+
+
+    user.setPassword(passwordEncoder.encode(password));
+    userRepository.save(user);
+
+
+    return CommonResponseDTO.<MessageResponseDTO>builder()
+        .data(new MessageResponseDTO("ok"))
+        .build();
+
+  }
+
+
+  @Transactional
+  public CommonResponseDTO<MessageResponseDTO> sendMessageForChangeEmail(ChangeEmailDTO request) {
+
+    User user = CurrentUserUtils.getCurrentUser();
+    //User usertmp = new User();
+
+    String emailOld = user.getEmail();
+    usertmp.setEmail(request.getEmail());
+
+    if (userRepository.existsByEmail(request.getEmail())) {
+      throw new UserAlreadyExistException(user.getEmail());
+    }
+
+
+
+    var verificationUuid = UUID.randomUUID();
+    user.setConfirmationCode(verificationUuid.toString());
+    userRepository.save(user);
+    //userRepository.save(usertmp);
+
+    mailService.setServerAddress("http://localhost:8086");
+    mailService.sendVerificationEmail(emailOld, user.getConfirmationCode());
+
+    return CommonResponseDTO.<MessageResponseDTO>builder()
+        .data(new MessageResponseDTO("ok"))
+        .build();
+
+  }
+
+  @Transactional
+  public CommonResponseDTO<MessageResponseDTO> changeEmailConfirm(String emailOld, String confirmationCode) {
+
+    User user = CurrentUserUtils.getCurrentUser();
+    String token = user.getConfirmationCode();
+    String newEmail = usertmp.getEmail();
+
+    if (token.equals(confirmationCode) & user.getEmail().equals(emailOld)) {
+      user.setEmail(newEmail);  //новый Email присваиваю !!!
+      userRepository.save(user);
+
+      return CommonResponseDTO.<MessageResponseDTO>builder()
+          .data(new MessageResponseDTO("ok"))
+          .build();
+    }
+    else {
+      return CommonResponseDTO.<MessageResponseDTO>builder()
+          .data(new MessageResponseDTO("error"))
+          .build();
+    }
+  }
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registerAccount(RegisterRequestDTO request) {
@@ -38,7 +123,7 @@ public class UserService {
 
     userRepository.save(user);
 
-    mailService.sendVerificationEmail(user.getEmail(), verificationUuid.toString());
+    mailService.sendVerificationEmail(user.getEmail(), verificationUuid.toString()); //отправляет подтверждающее письмо
 
 
     return CommonResponseDTO.<MessageResponseDTO>builder()

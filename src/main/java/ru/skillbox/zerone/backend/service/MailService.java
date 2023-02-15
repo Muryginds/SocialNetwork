@@ -1,12 +1,14 @@
 package ru.skillbox.zerone.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -19,8 +21,13 @@ public class MailService {
   private final JavaMailSender emailSender;
   @Value("${spring.mail.username}")
   private String senderMail;
+
+  @Setter
   @Value("${mail-service.server-address}")
   private String serverAddress;
+
+
+
 
   public void sendVerificationEmail(String email, String verifyCode) {
     var message = createVerificationMessage(
@@ -39,6 +46,7 @@ public class MailService {
         .queryParam("token", URLEncoder.encode(token, StandardCharsets.UTF_8))
         .build()
         .toUriString();
+
   }
 
   private SimpleMailMessage createVerificationMessage(String addressee, String theme, String text) {
@@ -49,4 +57,9 @@ public class MailService {
     message.setText(text);
     return message;
   }
+
+
+
+
+
 }

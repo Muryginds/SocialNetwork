@@ -51,7 +51,9 @@ public class SecurityConfig {
             .requestMatchers(
                 "/api/v1/account/register/confirm",
                 "/api/v1/account/register",
-                "/api/v1/support"
+                "/api/v1/support",
+                "/api/v1/account/password/set",
+                "/registration/complete"
             ).permitAll()
             .requestMatchers(LOGIN_ENDPOINT).permitAll()
             .requestMatchers(LOGOUT_ENDPOINT).permitAll()
