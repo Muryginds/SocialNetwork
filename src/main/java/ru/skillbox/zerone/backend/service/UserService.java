@@ -40,7 +40,6 @@ public class UserService {
 
     mailService.sendVerificationEmail(user.getEmail(), verificationUuid.toString());
 
-
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
         .build();
@@ -62,7 +61,6 @@ public class UserService {
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
 
-
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
         .build();
@@ -71,7 +69,6 @@ public class UserService {
   public CommonResponseDTO<UserDTO> getCurrentUser() {
 
     User user = CurrentUserUtils.getCurrentUser();
-
 
     return CommonResponseDTO.<UserDTO>builder()
         .data(userMapper.userToUserDTO(user))

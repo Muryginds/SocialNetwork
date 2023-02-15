@@ -45,7 +45,6 @@ public class LoginService {
     UserDTO userDTO = userMapper.userToUserDTO(user);
     userDTO.setToken(token);
 
-
     return CommonResponseDTO.<UserDTO>builder()
         .data(userDTO)
         .build();
