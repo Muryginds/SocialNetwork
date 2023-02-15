@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import ru.skillbox.zerone.backend.exception.BlacklistException;
 import ru.skillbox.zerone.backend.model.entity.Role;
+import ru.skillbox.zerone.backend.service.BlacklistService;
 import ru.skillbox.zerone.backend.service.JpaUserDetails;
 
 import java.util.Base64;
@@ -18,6 +20,8 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
+
+  private final BlacklistService blackListService;
 
   @Value("${jwt.token.secret}")
   private String secret;
@@ -63,10 +67,14 @@ public class JwtTokenProvider {
     try {
       Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
 
+      blackListService.validateToken(token);
+
       return claims.getBody().getExpiration().after(new Date());
 
     } catch (JwtException | IllegalArgumentException e) {
       throw new JwtException("JWT token is expired or invalid");
+    } catch (BlacklistException e2) {
+      throw e2;
     }
   }
 }

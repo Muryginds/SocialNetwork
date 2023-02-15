@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
@@ -16,6 +17,7 @@ import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.security.JwtTokenProvider;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,6 +27,7 @@ public class LoginService {
   private final JwtTokenProvider jwtTokenProvider;
   private final UserRepository userRepository;
   private final UserMapper userMapper;
+  private final BlacklistService blackListService;
 
   public CommonResponseDTO<UserDTO> login(AuthRequestDTO request) {
 
@@ -49,14 +52,25 @@ public class LoginService {
 
     log.info("IN login - user with username: {} logged in successfully", email);
 
+    blackListService.processLogin(user.getEmail(), token);
+
     return CommonResponseDTO.<UserDTO>builder()
         .data(userDTO)
         .build();
   }
 
   public CommonResponseDTO<MessageResponseDTO> logout() {
-    return CommonResponseDTO.<MessageResponseDTO>builder()
-        .data(new MessageResponseDTO("logged out"))
-        .build();
+    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    try {
+      blackListService.processLogout(user);
+
+      return CommonResponseDTO.<MessageResponseDTO>builder()
+          .data(new MessageResponseDTO("logged out"))
+          .build();
+    } catch (Exception e) {
+      return CommonResponseDTO.<MessageResponseDTO>builder()
+          .data(new MessageResponseDTO(e.getMessage()))
+          .build();
+    }
   }
 }
