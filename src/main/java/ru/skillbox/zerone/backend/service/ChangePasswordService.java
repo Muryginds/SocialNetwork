@@ -2,9 +2,13 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.skillbox.zerone.backend.controller.ChangePasswordTokenController;
-import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordTokenDto;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
@@ -16,15 +20,20 @@ import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 @RequiredArgsConstructor
 public class ChangePasswordService {
   private final UserRepository userRepository;
-  private final MailService mailService;
-  private final UserMapper userMapper;
+
+  private final AuthenticationManager authenticationManager;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordTokenDto request) {
 
-    User user = userMapper.registerRequestDTOToUser(request);
-     CurrentUserUtils.getCurrentUser().setPassword(request.getPassword());
+    User user = CurrentUserUtils.getCurrentUser();
+    String password = request.getPassword();
 
+
+    user.setPassword(passwordEncoder.encode(password));
+    userRepository.save(user);
 
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
