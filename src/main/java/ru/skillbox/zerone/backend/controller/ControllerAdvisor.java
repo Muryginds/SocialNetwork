@@ -1,6 +1,5 @@
 package ru.skillbox.zerone.backend.controller;
 
-import io.jsonwebtoken.JwtException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,8 +16,7 @@ public class ControllerAdvisor {
       RegistrationCompleteException.class,
       ConstraintViolationException.class,
       BadCredentialsException.class,
-      UserAlreadyExistException.class,
-      JwtException.class
+      UserAlreadyExistException.class
   })
   ResponseEntity<Object> handleException(Exception e) {
     var response = CommonResponseDTO.builder()
