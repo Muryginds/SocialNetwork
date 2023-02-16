@@ -8,11 +8,12 @@ import java.util.List;
 
 @Data
 public class PostsDTO {
+  private int id;
   private String title;
   private String postText;
   private boolean isBlocked;
   private int likes;
-  private ListCommentsDTO<CommentDTO> comments;
+  private CommonListDTO<CommentDTO> comments;
   private boolean myLike;
   private List<String> tags;
   private String type;
