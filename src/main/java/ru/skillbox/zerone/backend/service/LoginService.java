@@ -1,7 +1,6 @@
 package ru.skillbox.zerone.backend.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +17,6 @@ import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.security.JwtTokenProvider;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LoginService {
@@ -49,8 +47,6 @@ public class LoginService {
 
     UserDTO userDTO = userMapper.userToUserDTO(user);
     userDTO.setToken(token);
-
-    log.info("IN login - user with username: {} logged in successfully", email);
 
     return CommonResponseDTO.<UserDTO>builder()
         .data(userDTO)

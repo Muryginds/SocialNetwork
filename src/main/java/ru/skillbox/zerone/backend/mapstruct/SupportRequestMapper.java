@@ -6,6 +6,5 @@ import ru.skillbox.zerone.backend.model.entity.SupportRequest;
 
 @Mapper
 public interface SupportRequestMapper {
-
   SupportRequest supportRequestDtoToSupportRequest(SupportRequestDTO requestDTO);
 }

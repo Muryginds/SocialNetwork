@@ -12,4 +12,5 @@ public class ValidationUtils {
   public final String EMAIL_PATTERN_DESCRIPTION = "email must match form aaa@bbb.cc";
   public final String SIZE_3_PATTERN_DESCRIPTION = "must have at least 3 characters";
   public final String SIZE_8_PATTERN_DESCRIPTION = "must have at least 8 characters";
+  public final String MESSAGE_NOT_EMPTY_DESCRIPTION = "message must be not empty";
 }
