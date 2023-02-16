@@ -1,46 +1,35 @@
 package ru.skillbox.zerone.backend.service;
 
-import lombok.Synchronized;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.BlacklistException;
-import ru.skillbox.zerone.backend.model.entity.User;
+import ru.skillbox.zerone.backend.model.entity.BlacklistToken;
+import ru.skillbox.zerone.backend.repository.BlacklistRepository;
+import ru.skillbox.zerone.backend.util.TokenDecoder;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class BlacklistService {
 
-  private final Map<String, String> loggedUsers = new HashMap<>();
-  private final Map<String, Date> blacklist = new HashMap<>();
+  private final BlacklistRepository blacklistRepository;
 
-  public void processLogin(String email, String token) {
-    synchronized (this) {
-      if (loggedUsers.containsKey(email)) {
-        blacklist.put(token, new Date());
-      }
-      loggedUsers.put(email, token);
-    }
+  public void processLogout(String token) throws JsonProcessingException {
+    var tokenUtils = new TokenDecoder(token);
+    Date expired = tokenUtils.getExpired();
+    var blacklistToken = BlacklistToken.builder()
+        .token(token)
+        .expired(expired)
+        .build();
+    blacklistRepository.save(blacklistToken);
   }
 
-  public void processLogout(User user) {
-    synchronized (this) {
-      String token = loggedUsers.get(user.getEmail());
-      if (token != null) {
-        blacklist.put(token, new Date());
-        loggedUsers.remove(user.getEmail());
-      }
-    }
-  }
-
-  public boolean validateToken(String token) {
-    synchronized (this) {
-      if (blacklist.containsKey(token) || !loggedUsers.containsValue(token)) {
-        throw new BlacklistException(token);
-      }
-      return true;
+  public void validateToken(String token) {
+    var blacklistToken = blacklistRepository.findByToken(token).orElse(null);
+    if (blacklistToken != null) {
+      throw new BlacklistException(token);
     }
   }
 }
-

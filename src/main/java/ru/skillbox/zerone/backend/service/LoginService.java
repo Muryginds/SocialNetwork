@@ -52,17 +52,15 @@ public class LoginService {
 
     log.info("IN login - user with username: {} logged in successfully", email);
 
-    blackListService.processLogin(user.getEmail(), token);
-
     return CommonResponseDTO.<UserDTO>builder()
         .data(userDTO)
         .build();
   }
 
-  public CommonResponseDTO<MessageResponseDTO> logout() {
+  public CommonResponseDTO<MessageResponseDTO> logout(String token) {
     User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     try {
-      blackListService.processLogout(user);
+      blackListService.processLogout(token);
 
       return CommonResponseDTO.<MessageResponseDTO>builder()
           .data(new MessageResponseDTO("logged out"))

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import ru.skillbox.zerone.backend.exception.BlacklistException;
 import ru.skillbox.zerone.backend.model.entity.Role;
 import ru.skillbox.zerone.backend.service.BlacklistService;
 import ru.skillbox.zerone.backend.service.JpaUserDetails;
@@ -73,8 +72,6 @@ public class JwtTokenProvider {
 
     } catch (JwtException | IllegalArgumentException e) {
       throw new JwtException("JWT token is expired or invalid");
-    } catch (BlacklistException e2) {
-      throw e2;
     }
   }
 }

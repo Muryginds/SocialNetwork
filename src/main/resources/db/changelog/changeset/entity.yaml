@@ -117,6 +117,7 @@ databaseChangeLog:
         columns:
         - column:
             autoIncrement: true
+            autoIncrement: true
             constraints:
               nullable: false
               primaryKey: true
