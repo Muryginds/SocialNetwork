@@ -35,7 +35,6 @@ public class Comment {
   @Column(name = "time", columnDefinition = "timestamp without time zone")
   private LocalDateTime time = LocalDateTime.now();
 
-  @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "comment_post_fk")
