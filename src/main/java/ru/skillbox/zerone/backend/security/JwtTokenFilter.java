@@ -10,19 +10,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
+import ru.skillbox.zerone.backend.service.BlacklistService;
 
 import java.io.IOException;
 
 @Component
 @RequiredArgsConstructor
 public class JwtTokenFilter extends GenericFilterBean {
-
   private final JwtTokenProvider jwtTokenProvider;
+  private final BlacklistService blackListService;
 
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
     String token = jwtTokenProvider.resolveToken((HttpServletRequest) servletRequest);
-
     if (token != null && jwtTokenProvider.validateToken(token)) {
       Authentication authentication = jwtTokenProvider.getAuthentication(token);
 

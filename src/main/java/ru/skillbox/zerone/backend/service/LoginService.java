@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -53,18 +54,11 @@ public class LoginService {
         .build();
   }
 
-  public CommonResponseDTO<MessageResponseDTO> logout(String token) {
+  public CommonResponseDTO<MessageResponseDTO> logout(String token) throws JsonProcessingException {
     User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    try {
-      blackListService.processLogout(token);
-
-      return CommonResponseDTO.<MessageResponseDTO>builder()
-          .data(new MessageResponseDTO("logged out"))
-          .build();
-    } catch (Exception e) {
-      return CommonResponseDTO.<MessageResponseDTO>builder()
-          .data(new MessageResponseDTO(e.getMessage()))
-          .build();
-    }
+    blackListService.processLogout(token);
+    return CommonResponseDTO.<MessageResponseDTO>builder()
+        .data(new MessageResponseDTO("logged out"))
+        .build();
   }
 }

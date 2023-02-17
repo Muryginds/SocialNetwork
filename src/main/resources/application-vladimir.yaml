@@ -12,12 +12,12 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
-    show-sql: false
+    show-sql: true
   sql:
     init:
-      mode: never
+      mode: always
   liquibase:
-    enabled: true
+    enabled: false
     change-log: classpath:db/changelog/db.changelog-master.yaml
   mail:
     host: smtp.mail.ru
