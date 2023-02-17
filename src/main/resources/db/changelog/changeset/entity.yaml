@@ -44,8 +44,6 @@ databaseChangeLog:
             name: parent_id
             type: BIGINT
         - column:
-            constraints:
-              nullable: false
             name: post_id
             type: BIGINT
         tableName: comment
