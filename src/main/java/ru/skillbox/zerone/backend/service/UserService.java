@@ -48,13 +48,19 @@ public class UserService {
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
     var userOptional = userRepository.findUserByEmail(request.getEmail());
+
     if (userOptional.isEmpty()) {
-      throw new RegistrationCompleteException("wrong email or key");
+      throw new RegistrationCompleteException("Wrong email or key");
     }
+
     User user = userOptional.get();
 
+    if (user.getIsApproved()) {
+      throw new RegistrationCompleteException("User already confirmed");
+    }
+
     if (!user.getConfirmationCode().equals(request.getConfirmationKey())) {
-      throw new RegistrationCompleteException("wrong email or key");
+      throw new RegistrationCompleteException("Wrong email or key");
     }
 
     user.setIsApproved(true);
