@@ -62,3 +62,11 @@ databaseChangeLog:
         -  sql:
              sql: DROP TYPE IF EXISTS user_status CASCADE;
                   CREATE TYPE user_status AS ENUM ('ACTIVE', 'INACTIVE');
+
+  - changeSet:
+      id: 9
+      author: Riddle
+      changes:
+        - sql:
+            sql: DROP TYPE IF EXISTS comment_type CASCADE;
+              CREATE TYPE comment_type AS ENUM ('POST', 'COMMENT');
