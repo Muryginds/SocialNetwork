@@ -1,6 +1,5 @@
 package ru.skillbox.zerone.backend.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.jsonwebtoken.Jwts;
 import jakarta.annotation.PostConstruct;
 import jakarta.transaction.Transactional;
@@ -34,7 +33,7 @@ public class BlacklistService {
   }
 
   @Transactional
-  public void processLogout(String token) throws JsonProcessingException {
+  public void processLogout(String token) {
     Date expiration = Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
         .getBody().getExpiration();
     var blacklistToken = BlacklistToken.builder()
@@ -42,7 +41,7 @@ public class BlacklistService {
         .expired(expiration)
         .build();
     blacklistRepository.save(blacklistToken);
-    Long newCount = count.incrementAndGet();
+    long newCount = count.incrementAndGet();
     if  (newCount % interval == 0) {
       blacklistRepository.deleteByExpiredLessThan(new Date());
     }

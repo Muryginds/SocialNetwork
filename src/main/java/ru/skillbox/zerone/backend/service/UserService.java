@@ -28,7 +28,7 @@ public class UserService {
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registerAccount(RegisterRequestDTO request) {
 
-      if (userRepository.existsByEmail(request.getEmail())) {
+    if (userRepository.existsByEmail(request.getEmail())) {
       throw new UserAlreadyExistException(request.getEmail());
     }
 
