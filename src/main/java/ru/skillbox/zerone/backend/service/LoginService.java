@@ -1,12 +1,10 @@
 package ru.skillbox.zerone.backend.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
@@ -55,7 +53,6 @@ public class LoginService {
   }
 
   public CommonResponseDTO<MessageResponseDTO> logout(String token) {
-    User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     blackListService.processLogout(token);
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("logged out"))
