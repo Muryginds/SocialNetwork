@@ -40,3 +40,16 @@ jwt:
     expired: 360000000
 mail-service:
   server-address: http://localhost:8080
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  metrics:
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
+  prometheus:
+    metrics:
+      export:
+        enabled: true
