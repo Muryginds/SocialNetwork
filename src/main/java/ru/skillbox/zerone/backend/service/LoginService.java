@@ -15,6 +15,7 @@ import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.security.JwtTokenProvider;
+
 @Service
 @RequiredArgsConstructor
 public class LoginService {
@@ -23,6 +24,7 @@ public class LoginService {
   private final JwtTokenProvider jwtTokenProvider;
   private final UserRepository userRepository;
   private final UserMapper userMapper;
+  private final BlacklistService blackListService;
 
   public CommonResponseDTO<UserDTO> login(AuthRequestDTO request) {
 
@@ -50,7 +52,8 @@ public class LoginService {
         .build();
   }
 
-  public CommonResponseDTO<MessageResponseDTO> logout() {
+  public CommonResponseDTO<MessageResponseDTO> logout(String token) {
+    blackListService.processLogout(token);
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("logged out"))
         .build();
