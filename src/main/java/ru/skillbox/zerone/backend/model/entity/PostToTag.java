@@ -1,12 +1,10 @@
 package ru.skillbox.zerone.backend.model.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
 
 @Entity
 @Table(name = "post_to_tag",

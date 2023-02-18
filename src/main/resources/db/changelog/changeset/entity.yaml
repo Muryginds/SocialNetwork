@@ -46,6 +46,11 @@ databaseChangeLog:
         - column:
             name: post_id
             type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: type
+            type: COMMENT_TYPE
         tableName: comment
 - changeSet:
     id: 2
