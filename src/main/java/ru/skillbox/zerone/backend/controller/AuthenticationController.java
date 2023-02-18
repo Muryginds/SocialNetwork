@@ -23,7 +23,7 @@ public class AuthenticationController {
 
   @GetMapping("/logout")
   public CommonResponseDTO<MessageResponseDTO> logout(
-      @RequestHeader(name = "Authorization") String token) throws JsonProcessingException {
+      @RequestHeader(name = "Authorization") String token) {
     return loginService.logout(token);
   }
 }

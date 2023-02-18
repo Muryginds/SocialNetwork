@@ -54,7 +54,7 @@ public class LoginService {
         .build();
   }
 
-  public CommonResponseDTO<MessageResponseDTO> logout(String token) throws JsonProcessingException {
+  public CommonResponseDTO<MessageResponseDTO> logout(String token) {
     User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     blackListService.processLogout(token);
     return CommonResponseDTO.<MessageResponseDTO>builder()

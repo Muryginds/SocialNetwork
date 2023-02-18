@@ -15,9 +15,9 @@ spring:
     show-sql: true
   sql:
     init:
-      mode: always
+      mode: never
   liquibase:
-    enabled: false
+    enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
   mail:
     host: smtp.mail.ru
