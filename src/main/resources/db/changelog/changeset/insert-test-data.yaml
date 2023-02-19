@@ -1,0 +1,16 @@
+databaseChangeLog:
+  - preConditions:
+      - onFail: CONTINUE
+      - onError: CONTINUE
+      - onFailMessage: "enable property: insert-test-data in application.yaml"
+      - changeLogPropertyDefined:
+          property: "insert-test-data"
+          value: true
+  - include:
+      file: db/changelog/changeset/test-data/insert-into-user-and-user2role.yaml
+  - include:
+      file: db/changelog/changeset/test-data/insert-into-post.yaml
+  - include:
+      file: db/changelog/changeset/test-data/insert-into-comment.yaml
+  - include:
+      file: db/changelog/changeset/test-data/insert-into-like.yaml

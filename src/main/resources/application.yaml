@@ -19,6 +19,8 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
+    parameters:
+      insert-test-data: true
   mail:
     host: smtp.mail.ru
     port: 465
