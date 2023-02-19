@@ -15,7 +15,7 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 @Component
 public class UserServiceLoggingAspect {
 
-  @Pointcut("execution(* registerAccount(ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO))")
+  @Pointcut("execution(* ru.skillbox.zerone.backend.service.UserService.registerAccount(ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO))")
   public void registerAccountPointcut(){}
 
   @AfterReturning("args(request) && registerAccountPointcut()")
@@ -23,7 +23,7 @@ public class UserServiceLoggingAspect {
     log.debug("IN registerAccount - user with username: {} successfully registered", request.getEmail());
   }
 
-  @Pointcut("execution(* registrationConfirm(ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO))")
+  @Pointcut("execution(* ru.skillbox.zerone.backend.service.UserService.registrationConfirm(ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO))")
   public void registrationConfirmPointcut(){}
 
   @AfterReturning("args(request) && registrationConfirmPointcut()")
@@ -31,19 +31,11 @@ public class UserServiceLoggingAspect {
     log.debug("IN registrationConfirm - user with username: {} successfully confirmed registration", request.getEmail());
   }
 
-  @Pointcut("execution(* getCurrentUser())")
+  @Pointcut("execution(* ru.skillbox.zerone.backend.service.UserService.getCurrentUser())")
   public void getCurrentUserPointcut(){}
 
   @AfterReturning(value = "getCurrentUserPointcut()", returning = "response")
   public void getCurrentUserAdvice(CommonResponseDTO<UserDTO> response){
     log.debug("IN getCurrentUser - user with username: {} successfully loaded", response.getData().getEmail());
-  }
-
-  @Pointcut("execution(* loadUserByUsername(String))")
-  public void loadUserByUsernamePointcut(){}
-
-  @AfterReturning("args(username) && loadUserByUsernamePointcut()")
-  public void loadUserByUsernameAdvice(String username){
-    log.debug("IN loadUserByUsername - user with email: {} successfully loaded", username);
   }
 }

@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.UserDTO;
@@ -21,7 +22,8 @@ public class AuthenticationController {
   }
 
   @GetMapping("/logout")
-  public CommonResponseDTO<MessageResponseDTO> logout() {
-    return loginService.logout();
+  public CommonResponseDTO<MessageResponseDTO> logout(
+      @RequestHeader(name = "Authorization") String token) {
+    return loginService.logout(token);
   }
 }

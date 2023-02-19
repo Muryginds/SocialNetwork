@@ -12,7 +12,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
-    show-sql: false
+    show-sql: true
   sql:
     init:
       mode: never
@@ -42,16 +42,3 @@ blacklist:
   deletionInterval: 1000
 mail-service:
   server-address: http://localhost:8080
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,prometheus
-  metrics:
-    distribution:
-      percentiles-histogram:
-        "[http.server.requests]": true
-  prometheus:
-    metrics:
-      export:
-        enabled: true

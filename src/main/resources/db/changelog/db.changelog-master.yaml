@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/changeset/entity.yaml
   - include:
       file: db/changelog/changeset/insert-into-role.yaml
+  - include:
+      file: db/changelog/changeset/blacklist_token.yaml
