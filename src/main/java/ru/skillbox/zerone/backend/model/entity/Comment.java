@@ -60,7 +60,7 @@ public class Comment {
 
   @NotNull
   @NotBlank
-  @Column(name = "comment_test", columnDefinition = "text")
+  @Column(name = "comment_text", columnDefinition = "text")
   private String commentText;
 
   @NotNull
