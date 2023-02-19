@@ -7,7 +7,7 @@ import ru.skillbox.zerone.backend.model.entity.User;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Integer> {
   Boolean existsByEmail(String email);
   Optional<User> findUserByEmail(String email);
 }
