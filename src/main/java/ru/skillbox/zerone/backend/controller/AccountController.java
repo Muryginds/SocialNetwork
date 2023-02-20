@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.request.ChangeEmailDTO;
-import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordTokenDTO;
+import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordTokenDto;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
@@ -32,7 +32,7 @@ public class AccountController {
 
 
   @PostMapping("/password/set")
-  public CommonResponseDTO<MessageResponseDTO> changePassword(@Valid @RequestBody ChangePasswordTokenDTO requestDto) {
+  public CommonResponseDTO<MessageResponseDTO> changePassword(@Valid @RequestBody ChangePasswordTokenDto requestDto) {
 
     return userService.changePassword(requestDto);
   }
