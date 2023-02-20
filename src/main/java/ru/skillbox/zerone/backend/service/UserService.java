@@ -10,7 +10,7 @@ import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.request.ChangeEmailDTO;
-import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordTokenDto;
+import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordTokenDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
@@ -36,7 +36,7 @@ public class UserService {
   private PasswordEncoder passwordEncoder;
 
   @Transactional
-  public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordTokenDto request) {
+  public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordTokenDTO request) {
 
     User user = CurrentUserUtils.getCurrentUser();
     String password = request.getPassword();
