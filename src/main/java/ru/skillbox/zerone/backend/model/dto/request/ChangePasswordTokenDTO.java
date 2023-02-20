@@ -7,9 +7,9 @@ import ru.skillbox.zerone.backend.util.ValidationUtils;
 
 
 @Data
-  public class ChangePasswordTokenDTO {
-    private String token;
+public class ChangePasswordTokenDto {
+  private String token;
   @Size(min = 8, message = "password " + ValidationUtils.SIZE_8_PATTERN_DESCRIPTION)
   @Pattern(regexp = ValidationUtils.PASSWORD_PATTERN, message = ValidationUtils.PASSWORD_PATTERN_DESCRIPTION)
-    private String password;
-  }
+  private String password;
+}
