@@ -6,4 +6,6 @@ databaseChangeLog:
   - include:
       file: db/changelog/changeset/insert-into-role.yaml
   - include:
-      file: db/changelog/changeset/blacklist_token.yaml
+      file: db/changelog/changeset/blacklist-token.yaml
+#  - include:
+#      file: db/changelog/changeset/insert-test-data.yaml

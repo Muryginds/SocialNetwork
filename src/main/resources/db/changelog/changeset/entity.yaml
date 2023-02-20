@@ -16,7 +16,7 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
-            name: comment_test
+            name: comment_text
             type: TEXT
         - column:
             constraints:
