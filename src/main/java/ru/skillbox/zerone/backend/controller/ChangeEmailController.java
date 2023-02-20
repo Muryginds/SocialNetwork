@@ -20,8 +20,6 @@ public class ChangeEmailController {
 
     return userService.changeEmailConfirm(userId, token);
 
-    /*на старое мыло отправляю пароль. При переходе по ссылке сравниваю пароль, если ок -
-     то меняю EMAIL. userService.registrationConfirm()*/
 
   }
 

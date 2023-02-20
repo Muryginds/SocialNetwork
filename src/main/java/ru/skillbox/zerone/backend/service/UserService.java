@@ -1,14 +1,10 @@
 package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
-import lombok.Data;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
@@ -24,8 +20,6 @@ import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Service
@@ -36,7 +30,7 @@ public class UserService {
   private final MailService mailService;
   private final UserMapper userMapper;
 
-  private static User usertmp = new User();
+  private static final User usertmp = new User();
 
   @Autowired
   private PasswordEncoder passwordEncoder;
@@ -77,7 +71,6 @@ public class UserService {
     var verificationUuid = UUID.randomUUID();
     user.setConfirmationCode(verificationUuid.toString());
     userRepository.save(user);
-    //userRepository.save(usertmp);
 
     mailService.setServerAddress("http://localhost:8086");
     mailService.sendVerificationEmail(emailOld, user.getConfirmationCode());
@@ -96,7 +89,7 @@ public class UserService {
     String newEmail = usertmp.getEmail();
 
     if (token.equals(confirmationCode) & user.getEmail().equals(emailOld)) {
-      user.setEmail(newEmail);  //новый Email присваиваю !!!
+      user.setEmail(newEmail);
       userRepository.save(user);
 
       return CommonResponseDTO.<MessageResponseDTO>builder()
