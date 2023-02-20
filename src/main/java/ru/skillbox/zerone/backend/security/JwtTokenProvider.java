@@ -1,6 +1,9 @@
 package ru.skillbox.zerone.backend.security;
 
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 import ru.skillbox.zerone.backend.model.entity.Role;
+import ru.skillbox.zerone.backend.service.BlacklistService;
 import ru.skillbox.zerone.backend.service.JpaUserDetails;
 
 import java.util.Base64;
@@ -18,12 +22,12 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
-
   @Value("${jwt.token.secret}")
   private String secret;
   @Value("${jwt.token.expired}")
   private long validityInMilliseconds;
   private final JpaUserDetails jpaUserDetails;
+  private final BlacklistService blacklistService;
 
   @PostConstruct
   protected void init() {
@@ -60,13 +64,8 @@ public class JwtTokenProvider {
   }
 
   public boolean validateToken(String token) {
-    try {
-      Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
-
-      return claims.getBody().getExpiration().after(new Date());
-
-    } catch (JwtException | IllegalArgumentException e) {
-      throw new JwtException("JWT token is expired or invalid");
-    }
+    blacklistService.validateToken(token);
+    Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+    return claims.getBody().getExpiration().after(new Date());
   }
 }

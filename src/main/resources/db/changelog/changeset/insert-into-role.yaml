@@ -5,7 +5,6 @@ databaseChangeLog:
       author: ddg
       changes:
         - insert:
-
             columns:
               - column:
                   name: name
@@ -14,12 +13,9 @@ databaseChangeLog:
             tableName: role
 
         - insert:
-
             columns:
-
               - column:
                   name: name
                   value: ROLE_ADMIN
-
             schemaName: public
             tableName: role

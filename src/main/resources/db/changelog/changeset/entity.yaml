@@ -16,7 +16,7 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
-            name: comment_test
+            name: comment_text
             type: TEXT
         - column:
             constraints:
@@ -44,10 +44,13 @@ databaseChangeLog:
             name: parent_id
             type: BIGINT
         - column:
-            constraints:
-              nullable: false
             name: post_id
             type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: type
+            type: COMMENT_TYPE
         tableName: comment
 - changeSet:
     id: 2

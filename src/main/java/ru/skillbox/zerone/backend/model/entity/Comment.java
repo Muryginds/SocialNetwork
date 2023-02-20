@@ -7,8 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import ru.skillbox.zerone.backend.model.enumerated.CommentType;
 
 import java.time.LocalDateTime;
 
@@ -36,6 +35,10 @@ public class Comment {
   private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
+  @Enumerated(EnumType.STRING)
+  @Column(name = "type", columnDefinition = "comment_type")
+  private CommentType type;
+
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "post_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "comment_post_fk")
@@ -57,7 +60,7 @@ public class Comment {
 
   @NotNull
   @NotBlank
-  @Column(name = "comment_test", columnDefinition = "text")
+  @Column(name = "comment_text", columnDefinition = "text")
   private String commentText;
 
   @NotNull

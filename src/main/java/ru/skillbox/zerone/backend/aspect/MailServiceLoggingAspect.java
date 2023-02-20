@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class MailServiceLoggingAspect {
 
-  @Pointcut("execution(* sendVerificationEmail(..))")
+  @Pointcut("execution(* ru.skillbox.zerone.backend.service.MailService.sendVerificationEmail(..))")
   public void sendVerificationEmailPointcut(){}
 
-  @AfterReturning(value = "args(email, verifyCode) && sendVerificationEmailPointcut()", argNames = "email,verifyCode")
+  @AfterReturning(value = "args(email, verifyCode) && sendVerificationEmailPointcut()", argNames = "email, verifyCode")
   public void sendVerificationEmailAdvice(String email, String verifyCode){
     log.debug("IN sendVerificationEmail - user with username: {} mail sent successfully", email);
   }

@@ -117,7 +117,6 @@ public class UserService {
 
     mailService.sendVerificationEmail(user.getEmail(), verificationUuid.toString());
 
-
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
         .build();
@@ -126,19 +125,24 @@ public class UserService {
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
     var userOptional = userRepository.findUserByEmail(request.getEmail());
+
     if (userOptional.isEmpty()) {
-      throw new RegistrationCompleteException("wrong email or key");
+      throw new RegistrationCompleteException("Wrong email or key");
     }
+
     User user = userOptional.get();
 
+    if (user.getIsApproved()) {
+      throw new RegistrationCompleteException("User already confirmed");
+    }
+
     if (!user.getConfirmationCode().equals(request.getConfirmationKey())) {
-      throw new RegistrationCompleteException("wrong email or key");
+      throw new RegistrationCompleteException("Wrong email or key");
     }
 
     user.setIsApproved(true);
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
-
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
@@ -148,7 +152,6 @@ public class UserService {
   public CommonResponseDTO<UserDTO> getCurrentUser() {
 
     User user = CurrentUserUtils.getCurrentUser();
-
 
     return CommonResponseDTO.<UserDTO>builder()
         .data(userMapper.userToUserDTO(user))

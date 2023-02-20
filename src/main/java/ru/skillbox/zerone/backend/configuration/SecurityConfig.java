@@ -15,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ru.skillbox.zerone.backend.security.FilterChainExceptionHandler;
 import ru.skillbox.zerone.backend.security.JwtTokenFilter;
 
 @Configuration
@@ -42,7 +43,7 @@ public class SecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+  public SecurityFilterChain filterChain(HttpSecurity http, FilterChainExceptionHandler filterChainExceptionHandler) throws Exception {
     http.cors().and()
         .csrf(AbstractHttpConfigurer::disable)
         .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
@@ -54,11 +55,15 @@ public class SecurityConfig {
                 "/api/v1/support",
                 "/api/v1/account/password/set",
                 "/registration/complete"
+                "/api/v1/support",
+                "/actuator/prometheus"
             ).permitAll()
             .requestMatchers(LOGIN_ENDPOINT).permitAll()
             .requestMatchers(LOGOUT_ENDPOINT).permitAll()
             .anyRequest().authenticated()
-        ).addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+        )
+        .addFilterBefore(filterChainExceptionHandler, UsernamePasswordAuthenticationFilter.class)
+        .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
         .httpBasic(Customizer.withDefaults());
     return http.build();
   }
