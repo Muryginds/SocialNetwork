@@ -10,7 +10,6 @@ import ru.skillbox.zerone.backend.model.entity.Tag;
 import ru.skillbox.zerone.backend.repository.PostRepository;
 import ru.skillbox.zerone.backend.repository.TagRepository;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -26,7 +25,7 @@ public class TagService {
 
   public CommonListDTO<TagDTO> getTags(String tag, int offset, int itemPerPage) {
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
-    Page<Tag> pageableTagList = tagRepository.findTagsByPostTextContains(tag, pageable);
+    Page<Tag> pageableTagList = tagRepository.findTagsByTagContains(tag, pageable);
     List<TagDTO> result = pageableTagList.stream().map(x -> new TagDTO().setId(x.getId()).setTag(x.getTag())).collect(Collectors.toList());
     CommonListDTO<TagDTO> response = new CommonListDTO<>();
     response.setPerPage(itemPerPage);

@@ -9,7 +9,7 @@ import ru.skillbox.zerone.backend.model.entity.Tag;
 import java.util.Optional;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Integer> {
-    Page <Tag> findTagsByPostTextContains (String tag, Pageable pageable);
+    Page <Tag> findTagsByTagContains(String tag, Pageable pageable);
 
   Optional <Tag> findByTag(String tag);
 }

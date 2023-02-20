@@ -11,6 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
+import java.util.Set;
 @Entity
 @Table(name = "post",
     indexes = @Index(name = "post_author_id_idx", columnList = "author_id")
@@ -23,7 +24,7 @@ public class Post {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private Long id;
+  private int id;
 
   @NotNull
   @Builder.Default
@@ -62,4 +63,8 @@ public class Post {
   @Builder.Default
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private Boolean isDeleted = false;
+//  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
+//  private Set<PostComment> comments;
+//  @ManyToMany(fetch = FetchType.LAZY)
+//  private Set<Tag> tags;
 }

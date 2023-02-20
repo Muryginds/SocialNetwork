@@ -10,8 +10,8 @@ import java.io.File;
 import java.util.List;
 @Repository
 public interface FileRepository extends JpaRepository <PostFile, Integer> {
-  PostFile findByUrl(String url);
-  List<PostFile> findByCommentId(@Param("commentId") Integer commentId);
-  List<PostFile> findByPostId(@Param("postId") Integer postId);
+//  PostFile findByUrl(String url);
+//  List<PostFile> findByCommentId(@Param("commentId") Integer commentId);
+//  List<PostFile> findByPostId(@Param("postId") Integer postId);
 
 }

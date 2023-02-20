@@ -1,6 +1,6 @@
 package ru.skillbox.zerone.backend.service;
 
-import aj.org.objectweb.asm.ConstantDynamic;
+
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -57,8 +57,8 @@ public class PostService {
 //    post.setTitle(post.getTitle());
 //    post.setIsBlocked(false);
 //
-//    Post savedPost = postRepository.save(post);
-//
+    Post savedPost = postRepository.save(post);
+
 //    PostsDTO postsDTO = new PostsDTO();
 //    postsDTO.setPostText(savedPost.getPostText());
 //    postsDTO.setAuthor(userMapper.userToUserDTO(user));
@@ -67,7 +67,7 @@ public class PostService {
 //    postsDTO.setTimestamp(post.getTime());
 //    postsDTO.setTitle(post.getTitle());
 //    postsDTO.setBlocked(post.getIsBlocked());
-//    postsDTO.setType(post.getType());
+
 //
 //    CommonResponseDTO<PostsDTO> result = new CommonResponseDTO<>();
 //    result.setData(postsDTO);
@@ -77,17 +77,17 @@ public class PostService {
     post.setPostText(postRequestDTO.getPostText());
     post.setTitle(postRequestDTO.getTitle());
     post.setAuthor(user);
-    List<String> tags = postRequestDTO.getTags();
-    if (tags != null) {
-      post.setTags(tags.stream()
-          .map(x -> tagRepository.findByTag(x).orElse(null))
-          .filter(Objects::nonNull).collect(Collectors.toSet()));
-    }
-    if (publishDate == 0) {
-      post.setTime(LocalDateTime.now());
-    } else {
-      post.setTime(LocalDateTime.from(Instant.ofEpochMilli(publishDate)));
-    }
+//    List<String> tags = postRequestDTO.getTags();
+//    if (tags != null) {
+//      post.setTags(tags.stream()
+//          .map(x -> tagRepository.findByTag(x).orElse(null))
+//          .filter(Objects::nonNull).collect(Collectors.toSet()));
+//    }
+//    if (publishDate == 0) {
+//      post.setTime(LocalDateTime.now());
+//    } else {
+//      post.setTime(LocalDateTime.from(Instant.ofEpochMilli(publishDate)));
+//    }
 
     Post createdPost = postRepository.save(post);
 //    Matcher images = pattern.matcher(postRequestDTO.getPostText());
@@ -103,7 +103,7 @@ public class PostService {
     postsDTO.setPostText(post.getPostText());
     postsDTO.setAuthor(userMapper.userToUserDTO(user));
     postsDTO.setComments(commentService.getPage4PostComments(0, 5, post));
-    Set<Like> likes = likeRepository.findLikesByItemAndType(post.getId(), "Post");
+    Set<Like> likes = likeRepository.findLikesByPost(post);
     postsDTO.setLikes(postsDTO.getLikes());
     postsDTO.setTimestamp(post.getTime());
     postsDTO.setId(post.getId());
@@ -111,9 +111,9 @@ public class PostService {
     postsDTO.setTimestamp(post.getTime());
     postsDTO.setTitle(post.getTitle());
     postsDTO.setBlocked(post.getIsBlocked());
-    if (post.getTags() != null) {
-      postsDTO.setTags(post.getTags().stream().map(Tag::getTag).collect(Collectors.toList()));
-    }
+//    if (post.getTags() != null) {
+//      postsDTO.setTags(post.getTags().stream().map(Tag::getTag).collect(Collectors.toList()));
+//    }
     postsDTO.setMyLike(likes.stream()
         .anyMatch(postLike -> postLike.getUser().equals(user)));
     if (Instant.now().isBefore(Instant.from(post.getTime()))) {
