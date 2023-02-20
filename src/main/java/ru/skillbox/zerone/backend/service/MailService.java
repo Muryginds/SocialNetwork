@@ -8,7 +8,6 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -33,21 +32,32 @@ public class MailService {
     var message = createVerificationMessage(
         email,
         CONFIRMATION_MESSAGE_THEME,
-        String.format("Please confirm your registration by clicking following link: %s", createVerificationLink(email, verifyCode))
+        String.format("Please confirm your registration by clicking following link: %s", createVerificationLink(email, verifyCode,"/registration/complete"))
     );
     emailSender.send(message);
   }
 
-  private String createVerificationLink(String userId, String token) {
+
+  private String createVerificationLink(String userId, String token, String path) {
     return UriComponentsBuilder
         .fromHttpUrl(serverAddress)
-        .path("/registration/complete")
+        .path(path)
         .queryParam("userId", URLEncoder.encode(userId, StandardCharsets.UTF_8))
         .queryParam("token", URLEncoder.encode(token, StandardCharsets.UTF_8))
         .build()
         .toUriString();
 
   }
+
+  public void sendVerificationChangeEmail(String email, String verifyCode) {
+    var message = createVerificationMessage(
+        email,
+        CONFIRMATION_MESSAGE_THEME,
+        String.format("Please confirm your registration by clicking following link: %s", createVerificationLink(email, verifyCode,"/changeemail/complete"))
+    );
+    emailSender.send(message);
+  }
+
 
   private SimpleMailMessage createVerificationMessage(String addressee, String theme, String text) {
     var message = new SimpleMailMessage();

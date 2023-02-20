@@ -15,8 +15,10 @@ import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
+import ru.skillbox.zerone.backend.model.entity.ChangeEmailHistory;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
+import ru.skillbox.zerone.backend.repository.ChangeEmailHistoryRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
@@ -24,13 +26,12 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-
 public class UserService {
   private final UserRepository userRepository;
+  private final ChangeEmailHistoryRepository changeEmailHistoryRepository;
   private final MailService mailService;
   private final UserMapper userMapper;
 
-  private static final User usertmp = new User();
 
   @Autowired
   private PasswordEncoder passwordEncoder;
@@ -59,7 +60,9 @@ public class UserService {
     User user = CurrentUserUtils.getCurrentUser();
 
     String emailOld = user.getEmail();
-    usertmp.setEmail(request.getEmail());
+
+    ChangeEmailHistory changeEmailHistory = ChangeEmailHistory.builder().emailOld(emailOld).emailNew(request.getEmail()).build();
+
 
     if (userRepository.existsByEmail(request.getEmail())) {
       throw new UserAlreadyExistException(user.getEmail());
@@ -70,9 +73,10 @@ public class UserService {
     var verificationUuid = UUID.randomUUID();
     user.setConfirmationCode(verificationUuid.toString());
     userRepository.save(user);
+    changeEmailHistoryRepository.save(changeEmailHistory);
 
     mailService.setServerAddress("http://localhost:8086");
-    mailService.sendVerificationEmail(emailOld, user.getConfirmationCode());
+    mailService.sendVerificationChangeEmail(emailOld, user.getConfirmationCode());
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
@@ -85,7 +89,16 @@ public class UserService {
 
     User user = CurrentUserUtils.getCurrentUser();
     String token = user.getConfirmationCode();
-    String newEmail = usertmp.getEmail();
+
+    var changeEmailHistoryOptional = changeEmailHistoryRepository.findFirstByEmailOldOrderByTimeDesc(emailOld);
+
+    if (changeEmailHistoryOptional.isEmpty()) {
+      throw new RegistrationCompleteException("Email dont find in DB");
+    }
+
+    ChangeEmailHistory changeEmailHistory = changeEmailHistoryOptional.get();
+
+    String newEmail = changeEmailHistory.getEmailNew();
 
     if (token.equals(confirmationCode) & user.getEmail().equals(emailOld)) {
       user.setEmail(newEmail);
