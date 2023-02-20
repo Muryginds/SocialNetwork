@@ -86,4 +86,5 @@ deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
     - scp target/zerone_backend-0.0.1-SNAPSHOT.jar $DEV_USER@$DEV_HOST:$DEV_APP_PATH/backend.jar
     - scp /builds/javapro_team34/zerone_backend/docker-compose.yaml $DEV_USER@$DEV_HOST:$USER_HOME_PATH/
     #копирование файла из репо на сервер
+    - ssh $DEV_USER@$DEV_HOST "docker compose stop"
     - ssh $DEV_USER@$DEV_HOST "docker compose up -d"

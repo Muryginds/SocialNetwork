@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/changelog/changeset/test-data/insert-into-user-and-user2role.yaml
+  - include:
+      file: db/changelog/changeset/test-data/insert-into-post.yaml
+  - include:
+      file: db/changelog/changeset/test-data/insert-into-comment.yaml
+  - include:
+      file: db/changelog/changeset/test-data/insert-into-like.yaml
