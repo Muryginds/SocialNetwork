@@ -57,7 +57,6 @@ public class UserService {
   public CommonResponseDTO<MessageResponseDTO> sendMessageForChangeEmail(ChangeEmailDTO request) {
 
     User user = CurrentUserUtils.getCurrentUser();
-    //User usertmp = new User();
 
     String emailOld = user.getEmail();
     usertmp.setEmail(request.getEmail());
@@ -116,7 +115,7 @@ public class UserService {
 
     userRepository.save(user);
 
-    mailService.sendVerificationEmail(user.getEmail(), verificationUuid.toString()); //отправляет подтверждающее письмо
+    mailService.sendVerificationEmail(user.getEmail(), verificationUuid.toString());
 
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
