@@ -54,7 +54,7 @@ public class SecurityConfig {
                 "/api/v1/account/register",
                 "/api/v1/support",
                 "/api/v1/account/password/set",
-                "/registration/complete"
+                "/registration/complete",
                 "/api/v1/support",
                 "/actuator/prometheus"
             ).permitAll()
