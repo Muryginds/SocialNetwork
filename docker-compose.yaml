@@ -37,7 +37,10 @@ services:
     depends_on:
       - postgres
     restart: on-failure:5
+
   grafana:
+    container_name: grafana
+    image: grafana/grafana
     build: './config/grafana'
     ports:
       - 2929:3000
@@ -50,7 +53,12 @@ services:
       monitoring:
         aliases:
           - grafana
+    depends_on:
+      - prometheus
+    restart: on-failure:5
+
   prometheus:
+    container_name: prometheus
     image: prom/prometheus
     ports:
       - 8085:9090
@@ -61,6 +69,7 @@ services:
       monitoring:
         aliases:
           - prometheus
+    restart: on-failure:5
 
 volumes:
   postgres:
