@@ -56,7 +56,7 @@ public class SecurityConfig {
                 "/api/v1/account/password/set",
                 "/registration/complete",
                 "/api/v1/support",
-                "/actuator/prometheus"
+                "/actuator/prometheus",
                 "/actuator/prometheus",
                 "/api/v1/platform/languages"
             ).permitAll()
