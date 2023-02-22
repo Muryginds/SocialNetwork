@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.Optional;
 
 public interface BlacklistRepository extends JpaRepository<BlacklistToken, Long> {
-  Optional<BlacklistToken> findByToken(String token);
-
+  boolean existsByToken(String token);
   void deleteByExpiredLessThan(Date date);
-
 }

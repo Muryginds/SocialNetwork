@@ -22,7 +22,6 @@ import ru.skillbox.zerone.backend.security.JwtTokenFilter;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-
   private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
   private static final String LOGOUT_ENDPOINT = "/api/v1/auth/logout";
   private final JwtTokenFilter jwtFilter;
@@ -53,11 +52,9 @@ public class SecurityConfig {
                 "/api/v1/account/register/confirm",
                 "/api/v1/account/register",
                 "/api/v1/support",
-                "/registration/complete",
-                "/api/v1/support",
                 "/actuator/prometheus",
-                "/actuator/prometheus",
-                "/api/v1/platform/languages"
+                "/api/v1/platform/languages",
+                "/change_email/complete"
             ).permitAll()
             .requestMatchers(LOGIN_ENDPOINT).permitAll()
             .requestMatchers(LOGOUT_ENDPOINT).permitAll()

@@ -10,7 +10,6 @@ import java.util.NoSuchElementException;
 @Service
 @RequiredArgsConstructor
 public class RoleService {
-
   private static final String ROLE_USER = "ROLE_USER";
 
   private final RoleRepository roleRepository;
