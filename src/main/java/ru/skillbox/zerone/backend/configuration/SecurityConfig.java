@@ -53,7 +53,6 @@ public class SecurityConfig {
                 "/api/v1/account/register/confirm",
                 "/api/v1/account/register",
                 "/api/v1/support",
-             //   "/api/v1/account/password/set",
                 "/registration/complete",
                 "/api/v1/support",
                 "/actuator/prometheus",
