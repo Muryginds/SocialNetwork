@@ -1233,4 +1233,33 @@ databaseChangeLog:
         referencedColumnNames: id
         referencedTableName: tag
         validate: true
-
+- changeSet:
+      id: 65
+      author: Riddle (generated)
+      changes:
+          - createTable:
+                columns:
+                    - column:
+                          autoIncrement: true
+                          constraints:
+                              nullable: false
+                              primaryKey: true
+                              primaryKeyName: change_email_history_pkey
+                          name: id
+                          type: BIGINT
+                    - column:
+                          constraints:
+                              nullable: false
+                          name: email_new
+                          type: VARCHAR(255)
+                    - column:
+                          constraints:
+                              nullable: false
+                          name: email_old
+                          type: VARCHAR(255)
+                    - column:
+                          constraints:
+                              nullable: false
+                          name: time
+                          type: TIMESTAMP WITHOUT TIME ZONE
+                tableName: change_email_history

@@ -53,7 +53,11 @@ public class SecurityConfig {
                 "/api/v1/account/register/confirm",
                 "/api/v1/account/register",
                 "/api/v1/support",
-                "/actuator/prometheus"
+                "/registration/complete",
+                "/api/v1/support",
+                "/actuator/prometheus",
+                "/actuator/prometheus",
+                "/api/v1/platform/languages"
             ).permitAll()
             .requestMatchers(LOGIN_ENDPOINT).permitAll()
             .requestMatchers(LOGOUT_ENDPOINT).permitAll()
