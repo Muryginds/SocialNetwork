@@ -1,8 +1,9 @@
 package ru.skillbox.zerone.backend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
+import ru.skillbox.zerone.backend.model.dto.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.request.AuthRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
@@ -13,8 +14,8 @@ import ru.skillbox.zerone.backend.service.LoginService;
 @RequestMapping(value = "/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
-  private final LoginService loginService;
 
+  private final LoginService loginService;
   @PostMapping("/login")
   public CommonResponseDTO<UserDTO> login(@RequestBody AuthRequestDTO requestDto) {
     return loginService.login(requestDto);

@@ -17,13 +17,16 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 @RequiredArgsConstructor
 public class BlacklistService {
-  private static final AtomicLong COUNT = new AtomicLong();
-  private final BlacklistRepository blacklistRepository;
+
   @Value("${blacklist.deletionInterval}")
   private int interval;
+
+  private static AtomicLong count = new AtomicLong();
+
+  private final BlacklistRepository blacklistRepository;
+
   @Value("${jwt.token.secret}")
   private String secret;
-
   @PostConstruct
   protected void init() {
     secret = Base64.getEncoder().encodeToString(secret.getBytes());
@@ -31,22 +34,23 @@ public class BlacklistService {
 
   @Transactional
   public void processLogout(String token) {
-    var expiration = Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
+    Date expiration = Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
         .getBody().getExpiration();
     var blacklistToken = BlacklistToken.builder()
         .token(token)
         .expired(expiration)
         .build();
     blacklistRepository.save(blacklistToken);
-    long newCount = COUNT.incrementAndGet();
+    long newCount = count.incrementAndGet();
     if  (newCount % interval == 0) {
       blacklistRepository.deleteByExpiredLessThan(new Date());
     }
   }
 
   public void validateToken(String token) {
-    if (blacklistRepository.existsByToken(token)) {
-      throw new BlacklistException("Token is in Blacklist");
+    var blacklistToken = blacklistRepository.findByToken(token).orElse(null);
+    if (blacklistToken != null) {
+      throw new BlacklistException(token);
     }
   }
 }

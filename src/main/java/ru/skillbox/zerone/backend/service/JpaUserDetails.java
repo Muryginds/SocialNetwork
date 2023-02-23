@@ -10,11 +10,17 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 @Service
 @RequiredArgsConstructor
 public class JpaUserDetails implements UserDetailsService {
+
   private final UserRepository userRepository;
 
   @Override
   public User loadUserByUsername(String username) throws UsernameNotFoundException {
-    return userRepository.findUserByEmail(username)
-        .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email: %s not found", username)));
+    var userOptional = userRepository.findUserByEmail(username);
+
+    if (userOptional.isEmpty()) {
+      throw new UsernameNotFoundException(String.format("User with email: %s not found", username));
+    }
+
+    return userOptional.get();
   }
 }

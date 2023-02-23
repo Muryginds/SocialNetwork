@@ -19,8 +19,6 @@ public class SupportRequestService {
 
     supportRequestRepository.save(supportRequest);
 
-    return CommonResponseDTO.<MessageResponseDTO>builder()
-        .data(new MessageResponseDTO("ok"))
-        .build();
+    return CommonResponseDTO.<MessageResponseDTO>builder().data(new MessageResponseDTO("ok")).build();
   }
 }

@@ -1,4 +1,4 @@
-package ru.skillbox.zerone.backend.model.dto.response;
+package ru.skillbox.zerone.backend.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

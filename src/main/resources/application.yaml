@@ -1,6 +1,5 @@
 server:
   port: 8086
-
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
@@ -35,19 +34,14 @@ spring:
             enable: true
           ssl:
             enable: true
-
 jwt:
   token:
     secret: tyiuroiuopyiuioytidgfhdfqwerzxcqwer
     expired: 360000000
-
 blacklist:
   deletionInterval: 1000
-
 mail-service:
-  server-address: http://localhost:8086
-  front-address: http://localhost:8080
-
+  server-address: http://localhost:8080
 management:
   endpoints:
     web:

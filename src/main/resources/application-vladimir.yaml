@@ -40,3 +40,5 @@ jwt:
     expired: 360000000
 blacklist:
   deletionInterval: 1000
+mail-service:
+  server-address: http://localhost:8080

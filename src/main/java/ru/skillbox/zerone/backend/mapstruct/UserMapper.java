@@ -2,7 +2,7 @@ package ru.skillbox.zerone.backend.mapstruct;
 
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
-import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
+import ru.skillbox.zerone.backend.model.dto.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.entity.User;
 
