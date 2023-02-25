@@ -31,14 +31,14 @@ public class AccountController {
   }
 
 
-  @PostMapping("/password/set")
+  @PutMapping("/password/set")
   public CommonResponseDTO<MessageResponseDTO> changePassword(@Valid @RequestBody ChangePasswordTokenDto requestDto) {
 
     return userService.changePassword(requestDto);
   }
 
 
-  @PostMapping("/email")
+  @PutMapping("/email")
   public CommonResponseDTO<MessageResponseDTO> sendMessageForChangeEmail(@RequestBody ChangeEmailDTO requestDto) {
     return userService.sendMessageForChangeEmail(requestDto);
   }
