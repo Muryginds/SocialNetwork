@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.UserDataResponseDTO;
 import ru.skillbox.zerone.backend.service.UserService;
 
 @RestController
@@ -17,4 +18,9 @@ public class UsersController {
   public CommonResponseDTO<UserDTO> getCurrentUser() {
       return userService.getCurrentUser();
   }
+  @GetMapping("/{id}")
+  public CommonResponseDTO<UserDataResponseDTO> getById(Long id) {
+    return userService.getById();
+  }
+
 }
