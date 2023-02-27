@@ -12,7 +12,8 @@ public class PlatformService {
   private static final Map<String, LanguageDTO> map = Map.of(
       "Русский", new LanguageDTO(0L, "русский"),
       "English", new LanguageDTO(1L, "english"),
-      "French", new LanguageDTO(2L, "french")
+      "French", new LanguageDTO(2L, "french"),
+      "Korea", new LanguageDTO(3L, "korea")
   );
   public CommonListResponseDTO<LanguageDTO> getLanguages() {
     return CommonListResponseDTO.<LanguageDTO>builder()

@@ -1,10 +1,11 @@
 package ru.skillbox.zerone.backend.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
-import ru.skillbox.zerone.backend.model.dto.response.UserDataResponseDTO;
 import ru.skillbox.zerone.backend.service.UserService;
 
 @RestController
@@ -14,13 +15,17 @@ public class UsersController {
 
   private final UserService userService;
 
+
   @GetMapping("/me")
   public CommonResponseDTO<UserDTO> getCurrentUser() {
       return userService.getCurrentUser();
   }
   @GetMapping("/{id}")
-  public CommonResponseDTO<UserDataResponseDTO> getById(Long id) {
-    return userService.getById();
+  public CommonResponseDTO<UserDTO> getById(@PathVariable @Min(1) Long id) {
+  return userService.getById(id);
+}
+  @PutMapping("/me")
+  public Boolean editUserSettings(@Valid @RequestBody UserDTO updateUser) {
+    return userService.editUserSettings(updateUser);
   }
-
 }

@@ -11,15 +11,11 @@ import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
-import ru.skillbox.zerone.backend.model.dto.response.UserDataResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.User;
-import ru.skillbox.zerone.backend.model.enumerated.MessagePermissions;
 import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -84,27 +80,24 @@ public class UserService {
         .data(userMapper.userToUserDTO(user))
         .build();
   }
-    public CommonResponseDTO<UserDataResponseDTO> getById() {
-    return CommonResponseDTO.<UserDataResponseDTO>builder()
-        .data(UserDataResponseDTO.builder()
-            .about("")
-            .id(0L)
-            .birthDate(LocalDate.now())
-            .city("")
-            .country("")
-            .firstName("")
-            .lastName("")
-            .isBlocked(true)
-            .isDeleted(true)
-            .phone("")
-            .photo("")
-            .messagePermissions(MessagePermissions.ALL)
-            .lastOnlineTime(LocalDateTime.now())
-            .regDate(LocalDateTime.now())
-            .token("")
-            .lastOnlineTime(LocalDateTime.now())
-            .build())
-        .error("error")
-        .build();
+  public CommonResponseDTO<UserDTO> getById(Long id) {
+    CommonResponseDTO<UserDTO> user = new CommonResponseDTO<>();
+    user.setError("error");
+      User userId = userRepository.findById(id).orElseThrow();
+      user.setData(userMapper.userToDtoWithToken(userId, ""));
+      return user;
+    }
+  public Boolean editUserSettings(UserDTO editUser)  {
+      User user = CurrentUserUtils.getCurrentUser();
+      user.setFirstName(editUser.getFirstName());
+      user.setLastName(editUser.getLastName());
+      user.setPhone(editUser.getPhone());
+      user.setCountry(editUser.getCountry());
+      user.setCity(editUser.getCity());
+      user.setBirthDate(editUser.getBirthDate());
+      user.setPhoto(editUser.getPhoto());
+      user.setAbout(editUser.getAbout());
+      userRepository.save(user);
+      return true;
   }
-}
+  }
