@@ -16,6 +16,7 @@ import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @Service
@@ -24,6 +25,7 @@ public class UserService {
   private final UserRepository userRepository;
   private final MailService mailService;
   private final UserMapper userMapper;
+  private final FriendshipService friendshipService;
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registerAccount(RegisterRequestDTO request) {
@@ -80,4 +82,5 @@ public class UserService {
         .data(userMapper.userToUserDTO(user))
         .build();
   }
+
 }

@@ -14,8 +14,8 @@ import java.time.LocalDateTime;
 import java.util.Set;
 @Entity
 @Table(name = "post",
-    indexes = @Index(name = "post_author_id_idx", columnList = "author_id")
-)
+    indexes = @Index(name = "post_author_id_idx",
+        columnList = "author_id"))
 @Data
 @Builder
 @AllArgsConstructor
@@ -63,8 +63,8 @@ public class Post {
   @Builder.Default
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private Boolean isDeleted = false;
-//  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "post")
-//  private Set<PostComment> comments;
+
+
 //  @ManyToMany(fetch = FetchType.LAZY)
 //  private Set<Tag> tags;
 }

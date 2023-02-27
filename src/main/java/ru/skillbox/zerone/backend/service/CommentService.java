@@ -1,124 +1,140 @@
 package ru.skillbox.zerone.backend.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.skillbox.zerone.backend.model.dto.response.CommentDTO;
-import ru.skillbox.zerone.backend.model.dto.response.CommonListDTO;
+import ru.skillbox.zerone.backend.mapstruct.UserMapper;
+import ru.skillbox.zerone.backend.model.dto.request.CommentRequest;
+import ru.skillbox.zerone.backend.model.dto.response.*;
+import ru.skillbox.zerone.backend.model.dto.UserDTO;
+import ru.skillbox.zerone.backend.model.entity.Comment;
+import ru.skillbox.zerone.backend.model.entity.Like;
 import ru.skillbox.zerone.backend.model.entity.Post;
-import ru.skillbox.zerone.backend.repository.FileRepository;
-import ru.skillbox.zerone.backend.repository.LikeRepository;
-import ru.skillbox.zerone.backend.repository.PostRepository;
+import ru.skillbox.zerone.backend.model.entity.User;
+import ru.skillbox.zerone.backend.model.enumerated.CommentType;
+import ru.skillbox.zerone.backend.repository.*;
+import ru.skillbox.zerone.backend.util.CurrentUserUtils;
+import ru.skillbox.zerone.backend.exception.PostNotFoundException;
+import ru.skillbox.zerone.backend.exception.CommentNotFoundException;
+import java.security.Principal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class CommentService {
   private final PostRepository postRepository;
+  private final UserRepository userRepository;
+  private final CommentRepository commentRepository;
   private final FileRepository fileRepository;
   private final LikeRepository likeRepository;
   private final FriendshipService friendshipService;
+  private final UserService userService;
+  private UserMapper userMapper;
 
-  public CommonListDTO<CommentDTO> getPage4PostComments(int offset, int itemPerPage, Post post) {
-//
-//    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
-//    Page<PostComment> pageablePostCommentList = commentRepository
-//        .findPostCommentsByPostIdAndParentIsNullOrderByTime(post.getId(), pageable);
-return null;
-//    return getPostResponse(offset, itemPerPage, pageablePostCommentList);
+  public CommonListDTO<CommentDTO> getPage4Comments(int offset, int itemPerPage, Post post,User user) {
+
+    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
+    Page<Comment> pageableCommentList = commentRepository
+        .findCommentsByPostIdAndParentIsNull(post.getId(), pageable);
+
+    return getPostResponse(offset, itemPerPage, pageableCommentList, user);
   }
-
-//  private CommonListDTO<CommentDTO> getPostResponse(int offset, int itemPerPage, Page<PostComment> pageablePostCommentList) {
-//
-//    CommonListDTO<CommentDTO> postCommentResponse = new CommonListDTO<>();
-//    postCommentResponse.setPerPage(itemPerPage);
-//    postCommentResponse.setTimestamp(LocalDateTime.now());
-//    postCommentResponse.setOffset(offset);
-//    postCommentResponse.setTotal((int) pageablePostCommentList.getTotalElements());
-//    postCommentResponse.setData(getCommentDTO4Response(pageablePostCommentList.toSet()));
-//    return postCommentResponse;
-//  }
-
-//  public List<CommentDTO> getCommentDTO4Response(Set<PostComment> comments) {
-
-//    List<CommentDTO> commentDataList = new ArrayList<>();
-//    comments.forEach(postComment -> {
-//      CommentDTO commentData = getCommentDTO(postComment);
-//      postComment.getPostComments()
-//          .forEach(comment -> commentData.getSubComments().add(getCommentDTO(comment)));
-//      commentDataList.add(commentData);
+   public CommonListDTO<CommentDTO> getComments (int offset, int itemPerPage, int id, Principal principal) throws PostNotFoundException {
+    User user = findUser(principal.getName());
+    Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+    return getPage4Comments(offset, itemPerPage, post,user);
+  }
+  public List<CommentDTO> getCommentDTO4Response(Set<Comment> comments, User user) {
+    List<CommentDTO> commentDTOList = new ArrayList<>();
+    comments.forEach(comment -> {
+      CommentDTO commentData = getCommentDTO(comment, user);
+//      comment.getComments()
+//          .forEach(subcomment -> commentData.getSubComments().add(getCommentDTO(comment, user)));
+      commentDTOList.add(commentData);
+    });
+    return new ArrayList<>(commentDTOList);
+  }
+//    comments.forEach(comment -> {
+//      CommentDTO commentData = getCommentDTO(comment, user);
+//      commentDTOList.add(commentData);
 //    });
-//    return new ArrayList<>(commentDataList);
-//  }
 
-//  public CommonResponseDTO<CommentDTO> postComment (int itemId, CommentRequest commentRequest, Principal principal) throws PostNotFoundException, CommentNotFoundException {
-//
-//    Post post = postRepository.findById(itemId).orElseThrow(PostNotFoundException::new);
-//    PostComment postComment = new PostComment();
+  public CommonResponseDTO<CommentDTO> comment(int id, CommentRequest commentRequest, Principal principal) throws PostNotFoundException, CommentNotFoundException {
+    User user = findUser(principal.getName());
+    Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+    Comment comment = new Comment();
 //    if (commentRequest.getParentId() != null) {
-//      PostComment parentPostComment = commentRepository
+//       Comment parentComment = commentRepository
 //          .findById(commentRequest.getParentId()).orElseThrow(CommentNotFoundException::new);
-//      postComment.setParent(parentPostComment);
+//      comment.setParent(parentComment);
 //    }
-//    postComment.setCommentText(commentRequest.getCommentText());
-//    postComment.setPost(post);
-//    postComment.setTime(LocalDateTime.now());
-//    postComment.setUser(User.builder().build());
-//    postComment = commentRepository.save(postComment);
+    comment.setCommentText(commentRequest.getCommentText());
+    comment.setPost(post);
+    comment.setType(CommentType.POST);
+    comment.setTime(LocalDateTime.now());
+    comment.setAuthor(user);
+    comment = commentRepository.save(comment);
 //    if (commentRequest.getImages() != null) {
-//      int id = postComment.getId();
+//      int id = comment.getId();
 //      commentRequest.getImages().forEach(image -> fileRepository.save(fileRepository.findByUrl(image.getUrl()).setCommentId(id)));
 //    }
-//
-//    sendNotification(postComment);
-//    return getCommentResponse(postComment);
-//  }
-//  public CommonResponseDTO<CommentDTO> getCommentResponse(PostComment postComment) {
-//    CommonResponseDTO<CommentDTO> commentResponse = new CommonResponseDTO<>();
-//    commentResponse.setTimestamp(LocalDateTime.now());
-//    commentResponse.setData(getCommentDTO(postComment));
-//    return commentResponse;
+//    sendNotification(comment);
+    return getCommentResponse(comment, user);
+  }
+    public CommonResponseDTO<CommentDTO> getCommentResponse (Comment comment, User user){
+      CommonResponseDTO<CommentDTO> commentResponse = new CommonResponseDTO<>();
+      commentResponse.setTimestamp(LocalDateTime.now());
+      commentResponse.setData(getCommentDTO(comment, user));
+      return commentResponse;
+    }
+    private User findUser (String email) {
+      return userRepository.findUserByEmail(email)
+          .orElseThrow(() -> new UsernameNotFoundException(email));
+    }
+      private CommonListDTO<CommentDTO> getPostResponse(int offset, int itemPerPage, Page<Comment> pageableCommentList, User user) {
+    CommonListDTO<CommentDTO> commentResponse = new CommonListDTO<>();
+        commentResponse.setPerPage(itemPerPage);
+        commentResponse.setTimestamp(LocalDateTime.now());
+        commentResponse.setOffset(offset);
+        commentResponse.setTotal((int) pageableCommentList.getTotalElements());
+        commentResponse.setData(getCommentDTO4Response(pageableCommentList.toSet(), user));
+    return commentResponse;
+  }
+    public CommentDTO getCommentDTO (Comment comment, User user) {
+//      User user = CurrentUserUtils.getCurrentUser();
+      CommentDTO commentDTO = new CommentDTO();
+      commentDTO.setCommentText(comment.getCommentText());
+      commentDTO.setAuthor(userMapper.userToUserDTO(user));
+
+//      commentDTO.setBlocked(ru.skillbox.zerone.backend.model.entity.Comment.isBlocked(false));
+//    if (comment.getUserMapper().isDeleted()) {
+//      commentDTO.setAuthor(setDeletedUserDTO(comment.getUser()));
+//  } else if (comment.getUser().getId().equal(comment.getUser().getId()) || !friendshipService.isBlockedBy(comment.getUser().getId(), user.getId())) {
+//    commentDTO.setAuthor(setUserDTO(comment.getUser()));
+//  } else {
+//    commentDTO.setAuthor(setBlockerUserDTO(comment.getUser()));
 //  }
 
-  //  private CommonListDTO<CommentDTO> getPostResponse(int offset, int itemPerPage, Page<PostComment> pageablePostCommentList, Person person) {
-//    CommonListDTO<CommentDTO> postCommentResponse = new CommonResponseDTO<>();
-//    postCommentResponse.setPerPage(itemPerPage);
-//    postCommentResponse.setTimestamp(LocalDateTime.now());
-//    postCommentResponse.setOffset(offset);
-//    postCommentResponse.setTotal((int) pageablePostCommentList.getTotalElements());
-//    postCommentResponse.setData(getCommentDTO4Response(pageablePostCommentList.toSet(), person));
-//    return postCommentResponse;
-//  }
-//  public CommentDTO getCommentDTO(PostComment postComment) {
-//    User user = CurrentUserUtils.getCurrentUser();
-//    CommentDTO commentData = new CommentDTO();
-//    commentData.setCommentText(postComment.getCommentText());
-//
-//    commentData.setBlocked(postComment.isBlocked());
-////    if (postComment.getUser().isDeleted()) {
-////      commentData.setAuthor(setDeletedUserDTO(postComment.getUser()));
-////  } else if (postComment.getUser().getId().equals(postComment.getUser().getId()) || !friendshipService.isBlockedBy(postComment.getUser().getId(), user.getId())) {
-////    commentData.setAuthor(setUserDTO(postComment.getUser()));
-////  } else {
-////    commentData.setAuthor(setBlockerUserDTO(postComment.getUser()));
-////  }
-//
-//  commentData.setId(postComment.getId());
-//  commentData.setTime(postComment.getTime());
-//  commentData.setDeleted(postComment.isDeleted());
-//  Set<Like> likes = likeRepository.findLikesByItemAndType(postComment.getId(), "Comment");
-//  commentData.setLikes(likes.size());
-//  commentData.setMyLike(likes.stream()
-//      .anyMatch(commentLike -> commentLike.getUser().equals(user)));
-//  if (postComment.getParent() != null)
-//    commentData.setParentId(postComment.getParent().getId());
-//  commentData.setPostId(postComment.getPost().getId());
-//  commentData.setSubComments(new ArrayList<>());
-////  List<ImageDTO> images = fileRepository.findAll().stream()
-////      .filter(f -> f.getId() != null)
-////      .filter(file -> file.getId().equals(postComment.getId()))
-////      .map(file -> new ImageDTO().setId(String.valueOf(file.getId())).setId.
-////      .collect(Collectors.toList());
-////  commentData.setImages(images);
-//      return commentData;
-//    }
+      commentDTO.setId(comment.getId());
+      commentDTO.setTime(comment.getTime());
+//      commentDTO.setDeleted(comment.isDeleted());
+//      Set<Like> likes = likeRepository.findLikeByIdAndType(comment.getId(), "Comment");
+//      commentDTO.setLikes(likes.size());
+//      commentDTO.setMyLike(likes.stream()
+//          .anyMatch(commentLike -> commentLike.getUser().equals(user)));
+      if (comment.getParent() != null)
+        commentDTO.setParentId(comment.getParent().getId());
+      commentDTO.setPostId(comment.getPost().getId());
+      commentDTO.setSubComments(new ArrayList<>());
+      List<ImageDTO> images = new ArrayList<>();
+      commentDTO.setImages(images);
+      return commentDTO;
+    }
 
-}
+  }

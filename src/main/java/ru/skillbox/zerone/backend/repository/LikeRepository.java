@@ -9,4 +9,6 @@ import java.util.Set;
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
     Set<Like> findLikesByPost(Post post);
+
+    Set<Like> findLikeByIdAndType(int id, String comment);
 }

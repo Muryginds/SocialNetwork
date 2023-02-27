@@ -7,9 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.Hibernate;
 import ru.skillbox.zerone.backend.model.enumerated.CommentType;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "comment",
@@ -51,6 +55,7 @@ public class Comment {
   )
   private Comment parent;
 
+
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id",
@@ -66,10 +71,11 @@ public class Comment {
   @NotNull
   @Builder.Default
   @Column(name = "is_blocked", columnDefinition = "boolean default false")
-  private Boolean isBlocked = false;
+  private static Boolean isBlocked = false;
 
   @NotNull
   @Builder.Default
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private Boolean isDeleted = false;
+
 }
