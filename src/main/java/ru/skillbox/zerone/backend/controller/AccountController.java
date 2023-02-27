@@ -35,7 +35,7 @@ public class AccountController {
   }
 
   @PutMapping("/email")
-  public CommonResponseDTO<MessageResponseDTO> registerEmailChange(@Valid @RequestBody ChangeEmailDTO requestDto) {
-    return userService.registerEmailChange(requestDto);
+  public CommonResponseDTO<MessageResponseDTO> sendMessageForChangeEmail(@RequestBody ChangeEmailDTO requestDto) {
+    return userService.sendMessageForChangeEmail(requestDto);
   }
 }

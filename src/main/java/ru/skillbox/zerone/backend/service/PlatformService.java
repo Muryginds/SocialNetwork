@@ -21,7 +21,6 @@ public class PlatformService {
         .perPage(LANGUAGES.size())
         .offset(0)
         .data(new ArrayList<>(LANGUAGES.values()))
-        .error("error")
         .timestamp(LocalDateTime.now())
         .build();
   }

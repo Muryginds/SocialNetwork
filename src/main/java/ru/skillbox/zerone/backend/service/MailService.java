@@ -38,7 +38,7 @@ public class MailService {
         email,
         EMAIL_CONFIRMATION_MESSAGE_THEME,
         String.format("Please confirm your new email by clicking following link: %s",
-            createVerificationLink(email, verifyCode,"/change_email/complete", serverAddress))
+            createVerificationLink(email, verifyCode,"/changeemail/complete", serverAddress))
     );
     emailSender.send(message);
   }

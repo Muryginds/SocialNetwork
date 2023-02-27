@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.skillbox.zerone.backend.exception.ChangeEmailException;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
@@ -16,6 +15,7 @@ import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.ChangeEmailHistory;
+import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 import ru.skillbox.zerone.backend.repository.ChangeEmailHistoryRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
@@ -45,25 +45,22 @@ public class UserService {
   }
 
   @Transactional
-  public CommonResponseDTO<MessageResponseDTO> registerEmailChange(ChangeEmailDTO request) {
-    var user = CurrentUserUtils.getCurrentUser();
-    var emailNew = request.getEmail();
+  public CommonResponseDTO<MessageResponseDTO> sendMessageForChangeEmail(ChangeEmailDTO request) {
 
-    if (userRepository.existsByEmail(emailNew)) {
-      throw new ChangeEmailException(String.format("User with email %s already exist", emailNew));
+    User user = CurrentUserUtils.getCurrentUser();
+
+    String emailOld = user.getEmail();
+
+    ChangeEmailHistory changeEmailHistory = ChangeEmailHistory.builder().emailOld(emailOld).emailNew(request.getEmail()).build();
+
+    if (userRepository.existsByEmail(request.getEmail())) {
+      throw new UserAlreadyExistException(user.getEmail());
     }
-
-    var emailOld = user.getEmail();
-
-    var changeEmailHistory = ChangeEmailHistory.builder()
-        .emailOld(emailOld)
-        .emailNew(emailNew)
-        .build();
-    changeEmailHistoryRepository.save(changeEmailHistory);
 
     var verificationUuid = UUID.randomUUID();
     user.setConfirmationCode(verificationUuid.toString());
     userRepository.save(user);
+    changeEmailHistoryRepository.save(changeEmailHistory);
 
     mailService.sendVerificationChangeEmail(emailOld, user.getConfirmationCode());
 
@@ -74,25 +71,33 @@ public class UserService {
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> changeEmailConfirm(String emailOld, String confirmationCode) {
-    var user = userRepository.findUserByEmail(emailOld)
-        .orElseThrow(() -> new ChangeEmailException(String.format("Could not find user with email: %s", emailOld)));
 
-    if (!user.getConfirmationCode().equals(confirmationCode)) {
-      throw new ChangeEmailException("Wrong confirmation code");
+    User user = CurrentUserUtils.getCurrentUser();
+    String token = user.getConfirmationCode();
+
+    var changeEmailHistoryOptional = changeEmailHistoryRepository.findFirstByEmailOldOrderByTimeDesc(emailOld);
+
+    if (changeEmailHistoryOptional.isEmpty()) {
+      throw new RegistrationCompleteException("Email dont find in DB");
     }
 
-    var changeEmailHistory = changeEmailHistoryRepository.findFirstByEmailOldOrderByTimeDesc(emailOld)
-        .orElseThrow(() -> new ChangeEmailException(String.format("Could not find user with email: %s", emailOld)));
+    ChangeEmailHistory changeEmailHistory = changeEmailHistoryOptional.get();
 
-    user.setEmail(changeEmailHistory.getEmailNew());
-    userRepository.save(user);
+    String newEmail = changeEmailHistory.getEmailNew();
 
-    //TODO: Вместо респонда логичнее возвращать редирект на главную страницу сайта,
-    // поскольку фронт при смене пароля нас разлогинивает, а если перейти по ссылке из письма,
-    // в браузере увидим только ответ в формате json
-    return CommonResponseDTO.<MessageResponseDTO>builder()
-        .data(new MessageResponseDTO("ok"))
-        .build();
+    if (token.equals(confirmationCode) & user.getEmail().equals(emailOld)) {
+      user.setEmail(newEmail);
+      userRepository.save(user);
+
+      return CommonResponseDTO.<MessageResponseDTO>builder()
+          .data(new MessageResponseDTO("ok"))
+          .build();
+    }
+    else {
+      return CommonResponseDTO.<MessageResponseDTO>builder()
+          .data(new MessageResponseDTO("error"))
+          .build();
+    }
   }
 
   @Transactional
@@ -101,7 +106,7 @@ public class UserService {
       throw new UserAlreadyExistException(request.getEmail());
     }
 
-    var user = userMapper.registerRequestDTOToUser(request);
+    User user = userMapper.registerRequestDTOToUser(request);
     var verificationUuid = UUID.randomUUID();
     user.setConfirmationCode(verificationUuid.toString());
 
@@ -117,7 +122,7 @@ public class UserService {
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
     var user = userRepository.findUserByEmail(request.getEmail())
-        .orElseThrow(()-> new RegistrationCompleteException("Wrong email or key"));
+        .orElseThrow(() -> new RegistrationCompleteException("Wrong email or key"));
 
     if (user.getIsApproved()) {
       throw new RegistrationCompleteException("User already confirmed");
