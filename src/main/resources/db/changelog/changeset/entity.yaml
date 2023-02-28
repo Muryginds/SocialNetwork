@@ -107,10 +107,10 @@ databaseChangeLog:
             name: src_person_id
             type: BIGINT
         - column:
-            constraints:
-              nullable: false
-            name: status_id
-            type: BIGINT
+              constraints:
+                  nullable: false
+              name: code
+              type: FRIENDSHIP_CODE
         tableName: friendship
 - changeSet:
     id: 4
@@ -397,16 +397,6 @@ databaseChangeLog:
         indexName: dialog_recipient_id_idx
         tableName: dialog
 - changeSet:
-    id: 16
-    author: Riddle (generated)
-    changes:
-    - createIndex:
-        columns:
-        - column:
-            name: status_id
-        indexName: friendship_status_id_idx
-        tableName: friendship
-- changeSet:
     id: 17
     author: Riddle (generated)
     changes:
@@ -426,36 +416,6 @@ databaseChangeLog:
             name: dst_person_id
         indexName: friendship_dst_person_id_idx
         tableName: friendship
-- changeSet:
-    id: 19
-    author: Riddle (generated)
-    changes:
-    - createTable:
-        columns:
-        - column:
-            autoIncrement: true
-            constraints:
-              nullable: false
-              primaryKey: true
-              primaryKeyName: friendship_status_pkey
-            name: id
-            type: BIGINT
-        - column:
-            constraints:
-              nullable: false
-            name: code
-            type: FRIENDSHIP_CODE
-        - column:
-            constraints:
-              nullable: false
-            name: name
-            type: VARCHAR(255)
-        - column:
-            constraints:
-              nullable: false
-            name: time
-            type: TIMESTAMP WITHOUT TIME ZONE
-        tableName: friendship_status
 - changeSet:
     id: 20
     author: Riddle (generated)
@@ -1052,21 +1012,6 @@ databaseChangeLog:
         onUpdate: NO ACTION
         referencedColumnNames: id
         referencedTableName: user
-        validate: true
-- changeSet:
-    id: 53
-    author: Riddle (generated)
-    changes:
-    - addForeignKeyConstraint:
-        baseColumnNames: status_id
-        baseTableName: friendship
-        constraintName: friendship_friendship_status_fk
-        deferrable: false
-        initiallyDeferred: false
-        onDelete: NO ACTION
-        onUpdate: NO ACTION
-        referencedColumnNames: id
-        referencedTableName: friendship_status
         validate: true
 - changeSet:
     id: 54

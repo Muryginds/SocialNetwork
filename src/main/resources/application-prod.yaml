@@ -1,8 +1,9 @@
 spring:
   jpa:
     show-sql: false
+
 blacklist:
   deletionInterval: 1000
 
 mail-service:
-  server-address: http://zerone-network.ru
+  front-address: http://zerone-network.ru
