@@ -2,15 +2,14 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
-import ru.skillbox.zerone.backend.model.dto.UserDTO;
+import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.request.ChangeEmailDTO;
-import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordTokenDto;
+import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
@@ -31,28 +30,19 @@ public class UserService {
   private final ChangeEmailHistoryRepository changeEmailHistoryRepository;
   private final MailService mailService;
   private final UserMapper userMapper;
+  private final PasswordEncoder passwordEncoder;
 
-
-  @Autowired
-  private PasswordEncoder passwordEncoder;
-
-  @Transactional
-  public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordTokenDto request) {
-
-    User user = CurrentUserUtils.getCurrentUser();
-    String password = request.getPassword();
-
+  public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordDTO request) {
+    var user = CurrentUserUtils.getCurrentUser();
+    var password = request.getPassword();
 
     user.setPassword(passwordEncoder.encode(password));
     userRepository.save(user);
 
-
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
         .build();
-
   }
-
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> sendMessageForChangeEmail(ChangeEmailDTO request) {
@@ -63,25 +53,20 @@ public class UserService {
 
     ChangeEmailHistory changeEmailHistory = ChangeEmailHistory.builder().emailOld(emailOld).emailNew(request.getEmail()).build();
 
-
     if (userRepository.existsByEmail(request.getEmail())) {
       throw new UserAlreadyExistException(user.getEmail());
     }
-
-
 
     var verificationUuid = UUID.randomUUID();
     user.setConfirmationCode(verificationUuid.toString());
     userRepository.save(user);
     changeEmailHistoryRepository.save(changeEmailHistory);
 
-    mailService.setServerAddress("http://localhost:8086");
     mailService.sendVerificationChangeEmail(emailOld, user.getConfirmationCode());
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
         .build();
-
   }
 
   @Transactional
@@ -117,7 +102,6 @@ public class UserService {
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registerAccount(RegisterRequestDTO request) {
-
     if (userRepository.existsByEmail(request.getEmail())) {
       throw new UserAlreadyExistException(request.getEmail());
     }
@@ -137,13 +121,8 @@ public class UserService {
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
-    var userOptional = userRepository.findUserByEmail(request.getEmail());
-
-    if (userOptional.isEmpty()) {
-      throw new RegistrationCompleteException("Wrong email or key");
-    }
-
-    User user = userOptional.get();
+    var user = userRepository.findUserByEmail(request.getEmail())
+        .orElseThrow(() -> new RegistrationCompleteException("Wrong email or key"));
 
     if (user.getIsApproved()) {
       throw new RegistrationCompleteException("User already confirmed");
@@ -163,8 +142,7 @@ public class UserService {
   }
 
   public CommonResponseDTO<UserDTO> getCurrentUser() {
-
-    User user = CurrentUserUtils.getCurrentUser();
+    var user = CurrentUserUtils.getCurrentUser();
 
     return CommonResponseDTO.<UserDTO>builder()
         .data(userMapper.userToUserDTO(user))

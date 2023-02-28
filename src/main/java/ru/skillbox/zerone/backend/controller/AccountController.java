@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.request.ChangeEmailDTO;
-import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordTokenDto;
+import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
@@ -17,7 +17,6 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/account")
 public class AccountController {
-
   private final UserService userService;
 
   @PostMapping("/register")
@@ -30,18 +29,13 @@ public class AccountController {
     return userService.registrationConfirm(request);
   }
 
-
   @PutMapping("/password/set")
-  public CommonResponseDTO<MessageResponseDTO> changePassword(@Valid @RequestBody ChangePasswordTokenDto requestDto) {
-
+  public CommonResponseDTO<MessageResponseDTO> changePassword(@Valid @RequestBody ChangePasswordDTO requestDto) {
     return userService.changePassword(requestDto);
   }
-
 
   @PutMapping("/email")
   public CommonResponseDTO<MessageResponseDTO> sendMessageForChangeEmail(@RequestBody ChangeEmailDTO requestDto) {
     return userService.sendMessageForChangeEmail(requestDto);
   }
-
-
 }
