@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.zerone.backend.model.enumerated.FriendshipCode;
+import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
 
 import java.time.LocalDateTime;
 
@@ -28,9 +28,9 @@ public class Friendship {
   private Long id;
 
   @NotNull
-  @Column(name = "code", columnDefinition = "friendship_code")
+  @Column(name = "friendship_status", columnDefinition = "friendship_status")
   @Enumerated(EnumType.STRING)
-  private FriendshipCode code;
+  private FriendshipStatus status;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)

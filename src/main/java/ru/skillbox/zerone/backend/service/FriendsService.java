@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.Friendship;
-import ru.skillbox.zerone.backend.model.enumerated.FriendshipCode;
+import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
 import ru.skillbox.zerone.backend.repository.FriendshipRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
@@ -29,31 +29,31 @@ public class FriendsService {
     List<Friendship> friendshipList = new ArrayList<>();
 
     var oldFriendshipOptional = friendshipRepository
-        .findBySrcPersonAndDstPersonAndCodeIn(user, friend, List.of(FriendshipCode.REQUEST));
+        .findBySrcPersonAndDstPerson(user, friend);
 
     if (oldFriendshipOptional.isPresent()) {
       var updatedFriendship = oldFriendshipOptional.get();
-      updatedFriendship.setCode(FriendshipCode.FRIEND);
+      updatedFriendship.setStatus(FriendshipStatus.FRIEND);
       updatedFriendship.setTime(LocalDateTime.now());
       friendshipList.add(updatedFriendship);
       var updatedReversedFriendship = friendshipRepository
-          .findBySrcPersonAndDstPersonAndCodeIn(friend, user, List.of(FriendshipCode.SUBSCRIBED))
+          .findBySrcPersonAndDstPerson(friend, user)
           //.orElseThrow(() -> new FriendshipNotFoundException());
           .orElseThrow(() -> new RuntimeException());
-      updatedReversedFriendship.setCode(FriendshipCode.FRIEND);
+      updatedReversedFriendship.setStatus(FriendshipStatus.FRIEND);
       updatedReversedFriendship.setTime(LocalDateTime.now());
       friendshipList.add(updatedReversedFriendship);
     } else {
       var newFriendship = Friendship.builder()
           .srcPerson(user)
           .dstPerson(friend)
-          .code(FriendshipCode.SUBSCRIBED)
+          .status(FriendshipStatus.SUBSCRIBED)
           .build();
       friendshipList.add(newFriendship);
       var reversedFriendship = Friendship.builder()
           .srcPerson(friend)
           .dstPerson(user)
-          .code(FriendshipCode.REQUEST)
+          .status(FriendshipStatus.REQUEST)
           .build();
       friendshipList.add(reversedFriendship);
     }

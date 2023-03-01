@@ -109,8 +109,8 @@ databaseChangeLog:
         - column:
               constraints:
                   nullable: false
-              name: code
-              type: FRIENDSHIP_CODE
+              name: friendship_status
+              type: FRIENDSHIP_STATUS
         tableName: friendship
 - changeSet:
     id: 4

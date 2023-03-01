@@ -12,8 +12,9 @@ databaseChangeLog:
       author: Riddle
       changes:
         - sql:
-            sql: DROP TYPE IF EXISTS friendship_code CASCADE;
-              CREATE TYPE friendship_code AS ENUM ('REQUEST', 'FRIEND', 'BLOCKED', 'DECLINED', 'SUBSCRIBED');
+            sql: DROP TYPE IF EXISTS friendship_status CASCADE;
+              CREATE TYPE friendship_status AS ENUM ('REQUEST', 'FRIEND', 'BLOCKED', 'DECLINED',
+              'SUBSCRIBED', 'WASBLOCKEDBY', 'DEADLOCK');
 
   - changeSet:
       id: 3
