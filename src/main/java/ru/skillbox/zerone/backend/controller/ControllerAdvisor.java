@@ -33,8 +33,11 @@ public class ControllerAdvisor {
 
   @ExceptionHandler(Exception.class)
   ResponseEntity<Object> handleException(Exception e) {
+    var response = CommonResponseDTO.builder()
+        .error(e.getLocalizedMessage())
+        .build();
 
     e.printStackTrace();
-    return ResponseEntity.internalServerError().build();
+    return ResponseEntity.internalServerError().body(response);
   }
 }
