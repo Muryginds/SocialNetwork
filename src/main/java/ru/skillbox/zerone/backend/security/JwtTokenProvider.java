@@ -3,7 +3,8 @@ package ru.skillbox.zerone.backend.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import ru.skillbox.zerone.backend.model.entity.Role;
 import ru.skillbox.zerone.backend.service.BlacklistService;
 import ru.skillbox.zerone.backend.service.JpaUserDetails;
 
+import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
@@ -24,6 +26,12 @@ import java.util.List;
 public class JwtTokenProvider {
   @Value("${jwt.token.secret}")
   private String secret;
+
+  private Key getSigningKey() {
+    byte[] keyBytes = Decoders.BASE64.decode(this.secret);
+    return Keys.hmacShaKeyFor(keyBytes);
+  }
+
   @Value("${jwt.token.expired}")
   private long validityInMilliseconds;
   private final JpaUserDetails jpaUserDetails;
@@ -33,6 +41,7 @@ public class JwtTokenProvider {
   protected void init() {
     secret = Base64.getEncoder().encodeToString(secret.getBytes());
   }
+
 
   public String createToken(String email, List<Role> roles) {
 
@@ -46,7 +55,7 @@ public class JwtTokenProvider {
         .setClaims(claims)
         .setIssuedAt(now)
         .setExpiration(validity)
-        .signWith(SignatureAlgorithm.HS256, secret)
+        .signWith(getSigningKey()) //SignatureAlgorithm.HS256, secret
         .compact();
   }
 

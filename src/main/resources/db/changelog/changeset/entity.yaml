@@ -109,7 +109,7 @@ databaseChangeLog:
         - column:
               constraints:
                   nullable: false
-              name: friendship_status
+              name: status
               type: FRIENDSHIP_STATUS
         tableName: friendship
 - changeSet:

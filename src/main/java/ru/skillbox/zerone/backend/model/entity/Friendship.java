@@ -28,7 +28,7 @@ public class Friendship {
   private Long id;
 
   @NotNull
-  @Column(name = "friendship_status", columnDefinition = "friendship_status")
+  @Column(name = "status", columnDefinition = "friendship_status")
   @Enumerated(EnumType.STRING)
   private FriendshipStatus status;
 
