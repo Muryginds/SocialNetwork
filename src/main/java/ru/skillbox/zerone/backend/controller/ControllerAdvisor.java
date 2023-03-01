@@ -14,24 +14,27 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 @ControllerAdvice
 public class ControllerAdvisor {
 
+  @ExceptionHandler({
+      RegistrationCompleteException.class,
+      ConstraintViolationException.class,
+      BadCredentialsException.class,
+      UserAlreadyExistException.class,
+      BlacklistException.class,
+      UsernameNotFoundException.class
+  })
+  ResponseEntity<Object> handleCustomExceptions(Exception e) {
+    var response = CommonResponseDTO.builder()
+        .error(e.getLocalizedMessage())
+        .build();
+
+    return ResponseEntity.badRequest().body(response);
+  }
+
+
   @ExceptionHandler(Exception.class)
   ResponseEntity<Object> handleException(Exception e) {
 
-    if (e instanceof RegistrationCompleteException ||
-    e instanceof ConstraintViolationException ||
-    e instanceof BadCredentialsException ||
-    e instanceof UserAlreadyExistException ||
-    e instanceof BlacklistException ||
-    e instanceof UsernameNotFoundException) {
-
-      var response = CommonResponseDTO.builder()
-          .error(e.getLocalizedMessage())
-          .build();
-
-      return ResponseEntity.badRequest().body(response);
-    }
     e.printStackTrace();
     return ResponseEntity.internalServerError().body(null);
-
   }
 }
