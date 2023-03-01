@@ -35,6 +35,6 @@ public class ControllerAdvisor {
   ResponseEntity<Object> handleException(Exception e) {
 
     e.printStackTrace();
-    return ResponseEntity.internalServerError().body(null);
+    return ResponseEntity.internalServerError().build();
   }
 }
