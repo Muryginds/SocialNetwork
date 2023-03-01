@@ -23,6 +23,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Service
@@ -137,4 +138,32 @@ public class CommentService {
       return commentDTO;
     }
 
+  public CommonResponseDTO<CommentDTO> deleteComment(int commentId, Principal principal) {
+    User user = findUser(principal.getName());
+    Comment comment = findComment(commentId);
+    comment.setIsDeleted(Objects.equals(comment.getAuthor().getId(), user.getId()) || comment.getIsDeleted());
+//    comment.setDeletedTimestamp(LocalDateTime.now());
+    commentRepository.save(comment);
+    return getCommentResponse(comment, user);
   }
+
+
+  public CommonResponseDTO<CommentDTO> recoveryComment(int commentId, Principal principal) {
+    User user = findUser(principal.getName());
+    Comment comment = findComment(commentId);
+    comment.setIsDeleted(!Objects.equals(comment.getAuthor().getId(), user.getId()) && comment.getIsDeleted());
+    commentRepository.save(comment);
+    return getCommentResponse(comment, user);
+  }
+
+
+  public CommonResponseDTO<CommentDTO> putComment(int id, int commentId, CommentRequest commentRequest, Principal principal) {
+    return null;
+  }
+
+  private Comment findComment(int itemId) throws CommentNotFoundException {
+    return commentRepository.findById(itemId)
+        .orElseThrow(CommentNotFoundException::new);
+  }
+
+}

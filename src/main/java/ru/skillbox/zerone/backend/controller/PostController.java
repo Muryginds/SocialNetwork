@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend.controller;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.exception.PostCreationExecption;
 import ru.skillbox.zerone.backend.exception.PostNotFoundException;
@@ -12,6 +13,8 @@ import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.service.PostService;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -39,6 +42,7 @@ public class PostController {
     return postService.getFeeds (text,offset,itemPerPage);
   }
   @GetMapping("/post")
+
   public CommonListDTO<PostsDTO> getPosts (@RequestParam(name = "text", defaultValue = "") String text,
                                            @RequestParam(name = "date_from", defaultValue = "-1") long dateFrom,
                                            @RequestParam(name = "date_to", defaultValue = "-1") long dateTo,

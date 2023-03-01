@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.PostCreationExecption;
@@ -20,10 +21,12 @@ import ru.skillbox.zerone.backend.service.TagService;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.security.Principal;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -144,7 +147,7 @@ public class PostService {
 //   if (id == user.getId()) {
       pageablePostList = postRepository.findPostsByAuthorId(id, pageable);
 //    } else if (!friendshipService.isBlockedBy(id, user.getId()) && !user.getIsDeleted()) {
-//      pageablePostList = postRepository.findPostsByPersonIdAndCurrentDate(id, pageable);
+//      pageablePostList = postRepository.findPostsByUserIdAndCurrentDate(id, pageable);
 //    } else {
 //      pageablePostList = Page.empty();
 //    }
@@ -155,95 +158,46 @@ public class PostService {
   public CommonListDTO<PostsDTO> getPosts(String text, long dateFrom, long dateTo, int offset, int itemPerPage, String author, String tag, Principal principal) {
     User user = findUser(principal.getName());
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
-    Instant datetimeTo = (dateTo == -1) ? Instant.now() : Instant.ofEpochMilli(dateTo);
-    Instant datetimeFrom = (dateFrom == -1) ? ZonedDateTime.now().minusYears(1).toInstant() : Instant.ofEpochMilli(dateFrom);
-//    List<Integer> blockers = userRepository.findBlockersIds(user.getId());
-//    blockers = !blockers.isEmpty() ? blockers : singletonList(-1);
     Page<Post> pageablePostList;
+//    Instant dateFrom = Instant.now();
+//    LocalDateTime datetimeFrom = LocalDateTime.ofInstant (dateFrom, ZoneOffset.UTC);
+    Instant datetimeTo = (dateTo == -1) ? ZonedDateTime.now().toInstant() : Instant.ofEpochSecond(dateTo);
+    Instant datetimeFrom = (dateFrom == -1) ? ZonedDateTime.now().minusYears(1).toInstant() : Instant.ofEpochSecond(dateFrom);
     if (tag.equals("")) {
-      pageablePostList = postRepository.findPostsByPostTextContainsAndUpdateTime(text, author,
-          datetimeFrom, datetimeTo, pageable);
+      pageablePostList = postRepository.findPostsByPostTextContainsAndAuthorLastNameAndUpdateTimeBetween(text, author,
+         datetimeFrom, datetimeTo, pageable);
     } else {
-      List<Integer> tags = Arrays.stream(tag.split("_"))
-          .map(t -> tagRepository.findByTag(t).orElse(null))
-          .filter(Objects::nonNull).map(Tag::getId).collect(Collectors.toList());
-      pageablePostList = postRepository.findPostsByPostTextContainsAndUpdateTime(text, author, datetimeFrom,
-          datetimeTo, pageable, tags, tags.size());
+////      List<Integer> tags = Arrays.stream(tag.split("_"))
+////          .map(t -> tagRepository.findByTag(t).orElse(null))
+////          .filter(Objects::nonNull).map(Tag::getId).collect(Collectors.toList());
+      pageablePostList = postRepository.findPostsByPostTextContainsAndAuthorLastNameAndUpdateTimeBetween(text, author,
+          datetimeFrom, datetimeTo, pageable);
+////      pageablePostList = postRepository.findPostsByPostTextContainsAndAuthorAndUpdateTime(text, author, datetimeFrom,
+////          datetimeTo, pageable, tags, tags.size());
     }
-
     return getPostResponse(offset, itemPerPage, pageablePostList, user);
-
   }
 
-//  public CommonResponseDTO<PostsDTO> putPostById(int id, long publishDate, PostRequestDTO requestBody, Principal principal) throws PostNotFoundException, UserAndAuthorEqualsException {
-//    User user = findUser(principal.getName());
-//    Post post = findPost(id);
-//    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException();
-//    post.setTitle(requestBody.getTitle());
-//    post.setPostText(requestBody.getPostText());
-//    List<String> tags = requestBody.getTags();
-////    if (tags != null) {
-////      post.setTags(tags.stream().map(s -> tagRepository.findByTag(s).orElse(null))
-////          .filter(Objects::nonNull).collect(Collectors.toSet()));
-////    }
-////    post.setTime(LocalDateTime.now(publishDate == 0 ? System.currentTimeMillis() : publishDate));
-//    post = postRepository.saveAndFlush(post);
-//    Matcher images = pattern.matcher(requestBody.getPostText());
-//    while (images.find()) {
-////      PostFile file = fileRepository.findByUrl(images.group(1));
-////      fileRepository.save(postFile.setPostId(post.getId()));
-//    }
-//    return getPostDTOResponse(post, user);
+//  public static LocalDateTime getLocalDateTime(long milliseconds) {
+//    return Instant.ofEpochMilli(milliseconds).atZone(ZoneId.systemDefault()).toLocalDateTime();
 //  }
   public CommonResponseDTO<PostsDTO> deletePostById (int id, Principal principal) throws PostNotFoundException, UserAndAuthorEqualsException {
       User user = findUser(principal.getName());
       Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
       if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException();
       post.setIsDeleted(true);
-//      post.setDeletedTimestamp(LocalDateTime.now());
+//      post.setIsDeletedTime(LocalDateTime.now());
       postRepository.saveAndFlush(post);
       return getPostDTOResponse(post, user);
   }
 
-//  public CommonResponseDTO<PostsDTO> putPostIdRecover(int id, Principal principal) throws
-//      PostNotFoundException, UserAndAuthorEqualsException {
-//    User user = findUser(principal.getName());
-//    Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
-//    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException();
-//    post.setIsDeleted(false);
-//    postRepository.saveAndFlush(post);
-//    return getPostDTOResponse(post, user);
-//  }
-
-//
-// Post savedPost = postRepository.save(post);
-//    post.setPostText(postRequestDTO.getPostText());
-//    post.setAuthor(user);
-//    post.setId(post.getId());
-//    post.setTime(LocalDateTime.now());
-//    post.setTitle(postRequestDTO.getTitle());
-//    post.setIsBlocked(false);
-//    PostsDTO postsDTO = new PostsDTO();
-//    postsDTO.setPostText(savedPost.getPostText());
-//    postsDTO.setAuthor(userMapper.userToUserDTO(user));
-//    postsDTO.setId(post.getId());
-//    postsDTO.setLikes(postsDTO.getLikes());
-//    postsDTO.setTimestamp(post.getTime());
-//    postsDTO.setTitle(post.getTitle());
-//    postsDTO.setBlocked(post.getIsBlocked());
-//        List<String> tags = postRequestDTO.getTags();
-//    if (tags != null) {
-//      post.setTags(tags.stream()
-//          .map(x -> tagRepository.findByTag(x).orElse(null))
-//          .filter(Objects::nonNull).collect(Collectors.toSet()));
-//    }
-//    if (publishDate == 0) {
-//      post.setTime(LocalDateTime.now());
-//    } else {
-//      post.setTime(LocalDateTime.from(Instant.ofEpochMilli(publishDate)));
-//    }
-//      CommonResponseDTO<PostsDTO> result = new CommonResponseDTO<>();
-//    result.setTimestamp(LocalDateTime.now());
-//       result.setData(postsDTO);
-//    return result;
+  public CommonResponseDTO<PostsDTO> putPostIdRecover(int id, Principal principal) throws
+      PostNotFoundException, UserAndAuthorEqualsException {
+    User user = findUser(principal.getName());
+    Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException();
+    post.setIsDeleted(false);
+    postRepository.saveAndFlush(post);
+    return getPostDTOResponse(post, user);
+  }
 }

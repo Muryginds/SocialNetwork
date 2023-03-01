@@ -35,5 +35,26 @@ public class CommentController {
                                                Principal principal)  {
     return commentService.comment(id, commentRequest, principal);
   }
+
+  @DeleteMapping("/post/{id}/comments/{comment_id}")
+  public CommonResponseDTO<CommentDTO> deleteComment(@PathVariable int id,
+                                                     @PathVariable(name = "comment_id") int commentId,
+                                                     Principal principal) throws CommentNotFoundException {
+    return commentService.deleteComment(commentId, principal);
+  }
+  @PutMapping("/post/{id}/comments/{comment_id}/recover")
+  public CommonResponseDTO<CommentDTO> recoveryComment(@PathVariable int id,
+                                                       @PathVariable(name = "comment_id") int commentId,
+                                                       Principal principal) throws CommentNotFoundException {
+    return commentService.recoveryComment(commentId, principal);
+  }
+  @PutMapping("/post/{id}/comments/{comment_id}")
+  public CommonResponseDTO<CommentDTO> putComment(@PathVariable int id,
+                                                  @PathVariable(name = "comment_id") int commentId,
+                                                  @RequestBody CommentRequest commentRequest,
+                                                  Principal principal) throws PostNotFoundException, CommentNotFoundException {
+    return commentService.putComment(id, commentId, commentRequest, principal);
+  }
+
 }
 

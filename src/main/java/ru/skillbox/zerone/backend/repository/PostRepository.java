@@ -16,9 +16,9 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 //    Set<Post> findById(int id);
 
-    Page<Post> findPostsByAuthorId(int id, Pageable pageable);
+    Page<Post> findPostsByAuthorId (int id, Pageable pageable);
 
-    Page<Post> findPostsByPostTextContainsAndUpdateTime(String text, String author, Instant datetimeFrom, Instant datetimeTo, Pageable pageable);
+    Page<Post> findPostsByPostTextContainsAndAuthorLastNameAndUpdateTimeBetween(String text, String author, Instant datetimeFrom, Instant datetimeTo, Pageable pageable);
 
   Page<Post> findPostsByPostTextContainsAndUpdateTime(String text, String author, Instant datetimeFrom, Instant datetimeTo, Pageable pageable, List<Integer> tags, int size);
 
