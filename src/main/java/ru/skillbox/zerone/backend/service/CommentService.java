@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.CommentRequest;
 import ru.skillbox.zerone.backend.model.dto.response.*;
-import ru.skillbox.zerone.backend.model.dto.UserDTO;
 import ru.skillbox.zerone.backend.model.entity.Comment;
 import ru.skillbox.zerone.backend.model.entity.Like;
 import ru.skillbox.zerone.backend.model.entity.Post;

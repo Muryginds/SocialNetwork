@@ -2,7 +2,7 @@ package ru.skillbox.zerone.backend.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import ru.skillbox.zerone.backend.model.dto.UserDTO;
+
 
 import java.time.LocalDateTime;
 import java.util.List;

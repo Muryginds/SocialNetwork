@@ -19,8 +19,8 @@ public class FriendshipService {
 //    return isBlockedBy(blocker, blocked);
 //  }
 
-  public boolean isBlockedBy(int id, int id1) {
-    Optional<Friendship> optional = friendshipRepository.findFriendshipBySrcPersonAndDstPerson(id, id1);
-    return isBlockedBy(id, id1);
-  }
+//  public boolean isBlockedBy(int id, int id1) {
+//    Optional<Friendship> optional = friendshipRepository.findBySrcPersonAndDstPersonAndCodeIn(id, id1, friendshipCodes);
+//    return isBlockedBy(id, id1);
+//  }
 }
