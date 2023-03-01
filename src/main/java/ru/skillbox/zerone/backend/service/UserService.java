@@ -148,4 +148,24 @@ public class UserService {
         .data(userMapper.userToUserDTO(user))
         .build();
   }
-}
+  public CommonResponseDTO<UserDTO> getById(Long id) {
+    CommonResponseDTO<UserDTO> user = new CommonResponseDTO<>();
+    user.setError("error");
+      User userId = userRepository.findById(id).orElseThrow();
+      user.setData(userMapper.userToDtoWithToken(userId, ""));
+      return user;
+    }
+  public Boolean editUserSettings(UserDTO editUser)  {
+      User user = CurrentUserUtils.getCurrentUser();
+      user.setFirstName(editUser.getFirstName());
+      user.setLastName(editUser.getLastName());
+      user.setPhone(editUser.getPhone());
+      user.setCountry(editUser.getCountry());
+      user.setCity(editUser.getCity());
+      user.setBirthDate(editUser.getBirthDate());
+      user.setPhoto(editUser.getPhoto());
+      user.setAbout(editUser.getAbout());
+      userRepository.save(user);
+      return true;
+  }
+  }

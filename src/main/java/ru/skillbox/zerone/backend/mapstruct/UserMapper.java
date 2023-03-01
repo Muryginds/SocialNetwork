@@ -11,4 +11,5 @@ import ru.skillbox.zerone.backend.model.entity.User;
 public interface UserMapper {
   UserDTO userToUserDTO (User user);
   User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO);
+  UserDTO userToDtoWithToken(User user, String token);
 }
