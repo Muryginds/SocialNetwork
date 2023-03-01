@@ -13,5 +13,10 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
+
 blacklist:
   deletionInterval: 1000
+
+mail-service:
+  server-address: http://localhost:8086
+  front-address: http://localhost:8080
