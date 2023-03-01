@@ -25,6 +25,7 @@ public class FriendsService {
   private final UserRepository userRepository;
 
   @Transactional
+  @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent"})
   public CommonResponseDTO<Object> addFriend(Long id) {
     var user = CurrentUserUtils.getCurrentUser();
     var friend = userRepository.findById(id)
@@ -105,6 +106,7 @@ public class FriendsService {
   }
 
   @Transactional
+  @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent"})
   public CommonResponseDTO<Object> removeFriend(Long id) {
     var user = CurrentUserUtils.getCurrentUser();
     var friend = userRepository.findById(id)
@@ -162,15 +164,15 @@ public class FriendsService {
     return List.of(newFriendship, reversedFriendship);
   }
 
-  private boolean isBothOptionalPresent(Optional<?> optionalOne, Optional<?> optionalTwo) {
+  private boolean isBothOptionalPresent(Optional<Friendship> optionalOne, Optional<Friendship> optionalTwo) {
     return optionalOne.isPresent() && optionalTwo.isPresent();
   }
 
-  private boolean isOneOptionalEmptyAndOneNotEmpty(Optional<?> optionalOne, Optional<?> optionalTwo) {
+  private boolean isOneOptionalEmptyAndOneNotEmpty(Optional<Friendship> optionalOne, Optional<Friendship> optionalTwo) {
     return optionalOne.isEmpty() && optionalTwo.isPresent() || optionalOne.isPresent() && optionalTwo.isEmpty();
   }
 
-  private boolean isBothOptionalEmpty(Optional<?> optionalOne, Optional<?> optionalTwo) {
+  private boolean isBothOptionalEmpty(Optional<Friendship> optionalOne, Optional<Friendship> optionalTwo) {
     return optionalOne.isEmpty() && optionalTwo.isEmpty();
   }
 }
