@@ -17,15 +17,16 @@ import ru.skillbox.zerone.backend.service.UserService;
 public class UsersController {
   private final UserService userService;
 
-
   @GetMapping("/me")
   public CommonResponseDTO<UserDTO> getCurrentUser() {
       return userService.getCurrentUser();
   }
+
   @GetMapping("/{id}")
   public CommonResponseDTO<UserDTO> getById(@PathVariable @Min(1) Long id) {
   return userService.getById(id);
 }
+
   @PutMapping("/me")
   public ResponseEntity<Object> editUserSettings(@Valid @RequestBody UserDTO updateUser) {
     userService.editUserSettings(updateUser);

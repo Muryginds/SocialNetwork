@@ -2,10 +2,17 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.FriendsAdditionException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
+import ru.skillbox.zerone.backend.mapstruct.UserMapper;
+import ru.skillbox.zerone.backend.model.dto.request.IsFriendsDTO;
+import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.StatusFriendDTO;
+import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.entity.Friendship;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
@@ -15,6 +22,7 @@ import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +31,7 @@ import java.util.Optional;
 public class FriendsService {
   private final FriendshipRepository friendshipRepository;
   private final UserRepository userRepository;
+  private final UserMapper userMapper;
 
   @Transactional
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent"})
@@ -174,5 +183,76 @@ public class FriendsService {
 
   private boolean isBothOptionalEmpty(Optional<Friendship> optionalOne, Optional<Friendship> optionalTwo) {
     return optionalOne.isEmpty() && optionalTwo.isEmpty();
+  }
+
+  public CommonListResponseDTO<UserDTO> getFriendList(String name, int offset, int itemPerPage) {
+    var user = CurrentUserUtils.getCurrentUser();
+    Page<Friendship> friendshipPage;
+    var pageable = PageRequest.of(offset, itemPerPage);
+
+    if (name.isBlank()) {
+      friendshipPage = friendshipRepository.findAllByDstPersonAndStatus(user, FriendshipStatus.FRIEND, pageable);
+    } else {
+      friendshipPage = friendshipRepository.findAllByDstPersonAndStatusAndDstPersonFirstNameContainsIgnoreCaseOrDstPersonLastNameContainsIgnoreCase(
+          user, FriendshipStatus.FRIEND, name, name, pageable);
+    }
+
+    var friends = friendshipPage.getContent().stream()
+        .map(Friendship::getDstPerson)
+        .toList();
+
+    return CommonListResponseDTO.<UserDTO>builder()
+        .total((int)friendshipPage.getTotalElements())
+        .perPage(itemPerPage)
+        .offset(offset)
+        .data(userMapper.usersToUserDTO(friends))
+        .build();
+  }
+
+  public CommonListResponseDTO<UserDTO> getFriendRequestList(String name, int offset, int itemPerPage) {
+    var user = CurrentUserUtils.getCurrentUser();
+    Page<Friendship> friendshipPage;
+    var pageable = PageRequest.of(offset, itemPerPage);
+
+    if (name.isBlank()) {
+      friendshipPage = friendshipRepository.findAllByDstPersonAndStatus(user, FriendshipStatus.REQUEST, pageable);
+    } else {
+      friendshipPage = friendshipRepository.findAllByDstPersonAndStatusAndDstPersonFirstNameContainsIgnoreCaseOrDstPersonLastNameContainsIgnoreCase(
+          user, FriendshipStatus.REQUEST, name, name, pageable);
+    }
+
+    var friends = friendshipPage.getContent().stream()
+        .map(Friendship::getDstPerson)
+        .toList();
+
+    return CommonListResponseDTO.<UserDTO>builder()
+        .total((int)friendshipPage.getTotalElements())
+        .perPage(itemPerPage)
+        .offset(offset)
+        .data(userMapper.usersToUserDTO(friends))
+        .build();
+  }
+
+  public CommonListResponseDTO<StatusFriendDTO> checkIsFriends(IsFriendsDTO isFriendsDTO) {
+    var user = CurrentUserUtils.getCurrentUser();
+
+    var friendships = friendshipRepository.findAllBySrcPersonAndDstPersonIdIn(user, isFriendsDTO.getUserIds());
+
+    var statusFriendsDtos = friendships.stream()
+        .map(f -> new StatusFriendDTO(f.getDstPerson().getId(), f.getStatus()))
+        .toList();
+    CommonListResponseDTO<StatusFriendDTO> response = new CommonListResponseDTO<>();
+    response.setData(statusFriendsDtos);
+
+    return response;
+  }
+
+  public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage) {
+    return CommonListResponseDTO.<UserDTO>builder()
+        .total(0)
+        .offset(offset)
+        .perPage(itemPerPage)
+        .data(Collections.emptyList())
+        .build();
   }
 }
