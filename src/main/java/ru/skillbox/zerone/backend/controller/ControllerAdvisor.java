@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.controller;
 
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -31,7 +32,7 @@ public class ControllerAdvisor {
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<Object> handleBadCredentialsException(Exception e) {
 
-    return ResponseEntity.status(401).body(getResponse(e));
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(getResponse(e));
   }
 
   private CommonResponseDTO<Object> getResponse(Exception e) {

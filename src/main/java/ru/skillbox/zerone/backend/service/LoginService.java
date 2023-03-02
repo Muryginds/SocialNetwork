@@ -27,7 +27,7 @@ public class LoginService {
   public CommonResponseDTO<UserDTO> login(AuthRequestDTO request) {
     var email = request.getEmail();
     var user = userRepository.findUserByEmail(email)
-        .orElseThrow(() -> new UserNotFoundException(String.format("User with email: %s not found", email)));
+        .orElseThrow(() -> new UserNotFoundException(email));
 
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, request.getPassword()));
