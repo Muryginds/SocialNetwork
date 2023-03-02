@@ -24,7 +24,7 @@ spring:
     host: smtp.mail.ru
     port: 465
     username: zerone34@mail.ru
-    password: TmtUuTw4r3yp2C3AS36M
+    password: UKeakYphbz3NrSvAkq9R
     test-connection: true
     properties:
       mail:
