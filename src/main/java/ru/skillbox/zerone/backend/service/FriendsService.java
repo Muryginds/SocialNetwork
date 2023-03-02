@@ -29,7 +29,7 @@ public class FriendsService {
   public CommonResponseDTO<Object> addFriend(Long id) {
     var user = CurrentUserUtils.getCurrentUser();
     var friend = userRepository.findById(id)
-        .orElseThrow(() -> new UserNotFoundException(String.format("Пользователь с id %s не найден", id)));
+        .orElseThrow(() -> new UserNotFoundException(id));
 
     var friendshipOptional = friendshipRepository
         .findBySrcPersonAndDstPerson(user, friend);
@@ -110,7 +110,7 @@ public class FriendsService {
   public CommonResponseDTO<Object> removeFriend(Long id) {
     var user = CurrentUserUtils.getCurrentUser();
     var friend = userRepository.findById(id)
-        .orElseThrow(() -> new UserNotFoundException(String.format("Пользователь с id %s не найден", id)));
+        .orElseThrow(() -> new UserNotFoundException(id));
 
     var friendshipOptional = friendshipRepository
         .findBySrcPersonAndDstPerson(user, friend);
