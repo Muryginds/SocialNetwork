@@ -2,6 +2,7 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,11 @@ public class UserService {
   private final MailService mailService;
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
+  @Value("${mail-service.server-address}")
+  private String serverAddress;
+  @Value("${mail-service.front-address}")
+  private String frontAddress;
+
 
   public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordDTO request) {
     var user = CurrentUserUtils.getCurrentUser();
@@ -63,7 +69,11 @@ public class UserService {
     userRepository.save(user);
     changeEmailHistoryRepository.save(changeEmailHistory);
 
-    mailService.sendVerificationChangeEmail(emailOld, user.getConfirmationCode());
+    mailService.sendVerificationChangeEmail(
+        emailOld,
+        user.getConfirmationCode(),
+        "/changeemail/complete",
+        serverAddress);
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
@@ -113,7 +123,11 @@ public class UserService {
 
     userRepository.save(user);
 
-    mailService.sendVerificationEmail(user.getEmail(), verificationUuid.toString());
+    mailService.sendVerificationEmail(
+        user.getEmail(),
+        verificationUuid.toString(),
+        "/registration/complete",
+        frontAddress);
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
