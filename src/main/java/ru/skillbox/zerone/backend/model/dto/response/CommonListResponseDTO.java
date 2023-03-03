@@ -1,7 +1,10 @@
 package ru.skillbox.zerone.backend.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,7 +15,7 @@ import java.util.List;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class CommonListResponseDTO<T> {
-  private int total;
+  private long total;
   private int perPage;
   private int offset;
   private List<T> data;
