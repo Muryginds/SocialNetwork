@@ -16,10 +16,12 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
   Page<Friendship> findAllBySrcPersonAndStatus(User srcUser, FriendshipStatus status, Pageable pageable);
 
-  @Query(value = "SELECT f FROM Friendship f " +
-      "WHERE f.srcPerson = :srcUser AND f.status = :status " +
-      "AND (LOWER(f.dstPerson.firstName) LIKE LOWER(CONCAT('%', :name, '%')) " +
-      "OR LOWER(f.dstPerson.lastName) LIKE LOWER(CONCAT('%', :name, '%')))")
+  @Query(value = """
+      SELECT f FROM Friendship f
+      WHERE f.srcPerson = :srcUser AND f.status = :status
+      AND (LOWER(f.dstPerson.firstName) LIKE LOWER(CONCAT('%', :name, '%'))
+      OR LOWER(f.dstPerson.lastName) LIKE LOWER(CONCAT('%', :name, '%')))
+      """)
   Page<Friendship> findAllBySrcPersonAndStatusAndDstPersonNameLike(
       User srcUser, FriendshipStatus status, String name, Pageable pageable);
 

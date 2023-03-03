@@ -2,20 +2,20 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.skillbox.zerone.backend.configuration.MailServiceConfig;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
-import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.request.ChangeEmailDTO;
 import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.entity.ChangeEmailHistory;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
@@ -33,10 +33,7 @@ public class UserService {
   private final MailService mailService;
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
-  @Value("${mail-service.server-address}")
-  private String serverAddress;
-  @Value("${mail-service.front-address}")
-  private String frontAddress;
+  private final MailServiceConfig mailServiceConfig;
 
 
   public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordDTO request) {
@@ -73,7 +70,7 @@ public class UserService {
         emailOld,
         user.getConfirmationCode(),
         "/changeemail/complete",
-        serverAddress);
+        mailServiceConfig.getServerAddress());
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))
@@ -127,7 +124,7 @@ public class UserService {
         user.getEmail(),
         verificationUuid.toString(),
         "/registration/complete",
-        frontAddress);
+        mailServiceConfig.getFrontAddress());
 
     return CommonResponseDTO.<MessageResponseDTO>builder()
         .data(new MessageResponseDTO("ok"))

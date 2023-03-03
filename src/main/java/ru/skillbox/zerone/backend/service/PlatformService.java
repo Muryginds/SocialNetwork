@@ -13,7 +13,7 @@ public class PlatformService {
       "Русский", new LanguageDTO(0L, "русский"),
       "English", new LanguageDTO(1L, "english"),
       "French", new LanguageDTO(2L, "french"),
-      "Korea", new LanguageDTO(3L, "korea")
+      "Korean", new LanguageDTO(3L, "korean")
   );
 
   public CommonListResponseDTO<LanguageDTO> getLanguages() {
