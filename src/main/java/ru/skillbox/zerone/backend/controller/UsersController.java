@@ -3,6 +3,7 @@ package ru.skillbox.zerone.backend.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.control.MappingControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,6 @@ import ru.skillbox.zerone.backend.service.UserService;
 public class UsersController {
   private final UserService userService;
 
-
   @GetMapping("/me")
   public CommonResponseDTO<UserDTO> getCurrentUser() {
       return userService.getCurrentUser();
@@ -27,8 +27,7 @@ public class UsersController {
   return userService.getById(id);
 }
   @PutMapping("/me")
-  public ResponseEntity<UserDTO> editUserSettings(@RequestBody UserDTO updateUser) {
-    userService.editUserSettings(updateUser);
-    return ResponseEntity.ok().build();
+  public UserDTO editUserSettings(@RequestBody UserDTO updateUser) {
+    return userService.editUserSettings(updateUser);
   }
 }

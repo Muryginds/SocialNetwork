@@ -155,7 +155,7 @@ public class UserService {
     return CommonResponseDTO.<UserDTO>builder().data(userDto).build();
 
     }
-  public void editUserSettings(UserDTO editUser)  {
+  public UserDTO editUserSettings(UserDTO editUser)  {
     User user = CurrentUserUtils.getCurrentUser();
     user.setFirstName(editUser.getFirstName())
     .setLastName(editUser.getLastName())
@@ -166,5 +166,6 @@ public class UserService {
     .setPhoto(editUser.getPhoto())
     .setAbout(editUser.getAbout());
     userRepository.save(user);
+    return editUser;
   }
   }

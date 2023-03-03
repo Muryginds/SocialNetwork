@@ -10,6 +10,8 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.StorageDTO;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.rmi.UnexpectedException;
 import java.util.Map;
 
 
@@ -20,14 +22,17 @@ public class StorageService {
   private final Cloudinary cloudinary;
   private final static Map options = Map.of();
 
-  // Загрузка изображения
-  public String uploadImage(MultipartFile file) throws IOException {
-    Map uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
-    return (String) uploadResult.get("secure_url");
+  public String uploadImage(MultipartFile file) {
+    try {
+      var uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
+      return (String) uploadResult.get("secure_url");
+    } catch (IOException e) {
+      throw new UncheckedIOException(e);
+    }
   }
-  public CommonResponseDTO<StorageDTO> uploadFileUrl(MultipartFile file) throws IOException {
-    StorageDTO storageDTO = new StorageDTO();
-    storageDTO.setUrl(uploadImage(file));
-    return CommonResponseDTO.<StorageDTO>builder().data(storageDTO).build();
+    public CommonResponseDTO<StorageDTO> uploadFileUrl (MultipartFile file) {
+      StorageDTO storageDTO = new StorageDTO();
+      storageDTO.setUrl(uploadImage(file));
+      return CommonResponseDTO.<StorageDTO>builder().data(storageDTO).build();
+    }
   }
-}
