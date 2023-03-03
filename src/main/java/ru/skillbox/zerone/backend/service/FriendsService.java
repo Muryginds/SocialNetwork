@@ -35,7 +35,7 @@ public class FriendsService {
   private final UserMapper userMapper;
 
   @Transactional
-  @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent"})
+  @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
   public CommonResponseDTO<Object> addFriend(Long id) {
     var user = CurrentUserUtils.getCurrentUser();
     var friend = userRepository.findById(id)
@@ -117,7 +117,7 @@ public class FriendsService {
   }
 
   @Transactional
-  @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent"})
+  @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
   public CommonResponseDTO<Object> removeFriend(Long id) {
     var user = CurrentUserUtils.getCurrentUser();
     var friend = userRepository.findById(id)

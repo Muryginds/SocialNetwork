@@ -1,6 +1,9 @@
 package ru.skillbox.zerone.backend.controller;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.request.IsFriendsDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
@@ -9,6 +12,7 @@ import ru.skillbox.zerone.backend.model.dto.response.StatusFriendDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.service.FriendsService;
 
+@Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
@@ -16,12 +20,12 @@ public class FriendsController {
   private final FriendsService friendsService;
 
   @PostMapping("/friends/{id}")
-  public CommonResponseDTO<Object> addFriend(@PathVariable Long id) {
+  public CommonResponseDTO<Object> addFriend(@PathVariable @Min(1) Long id) {
     return friendsService.addFriend(id);
   }
 
   @DeleteMapping("/friends/{id}")
-  public CommonResponseDTO<Object> removeFriend(@PathVariable Long id) {
+  public CommonResponseDTO<Object> removeFriend(@PathVariable @Min(1) Long id) {
     return friendsService.removeFriend(id);
   }
 
@@ -40,7 +44,7 @@ public class FriendsController {
   }
 
   @PostMapping("/is/friends")
-  public CommonListResponseDTO<StatusFriendDTO> checkIsFriend(@RequestBody IsFriendsDTO isFriendsDTO) {
+  public CommonListResponseDTO<StatusFriendDTO> checkIsFriend(@Valid @RequestBody IsFriendsDTO isFriendsDTO) {
     return friendsService.checkIsFriends(isFriendsDTO);
   }
 

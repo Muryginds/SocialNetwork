@@ -22,6 +22,7 @@ import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 import ru.skillbox.zerone.backend.repository.ChangeEmailHistoryRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
+import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 import java.util.UUID;
 
@@ -43,9 +44,7 @@ public class UserService {
     user.setPassword(passwordEncoder.encode(password));
     userRepository.save(user);
 
-    return CommonResponseDTO.<MessageResponseDTO>builder()
-        .data(new MessageResponseDTO("ok"))
-        .build();
+    return ResponseUtils.commonResponseOk();
   }
 
   @Transactional
@@ -55,7 +54,10 @@ public class UserService {
 
     String emailOld = user.getEmail();
 
-    ChangeEmailHistory changeEmailHistory = ChangeEmailHistory.builder().emailOld(emailOld).emailNew(request.getEmail()).build();
+    ChangeEmailHistory changeEmailHistory = ChangeEmailHistory.builder()
+        .emailOld(emailOld)
+        .emailNew(request.getEmail())
+        .build();
 
     if (userRepository.existsByEmail(request.getEmail())) {
       throw new UserAlreadyExistException(user.getEmail());
@@ -72,9 +74,7 @@ public class UserService {
         "/changeemail/complete",
         mailServiceConfig.getServerAddress());
 
-    return CommonResponseDTO.<MessageResponseDTO>builder()
-        .data(new MessageResponseDTO("ok"))
-        .build();
+    return ResponseUtils.commonResponseOk();
   }
 
   @Transactional
@@ -97,9 +97,7 @@ public class UserService {
       user.setEmail(newEmail);
       userRepository.save(user);
 
-      return CommonResponseDTO.<MessageResponseDTO>builder()
-          .data(new MessageResponseDTO("ok"))
-          .build();
+      return ResponseUtils.commonResponseOk();
     }
     else {
       return CommonResponseDTO.<MessageResponseDTO>builder()
@@ -126,9 +124,7 @@ public class UserService {
         "/registration/complete",
         mailServiceConfig.getFrontAddress());
 
-    return CommonResponseDTO.<MessageResponseDTO>builder()
-        .data(new MessageResponseDTO("ok"))
-        .build();
+    return ResponseUtils.commonResponseOk();
   }
 
   @Transactional
@@ -136,7 +132,7 @@ public class UserService {
     var user = userRepository.findUserByEmail(request.getEmail())
         .orElseThrow(() -> new RegistrationCompleteException("Wrong email or key"));
 
-    if (user.getIsApproved()) {
+    if (Boolean.TRUE.equals(user.getIsApproved())) {
       throw new RegistrationCompleteException("User already confirmed");
     }
 
