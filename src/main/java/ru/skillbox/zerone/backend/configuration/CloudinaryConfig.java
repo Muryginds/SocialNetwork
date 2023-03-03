@@ -1,24 +1,28 @@
 package ru.skillbox.zerone.backend.configuration;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 @Configuration
+@EnableConfigurationProperties(CloudinaryProperties.class)
 public class CloudinaryConfig {
-  @Value("zeroneproject")
-  private String cloudName;
-  @Value("551572451498292")
-  private String apiKey;
-  @Value("bmOA13-uV_37Hm9Vfu4E_heObw4")
-  private String apiSecret;
+
+  private final CloudinaryProperties properties;
+
+  @Autowired
+  public CloudinaryConfig(CloudinaryProperties properties) {
+    this.properties = properties;
+  }
   @Bean
   public Cloudinary cloudinary() {
-    return new Cloudinary(ObjectUtils.asMap(
-        "cloud_name", cloudName,
-        "api_key", apiKey,
-        "api_secret", apiSecret));
+    return new Cloudinary(Map.of(
+        "cloud_name", properties.getCloudName(),
+        "api_key", properties.getApiKey(),
+        "api_secret", properties.getApiSecret()));
   }
 }

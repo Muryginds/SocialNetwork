@@ -18,10 +18,11 @@ import java.util.Map;
 @Slf4j
 public class StorageService {
   private final Cloudinary cloudinary;
+  private final static Map options = Map.of();
 
   // Загрузка изображения
   public String uploadImage(MultipartFile file) throws IOException {
-    Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+    Map uploadResult = cloudinary.uploader().upload(file.getBytes(), options);
     return (String) uploadResult.get("secure_url");
   }
   public CommonResponseDTO<StorageDTO> uploadFileUrl(MultipartFile file) throws IOException {

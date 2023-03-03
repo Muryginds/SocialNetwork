@@ -27,7 +27,7 @@ public class UsersController {
   return userService.getById(id);
 }
   @PutMapping("/me")
-  public ResponseEntity<UserDTO> editUserSettings(@Valid @RequestBody UserDTO updateUser) {
+  public ResponseEntity<UserDTO> editUserSettings(@RequestBody UserDTO updateUser) {
     userService.editUserSettings(updateUser);
     return ResponseEntity.ok().build();
   }
