@@ -5,8 +5,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.request.AuthRequestDTO;
@@ -27,7 +27,7 @@ public class LoginService {
   public CommonResponseDTO<UserDTO> login(AuthRequestDTO request) {
     var email = request.getEmail();
     var user = userRepository.findUserByEmail(email)
-        .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email: %s not found", email)));
+        .orElseThrow(() -> new UserNotFoundException(email));
 
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, request.getPassword()));

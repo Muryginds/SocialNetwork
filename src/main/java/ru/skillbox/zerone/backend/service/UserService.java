@@ -2,6 +2,7 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
@@ -148,4 +149,23 @@ public class UserService {
         .data(userMapper.userToUserDTO(user))
         .build();
   }
-}
+  public CommonResponseDTO<UserDTO> getById(Long id) {
+    User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    UserDTO userDto = userMapper.userToUserDTO(user);
+    return CommonResponseDTO.<UserDTO>builder().data(userDto).build();
+
+    }
+  public Boolean editUserSettings(UserDTO editUser)  {
+      User user = CurrentUserUtils.getCurrentUser();
+      user.setFirstName(editUser.getFirstName());
+      user.setLastName(editUser.getLastName());
+      user.setPhone(editUser.getPhone());
+      user.setCountry(editUser.getCountry());
+      user.setCity(editUser.getCity());
+      user.setBirthDate(editUser.getBirthDate());
+      user.setPhoto(editUser.getPhoto());
+      user.setAbout(editUser.getAbout());
+      userRepository.save(user);
+      return true;
+  }
+  }
