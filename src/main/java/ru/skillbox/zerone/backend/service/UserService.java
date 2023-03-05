@@ -162,17 +162,17 @@ public class UserService {
     return CommonResponseDTO.<UserDTO>builder().data(userDto).build();
 
     }
-  public Boolean editUserSettings(UserDTO editUser)  {
-      User user = CurrentUserUtils.getCurrentUser();
-      user.setFirstName(editUser.getFirstName());
-      user.setLastName(editUser.getLastName());
-      user.setPhone(editUser.getPhone());
-      user.setCountry(editUser.getCountry());
-      user.setCity(editUser.getCity());
-      user.setBirthDate(editUser.getBirthDate());
-      user.setPhoto(editUser.getPhoto());
-      user.setAbout(editUser.getAbout());
-      userRepository.save(user);
-      return true;
+  public UserDTO editUserSettings(UserDTO editUser)  {
+    User user = CurrentUserUtils.getCurrentUser();
+    user.setFirstName(editUser.getFirstName())
+    .setLastName(editUser.getLastName())
+    .setPhone(editUser.getPhone())
+    .setCountry(editUser.getCountry())
+    .setCity(editUser.getCity())
+    .setBirthDate(editUser.getBirthDate())
+    .setPhoto(editUser.getPhoto())
+    .setAbout(editUser.getAbout());
+    userRepository.save(user);
+    return editUser;
   }
   }

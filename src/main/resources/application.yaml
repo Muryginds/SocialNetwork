@@ -61,3 +61,7 @@ management:
     metrics:
       export:
         enabled: true
+cloudinary:
+  cloud_name: "zeroneproject"
+  api_key: "551572451498292"
+  api_secret: "bmOA13-uV_37Hm9Vfu4E_heObw4"

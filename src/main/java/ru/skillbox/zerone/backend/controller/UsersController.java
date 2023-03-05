@@ -1,9 +1,7 @@
 package ru.skillbox.zerone.backend.controller;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
@@ -28,8 +26,7 @@ public class UsersController {
 }
 
   @PutMapping("/me")
-  public ResponseEntity<Object> editUserSettings(@Valid @RequestBody UserDTO updateUser) {
-    userService.editUserSettings(updateUser);
-    return ResponseEntity.ok().build();
+  public UserDTO editUserSettings(@RequestBody UserDTO updateUser) {
+    return userService.editUserSettings(updateUser);
   }
 }
