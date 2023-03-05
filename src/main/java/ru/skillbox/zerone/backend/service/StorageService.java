@@ -12,13 +12,12 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.util.Map;
 
-
 @RequiredArgsConstructor
 @Service
 @Slf4j
 public class StorageService {
   private final Cloudinary cloudinary;
-  private final static Map options = Map.of();
+  private static final Map<Object, Object> options = Map.of();
 
   public String uploadImage(MultipartFile file) {
     try {
