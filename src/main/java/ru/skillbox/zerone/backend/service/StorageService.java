@@ -1,7 +1,6 @@
 package ru.skillbox.zerone.backend.service;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import ru.skillbox.zerone.backend.model.dto.response.StorageDTO;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.rmi.UnexpectedException;
 import java.util.Map;
 
 

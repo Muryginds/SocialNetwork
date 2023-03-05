@@ -1,11 +1,7 @@
 package ru.skillbox.zerone.backend.controller;
 
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +13,6 @@ import ru.skillbox.zerone.backend.service.StorageService;
 
 @RequiredArgsConstructor
 @RestController
-@Validated
 @RequestMapping("/api/v1")
 public class StorageController {
   private final StorageService cloudinaryService;

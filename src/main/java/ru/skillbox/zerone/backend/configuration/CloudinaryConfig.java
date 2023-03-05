@@ -10,7 +10,7 @@ import java.util.Map;
 
 @Configuration
 @RequiredArgsConstructor
-@EnableConfigurationProperties(CloudinaryProperties.class)
+//@EnableConfigurationProperties(CloudinaryProperties.class)
 public class CloudinaryConfig {
   private final CloudinaryProperties properties;
   @Bean
