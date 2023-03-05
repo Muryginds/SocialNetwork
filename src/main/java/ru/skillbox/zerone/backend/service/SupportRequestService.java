@@ -7,6 +7,7 @@ import ru.skillbox.zerone.backend.model.dto.request.SupportRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.repository.SupportRequestRepository;
+import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -19,8 +20,6 @@ public class SupportRequestService {
 
     supportRequestRepository.save(supportRequest);
 
-    return CommonResponseDTO.<MessageResponseDTO>builder()
-        .data(new MessageResponseDTO("ok"))
-        .build();
+    return ResponseUtils.commonResponseOk();
   }
 }

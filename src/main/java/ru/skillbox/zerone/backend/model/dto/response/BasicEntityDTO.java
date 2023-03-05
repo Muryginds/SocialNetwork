@@ -5,7 +5,7 @@ import lombok.Data;
 
 @AllArgsConstructor
 @Data
-public class LanguageDTO {
+public class BasicEntityDTO {
   private Long id;
   private String title;
 }

@@ -8,7 +8,6 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.service.LoginService;
 
-
 @RestController
 @RequestMapping(value = "/api/v1/auth")
 @RequiredArgsConstructor
