@@ -29,6 +29,7 @@
 		<com.dropbox.core.version>5.4.4</com.dropbox.core.version>
 		<net.logstash.logback.version>7.3</net.logstash.logback.version>
 		<commons-codec.version>1.15</commons-codec.version>
+		<com.cloudinary.version>1.32.2</com.cloudinary.version>
 	</properties>
 
 	<dependencies>
@@ -147,7 +148,7 @@
 		<dependency>
 			<groupId>com.cloudinary</groupId>
 			<artifactId>cloudinary-http44</artifactId>
-			<version>1.32.2</version>
+			<version>${com.cloudinary.version}</version>
 		</dependency>
 	</dependencies>
 

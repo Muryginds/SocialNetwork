@@ -65,7 +65,7 @@ public class JwtTokenProvider {
   }
 
   public String getUsername(String token) {
-    return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody().getSubject();
+    return Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token).getBody().getSubject();
   }
 
   public String resolveToken(HttpServletRequest req) {
@@ -74,7 +74,7 @@ public class JwtTokenProvider {
 
   public boolean validateToken(String token) {
     blacklistService.validateToken(token);
-    Jws<Claims> claims = Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+    Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token);
     return claims.getBody().getExpiration().after(new Date());
   }
 }
