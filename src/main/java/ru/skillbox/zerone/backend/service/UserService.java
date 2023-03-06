@@ -6,22 +6,24 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.ChangeEmailException;
+import ru.skillbox.zerone.backend.configuration.MailServiceConfig;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
-import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.request.ChangeEmailDTO;
 import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.entity.ChangeEmailHistory;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 import ru.skillbox.zerone.backend.repository.ChangeEmailHistoryRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
+import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 import java.util.UUID;
 
@@ -33,6 +35,8 @@ public class UserService {
   private final MailService mailService;
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
+  private final MailServiceConfig mailServiceConfig;
+
 
   public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordDTO request) {
     var user = CurrentUserUtils.getCurrentUser();
@@ -41,9 +45,7 @@ public class UserService {
     user.setPassword(passwordEncoder.encode(password));
     userRepository.save(user);
 
-    return CommonResponseDTO.<MessageResponseDTO>builder()
-        .data(new MessageResponseDTO("ok"))
-        .build();
+    return ResponseUtils.commonResponseOk();
   }
 
   @Transactional
@@ -53,7 +55,10 @@ public class UserService {
 
     String emailOld = user.getEmail();
 
-    ChangeEmailHistory changeEmailHistory = ChangeEmailHistory.builder().emailOld(emailOld).emailNew(request.getEmail()).build();
+    ChangeEmailHistory changeEmailHistory = ChangeEmailHistory.builder()
+        .emailOld(emailOld)
+        .emailNew(request.getEmail())
+        .build();
 
     if (userRepository.existsByEmail(request.getEmail())) {
       throw new UserAlreadyExistException(user.getEmail());
@@ -64,11 +69,13 @@ public class UserService {
     userRepository.save(user);
     changeEmailHistoryRepository.save(changeEmailHistory);
 
-    mailService.sendVerificationChangeEmail(emailOld, user.getConfirmationCode());
+    mailService.sendVerificationChangeEmail(
+        emailOld,
+        user.getConfirmationCode(),
+        "/changeemail/complete",
+        mailServiceConfig.getServerAddress());
 
-    return CommonResponseDTO.<MessageResponseDTO>builder()
-        .data(new MessageResponseDTO("ok"))
-        .build();
+    return ResponseUtils.commonResponseOk();
   }
 
   @Transactional
@@ -94,9 +101,7 @@ public class UserService {
       user.setEmail(newEmail);
       userRepository.save(user);
 
-      return CommonResponseDTO.<MessageResponseDTO>builder()
-          .data(new MessageResponseDTO("ok"))
-          .build();
+      return ResponseUtils.commonResponseOk();
     }
     else {
       throw new ChangeEmailException(confirmationCode, emailOld);
@@ -115,11 +120,13 @@ public class UserService {
 
     userRepository.save(user);
 
-    mailService.sendVerificationEmail(user.getEmail(), verificationUuid.toString());
+    mailService.sendVerificationEmail(
+        user.getEmail(),
+        verificationUuid.toString(),
+        "/registration/complete",
+        mailServiceConfig.getFrontAddress());
 
-    return CommonResponseDTO.<MessageResponseDTO>builder()
-        .data(new MessageResponseDTO("ok"))
-        .build();
+    return ResponseUtils.commonResponseOk();
   }
 
   @Transactional
@@ -127,7 +134,7 @@ public class UserService {
     var user = userRepository.findUserByEmail(request.getEmail())
         .orElseThrow(() -> new RegistrationCompleteException("Wrong email or key"));
 
-    if (user.getIsApproved()) {
+    if (Boolean.TRUE.equals(user.getIsApproved())) {
       throw new RegistrationCompleteException("User already confirmed");
     }
 
@@ -157,17 +164,17 @@ public class UserService {
     return CommonResponseDTO.<UserDTO>builder().data(userDto).build();
 
     }
-  public Boolean editUserSettings(UserDTO editUser)  {
-      User user = CurrentUserUtils.getCurrentUser();
-      user.setFirstName(editUser.getFirstName());
-      user.setLastName(editUser.getLastName());
-      user.setPhone(editUser.getPhone());
-      user.setCountry(editUser.getCountry());
-      user.setCity(editUser.getCity());
-      user.setBirthDate(editUser.getBirthDate());
-      user.setPhoto(editUser.getPhoto());
-      user.setAbout(editUser.getAbout());
-      userRepository.save(user);
-      return true;
+  public UserDTO editUserSettings(UserDTO editUser)  {
+    User user = CurrentUserUtils.getCurrentUser();
+    user.setFirstName(editUser.getFirstName())
+    .setLastName(editUser.getLastName())
+    .setPhone(editUser.getPhone())
+    .setCountry(editUser.getCountry())
+    .setCity(editUser.getCity())
+    .setBirthDate(editUser.getBirthDate())
+    .setPhoto(editUser.getPhoto())
+    .setAbout(editUser.getAbout());
+    userRepository.save(user);
+    return editUser;
   }
   }

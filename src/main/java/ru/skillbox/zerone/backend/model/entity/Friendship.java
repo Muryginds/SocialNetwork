@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
 
 import java.time.LocalDateTime;
@@ -48,6 +49,7 @@ public class Friendship {
 
   @NotNull
   @Builder.Default
+  @UpdateTimestamp
   @Column(name = "time", columnDefinition = "timestamp without time zone")
   private LocalDateTime time = LocalDateTime.now();
 }

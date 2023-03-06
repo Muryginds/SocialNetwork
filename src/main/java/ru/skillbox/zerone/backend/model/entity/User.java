@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.skillbox.zerone.backend.model.enumerated.MessagePermissions;
@@ -21,6 +22,7 @@ import java.util.List;
 )
 @Data
 @Builder
+@Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class User implements UserDetails {

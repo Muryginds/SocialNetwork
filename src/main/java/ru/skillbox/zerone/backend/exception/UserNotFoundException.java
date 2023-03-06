@@ -2,7 +2,7 @@ package ru.skillbox.zerone.backend.exception;
 
 public class UserNotFoundException extends ZeroneException {
   public UserNotFoundException(String email) {
-    super(String.format("User with email: %s not found", email));
+    super(String.format("Пользователь с почтой: %s не найден", email));
   }
 
   public UserNotFoundException(long id) {
