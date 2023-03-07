@@ -2,12 +2,12 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.configuration.MailServiceConfig;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
+import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.ChangeEmailDTO;
 import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordDTO;
@@ -93,13 +93,12 @@ public class UserService {
 
     String newEmail = changeEmailHistory.getEmailNew();
 
-    if (token.equals(confirmationCode) & user.getEmail().equals(emailOld)) {
+    if (token.equals(confirmationCode) && user.getEmail().equals(emailOld)) {
       user.setEmail(newEmail);
       userRepository.save(user);
 
       return ResponseUtils.commonResponseOk();
-    }
-    else {
+    } else {
       return CommonResponseDTO.<MessageResponseDTO>builder()
           .data(new MessageResponseDTO("error"))
           .build();
@@ -144,9 +143,7 @@ public class UserService {
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
 
-    return CommonResponseDTO.<MessageResponseDTO>builder()
-        .data(new MessageResponseDTO("ok"))
-        .build();
+    return ResponseUtils.commonResponseOk();
   }
 
   public CommonResponseDTO<UserDTO> getCurrentUser() {
@@ -156,23 +153,25 @@ public class UserService {
         .data(userMapper.userToUserDTO(user))
         .build();
   }
+
   public CommonResponseDTO<UserDTO> getById(Long id) {
-    User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     UserDTO userDto = userMapper.userToUserDTO(user);
     return CommonResponseDTO.<UserDTO>builder().data(userDto).build();
 
-    }
-  public UserDTO editUserSettings(UserDTO editUser)  {
+  }
+
+  public UserDTO editUserSettings(UserDTO editUser) {
     User user = CurrentUserUtils.getCurrentUser();
     user.setFirstName(editUser.getFirstName())
-    .setLastName(editUser.getLastName())
-    .setPhone(editUser.getPhone())
-    .setCountry(editUser.getCountry())
-    .setCity(editUser.getCity())
-    .setBirthDate(editUser.getBirthDate())
-    .setPhoto(editUser.getPhoto())
-    .setAbout(editUser.getAbout());
+        .setLastName(editUser.getLastName())
+        .setPhone(editUser.getPhone())
+        .setCountry(editUser.getCountry())
+        .setCity(editUser.getCity())
+        .setBirthDate(editUser.getBirthDate())
+        .setPhoto(editUser.getPhoto())
+        .setAbout(editUser.getAbout());
     userRepository.save(user);
-    return editUser;
+    return userMapper.userToUserDTO(user);
   }
-  }
+}
