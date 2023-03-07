@@ -12,14 +12,24 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.2</version>
+		<version>3.0.4</version>
 		<relativePath/>
 	</parent>
 
 	<properties>
 		<java.version>19</java.version>
 		<org.mapstruct.version>1.5.3.Final</org.mapstruct.version>
-		<lombok.version>1.18.24</lombok.version>
+		<lombock.version>1.18.24</lombock.version>
+		<org.apache.maven.plugins>3.8.1</org.apache.maven.plugins>
+		<org.liquibase.version>4.17.2</org.liquibase.version>
+		<org.postgresql.version>42.5.1</org.postgresql.version>
+		<org.bouncycastle.version>1.72</org.bouncycastle.version>
+		<io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
+		<org.testcontainers.version>1.17.3</org.testcontainers.version>
+		<com.dropbox.core.version>5.4.4</com.dropbox.core.version>
+		<net.logstash.logback.version>7.3</net.logstash.logback.version>
+		<commons-codec.version>1.15</commons-codec.version>
+		<com.cloudinary.version>1.32.2</com.cloudinary.version>
 	</properties>
 
 	<dependencies>
@@ -65,12 +75,12 @@
 		<dependency>
 			<groupId>org.liquibase</groupId>
 			<artifactId>liquibase-core</artifactId>
-			<version>4.17.2</version>
+			<version>${org.liquibase.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>42.5.1</version>
+			<version>${org.postgresql.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -89,30 +99,30 @@
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk18on</artifactId>
-			<version>1.72</version>
+			<version>${org.bouncycastle.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-api</artifactId>
-			<version>0.11.5</version>
+			<version>${io.jsonwebtoken.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-impl</artifactId>
-			<version>0.11.5</version>
+			<version>${io.jsonwebtoken.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt-jackson</artifactId>
-			<version>0.11.5</version>
+			<version>${io.jsonwebtoken.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>1.17.3</version>
+			<version>${org.testcontainers.version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -127,22 +137,22 @@
 		<dependency>
 			<groupId>com.dropbox.core</groupId>
 			<artifactId>dropbox-core-sdk</artifactId>
-			<version>5.4.4</version>
+			<version>${com.dropbox.core.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
 			<artifactId>logstash-logback-encoder</artifactId>
-			<version>7.3</version>
+			<version>${net.logstash.logback.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.15</version>
+			<version>${commons-codec.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.cloudinary</groupId>
 			<artifactId>cloudinary-http44</artifactId>
-			<version>1.32.2</version>
+			<version>${com.cloudinary.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -163,7 +173,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>${org.apache.maven.plugins}</version>
 				<configuration>
 					<source>${java.version}</source>
 					<target>${java.version}</target>

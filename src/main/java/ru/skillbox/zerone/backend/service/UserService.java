@@ -2,8 +2,10 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.skillbox.zerone.backend.exception.ChangeEmailException;
 import ru.skillbox.zerone.backend.configuration.MailServiceConfig;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
@@ -83,25 +85,27 @@ public class UserService {
     User user = CurrentUserUtils.getCurrentUser();
     String token = user.getConfirmationCode();
 
-    var changeEmailHistoryOptional = changeEmailHistoryRepository.findFirstByEmailOldOrderByTimeDesc(emailOld);
 
-    if (changeEmailHistoryOptional.isEmpty()) {
-      throw new RegistrationCompleteException("Email dont find in DB");
-    }
-
-    ChangeEmailHistory changeEmailHistory = changeEmailHistoryOptional.get();
-
-    String newEmail = changeEmailHistory.getEmailNew();
 
     if (token.equals(confirmationCode) && user.getEmail().equals(emailOld)) {
+
+      var changeEmailHistoryOptional = changeEmailHistoryRepository.findFirstByEmailOldOrderByTimeDesc(emailOld);
+
+      if (changeEmailHistoryOptional.isEmpty()) {
+        throw new RegistrationCompleteException("Email dont find in DB");
+      }
+
+      ChangeEmailHistory changeEmailHistory = changeEmailHistoryOptional.get();
+
+      String newEmail = changeEmailHistory.getEmailNew();
+
       user.setEmail(newEmail);
       userRepository.save(user);
 
       return ResponseUtils.commonResponseOk();
-    } else {
-      return CommonResponseDTO.<MessageResponseDTO>builder()
-          .data(new MessageResponseDTO("error"))
-          .build();
+    }
+    else {
+      throw new ChangeEmailException(confirmationCode, emailOld);
     }
   }
 
