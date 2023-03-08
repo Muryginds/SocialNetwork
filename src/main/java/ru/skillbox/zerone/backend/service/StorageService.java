@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.StorageDTO;
+import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -30,6 +31,7 @@ public class StorageService {
     public CommonResponseDTO<StorageDTO> uploadFileUrl (MultipartFile file) {
       StorageDTO storageDTO = new StorageDTO();
       storageDTO.setUrl(uploadImage(file));
-      return CommonResponseDTO.<StorageDTO>builder().data(storageDTO).build();
+
+      return ResponseUtils.commonResponseWithData(storageDTO);
     }
   }

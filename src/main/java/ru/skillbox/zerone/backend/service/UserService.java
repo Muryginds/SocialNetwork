@@ -45,7 +45,7 @@ public class UserService {
     user.setPassword(passwordEncoder.encode(password));
     userRepository.save(user);
 
-    return ResponseUtils.commonResponseOk();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   @Transactional
@@ -75,7 +75,7 @@ public class UserService {
         "/changeemail/complete",
         mailServiceConfig.getServerAddress());
 
-    return ResponseUtils.commonResponseOk();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   @Transactional
@@ -100,7 +100,7 @@ public class UserService {
     user.setEmail(newEmail);
     userRepository.save(user);
 
-    return ResponseUtils.commonResponseOk();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   @Transactional
@@ -121,7 +121,7 @@ public class UserService {
         "/registration/complete",
         mailServiceConfig.getFrontAddress());
 
-    return ResponseUtils.commonResponseOk();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   @Transactional
@@ -141,21 +141,19 @@ public class UserService {
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
 
-    return ResponseUtils.commonResponseOk();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   public CommonResponseDTO<UserDTO> getCurrentUser() {
     var user = CurrentUserUtils.getCurrentUser();
 
-    return CommonResponseDTO.<UserDTO>builder()
-        .data(userMapper.userToUserDTO(user))
-        .build();
+    return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));
   }
 
   public CommonResponseDTO<UserDTO> getById(Long id) {
     User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
-    UserDTO userDto = userMapper.userToUserDTO(user);
-    return CommonResponseDTO.<UserDTO>builder().data(userDto).build();
+
+    return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));
 
   }
 

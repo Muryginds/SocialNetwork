@@ -8,10 +8,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
-import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.dto.request.AuthRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.security.JwtTokenProvider;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
@@ -41,14 +41,12 @@ public class LoginService {
     UserDTO userDTO = userMapper.userToUserDTO(user);
     userDTO.setToken(token);
 
-    return CommonResponseDTO.<UserDTO>builder()
-        .data(userDTO)
-        .build();
+    return ResponseUtils.commonResponseWithData(userDTO);
   }
 
   public CommonResponseDTO<MessageResponseDTO> logout(String token) {
     blackListService.processLogout(token);
 
-    return ResponseUtils.commonResponseWithMessage("Logged out");
+    return ResponseUtils.commonResponseWithDataMessage("Logged out");
   }
 }
