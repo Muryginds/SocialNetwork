@@ -1,0 +1,12 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: add-answer-column
+      author: pvr
+      changes:
+        - addColumn:
+            tableName: support_request
+            columns:
+              - column:
+                  name: answer
+                  type: TEXT
