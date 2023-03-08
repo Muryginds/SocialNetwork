@@ -33,7 +33,7 @@ public class LoginService {
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, request.getPassword()));
     } catch (AuthenticationException e) {
-      throw new BadCredentialsException("Invalid username or password");
+      throw new BadCredentialsException("Неверный пароль или имя пользователя");
     }
 
     var token = jwtTokenProvider.createToken(email, user.getRoles());
