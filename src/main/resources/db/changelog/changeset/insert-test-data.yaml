@@ -7,3 +7,5 @@ databaseChangeLog:
       file: db/changelog/changeset/test-data/insert-into-comment.yaml
   - include:
       file: db/changelog/changeset/test-data/insert-into-like.yaml
+  - include:
+      file: db/changelog/changeset/test-data/insert-into-support_request.yaml

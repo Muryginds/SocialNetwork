@@ -1,0 +1,72 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: pvr
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: email
+                  value: vrpanfilov@yandex.ru
+              - column:
+                  name: first_name
+                  value: Vladimir
+              - column:
+                  name: last_name
+                  value: Vladimirov
+              - column:
+                  name: message
+                  value: Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium.
+                    
+                    Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi.
+              - column:
+                  name: status
+                  value: NEW
+              - column:
+                  name: time
+                  valueDate: 2023-03-05T17:34:43.28
+            tableName: support_request
+        - insert:
+            columns:
+              - column:
+                  name: email
+                  value: maxim@yandex.ru
+              - column:
+                  name: first_name
+                  value: Maxim
+              - column:
+                  name: last_name
+                  value: Maximov
+              - column:
+                  name: message
+                  value: Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. Вдали от всех живут они в буквенных домах на берегу Семантика большого языкового океана. Маленький ручеек Даль журчит по всей стране и обеспечивает ее всеми необходимыми правилами. Эта парадигматическая страна, в которой жаренные члены предложения залетают прямо в рот. Даже всемогущая пунктуация не имеет власти над рыбными текстами, ведущими безорфографичный образ жизни.
+                    
+                    Однажды одна маленькая строчка рыбного текста по имени Lorem ipsum решила выйти в большой мир грамматики. Великий Оксмокс предупреждал ее о злых запятых, диких знаках вопроса и коварных точках с запятой, но текст не дал сбить себя с толку. Он собрал семь своих заглавных букв, подпоясал инициал за пояс и пустился в дорогу.
+              - column:
+                  name: status
+                  value: NEW
+              - column:
+                  name: time
+                  valueDate: 2023-03-06T12:34:23.17
+            tableName: support_request
+        - insert:
+            columns:
+              - column:
+                  name: email
+                  value: ivan@yandex.ru
+              - column:
+                  name: first_name
+                  value: Ivan
+              - column:
+                  name: last_name
+                  value: Ivanov
+              - column:
+                  name: message
+                  value: Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое. Лежа на панцирнотвердой спине, он видел, стоило ему приподнять голову, свой коричневый, выпуклый, разделенный дугообразными чешуйками живот, на верхушке которого еле держалось готовое вот-вот окончательно сползти одеяло. Его многочисленные, убого тонкие по сравнению с остальным телом ножки беспомощно копошились у него перед глазами. «Что со мной случилось?» – подумал он.
+              - column:
+                  name: status
+                  value: NEW
+              - column:
+                  name: time
+                  valueDate: 2023-03-06T05:32:41.12
+            tableName: support_request

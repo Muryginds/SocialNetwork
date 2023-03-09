@@ -3,7 +3,10 @@ package ru.skillbox.zerone.backend.model.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -92,7 +95,7 @@ public class User implements UserDetails {
 
   @NotNull
   @Builder.Default
-  @Column(name = "message_permissions", columnDefinition = "message_permissions default 'ALL'")
+  @Column(name = "message_permission", columnDefinition = "message_permission default 'ALL'")
   @Enumerated(EnumType.STRING)
   private MessagePermissions messagePermissions = MessagePermissions.ALL;
 

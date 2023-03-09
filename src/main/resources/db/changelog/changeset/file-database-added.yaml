@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: create file database
+      author: ivan_anokhin
+      changes:
+        - createTable:
+            tableName: file
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+              - column:
+                  name: format
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: public_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: url
+                  type: varchar(255)
+                  constraints:
+                    nullable: false

@@ -154,7 +154,6 @@ public class UserService {
     User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
     return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));
-
   }
 
   public UserDTO editUserSettings(UserDTO editUser) {

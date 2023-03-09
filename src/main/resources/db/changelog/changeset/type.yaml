@@ -29,16 +29,16 @@ databaseChangeLog:
       author: Riddle
       changes:
         - sql:
-            sql: DROP TYPE IF EXISTS message_permissions CASCADE;
-              CREATE TYPE message_permissions AS ENUM ('ALL', 'FRIENDS');
+            sql: DROP TYPE IF EXISTS message_permission CASCADE;
+              CREATE TYPE message_permission AS ENUM ('ALL', 'FRIENDS');
 
   - changeSet:
       id: 5
-      author: Riddle
+      author: pvr
       changes:
         - sql:
             sql: DROP TYPE IF EXISTS notification_type CASCADE;
-              CREATE TYPE notification_type AS ENUM ('ALL', 'FRIENDS');
+              CREATE TYPE notification_type AS ENUM ('POST', 'POST_COMMENT', 'COMMENT_COMMENT', 'FRIEND_REQUEST', 'MESSAGE', 'FRIEND_BIRTHDAY');
 
   - changeSet:
       id: 6
