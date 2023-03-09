@@ -547,6 +547,9 @@ databaseChangeLog:
               nullable: false
             name: time
             type: TIMESTAMP WITHOUT TIME ZONE
+        - column:
+            name: answer
+            type: TEXT
         tableName: support_request
 - changeSet:
     id: 27
@@ -687,7 +690,7 @@ databaseChangeLog:
         - column:
             constraints:
               nullable: false
-            name: type_id
+            name: type
             type: NOTIFICATION_TYPE
         - column:
             constraints:
@@ -768,8 +771,8 @@ databaseChangeLog:
             constraints:
               nullable: false
             defaultValue: ALL
-            name: message_permissions
-            type: MESSAGE_PERMISSIONS
+            name: message_permission
+            type: MESSAGE_PERMISSION
         - column:
             constraints:
               nullable: false
@@ -1208,3 +1211,48 @@ databaseChangeLog:
                           name: time
                           type: TIMESTAMP WITHOUT TIME ZONE
                 tableName: change_email_history
+- changeSet:
+    id: 101
+    author: pvr (generated)
+    changes:
+        - createTable:
+              columns:
+                  - column:
+                        autoIncrement: true
+                        constraints:
+                            nullable: false
+                            primaryKey: true
+                            primaryKeyName: blacklist_token_pkey
+                        name: id
+                        type: BIGINT
+                  - column:
+                        constraints:
+                            nullable: false
+                        name: expired
+                        type: TIMESTAMP WITHOUT TIME ZONE
+                  - column:
+                        constraints:
+                            nullable: false
+                        name: token
+                        type: VARCHAR(255)
+              tableName: blacklist_token
+- changeSet:
+    id: 102
+    author: pvr (generated)
+    changes:
+        - createIndex:
+              columns:
+                  - column:
+                        name: token
+              indexName: blacklist_token_token_idx
+              tableName: blacklist_token
+- changeSet:
+    id: 103
+    author: pvr (generated)
+    changes:
+        - createIndex:
+              columns:
+                  - column:
+                        name: expired
+              indexName: blacklist_token_expired_idx
+              tableName: blacklist_token
