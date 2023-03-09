@@ -16,52 +16,6 @@ spring:
     show-sql: false
   sql:
     init:
-      mode: never
+      mode: always
   liquibase:
-    enabled: true
-    change-log: classpath:db/changelog/db.changelog-master.yaml
-  mail:
-    host: smtp.mail.ru
-    port: 465
-    username: zerone34@mail.ru
-    password: UKeakYphbz3NrSvAkq9R
-    test-connection: true
-    properties:
-      mail:
-        debug: false
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-          ssl:
-            enable: true
-
-jwt:
-  token:
-    secret: tyiuroiuopyiuioytidgfhdfqwerzxcqwer
-    expired: 360000000
-
-blacklist:
-  deletionInterval: 1000
-
-mail-service:
-  server-address: http://localhost:8086
-  front-address: http://localhost:8080
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,prometheus
-  metrics:
-    distribution:
-      percentiles-histogram:
-        "[http.server.requests]": true
-  prometheus:
-    metrics:
-      export:
-        enabled: true
-cloudinary:
-  cloud_name: "zeroneproject"
-  api_key: "551572451498292"
-  api_secret: "bmOA13-uV_37Hm9Vfu4E_heObw4"
+    enabled: false
