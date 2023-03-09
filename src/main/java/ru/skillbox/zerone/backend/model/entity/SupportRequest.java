@@ -57,4 +57,7 @@ public class SupportRequest {
   @Column(name = "status", columnDefinition = "support_request_status default 'NEW'")
   @Enumerated(EnumType.STRING)
   private SupportRequestStatus status = SupportRequestStatus.NEW;
+
+  @Column(name = "answer", columnDefinition = "text")
+  private String answer;
 }

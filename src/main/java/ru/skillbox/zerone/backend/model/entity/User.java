@@ -92,7 +92,7 @@ public class User implements UserDetails {
 
   @NotNull
   @Builder.Default
-  @Column(name = "message_permissions", columnDefinition = "message_permissions default 'ALL'")
+  @Column(name = "message_permission", columnDefinition = "message_permission default 'ALL'")
   @Enumerated(EnumType.STRING)
   private MessagePermissions messagePermissions = MessagePermissions.ALL;
 

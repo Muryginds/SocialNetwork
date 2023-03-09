@@ -30,8 +30,8 @@ public class Notification {
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  @Column(name = "type_id", columnDefinition = "notification_type")
-  private NotificationType typeId;
+  @Column(name = "type", columnDefinition = "notification_type")
+  private NotificationType type;
 
   @NotNull
   @Builder.Default
