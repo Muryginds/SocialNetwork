@@ -10,14 +10,15 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.StorageDTO;
 import ru.skillbox.zerone.backend.service.StorageService;
 
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1")
 public class StorageController {
-  private final StorageService cloudinaryService;
+  private final StorageService storageService;
+
   @PostMapping("/storage")
   public CommonResponseDTO<StorageDTO> postImage(@NotNull MultipartFile file) {
-    return cloudinaryService.uploadFileUrl(file);
+    return storageService.uploadImage(file);
   }
 }
+
