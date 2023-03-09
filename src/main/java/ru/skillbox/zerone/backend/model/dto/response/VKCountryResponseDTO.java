@@ -15,7 +15,7 @@ public class VKCountryResponseDTO {
 
     @Data
     public static class CountryDTO {
-      private long id;
+      private short id;
       private String title;
     }
   }

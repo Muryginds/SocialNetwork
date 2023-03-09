@@ -5,6 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.skillbox.zerone.backend.model.entity.Country;
 
-public interface CountryRepository extends JpaRepository<Country, Long> {
+public interface CountryRepository extends JpaRepository<Country, Short> {
   Page<Country> findAllByNameContains(String query, Pageable pageable);
 }

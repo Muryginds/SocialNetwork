@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class Country {
   @Id
   @Column(name = "id")
-  private Long id;
+  private Short id;
 
   @NotNull
   @NotBlank

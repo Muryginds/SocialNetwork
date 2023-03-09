@@ -11,7 +11,7 @@ databaseChangeLog:
                     primaryKey: true
                     primaryKeyName: country_pkey
                   name: id
-                  type: BIGINT
+                  type: SMALLINT
               - column:
                   constraints:
                     nullable: false

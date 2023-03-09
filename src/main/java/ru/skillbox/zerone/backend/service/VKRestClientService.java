@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static ru.skillbox.zerone.backend.model.dto.response.VKCityResponseDTO.VKItemsResponseDTO.CityDTO;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -88,7 +90,7 @@ public class VKRestClientService {
         .toList();
   }
 
-  private String formatName(VKCityResponseDTO.VKItemsResponseDTO.CityDTO cityDTO) {
+  private String formatName(CityDTO cityDTO) {
     StringBuilder sb = new StringBuilder();
     sb.append(cityDTO.getTitle());
     if (!Objects.isNull(cityDTO.getArea())) {
