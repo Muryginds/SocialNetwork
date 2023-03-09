@@ -43,7 +43,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-23T17:34:43.08
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -101,7 +101,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-09-06T18:05:52.265
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -159,7 +159,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-27T21:45:49.914
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -215,7 +215,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-11T02:30:30.741
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -272,7 +272,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-10-25T00:09:28.39
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -329,7 +329,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-01-30T19:56:03.415
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -386,7 +386,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-01-02T13:38:58.997
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -442,7 +442,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-23T01:24:59.44
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -500,7 +500,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-01T19:19:59.011
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -557,7 +557,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-17T03:48:24.832
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -614,7 +614,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-02T09:54:41.898
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -671,7 +671,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-21T16:18:30.609
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -728,7 +728,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-30T06:04:38.13
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -785,7 +785,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-30T22:06:32.873
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -842,7 +842,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-07T05:27:00.886
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -899,7 +899,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-01T05:03:20.761
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -957,7 +957,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-10T22:21:43.56
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1014,7 +1014,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-10-20T15:53:58.779
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1071,7 +1071,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-05T00:36:46.138
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1128,7 +1128,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-01-25T20:37:16.838
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1186,7 +1186,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-09T20:18:23.772
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1243,7 +1243,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-11T06:35:50.933
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1299,7 +1299,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-10T06:27:20.782
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1356,7 +1356,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-09-24T00:58:28.796
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1413,7 +1413,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-20T18:31:06.249
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1469,7 +1469,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-29T04:05:28.972
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1526,7 +1526,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-11-18T11:26:26.198
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1582,7 +1582,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-08T02:06:41.248
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1639,7 +1639,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-31T07:15:04.094
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1697,7 +1697,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-11T17:29:50.048
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1754,7 +1754,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-01T04:40:35.289
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1812,7 +1812,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-19T06:41:55.341
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1869,7 +1869,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-04T22:16:40.273
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1927,7 +1927,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-28T20:41:26.005
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1984,7 +1984,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-02-23T08:35:45.153
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2041,7 +2041,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-25T15:02:05.806
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2098,7 +2098,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-17T20:25:09.12
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2155,7 +2155,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-18T19:15:06.547
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2212,7 +2212,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-07T02:59:03.671
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2270,7 +2270,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-01-06T11:39:26.534
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2326,7 +2326,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-10-04T13:46:24.629
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2382,7 +2382,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-14T07:12:57.098
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2439,7 +2439,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-06T11:43:09.371
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2497,7 +2497,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-08T22:28:12.47
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2555,7 +2555,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-26T03:22:32.304
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2612,7 +2612,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-13T21:47:04.894
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2669,7 +2669,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-20T23:34:41.845
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2726,7 +2726,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-02T08:42:04.669
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2783,7 +2783,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-23T13:53:19.861
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2840,7 +2840,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-31T08:31:23.463
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2898,7 +2898,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-03T18:41:27.244
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2954,7 +2954,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-20T18:37:34.963
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3011,7 +3011,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-19T01:36:35.566
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3067,7 +3067,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-30T09:29:12.955
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3123,7 +3123,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-09-04T06:42:14.75
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3180,7 +3180,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-07T04:31:18.179
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3237,7 +3237,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-06T20:20:05.501
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3294,7 +3294,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-11-15T04:55:34.63
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3351,7 +3351,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-31T05:57:23.757
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3408,7 +3408,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-17T13:52:11.446
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3465,7 +3465,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-09-06T21:13:43.842
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3521,7 +3521,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-02-25T10:21:06.007
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3578,7 +3578,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-01-13T03:44:36.388
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3635,7 +3635,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-12T19:36:32.134
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3692,7 +3692,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-31T16:16:10.165
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3749,7 +3749,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-17T07:15:56.633
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3805,7 +3805,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-30T14:32:26.05
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3863,7 +3863,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-27T02:54:13.994
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3920,7 +3920,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-12T10:32:29.511
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3976,7 +3976,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-29T03:49:59.908
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4033,7 +4033,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-22T01:09:46.001
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4091,7 +4091,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-11-07T19:48:20.528
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4148,7 +4148,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-18T15:05:17.559
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4205,7 +4205,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-17T08:21:01.628
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4262,7 +4262,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-26T09:11:36.252
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4318,7 +4318,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-02-19T19:37:43.998
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4376,7 +4376,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-12T05:03:51.476
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4433,7 +4433,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-06T18:55:06.531
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4490,7 +4490,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-28T04:25:53.683
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4548,7 +4548,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-07T00:59:49.381
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4605,7 +4605,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-21T04:56:39.48
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4662,7 +4662,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-11T17:05:14.945
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4719,7 +4719,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-16T14:54:12.704
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4776,7 +4776,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-04T13:55:15.852
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4832,7 +4832,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-09-22T00:09:36.174
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4889,7 +4889,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-29T12:48:59.317
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4946,7 +4946,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-04T15:08:59.25
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5002,7 +5002,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-28T06:45:45.611
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5059,7 +5059,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-01T10:55:50.744
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5116,7 +5116,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-09-13T21:03:30.271
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5173,7 +5173,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-13T23:23:44.996
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5231,7 +5231,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-10T16:11:01.413
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5288,7 +5288,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-08T22:30:18.69
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5345,7 +5345,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-16T02:59:42.664
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5401,7 +5401,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-01-04T23:38:45.609
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5457,7 +5457,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-10-08T16:36:12.235
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5514,7 +5514,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-15T06:14:15.355
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5571,7 +5571,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-04T01:25:47.749
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5627,7 +5627,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-05T05:57:40.663
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5685,7 +5685,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-12T03:27:25.383
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5702,6 +5702,63 @@ databaseChangeLog:
             name: status
             value: ACTIVE
         tableName: user
+    - insert:
+          columns:
+          - column:
+                name: about
+                value: Alias quo aliquam vel ut consequuntur et est vel maxime autem quasi
+                    voluptatibus autem repellat est reprehenderit at ullam.
+          - column:
+                name: birth_date
+                valueDate: 1967-02-05
+          - column:
+                name: city
+                value: Москва
+          - column:
+                name: confirmation_code
+                value: confirmed-test-user
+          - column:
+                name: country
+                value: Россия
+          - column:
+                name: email
+                value: ivan@mail.ru
+          - column:
+                name: first_name
+                value: Ivan
+          - column:
+                name: is_approved
+                valueBoolean: true
+          - column:
+                name: is_blocked
+                valueBoolean: false
+          - column:
+                name: is_deleted
+                valueBoolean: false
+          - column:
+                name: last_name
+                value: Ivanov
+          - column:
+                name: last_online_time
+                valueDate: 2022-04-23T17:34:43.08
+          - column:
+                name: message_permission
+                value: ALL
+          - column:
+                name: password
+                value: $argon2id$v=19$m=4096,t=1,p=1$Cxsp9yu82Jjc2RoUBAnJpg$rH3hRT9fGRM9DPTMcfYP8X0Kr5L3MdXfWSxeT0nHq+I
+          - column:
+                name: phone
+                value: +7(957)936-91-65
+          - column:
+                name: photo
+          - column:
+                name: reg_date
+                valueDate: 2019-08-19T17:54:51.942
+          - column:
+                name: status
+                value: ACTIVE
+          tableName: user
 - changeSet:
     id: 2
     author: muryginds
@@ -6606,3 +6663,12 @@ databaseChangeLog:
             name: role_id
             valueNumeric: 1
         tableName: user_to_role
+    - insert:
+          columns:
+              - column:
+                    name: user_id
+                    valueNumeric: 101
+              - column:
+                    name: role_id
+                    valueNumeric: 2
+          tableName: user_to_role
