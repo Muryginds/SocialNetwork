@@ -1,5 +1,4 @@
 package ru.skillbox.zerone.backend.controller;
-
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.exception.PostCreationExecption;
 import ru.skillbox.zerone.backend.exception.PostNotFoundException;
@@ -23,7 +22,7 @@ public class PostController {
   @PostMapping("/users/wall")
   public CommonResponseDTO<PostsDTO> getUserWall (@PathVariable int id,
                                                   @RequestParam(name = "publish_date", defaultValue = "0") long publishDate,
-                                                  @RequestBody PostRequestDTO postRequestDTO)  throws PostCreationExecption {
+                                                  @RequestBody PostRequestDTO postRequestDTO) {
     return postService.createPost(id, publishDate, postRequestDTO);
   }
   @GetMapping("/users/{id}/wall")
@@ -39,7 +38,6 @@ public class PostController {
     return postService.getFeeds (text,offset,itemPerPage);
   }
   @GetMapping("/post")
-
   public CommonListDTO<PostsDTO> getPosts (@RequestParam(name = "text", defaultValue = "") String text,
                                            @RequestParam(name = "date_from", defaultValue = "-1") long dateFrom,
                                            @RequestParam(name = "date_to", defaultValue = "-1") long dateTo,
@@ -50,22 +48,21 @@ public class PostController {
     return postService.getPosts (text, dateFrom, dateTo, offset, itemPerPage, author, tag);
   }
   @GetMapping("/post/{id}")
-  public CommonResponseDTO<PostsDTO> getPostById(@PathVariable int id, Principal principal) throws PostNotFoundException {
-    return postService.getPostById(id, principal);
+  public CommonResponseDTO<PostsDTO> getPostById(@PathVariable int id){
+    return postService.getPostById(id);
   }
   @PutMapping("/post/{id}")
   public CommonResponseDTO<PostsDTO> putPostById(@PathVariable int id,
                                                  @RequestParam(name = "publish_date", required = false, defaultValue = "0") Long publishDate,
-                                                 @RequestBody PostRequestDTO requestBody) throws PostNotFoundException, UserAndAuthorEqualsException {
+                                                 @RequestBody PostRequestDTO requestBody) {
     return postService.putPostById(id, publishDate, requestBody);
   }
   @DeleteMapping("/post/{id}")
-  public CommonResponseDTO<PostsDTO> deletePostById(@PathVariable int id) throws PostNotFoundException, UserAndAuthorEqualsException {
+  public CommonResponseDTO<PostsDTO> deletePostById(@PathVariable int id) {
     return postService.deletePostById(id);
   }
   @PutMapping("/post/{id}/recover")
-  public CommonResponseDTO<PostsDTO> putPostRecover(@PathVariable int id
-                                                    ) throws PostNotFoundException, UserAndAuthorEqualsException {
+  public CommonResponseDTO<PostsDTO> putPostRecover(@PathVariable Long id) {
     return postService.putPostIdRecover(id);
   }
 }

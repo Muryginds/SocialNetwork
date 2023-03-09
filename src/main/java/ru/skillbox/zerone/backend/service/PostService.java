@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.PostCreationExecption;
 import ru.skillbox.zerone.backend.exception.PostNotFoundException;
 import ru.skillbox.zerone.backend.exception.UserAndAuthorEqualsException;
+import ru.skillbox.zerone.backend.mapstruct.PostMapper;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.PostRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.*;
@@ -33,10 +34,11 @@ public class PostService {
   private final CommentService commentService;
   private final UserMapper userMapper;
   private final UserRepository userRepository;
+  private final PostMapper postMapper;
 
   private static final Pattern pattern = Pattern.compile("<img\\s+[^>]*src=\"([^\"]*)\"[^>]*>");
 
-  public CommonResponseDTO<PostsDTO> createPost(int id, long publishDate, PostRequestDTO postRequestDTO) throws PostCreationExecption{
+  public CommonResponseDTO<PostsDTO> createPost(int id, Long publishDate, PostRequestDTO postRequestDTO) throws PostCreationExecption{
 
     User user = CurrentUserUtils.getCurrentUser();
     if (user.getId() != id) throw new PostCreationExecption();
@@ -45,32 +47,28 @@ public class PostService {
     post.setPostText(postRequestDTO.getPostText());
     post.setTitle(postRequestDTO.getTitle());
     post.setAuthor(user);
-//    post.setTime(publishDate == null ? new Date() : new Date(publishDate));
-//    if (publishDate == 0) {
-//      post.setTime(LocalDateTime.now());
-//    } else {
-//      post.setTime(Instant.ofEpochMilli(publishDate));
-//    }
-    Post createdPost = postRepository.save(post);
+
+    if (publishDate == 0) {
+      post.setTime(LocalDateTime.now());
+    } else {
+      post.setTime(Instant.ofEpochMilli(publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime());
+    }
+
+    postRepository.save(post);
 //    Matcher images = pattern.matcher(postRequestDTO.getPostText());
     CommonResponseDTO<PostsDTO> result = new CommonResponseDTO<>();
     result.setTimestamp(LocalDateTime.now());
-    result.setData(getPostsDTO(createdPost, user));
+    result.setData(getPostsDTO(post, user));
   return result;
   }
   private PostsDTO getPostsDTO(Post post, User user) {
 
-    PostsDTO postsDTO = new PostsDTO();
-    postsDTO.setPostText(post.getPostText());
+    PostsDTO postsDTO = postMapper.postToPostsDTO(post);
+
     postsDTO.setAuthor(userMapper.userToUserDTO(user));
-    postsDTO.setComments(commentService.getPage4Comments(0,5,post, user));
+//    postsDTO.setComments(commentService.getPage4Comments(0,5,post, user));
     Set<Like> likes = likeRepository.findLikesByPost(post);
-    postsDTO.setLikes(postsDTO.getLikes());
-    postsDTO.setTimestamp(post.getTime());
-    postsDTO.setId(post.getId());
-    postsDTO.setTimestamp(post.getTime());
-    postsDTO.setTitle(post.getTitle());
-    postsDTO.setBlocked(post.getIsBlocked());
+    postsDTO.setLikes(likes.size());
     postsDTO.setTags(new ArrayList<>());
 
 //    Тут должен быть сет Тэгов вместо пустого листа!!
@@ -82,14 +80,16 @@ public class PostService {
   }
 
   public CommonListDTO<PostsDTO> getPostResponse(int offset, int itemPerPage, Page<Post> pageablePostList, User user){
-    CommonListDTO<PostsDTO> postResponse = new CommonListDTO<>();
-    postResponse.setPerPage(itemPerPage);
-    postResponse.setTimestamp(LocalDateTime.now());
-    postResponse.setOffset(offset);
-    postResponse.setTotal((int)pageablePostList.getTotalElements());
-    postResponse.setData(getPostforResponse(pageablePostList.toList(), user));
-    return postResponse;
-  }
+
+        return CommonListDTO.<PostsDTO>builder()
+        .total((int)pageablePostList.getTotalElements())
+        .perPage(itemPerPage)
+        .offset(offset)
+        .timestamp(LocalDateTime.now())
+        .data(getPostforResponse(pageablePostList.toList(), user))
+        .build();
+
+ }
 
   public List<PostsDTO> getPostforResponse(List<Post> posts, User user) {
     List<PostsDTO> postDataList = new ArrayList<>();
@@ -108,16 +108,16 @@ public class PostService {
 
   }
 
-  public CommonResponseDTO<PostsDTO> getPostById(int id, Principal principal) throws PostNotFoundException {
+  public CommonResponseDTO<PostsDTO> getPostById(long id) throws PostNotFoundException {
 
     Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
-    User user = userRepository.findUserByEmail(principal.getName()).orElseThrow(() -> new UsernameNotFoundException(""));
+    User user = CurrentUserUtils.getCurrentUser();
     CommonResponseDTO<PostsDTO> dataResponse = new CommonResponseDTO<>();
     dataResponse.setTimestamp(LocalDateTime.now());
     dataResponse.setData(getPostsDTO(post, user));
     return dataResponse;
   }
-  private Post findPost(int Id) throws PostNotFoundException {
+  private Post findPost(long Id) throws PostNotFoundException {
     return postRepository.findById(Id)
         .orElseThrow(PostNotFoundException::new);
   }
@@ -147,23 +147,22 @@ public class PostService {
     User user = CurrentUserUtils.getCurrentUser();
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
     Page<Post> pageablePostList;
-    Instant datetimeTo = (dateTo == -1) ? Instant.now() : Instant.ofEpochMilli(dateTo);
-    Instant datetimeFrom = (dateFrom == -1) ? ZonedDateTime.now().minusYears(1).toInstant() : Instant.ofEpochSecond(dateFrom);
+    LocalDateTime datetimeFrom = Instant.ofEpochMilli(dateFrom).atZone(ZoneId.systemDefault()).toLocalDateTime();
+    LocalDateTime datetimeTo = Instant.ofEpochMilli(dateTo).atZone(ZoneId.systemDefault()).toLocalDateTime();
     if (tag.equals("")) {
       pageablePostList = postRepository.findPostsByPostTextContainsAndAuthorLastNameAndUpdateTimeBetween(text, author,
-         datetimeFrom, datetimeTo, pageable);
+          datetimeFrom,datetimeTo, pageable);
     } else {
-      
 //    Тут должен быть лист тегов!!
       
       pageablePostList = postRepository.findPostsByPostTextContainsAndAuthorLastNameAndUpdateTimeBetween(text, author,
-          datetimeFrom, datetimeTo, pageable);
+          datetimeFrom,datetimeTo, pageable);
 
     }
     return getPostResponse(offset, itemPerPage, pageablePostList, user);
   }
 
-  public CommonResponseDTO<PostsDTO> deletePostById (int id) throws PostNotFoundException, UserAndAuthorEqualsException {
+  public CommonResponseDTO<PostsDTO> deletePostById (long id) throws PostNotFoundException, UserAndAuthorEqualsException {
       User user = CurrentUserUtils.getCurrentUser();
       Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
       if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException();
@@ -173,7 +172,7 @@ public class PostService {
       return getPostDTOResponse(post, user);
   }
 
-  public CommonResponseDTO<PostsDTO> putPostIdRecover(int id) throws PostNotFoundException, UserAndAuthorEqualsException {
+  public CommonResponseDTO<PostsDTO> putPostIdRecover(long id) throws PostNotFoundException, UserAndAuthorEqualsException {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
     if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException();
@@ -188,16 +187,15 @@ public class PostService {
     if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException();
     post.setTitle(requestBody.getTitle());
     post.setPostText(requestBody.getPostText());
+    List<String> tags = requestBody.getTags();
 
     // Тут снова должен быть лист Тэгов
 
-    long publishDateTime = (publishDate == null) ? System.currentTimeMillis() : publishDate;
-//    post.setTime(Long.parseLong(publishDateTime));
+    post.setTime(Instant.ofEpochMilli(publishDate == 0 ? System.currentTimeMillis() : publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime());
     post = postRepository.saveAndFlush(post);
     Matcher images = pattern.matcher(requestBody.getPostText());
 
     //Тут должны быть картинки
-//    Knopki Post i Comment, pochti v polnom sostave, krome tech gde est` publishDate.
 
     return getPostDTOResponse(post, user);
   }

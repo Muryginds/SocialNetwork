@@ -7,13 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.Hibernate;
 import ru.skillbox.zerone.backend.model.enumerated.CommentType;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+
 
 @Entity
 @Table(name = "comment",
@@ -31,7 +28,7 @@ public class Comment {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private int id;
+  private Long id;
 
   @NotNull
   @Builder.Default
@@ -71,7 +68,7 @@ public class Comment {
   @NotNull
   @Builder.Default
   @Column(name = "is_blocked", columnDefinition = "boolean default false")
-  private static Boolean isBlocked = false;
+  private Boolean isBlocked = false;
 
   @NotNull
   @Builder.Default

@@ -8,12 +8,12 @@ import java.util.List;
 @Data
 public class CommentDTO {
   @JsonProperty("parent_id")
-  private Integer parentId;
+  private Long parentId;
   @JsonProperty("comment_text")
   private String commentText;
-  private int id;
+  private long id;
   @JsonProperty("post_id")
-  private int postId;
+  private long postId;
   private LocalDateTime time;
   private UserDTO author;
   @JsonProperty("is_blocked")

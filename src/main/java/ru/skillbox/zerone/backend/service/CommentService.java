@@ -41,7 +41,7 @@ public class CommentService {
 
     return getPostResponse(offset, itemPerPage, pageableCommentList, user);
   }
-   public CommonListDTO<CommentDTO> getComments (int offset, int itemPerPage, int id) throws PostNotFoundException {
+   public CommonListDTO<CommentDTO> getComments (int offset, int itemPerPage, long id) throws PostNotFoundException {
      User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
     return getPage4Comments(offset, itemPerPage, post,user);
@@ -58,7 +58,7 @@ public class CommentService {
     return new ArrayList<>(commentDTOList);
   }
 
-  public CommonResponseDTO<CommentDTO> comment(int id, CommentRequest commentRequest) throws PostNotFoundException, CommentNotFoundException {
+  public CommonResponseDTO<CommentDTO> comment(long id, CommentRequest commentRequest) throws PostNotFoundException, CommentNotFoundException {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
     Comment comment = new Comment();
@@ -87,13 +87,14 @@ public class CommentService {
       return commentResponse;
     }
       private CommonListDTO<CommentDTO> getPostResponse(int offset, int itemPerPage, Page<Comment> pageableCommentList, User user) {
-    CommonListDTO<CommentDTO> commentResponse = new CommonListDTO<>();
-        commentResponse.setPerPage(itemPerPage);
-        commentResponse.setTimestamp(LocalDateTime.now());
-        commentResponse.setOffset(offset);
-        commentResponse.setTotal((int) pageableCommentList.getTotalElements());
-        commentResponse.setData(getCommentDTO4Response(pageableCommentList.toSet(), user));
-    return commentResponse;
+        return CommonListDTO.<CommentDTO>builder()
+            .total((int) pageableCommentList.getTotalElements())
+            .perPage(itemPerPage)
+            .offset(offset)
+            .timestamp(LocalDateTime.now())
+            .data(getCommentDTO4Response(pageableCommentList.toSet(), user))
+            .build();
+
   }
     public CommentDTO getCommentDTO (Comment comment, User user) {
 
@@ -116,7 +117,7 @@ public class CommentService {
       return commentDTO;
     }
 
-  public CommonResponseDTO<CommentDTO> deleteComment(int commentId) {
+  public CommonResponseDTO<CommentDTO> deleteComment(long commentId) {
     User user = CurrentUserUtils.getCurrentUser();
     Comment comment = findComment(commentId);
     comment.setIsDeleted(Objects.equals(comment.getAuthor().getId(), user.getId()) || comment.getIsDeleted());
@@ -135,7 +136,7 @@ public class CommentService {
   }
 
 
-  public CommonResponseDTO<CommentDTO> putComment(int id, int commentId, CommentRequest commentRequest) throws CommentNotFoundException, PostNotFoundException {
+  public CommonResponseDTO<CommentDTO> putComment(long id, long commentId, CommentRequest commentRequest) throws CommentNotFoundException, PostNotFoundException {
     User user = CurrentUserUtils.getCurrentUser();
     postRepository.findById(id).orElseThrow(PostNotFoundException::new);
     if (commentRequest.getParentId() != null)
@@ -150,7 +151,7 @@ public class CommentService {
     return getCommentResponse(comment, user);
   }
 
-  private Comment findComment(int itemId) throws CommentNotFoundException {
+  private Comment findComment(long itemId) throws CommentNotFoundException {
     return commentRepository.findById(itemId)
         .orElseThrow(CommentNotFoundException::new);
   }

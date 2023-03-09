@@ -9,7 +9,7 @@ import java.util.List;
 
 @Data
 public class PostsDTO {
-  private int id;
+  private long id;
   private String title;
   @JsonProperty("post_text")
   private String postText;

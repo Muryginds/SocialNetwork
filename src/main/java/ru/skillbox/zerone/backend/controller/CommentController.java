@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.exception.CommentNotFoundException;
 import ru.skillbox.zerone.backend.exception.PostNotFoundException;
@@ -11,16 +12,12 @@ import ru.skillbox.zerone.backend.service.CommentService;
 
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/v1")
 public class CommentController {
   private final CommentService commentService;
 
-  public CommentController(CommentService commentService) {
-    this.commentService = commentService;
-  }
-
   @GetMapping("/post/{id}/comments")
-
   public CommonListDTO<CommentDTO> getFeeds(@RequestParam(name = "offset", defaultValue = "0") int offset,
                                             @RequestParam(name = "itemPerPage", defaultValue = "5") int itemPerPage,
                                             @PathVariable int id) throws PostNotFoundException {
@@ -34,7 +31,7 @@ public class CommentController {
   }
 
   @DeleteMapping("/post/{id}/comments/{comment_id}")
-  public CommonResponseDTO<CommentDTO> deleteComment(@PathVariable int id,
+  public CommonResponseDTO<CommentDTO> deleteComment(@PathVariable long id,
                                                      @PathVariable(name = "comment_id") int commentId) throws CommentNotFoundException {
     return commentService.deleteComment(commentId);
   }
