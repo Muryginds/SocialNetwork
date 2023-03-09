@@ -43,7 +43,7 @@ public class TagService {
 
   @Transactional
   public CommonListResponseDTO<TagDTO> getAllTags(String tag, Integer offset, Integer itemPerPage) {
-    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
+    Pageable pageable = PageRequest.of(offset, itemPerPage);
     Page<Tag> pageableTagList;
 
     if (tag.equals("")) {
@@ -57,6 +57,7 @@ public class TagService {
 
 
     return CommonListResponseDTO.<TagDTO>builder()
+        .total(pageableTagList.getTotalElements())
         .perPage(itemPerPage)
         .offset(offset)
         .data(tagDTOList)
