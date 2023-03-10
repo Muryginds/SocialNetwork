@@ -30,10 +30,9 @@ import java.util.Set;
 public class CommentService {
   private final PostRepository postRepository;
    private final CommentRepository commentRepository;
-
   private final UserMapper userMapper;
 
-  public CommonListDTO<CommentDTO> getPage4Comments(int offset, int itemPerPage, Post post,User user) {
+  public CommonListResponseDTO<CommentDTO> getPage4Comments(int offset, int itemPerPage, Post post,User user) {
 
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
     Page<Comment> pageableCommentList = commentRepository
@@ -41,7 +40,7 @@ public class CommentService {
 
     return getPostResponse(offset, itemPerPage, pageableCommentList, user);
   }
-   public CommonListDTO<CommentDTO> getComments (int offset, int itemPerPage, long id) throws PostNotFoundException {
+   public CommonListResponseDTO<CommentDTO> getComments (int offset, int itemPerPage, long id) throws PostNotFoundException {
      User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
     return getPage4Comments(offset, itemPerPage, post,user);
@@ -73,10 +72,9 @@ public class CommentService {
     comment.setTime(LocalDateTime.now());
     comment.setAuthor(user);
     comment = commentRepository.save(comment);
-//    if (commentRequest.getImages() != null) {
-//      int id = comment.getId();
-//      commentRequest.getImages().forEach(image -> fileRepository.save(fileRepository.findByUrl(image.getUrl()).setCommentId(id)));
-//    }
+
+    // Тут должен быть лист Изображений
+
 //    sendNotification(comment);
     return getCommentResponse(comment, user);
   }
@@ -86,8 +84,9 @@ public class CommentService {
       commentResponse.setData(getCommentDTO(comment, user));
       return commentResponse;
     }
-      private CommonListDTO<CommentDTO> getPostResponse(int offset, int itemPerPage, Page<Comment> pageableCommentList, User user) {
-        return CommonListDTO.<CommentDTO>builder()
+      private CommonListResponseDTO<CommentDTO> getPostResponse(int offset, int itemPerPage, Page<Comment> pageableCommentList, User user) {
+
+            return CommonListResponseDTO.<CommentDTO>builder()
             .total((int) pageableCommentList.getTotalElements())
             .perPage(itemPerPage)
             .offset(offset)
@@ -144,10 +143,9 @@ public class CommentService {
     Comment comment = findComment(commentId);
     comment.setCommentText(commentRequest.getCommentText());
     commentRepository.save(comment);
-//    if (commentRequest.getImages() != null) {
-//      int id = comment.getId();
-//      commentRequest.getImages().forEach(image -> fileRepository.save(fileRepository.findByUrl(image.getUrl()).setCommentId(id)));
-//    }
+
+    // Тут должен быть лист Изображений
+
     return getCommentResponse(comment, user);
   }
 
@@ -155,5 +153,4 @@ public class CommentService {
     return commentRepository.findById(itemId)
         .orElseThrow(CommentNotFoundException::new);
   }
-
 }

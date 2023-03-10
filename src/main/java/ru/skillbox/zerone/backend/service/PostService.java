@@ -1,12 +1,8 @@
 package ru.skillbox.zerone.backend.service;
-
-
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.PostCreationExecption;
 import ru.skillbox.zerone.backend.exception.PostNotFoundException;
@@ -18,9 +14,6 @@ import ru.skillbox.zerone.backend.model.dto.response.*;
 import ru.skillbox.zerone.backend.model.entity.*;
 import ru.skillbox.zerone.backend.repository.*;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
-
-
-import java.security.Principal;
 import java.time.*;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -38,7 +31,7 @@ public class PostService {
 
   private static final Pattern pattern = Pattern.compile("<img\\s+[^>]*src=\"([^\"]*)\"[^>]*>");
 
-  public CommonResponseDTO<PostsDTO> createPost(int id, Long publishDate, PostRequestDTO postRequestDTO) throws PostCreationExecption{
+  public CommonResponseDTO<PostsDTO> createPost(int id, long publishDate, PostRequestDTO postRequestDTO) throws PostCreationExecption{
 
     User user = CurrentUserUtils.getCurrentUser();
     if (user.getId() != id) throw new PostCreationExecption();
@@ -47,26 +40,25 @@ public class PostService {
     post.setPostText(postRequestDTO.getPostText());
     post.setTitle(postRequestDTO.getTitle());
     post.setAuthor(user);
-
     if (publishDate == 0) {
-      post.setTime(LocalDateTime.now());
+      post.setTime(Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime());
     } else {
       post.setTime(Instant.ofEpochMilli(publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime());
     }
-
     postRepository.save(post);
 //    Matcher images = pattern.matcher(postRequestDTO.getPostText());
     CommonResponseDTO<PostsDTO> result = new CommonResponseDTO<>();
     result.setTimestamp(LocalDateTime.now());
     result.setData(getPostsDTO(post, user));
-  return result;
-  }
+    return result;
+}
+
   private PostsDTO getPostsDTO(Post post, User user) {
 
     PostsDTO postsDTO = postMapper.postToPostsDTO(post);
 
     postsDTO.setAuthor(userMapper.userToUserDTO(user));
-//    postsDTO.setComments(commentService.getPage4Comments(0,5,post, user));
+    postsDTO.setComments(commentService.getPage4Comments(0,5,post, user));
     Set<Like> likes = likeRepository.findLikesByPost(post);
     postsDTO.setLikes(likes.size());
     postsDTO.setTags(new ArrayList<>());
@@ -79,9 +71,9 @@ public class PostService {
     return postsDTO;
   }
 
-  public CommonListDTO<PostsDTO> getPostResponse(int offset, int itemPerPage, Page<Post> pageablePostList, User user){
+  public CommonListResponseDTO<PostsDTO> getPostResponse(int offset, int itemPerPage, Page<Post> pageablePostList, User user){
 
-        return CommonListDTO.<PostsDTO>builder()
+        return CommonListResponseDTO.<PostsDTO>builder()
         .total((int)pageablePostList.getTotalElements())
         .perPage(itemPerPage)
         .offset(offset)
@@ -100,7 +92,7 @@ public class PostService {
     return postDataList;
   }
 
-  public CommonListDTO<PostsDTO> getFeeds(String text, int offset, int itemPerPage) {
+  public CommonListResponseDTO<PostsDTO> getFeeds(String text, int offset, int itemPerPage) {
     User user = CurrentUserUtils.getCurrentUser();
     Pageable pageable = PageRequest.of(offset, itemPerPage);
     Page<Post> pageablePostList = postRepository.findPostsByPostTextContains(text, pageable);
@@ -128,22 +120,19 @@ public class PostService {
 
     return postDataResponse;
   }
-  public CommonListDTO<PostsDTO> getAuthorWall(int id, int offset, int itemPerPage) {
+  public CommonListResponseDTO<PostsDTO> getAuthorWall(int id, int offset, int itemPerPage) {
+
+
     User user = CurrentUserUtils.getCurrentUser();
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
     Page<Post> pageablePostList;
-//   if (id == user.getId()) {
+
       pageablePostList = postRepository.findPostsByAuthorId(id, pageable);
-//    } else if (!friendshipService.isBlockedBy(id, user.getId()) && !user.getIsDeleted()) {
-//      pageablePostList = postRepository.findPostsByUserIdAndCurrentDate(id, pageable);
-//    } else {
-//      pageablePostList = Page.empty();
-//    }
 
     return getPostResponse(offset, itemPerPage, pageablePostList, user);
   }
 
-  public CommonListDTO<PostsDTO> getPosts(String text, long dateFrom, long dateTo, int offset, int itemPerPage, String author, String tag) {
+  public CommonListResponseDTO<PostsDTO> getPosts(String text, long dateFrom, long dateTo, int offset, int itemPerPage, String author, String tag) {
     User user = CurrentUserUtils.getCurrentUser();
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
     Page<Post> pageablePostList;
@@ -153,11 +142,11 @@ public class PostService {
       pageablePostList = postRepository.findPostsByPostTextContainsAndAuthorLastNameAndUpdateTimeBetween(text, author,
           datetimeFrom,datetimeTo, pageable);
     } else {
+
 //    Тут должен быть лист тегов!!
       
       pageablePostList = postRepository.findPostsByPostTextContainsAndAuthorLastNameAndUpdateTimeBetween(text, author,
           datetimeFrom,datetimeTo, pageable);
-
     }
     return getPostResponse(offset, itemPerPage, pageablePostList, user);
   }
@@ -199,4 +188,8 @@ public class PostService {
 
     return getPostDTOResponse(post, user);
   }
+
+
+
+
 }

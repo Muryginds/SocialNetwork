@@ -1,15 +1,10 @@
 package ru.skillbox.zerone.backend.controller;
 import org.springframework.web.bind.annotation.*;
-import ru.skillbox.zerone.backend.exception.PostCreationExecption;
-import ru.skillbox.zerone.backend.exception.PostNotFoundException;
-import ru.skillbox.zerone.backend.exception.UserAndAuthorEqualsException;
 import ru.skillbox.zerone.backend.model.dto.request.PostRequestDTO;
-import ru.skillbox.zerone.backend.model.dto.response.CommonListDTO;
+import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.PostsDTO;
 import ru.skillbox.zerone.backend.service.PostService;
-
-import java.security.Principal;
 
 
 @RestController
@@ -19,26 +14,27 @@ public class PostController {
   public PostController(PostService postService) {
     this.postService = postService;
   }
-  @PostMapping("/users/wall")
+  @PostMapping("/users/{id}/wall")
   public CommonResponseDTO<PostsDTO> getUserWall (@PathVariable int id,
                                                   @RequestParam(name = "publish_date", defaultValue = "0") long publishDate,
                                                   @RequestBody PostRequestDTO postRequestDTO) {
     return postService.createPost(id, publishDate, postRequestDTO);
   }
   @GetMapping("/users/{id}/wall")
-  public CommonListDTO<PostsDTO> getUserWall (@PathVariable int id,
-                                                  @RequestParam (name = "offset", defaultValue = "0") int offset,
+  public CommonListResponseDTO<PostsDTO> getUserWall (@PathVariable int id,
+                                              @RequestParam (name = "offset", defaultValue = "0") int offset,
                                               @RequestParam(name = "itemPerPage", defaultValue = "10") int itemPerPage)  {
     return postService.getAuthorWall(id, offset, itemPerPage);
+
   }
   @GetMapping("/feeds")
-  public CommonListDTO<PostsDTO> getFeeds (@RequestParam(name = "text", defaultValue = "") String text,
+  public CommonListResponseDTO<PostsDTO> getFeeds (@RequestParam(name = "text", defaultValue = "") String text,
                                            @RequestParam(name = "offset", defaultValue = "0") int offset,
                                            @RequestParam(name = "itemPerPage", defaultValue = "20") int itemPerPage){
     return postService.getFeeds (text,offset,itemPerPage);
   }
   @GetMapping("/post")
-  public CommonListDTO<PostsDTO> getPosts (@RequestParam(name = "text", defaultValue = "") String text,
+  public CommonListResponseDTO<PostsDTO> getPosts (@RequestParam(name = "text", defaultValue = "") String text,
                                            @RequestParam(name = "date_from", defaultValue = "-1") long dateFrom,
                                            @RequestParam(name = "date_to", defaultValue = "-1") long dateTo,
                                            @RequestParam(name = "offset", defaultValue = "0") int offset,

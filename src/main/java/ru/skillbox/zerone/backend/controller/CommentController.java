@@ -6,7 +6,7 @@ import ru.skillbox.zerone.backend.exception.CommentNotFoundException;
 import ru.skillbox.zerone.backend.exception.PostNotFoundException;
 import ru.skillbox.zerone.backend.model.dto.request.CommentRequest;
 import ru.skillbox.zerone.backend.model.dto.response.CommentDTO;
-import ru.skillbox.zerone.backend.model.dto.response.CommonListDTO;
+import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.service.CommentService;
 
@@ -18,9 +18,9 @@ public class CommentController {
   private final CommentService commentService;
 
   @GetMapping("/post/{id}/comments")
-  public CommonListDTO<CommentDTO> getFeeds(@RequestParam(name = "offset", defaultValue = "0") int offset,
-                                            @RequestParam(name = "itemPerPage", defaultValue = "5") int itemPerPage,
-                                            @PathVariable int id) throws PostNotFoundException {
+  public CommonListResponseDTO<CommentDTO> getFeeds(@RequestParam(name = "offset", defaultValue = "0") int offset,
+                                                    @RequestParam(name = "itemPerPage", defaultValue = "5") int itemPerPage,
+                                                    @PathVariable int id) throws PostNotFoundException {
     return commentService.getComments(offset, itemPerPage, id);
   }
 
@@ -46,6 +46,5 @@ public class CommentController {
                                                   @RequestBody CommentRequest commentRequest) throws PostNotFoundException, CommentNotFoundException {
     return commentService.putComment(id, commentId, commentRequest);
   }
-
 }
 

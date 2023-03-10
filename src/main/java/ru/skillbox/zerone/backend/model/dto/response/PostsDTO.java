@@ -1,13 +1,15 @@
 package ru.skillbox.zerone.backend.model.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
+import lombok.*;
 
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class PostsDTO {
   private long id;
   private String title;
@@ -16,7 +18,7 @@ public class PostsDTO {
   @JsonProperty("is_blocked")
   private boolean isBlocked;
   private int likes;
-  private CommonListDTO<CommentDTO> comments;
+  private CommonListResponseDTO<CommentDTO> comments;
   @JsonProperty("my_like")
   private boolean myLike;
   private List<String> tags;
