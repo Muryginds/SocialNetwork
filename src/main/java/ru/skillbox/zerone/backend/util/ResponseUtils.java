@@ -20,7 +20,13 @@ public class ResponseUtils {
 
   public CommonResponseDTO<MessageResponseDTO> commonResponseDataOk() {
     return CommonResponseDTO.<MessageResponseDTO>builder()
-        .data(new MessageResponseDTO("Ok"))
+        .data(new MessageResponseDTO("OK"))
+        .build();
+  }
+
+  public CommonResponseDTO<Object> commonResponseWithError(String message) {
+    return CommonResponseDTO.builder()
+        .error(message)
         .build();
   }
 }
