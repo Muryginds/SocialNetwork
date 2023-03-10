@@ -11,6 +11,8 @@ services:
       - postgres:/data/postgres
     ports:
       - "5432:5432"
+    networks:
+      - postgres
     restart: on-failure:5
 
   frontend:
@@ -36,6 +38,8 @@ services:
     command: java -jar backend.jar
     depends_on:
       - postgres
+    networks:
+      - backend
     restart: on-failure:5
 
   grafana:
@@ -71,7 +75,12 @@ services:
           - prometheus
     restart: on-failure:5
 
+networks:
+  postgres:
+    name: postgres_network
+  backend:
+    name: postgres_network
+  monitoring:
+
 volumes:
   postgres:
-networks:
-  monitoring:
