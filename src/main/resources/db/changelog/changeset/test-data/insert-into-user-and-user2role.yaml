@@ -5702,6 +5702,63 @@ databaseChangeLog:
             name: status
             value: ACTIVE
         tableName: user
+    - insert:
+          columns:
+          - column:
+                name: about
+                value: Alias quo aliquam vel ut consequuntur et est vel maxime autem quasi
+                    voluptatibus autem repellat est reprehenderit at ullam.
+          - column:
+                name: birth_date
+                valueDate: 1967-02-05
+          - column:
+                name: city
+                value: Москва
+          - column:
+                name: confirmation_code
+                value: confirmed-test-user
+          - column:
+                name: country
+                value: Россия
+          - column:
+                name: email
+                value: ivan@mail.ru
+          - column:
+                name: first_name
+                value: Ivan
+          - column:
+                name: is_approved
+                valueBoolean: "true"
+          - column:
+                name: is_blocked
+                valueBoolean: "false"
+          - column:
+                name: is_deleted
+                valueBoolean: "false"
+          - column:
+                name: last_name
+                value: Ivanov
+          - column:
+                name: last_online_time
+                valueDate: 2022-04-23T17:34:43.08
+          - column:
+                name: message_permission
+                value: ALL
+          - column:
+                name: password
+                value: $argon2id$v=19$m=4096,t=1,p=1$Cxsp9yu82Jjc2RoUBAnJpg$rH3hRT9fGRM9DPTMcfYP8X0Kr5L3MdXfWSxeT0nHq+I
+          - column:
+                name: phone
+                value: +7(957)936-91-65
+          - column:
+                name: photo
+          - column:
+                name: reg_date
+                valueDate: 2019-08-19T17:54:51.942
+          - column:
+                name: status
+                value: ACTIVE
+          tableName: user
 - changeSet:
     id: 2
     author: muryginds
@@ -6610,7 +6667,7 @@ databaseChangeLog:
         columns:
         - column:
             name: user_id
-            valueNumeric: "1"
+            valueNumeric: "101"
         - column:
             name: role_id
             valueNumeric: "2"
