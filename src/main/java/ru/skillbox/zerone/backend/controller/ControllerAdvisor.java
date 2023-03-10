@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import ru.skillbox.zerone.backend.exception.ZeroneException;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
+import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 @ControllerAdvice
 public class ControllerAdvisor {
@@ -36,8 +37,6 @@ public class ControllerAdvisor {
   }
 
   private CommonResponseDTO<Object> getResponse(Exception e) {
-    return CommonResponseDTO.builder()
-        .error(e.getLocalizedMessage())
-        .build();
+    return ResponseUtils.commonResponseWithError(e.getLocalizedMessage());
   }
 }

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -43,11 +43,12 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http, FilterChainExceptionHandler filterChainExceptionHandler) throws Exception {
-    http.cors().and()
+    http
+        .cors(SecurityConfigurerAdapter::and)
         .csrf(AbstractHttpConfigurer::disable)
         .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
         .logout(LogoutConfigurer::permitAll)
-        .authorizeHttpRequests((authz) -> authz
+        .authorizeHttpRequests(authz -> authz
             .requestMatchers(
                 "/api/v1/account/register/confirm",
                 "/api/v1/account/register",
@@ -62,7 +63,7 @@ public class SecurityConfig {
         )
         .addFilterBefore(filterChainExceptionHandler, UsernamePasswordAuthenticationFilter.class)
         .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-        .httpBasic(Customizer.withDefaults());
+        .httpBasic(AbstractHttpConfigurer::disable);
     return http.build();
   }
 }

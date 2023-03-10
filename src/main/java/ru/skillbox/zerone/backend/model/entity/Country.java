@@ -1,6 +1,9 @@
 package ru.skillbox.zerone.backend.model.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,19 +12,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "tag")
+@Table(name = "country")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Tag {
+public class Country {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  private Long id;
+  private Short id;
 
   @NotNull
   @NotBlank
-  @Column(name = "tag")
-  private String tag;
+  @Column(name = "name")
+  private String name;
 }

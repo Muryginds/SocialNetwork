@@ -20,6 +20,6 @@ public class SupportRequestService {
 
     supportRequestRepository.save(supportRequest);
 
-    return ResponseUtils.commonResponseOk();
+    return ResponseUtils.commonResponseDataOk();
   }
 }
