@@ -2,13 +2,13 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.skillbox.zerone.backend.exception.ChangeEmailException;
 import ru.skillbox.zerone.backend.configuration.MailServiceConfig;
+import ru.skillbox.zerone.backend.exception.ChangeEmailException;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
+import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.ChangeEmailDTO;
 import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordDTO;
@@ -45,7 +45,7 @@ public class UserService {
     user.setPassword(passwordEncoder.encode(password));
     userRepository.save(user);
 
-    return ResponseUtils.commonResponseOk();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   @Transactional
@@ -75,7 +75,7 @@ public class UserService {
         "/changeemail/complete",
         mailServiceConfig.getServerAddress());
 
-    return ResponseUtils.commonResponseOk();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   @Transactional
@@ -84,28 +84,23 @@ public class UserService {
     User user = CurrentUserUtils.getCurrentUser();
     String token = user.getConfirmationCode();
 
-
-
-    if (token.equals(confirmationCode) && user.getEmail().equals(emailOld)) {
-
-      var changeEmailHistoryOptional = changeEmailHistoryRepository.findFirstByEmailOldOrderByTimeDesc(emailOld);
-
-      if (changeEmailHistoryOptional.isEmpty()) {
-        throw new RegistrationCompleteException("Email dont find in DB");
-      }
-
-      ChangeEmailHistory changeEmailHistory = changeEmailHistoryOptional.get();
-
-      String newEmail = changeEmailHistory.getEmailNew();
-
-      user.setEmail(newEmail);
-      userRepository.save(user);
-
-      return ResponseUtils.commonResponseOk();
-    }
-    else {
+    if (token.equals(confirmationCode)) {
       throw new ChangeEmailException(confirmationCode, emailOld);
     }
+
+    if (user.getEmail().equals(emailOld)) {
+      throw new ChangeEmailException(confirmationCode, emailOld);
+    }
+
+    ChangeEmailHistory changeEmailHistory = changeEmailHistoryRepository.findFirstByEmailOldOrderByTimeDesc(emailOld)
+        .orElseThrow(() -> new RegistrationCompleteException(String.format("Заявка на смену email %s не была найдена в базе", emailOld)));
+
+    String newEmail = changeEmailHistory.getEmailNew();
+
+    user.setEmail(newEmail);
+    userRepository.save(user);
+
+    return ResponseUtils.commonResponseDataOk();
   }
 
   @Transactional
@@ -126,7 +121,7 @@ public class UserService {
         "/registration/complete",
         mailServiceConfig.getFrontAddress());
 
-    return ResponseUtils.commonResponseOk();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   @Transactional
@@ -146,35 +141,32 @@ public class UserService {
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
 
-    return CommonResponseDTO.<MessageResponseDTO>builder()
-        .data(new MessageResponseDTO("ok"))
-        .build();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   public CommonResponseDTO<UserDTO> getCurrentUser() {
     var user = CurrentUserUtils.getCurrentUser();
 
-    return CommonResponseDTO.<UserDTO>builder()
-        .data(userMapper.userToUserDTO(user))
-        .build();
+    return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));
   }
-  public CommonResponseDTO<UserDTO> getById(Long id) {
-    User user = userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-    UserDTO userDto = userMapper.userToUserDTO(user);
-    return CommonResponseDTO.<UserDTO>builder().data(userDto).build();
 
-    }
-  public UserDTO editUserSettings(UserDTO editUser)  {
+  public CommonResponseDTO<UserDTO> getById(Long id) {
+    User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+    return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));
+  }
+
+  public UserDTO editUserSettings(UserDTO editUser) {
     User user = CurrentUserUtils.getCurrentUser();
     user.setFirstName(editUser.getFirstName())
-    .setLastName(editUser.getLastName())
-    .setPhone(editUser.getPhone())
-    .setCountry(editUser.getCountry())
-    .setCity(editUser.getCity())
-    .setBirthDate(editUser.getBirthDate())
-    .setPhoto(editUser.getPhoto())
-    .setAbout(editUser.getAbout());
+        .setLastName(editUser.getLastName())
+        .setPhone(editUser.getPhone())
+        .setCountry(editUser.getCountry())
+        .setCity(editUser.getCity())
+        .setBirthDate(editUser.getBirthDate())
+        .setPhoto(editUser.getPhoto())
+        .setAbout(editUser.getAbout());
     userRepository.save(user);
-    return editUser;
+    return userMapper.userToUserDTO(user);
   }
-  }
+}

@@ -19,6 +19,7 @@ public class StorageService {
   private static final Map<Object, Object> options = Map.of();
   private final Cloudinary cloudinary;
   private final FileRepository fileRepository;
+
   public CommonResponseDTO<StorageDTO> uploadImage(MultipartFile file) {
     try {
       var uploadResult = cloudinary.uploader().upload(file.getBytes(), options);

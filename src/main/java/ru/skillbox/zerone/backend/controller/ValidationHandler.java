@@ -8,7 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
-import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
+import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 import java.util.stream.Collectors;
 
@@ -22,9 +22,7 @@ public class ValidationHandler extends ResponseEntityExceptionHandler {
         .map(DefaultMessageSourceResolvable::getDefaultMessage)
         .collect(Collectors.joining(" и "));
 
-    var response = CommonResponseDTO.builder()
-        .error(errorText)
-        .build();
+    var response = ResponseUtils.commonResponseWithError(errorText);
     return ResponseEntity.badRequest().body(response);
   }
 }
