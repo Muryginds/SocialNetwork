@@ -24,7 +24,7 @@ public class TagService {
   @Transactional
   public CommonResponseDTO<TagDTO> addTag(TagDTO tagDTO) {
 
-    Tag tag = tagMapper.tagDTOToTag(tagDTO); //Tag.builder().tag(tagDTO.getTag()).build(); //сделать маппер
+    Tag tag = tagMapper.tagDTOToTag(tagDTO);
 
     tagRepository.save(tag);
 

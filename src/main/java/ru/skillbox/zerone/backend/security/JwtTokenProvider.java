@@ -55,7 +55,7 @@ public class JwtTokenProvider {
         .setClaims(claims)
         .setIssuedAt(now)
         .setExpiration(validity)
-        .signWith(getSigningKey()) //SignatureAlgorithm.HS256, secret
+        .signWith(getSigningKey())
         .compact();
   }
 
@@ -65,7 +65,7 @@ public class JwtTokenProvider {
   }
 
   public String getUsername(String token) {
-    return Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token).getBody().getSubject();
+    return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token).getBody().getSubject();
   }
 
   public String resolveToken(HttpServletRequest req) {
@@ -74,7 +74,7 @@ public class JwtTokenProvider {
 
   public boolean validateToken(String token) {
     blacklistService.validateToken(token);
-    Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(secret).build().parseClaimsJws(token);
+    Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
     return claims.getBody().getExpiration().after(new Date());
   }
 }

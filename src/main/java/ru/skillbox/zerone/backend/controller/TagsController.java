@@ -17,23 +17,24 @@ import ru.skillbox.zerone.backend.service.TagService;
 public class TagsController {
 
   private final TagService tagService;
-  @PostMapping(value = "")
+
+  @PostMapping
   public CommonResponseDTO<TagDTO> addTag(@RequestBody TagDTO tagDTO) {
     return tagService.addTag(tagDTO);
   }
 
-   @DeleteMapping(value = "", params = {"id"})
-   public CommonResponseDTO<MessageResponseDTO> deleteTag(@RequestParam Long id) {
-     return tagService.deleteTag(id);
-   }
-
-     @GetMapping
-         public CommonListResponseDTO<TagDTO> getAllTags(@RequestParam(value = "tag", defaultValue = "") String tag
-         , @RequestParam(value = "offset", defaultValue = "0") @Min(0) Integer offset
-         , @RequestParam(value = "itemPerPage", defaultValue = "10") @Min(0) @Max(100) Integer itemPerPage) {
-       return tagService.getAllTags(tag, offset, itemPerPage);
-     }
-
+  @DeleteMapping//(params = {"id"})
+  public CommonResponseDTO<MessageResponseDTO> deleteTag(@RequestParam Long id) {
+    return tagService.deleteTag(id);
   }
+
+  @GetMapping
+  public CommonListResponseDTO<TagDTO> getAllTags(@RequestParam(value = "tag", defaultValue = "") String tag
+      , @RequestParam(value = "offset", defaultValue = "0") @Min(0) Integer offset
+      , @RequestParam(value = "itemPerPage", defaultValue = "10") @Min(0) @Max(100) Integer itemPerPage) {
+    return tagService.getAllTags(tag, offset, itemPerPage);
+  }
+
+}
 
 
