@@ -8,7 +8,7 @@ import ru.skillbox.zerone.backend.model.entity.Post;
 import java.util.Set;
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
-    Set<Like> findLikesByPost(Post post);
+  Set<Like> findLikesByPost(Post post);
 
-    Set<Like> findLikeByIdAndType(int id, String comment);
+  Set<Like> findLikeByIdAndType(int id, String comment);
 }

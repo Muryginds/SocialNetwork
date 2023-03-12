@@ -2,7 +2,7 @@ package ru.skillbox.zerone.backend.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-
+import ru.skillbox.zerone.backend.model.enumerated.CommentType;
 import java.time.LocalDateTime;
 import java.util.List;
 @Data
@@ -13,7 +13,7 @@ public class CommentDTO {
   private String commentText;
   private long id;
   @JsonProperty("post_id")
-  private long postId;
+  private long post;
   private LocalDateTime time;
   private UserDTO author;
   @JsonProperty("is_blocked")
@@ -27,4 +27,6 @@ public class CommentDTO {
   private boolean myLike;
   @JsonProperty("images")
   private List<ImageDTO> images;
+  @JsonProperty("comment_type")
+  private CommentType type;
 }

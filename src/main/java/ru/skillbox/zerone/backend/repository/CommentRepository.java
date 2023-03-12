@@ -8,8 +8,8 @@ import ru.skillbox.zerone.backend.model.entity.Comment;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
+  Page<Comment> findCommentsByPostId(long id, Pageable pageable);
 
-  Page<Comment> findCommentsByPostIdAndParentIsNull(long id, Pageable pageable);
 
 
 }

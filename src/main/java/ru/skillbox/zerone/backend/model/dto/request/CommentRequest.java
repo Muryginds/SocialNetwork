@@ -3,8 +3,6 @@ package ru.skillbox.zerone.backend.model.dto.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import ru.skillbox.zerone.backend.model.dto.response.ImageDTO;
-
-
 import java.util.List;
 
 @Data

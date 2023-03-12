@@ -10,8 +10,6 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-
-import java.util.Set;
 @Entity
 @Table(name = "post",
     indexes = @Index(name = "post_author_id_idx",
@@ -64,7 +62,4 @@ public class Post {
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private Boolean isDeleted = false;
 
-
-//  @ManyToMany(fetch = FetchType.LAZY)
-//  private Set<Tag> tags;
 }
