@@ -11,7 +11,6 @@ spring:
       ddl-auto: validate
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
     show-sql: false
   sql:
@@ -61,3 +60,15 @@ management:
     metrics:
       export:
         enabled: true
+
+cloudinary:
+  cloud_name: "zeroneproject"
+  api_key: "551572451498292"
+  api_secret: "bmOA13-uV_37Hm9Vfu4E_heObw4"
+
+vk-api:
+  access-token: a37d0c0ca37d0c0ca37d0c0c4aa06fe252aa37da37d0c0cc7793a5be33eac3846e483d9
+  root-url: https://api.vk.com/method
+  find-countries-method-uri: /database.getCountries
+  find-cities-method-uri: /database.getCities
+  version: 5.131

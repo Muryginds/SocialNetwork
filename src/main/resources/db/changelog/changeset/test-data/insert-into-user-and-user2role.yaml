@@ -29,13 +29,13 @@ databaseChangeLog:
             value: Сергей
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Богданова
@@ -43,7 +43,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-23T17:34:43.08
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -87,13 +87,13 @@ databaseChangeLog:
             value: Владимир
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Овчинников
@@ -101,7 +101,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-09-06T18:05:52.265
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -145,13 +145,13 @@ databaseChangeLog:
             value: Оксана
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Сазонова
@@ -159,7 +159,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-27T21:45:49.914
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -201,13 +201,13 @@ databaseChangeLog:
             value: Николай
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Симонова
@@ -215,7 +215,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-11T02:30:30.741
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -258,13 +258,13 @@ databaseChangeLog:
             value: Елена
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Кузнецов
@@ -272,7 +272,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-10-25T00:09:28.39
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -315,13 +315,13 @@ databaseChangeLog:
             value: Евгений
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Рожков
@@ -329,7 +329,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-01-30T19:56:03.415
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -372,13 +372,13 @@ databaseChangeLog:
             value: Валентин
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Белова
@@ -386,7 +386,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-01-02T13:38:58.997
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -428,13 +428,13 @@ databaseChangeLog:
             value: Светлана
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Лебедев
@@ -442,7 +442,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-23T01:24:59.44
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -486,13 +486,13 @@ databaseChangeLog:
             value: Маргарита
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Савин
@@ -500,7 +500,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-01T19:19:59.011
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -543,13 +543,13 @@ databaseChangeLog:
             value: Ирина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Григорьева
@@ -557,7 +557,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-17T03:48:24.832
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -600,13 +600,13 @@ databaseChangeLog:
             value: Сергей
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Абрамов
@@ -614,7 +614,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-02T09:54:41.898
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -657,13 +657,13 @@ databaseChangeLog:
             value: Дарья
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Евсеев
@@ -671,7 +671,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-21T16:18:30.609
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -714,13 +714,13 @@ databaseChangeLog:
             value: Таисия
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Самсонов
@@ -728,7 +728,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-30T06:04:38.13
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -771,13 +771,13 @@ databaseChangeLog:
             value: Нина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Филатов
@@ -785,7 +785,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-30T22:06:32.873
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -828,13 +828,13 @@ databaseChangeLog:
             value: Владислав
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Цветкова
@@ -842,7 +842,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-07T05:27:00.886
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -885,13 +885,13 @@ databaseChangeLog:
             value: Сергей
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Ларионов
@@ -899,7 +899,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-01T05:03:20.761
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -943,13 +943,13 @@ databaseChangeLog:
             value: Никита
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Лазарев
@@ -957,7 +957,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-10T22:21:43.56
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1000,13 +1000,13 @@ databaseChangeLog:
             value: Алевтина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Родионова
@@ -1014,7 +1014,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-10-20T15:53:58.779
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1057,13 +1057,13 @@ databaseChangeLog:
             value: Эдуард
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Жукова
@@ -1071,7 +1071,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-05T00:36:46.138
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1114,13 +1114,13 @@ databaseChangeLog:
             value: Анастасия
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Третьяков
@@ -1128,7 +1128,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-01-25T20:37:16.838
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1172,13 +1172,13 @@ databaseChangeLog:
             value: Арсений
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Гусева
@@ -1186,7 +1186,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-09T20:18:23.772
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1229,13 +1229,13 @@ databaseChangeLog:
             value: Анна
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Захарова
@@ -1243,7 +1243,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-11T06:35:50.933
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1285,13 +1285,13 @@ databaseChangeLog:
             value: Валентина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Назаров
@@ -1299,7 +1299,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-10T06:27:20.782
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1342,13 +1342,13 @@ databaseChangeLog:
             value: Роман
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Носова
@@ -1356,7 +1356,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-09-24T00:58:28.796
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1399,13 +1399,13 @@ databaseChangeLog:
             value: Роман
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Жуков
@@ -1413,7 +1413,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-20T18:31:06.249
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1455,13 +1455,13 @@ databaseChangeLog:
             value: Олег
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Виноградов
@@ -1469,7 +1469,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-29T04:05:28.972
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1512,13 +1512,13 @@ databaseChangeLog:
             value: Денис
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Лаврентьев
@@ -1526,7 +1526,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-11-18T11:26:26.198
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1568,13 +1568,13 @@ databaseChangeLog:
             value: Аркадий
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Цветкова
@@ -1582,7 +1582,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-08T02:06:41.248
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1625,13 +1625,13 @@ databaseChangeLog:
             value: Лаврентий
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Селиверстова
@@ -1639,7 +1639,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-31T07:15:04.094
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1683,13 +1683,13 @@ databaseChangeLog:
             value: Фёдор
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Цветкова
@@ -1697,7 +1697,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-11T17:29:50.048
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1740,13 +1740,13 @@ databaseChangeLog:
             value: Валентина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Фокин
@@ -1754,7 +1754,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-01T04:40:35.289
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1798,13 +1798,13 @@ databaseChangeLog:
             value: Валентин
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Семенова
@@ -1812,7 +1812,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-19T06:41:55.341
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1855,13 +1855,13 @@ databaseChangeLog:
             value: Оксана
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Емельянова
@@ -1869,7 +1869,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-04T22:16:40.273
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1913,13 +1913,13 @@ databaseChangeLog:
             value: Фёдор
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Колобов
@@ -1927,7 +1927,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-28T20:41:26.005
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -1970,13 +1970,13 @@ databaseChangeLog:
             value: Максим
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Власов
@@ -1984,7 +1984,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-02-23T08:35:45.153
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2027,13 +2027,13 @@ databaseChangeLog:
             value: Регина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Соколова
@@ -2041,7 +2041,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-25T15:02:05.806
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2084,13 +2084,13 @@ databaseChangeLog:
             value: Станислав
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Носов
@@ -2098,7 +2098,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-17T20:25:09.12
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2141,13 +2141,13 @@ databaseChangeLog:
             value: Владислав
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Никонова
@@ -2155,7 +2155,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-18T19:15:06.547
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2198,13 +2198,13 @@ databaseChangeLog:
             value: Ульяна
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Белоусов
@@ -2212,7 +2212,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-07T02:59:03.671
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2256,13 +2256,13 @@ databaseChangeLog:
             value: Вера
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Анисимов
@@ -2270,7 +2270,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-01-06T11:39:26.534
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2312,13 +2312,13 @@ databaseChangeLog:
             value: Михаил
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Воронцова
@@ -2326,7 +2326,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-10-04T13:46:24.629
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2368,13 +2368,13 @@ databaseChangeLog:
             value: Георгий
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Чернов
@@ -2382,7 +2382,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-14T07:12:57.098
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2425,13 +2425,13 @@ databaseChangeLog:
             value: Нина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Вишнякова
@@ -2439,7 +2439,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-06T11:43:09.371
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2483,13 +2483,13 @@ databaseChangeLog:
             value: Лука
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Дементьев
@@ -2497,7 +2497,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-08T22:28:12.47
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2541,13 +2541,13 @@ databaseChangeLog:
             value: Василиса
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Казакова
@@ -2555,7 +2555,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-26T03:22:32.304
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2598,13 +2598,13 @@ databaseChangeLog:
             value: Дмитрий
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Кириллов
@@ -2612,7 +2612,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-13T21:47:04.894
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2655,13 +2655,13 @@ databaseChangeLog:
             value: Сергей
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Гуляев
@@ -2669,7 +2669,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-20T23:34:41.845
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2712,13 +2712,13 @@ databaseChangeLog:
             value: Эдуард
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Потапов
@@ -2726,7 +2726,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-02T08:42:04.669
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2769,13 +2769,13 @@ databaseChangeLog:
             value: Максим
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Евдокимов
@@ -2783,7 +2783,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-23T13:53:19.861
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2826,13 +2826,13 @@ databaseChangeLog:
             value: Степан
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Блинова
@@ -2840,7 +2840,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-31T08:31:23.463
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2884,13 +2884,13 @@ databaseChangeLog:
             value: Кира
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Михеев
@@ -2898,7 +2898,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-03T18:41:27.244
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2940,13 +2940,13 @@ databaseChangeLog:
             value: Сергей
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Ларионов
@@ -2954,7 +2954,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-20T18:37:34.963
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -2997,13 +2997,13 @@ databaseChangeLog:
             value: Аркадий
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Киселев
@@ -3011,7 +3011,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-19T01:36:35.566
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3053,13 +3053,13 @@ databaseChangeLog:
             value: Лидия
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Гуляева
@@ -3067,7 +3067,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-30T09:29:12.955
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3109,13 +3109,13 @@ databaseChangeLog:
             value: Вера
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Михеев
@@ -3123,7 +3123,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-09-04T06:42:14.75
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3166,13 +3166,13 @@ databaseChangeLog:
             value: Мария
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Власова
@@ -3180,7 +3180,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-07T04:31:18.179
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3223,13 +3223,13 @@ databaseChangeLog:
             value: Вера
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Баранов
@@ -3237,7 +3237,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-06T20:20:05.501
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3280,13 +3280,13 @@ databaseChangeLog:
             value: Лаврентий
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Кондратьев
@@ -3294,7 +3294,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-11-15T04:55:34.63
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3337,13 +3337,13 @@ databaseChangeLog:
             value: Алина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Сорокина
@@ -3351,7 +3351,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-31T05:57:23.757
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3394,13 +3394,13 @@ databaseChangeLog:
             value: Галина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Лихачев
@@ -3408,7 +3408,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-17T13:52:11.446
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3451,13 +3451,13 @@ databaseChangeLog:
             value: Илья
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Мухина
@@ -3465,7 +3465,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-09-06T21:13:43.842
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3507,13 +3507,13 @@ databaseChangeLog:
             value: Анна
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Никитин
@@ -3521,7 +3521,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-02-25T10:21:06.007
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3564,13 +3564,13 @@ databaseChangeLog:
             value: Валентина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Суворов
@@ -3578,7 +3578,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-01-13T03:44:36.388
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3621,13 +3621,13 @@ databaseChangeLog:
             value: Георгий
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Лаврентьева
@@ -3635,7 +3635,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-12T19:36:32.134
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3678,13 +3678,13 @@ databaseChangeLog:
             value: Анжела
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Матвеева
@@ -3692,7 +3692,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-31T16:16:10.165
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3735,13 +3735,13 @@ databaseChangeLog:
             value: София
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Лапин
@@ -3749,7 +3749,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-17T07:15:56.633
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3791,13 +3791,13 @@ databaseChangeLog:
             value: Анна
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Соболева
@@ -3805,7 +3805,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-30T14:32:26.05
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3849,13 +3849,13 @@ databaseChangeLog:
             value: Анжелика
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Громова
@@ -3863,7 +3863,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-27T02:54:13.994
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3906,13 +3906,13 @@ databaseChangeLog:
             value: Артём
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Кулагин
@@ -3920,7 +3920,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-12T10:32:29.511
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -3962,13 +3962,13 @@ databaseChangeLog:
             value: Валентина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Артемьева
@@ -3976,7 +3976,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-29T03:49:59.908
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4019,13 +4019,13 @@ databaseChangeLog:
             value: Семён
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Фокина
@@ -4033,7 +4033,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-22T01:09:46.001
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4077,13 +4077,13 @@ databaseChangeLog:
             value: Сергей
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Пестова
@@ -4091,7 +4091,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-11-07T19:48:20.528
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4134,13 +4134,13 @@ databaseChangeLog:
             value: Лариса
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Кошелева
@@ -4148,7 +4148,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-18T15:05:17.559
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4191,13 +4191,13 @@ databaseChangeLog:
             value: Иван
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Волков
@@ -4205,7 +4205,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-17T08:21:01.628
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4248,13 +4248,13 @@ databaseChangeLog:
             value: Анфиса
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Симонова
@@ -4262,7 +4262,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-26T09:11:36.252
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4304,13 +4304,13 @@ databaseChangeLog:
             value: Алла
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Брагина
@@ -4318,7 +4318,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-02-19T19:37:43.998
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4362,13 +4362,13 @@ databaseChangeLog:
             value: Елизавета
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Осипова
@@ -4376,7 +4376,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-12T05:03:51.476
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4419,13 +4419,13 @@ databaseChangeLog:
             value: Светлана
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Козлов
@@ -4433,7 +4433,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-06T18:55:06.531
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4476,13 +4476,13 @@ databaseChangeLog:
             value: Владимир
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Дроздова
@@ -4490,7 +4490,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-28T04:25:53.683
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4534,13 +4534,13 @@ databaseChangeLog:
             value: Клавдия
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Давыдов
@@ -4548,7 +4548,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-07T00:59:49.381
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4591,13 +4591,13 @@ databaseChangeLog:
             value: Василиса
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Котова
@@ -4605,7 +4605,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-21T04:56:39.48
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4648,13 +4648,13 @@ databaseChangeLog:
             value: Мария
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Фролова
@@ -4662,7 +4662,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-11T17:05:14.945
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4705,13 +4705,13 @@ databaseChangeLog:
             value: Лариса
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Владимирова
@@ -4719,7 +4719,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-16T14:54:12.704
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4762,13 +4762,13 @@ databaseChangeLog:
             value: Ангелина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Носкова
@@ -4776,7 +4776,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-04-04T13:55:15.852
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4818,13 +4818,13 @@ databaseChangeLog:
             value: Елена
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Стрелков
@@ -4832,7 +4832,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-09-22T00:09:36.174
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4875,13 +4875,13 @@ databaseChangeLog:
             value: Андрей
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Игнатов
@@ -4889,7 +4889,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-29T12:48:59.317
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4932,13 +4932,13 @@ databaseChangeLog:
             value: Олег
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Гурьев
@@ -4946,7 +4946,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-07-04T15:08:59.25
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -4988,13 +4988,13 @@ databaseChangeLog:
             value: Марина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Виноградова
@@ -5002,7 +5002,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-28T06:45:45.611
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5045,13 +5045,13 @@ databaseChangeLog:
             value: Лука
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Михеева
@@ -5059,7 +5059,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-05-01T10:55:50.744
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5102,13 +5102,13 @@ databaseChangeLog:
             value: Анфиса
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Максимов
@@ -5116,7 +5116,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-09-13T21:03:30.271
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5159,13 +5159,13 @@ databaseChangeLog:
             value: Екатерина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Архипов
@@ -5173,7 +5173,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-02-13T23:23:44.996
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5217,13 +5217,13 @@ databaseChangeLog:
             value: Римма
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Стрелков
@@ -5231,7 +5231,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-03-10T16:11:01.413
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5274,13 +5274,13 @@ databaseChangeLog:
             value: Алевтина
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Чернов
@@ -5288,7 +5288,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-08T22:30:18.69
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5331,13 +5331,13 @@ databaseChangeLog:
             value: Людмила
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Елисеев
@@ -5345,7 +5345,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-16T02:59:42.664
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5387,13 +5387,13 @@ databaseChangeLog:
             value: Григорий
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Ефимов
@@ -5401,7 +5401,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2023-01-04T23:38:45.609
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5443,13 +5443,13 @@ databaseChangeLog:
             value: Лаврентий
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Алексеев
@@ -5457,7 +5457,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-10-08T16:36:12.235
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5500,13 +5500,13 @@ databaseChangeLog:
             value: Валентин
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Калинина
@@ -5514,7 +5514,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-15T06:14:15.355
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5557,13 +5557,13 @@ databaseChangeLog:
             value: Кира
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Михеев
@@ -5571,7 +5571,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-08-04T01:25:47.749
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5613,13 +5613,13 @@ databaseChangeLog:
             value: Таисия
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Анисимов
@@ -5627,7 +5627,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-06-05T05:57:40.663
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5671,13 +5671,13 @@ databaseChangeLog:
             value: Станислав
         - column:
             name: is_approved
-            valueBoolean: true
+            valueBoolean: "true"
         - column:
             name: is_blocked
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: is_deleted
-            valueBoolean: false
+            valueBoolean: "false"
         - column:
             name: last_name
             value: Копылова
@@ -5685,7 +5685,7 @@ databaseChangeLog:
             name: last_online_time
             valueDate: 2022-12-12T03:27:25.383
         - column:
-            name: message_permissions
+            name: message_permission
             value: ALL
         - column:
             name: password
@@ -5702,6 +5702,63 @@ databaseChangeLog:
             name: status
             value: ACTIVE
         tableName: user
+    - insert:
+          columns:
+          - column:
+                name: about
+                value: Alias quo aliquam vel ut consequuntur et est vel maxime autem quasi
+                    voluptatibus autem repellat est reprehenderit at ullam.
+          - column:
+                name: birth_date
+                valueDate: 1967-02-05
+          - column:
+                name: city
+                value: Москва
+          - column:
+                name: confirmation_code
+                value: confirmed-test-user
+          - column:
+                name: country
+                value: Россия
+          - column:
+                name: email
+                value: ivan@mail.ru
+          - column:
+                name: first_name
+                value: Ivan
+          - column:
+                name: is_approved
+                valueBoolean: "true"
+          - column:
+                name: is_blocked
+                valueBoolean: "false"
+          - column:
+                name: is_deleted
+                valueBoolean: "false"
+          - column:
+                name: last_name
+                value: Ivanov
+          - column:
+                name: last_online_time
+                valueDate: 2022-04-23T17:34:43.08
+          - column:
+                name: message_permission
+                value: ALL
+          - column:
+                name: password
+                value: $argon2id$v=19$m=4096,t=1,p=1$Cxsp9yu82Jjc2RoUBAnJpg$rH3hRT9fGRM9DPTMcfYP8X0Kr5L3MdXfWSxeT0nHq+I
+          - column:
+                name: phone
+                value: +7(957)936-91-65
+          - column:
+                name: photo
+          - column:
+                name: reg_date
+                valueDate: 2019-08-19T17:54:51.942
+          - column:
+                name: status
+                value: ACTIVE
+          tableName: user
 - changeSet:
     id: 2
     author: muryginds
@@ -5710,899 +5767,908 @@ databaseChangeLog:
         columns:
         - column:
             name: user_id
-            valueNumeric: 1
+            valueNumeric: "1"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 2
+            valueNumeric: "2"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 3
+            valueNumeric: "3"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 4
+            valueNumeric: "4"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 5
+            valueNumeric: "5"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 6
+            valueNumeric: "6"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 7
+            valueNumeric: "7"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 8
+            valueNumeric: "8"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 9
+            valueNumeric: "9"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 10
+            valueNumeric: "10"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 11
+            valueNumeric: "11"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 12
+            valueNumeric: "12"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 13
+            valueNumeric: "13"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 14
+            valueNumeric: "14"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 15
+            valueNumeric: "15"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 16
+            valueNumeric: "16"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 17
+            valueNumeric: "17"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 18
+            valueNumeric: "18"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 19
+            valueNumeric: "19"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 20
+            valueNumeric: "20"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 21
+            valueNumeric: "21"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 22
+            valueNumeric: "22"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 23
+            valueNumeric: "23"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 24
+            valueNumeric: "24"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 25
+            valueNumeric: "25"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 26
+            valueNumeric: "26"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 27
+            valueNumeric: "27"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 28
+            valueNumeric: "28"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 29
+            valueNumeric: "29"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 30
+            valueNumeric: "30"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 31
+            valueNumeric: "31"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 32
+            valueNumeric: "32"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 33
+            valueNumeric: "33"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 34
+            valueNumeric: "34"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 35
+            valueNumeric: "35"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 36
+            valueNumeric: "36"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 37
+            valueNumeric: "37"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 38
+            valueNumeric: "38"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 39
+            valueNumeric: "39"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 40
+            valueNumeric: "40"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 41
+            valueNumeric: "41"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 42
+            valueNumeric: "42"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 43
+            valueNumeric: "43"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 44
+            valueNumeric: "44"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 45
+            valueNumeric: "45"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 46
+            valueNumeric: "46"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 47
+            valueNumeric: "47"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 48
+            valueNumeric: "48"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 49
+            valueNumeric: "49"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 50
+            valueNumeric: "50"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 51
+            valueNumeric: "51"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 52
+            valueNumeric: "52"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 53
+            valueNumeric: "53"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 54
+            valueNumeric: "54"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 55
+            valueNumeric: "55"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 56
+            valueNumeric: "56"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 57
+            valueNumeric: "57"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 58
+            valueNumeric: "58"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 59
+            valueNumeric: "59"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 60
+            valueNumeric: "60"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 61
+            valueNumeric: "61"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 62
+            valueNumeric: "62"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 63
+            valueNumeric: "63"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 64
+            valueNumeric: "64"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 65
+            valueNumeric: "65"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 66
+            valueNumeric: "66"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 67
+            valueNumeric: "67"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 68
+            valueNumeric: "68"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 69
+            valueNumeric: "69"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 70
+            valueNumeric: "70"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 71
+            valueNumeric: "71"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 72
+            valueNumeric: "72"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 73
+            valueNumeric: "73"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 74
+            valueNumeric: "74"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 75
+            valueNumeric: "75"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 76
+            valueNumeric: "76"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 77
+            valueNumeric: "77"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 78
+            valueNumeric: "78"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 79
+            valueNumeric: "79"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 80
+            valueNumeric: "80"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 81
+            valueNumeric: "81"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 82
+            valueNumeric: "82"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 83
+            valueNumeric: "83"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 84
+            valueNumeric: "84"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 85
+            valueNumeric: "85"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 86
+            valueNumeric: "86"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 87
+            valueNumeric: "87"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 88
+            valueNumeric: "88"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 89
+            valueNumeric: "89"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 90
+            valueNumeric: "90"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 91
+            valueNumeric: "91"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 92
+            valueNumeric: "92"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 93
+            valueNumeric: "93"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 94
+            valueNumeric: "94"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 95
+            valueNumeric: "95"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 96
+            valueNumeric: "96"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 97
+            valueNumeric: "97"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 98
+            valueNumeric: "98"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 99
+            valueNumeric: "99"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
         tableName: user_to_role
     - insert:
         columns:
         - column:
             name: user_id
-            valueNumeric: 100
+            valueNumeric: "100"
         - column:
             name: role_id
-            valueNumeric: 1
+            valueNumeric: "1"
+        tableName: user_to_role
+    - insert:
+        columns:
+        - column:
+            name: user_id
+            valueNumeric: "101"
+        - column:
+            name: role_id
+            valueNumeric: "2"
         tableName: user_to_role

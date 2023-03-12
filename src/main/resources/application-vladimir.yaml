@@ -1,16 +1,11 @@
-server:
-  port: 8086
+server.port: 8086
+
 spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
-    password: password
-    username: skillbox
   jpa:
     hibernate:
       ddl-auto: validate
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: false
     show-sql: true
   sql:
@@ -18,25 +13,3 @@ spring:
       mode: never
   liquibase:
     enabled: true
-    change-log: classpath:db/changelog/db.changelog-master.yaml
-  mail:
-    host: smtp.mail.ru
-    port: 465
-    username: zerone34@mail.ru
-    password: TmtUuTw4r3yp2C3AS36M
-    test-connection: true
-    properties:
-      mail:
-        debug: false
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-          ssl:
-            enable: true
-jwt:
-  token:
-    secret: tyiuroiuopyiuioytidgfhdfqwerzxcqwer
-    expired: 360000000
-blacklist:
-  deletionInterval: 1000

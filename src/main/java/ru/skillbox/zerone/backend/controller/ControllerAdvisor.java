@@ -1,43 +1,42 @@
 package ru.skillbox.zerone.backend.controller;
 
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import ru.skillbox.zerone.backend.exception.BlacklistException;
-import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
-import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
+import ru.skillbox.zerone.backend.exception.ZeroneException;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
+import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 @ControllerAdvice
 public class ControllerAdvisor {
 
   @ExceptionHandler({
-      RegistrationCompleteException.class,
       ConstraintViolationException.class,
-      BadCredentialsException.class,
-      UserAlreadyExistException.class,
-      BlacklistException.class,
-      UsernameNotFoundException.class
+      ZeroneException.class
   })
-  ResponseEntity<Object> handleCustomExceptions(Exception e) {
-    var response = CommonResponseDTO.builder()
-        .error(e.getLocalizedMessage())
-        .build();
+  public ResponseEntity<Object> handleCustomExceptions(Exception e) {
 
-    return ResponseEntity.badRequest().body(response);
+    return ResponseEntity.badRequest().body(getResponse(e));
   }
 
 
   @ExceptionHandler(Exception.class)
-  ResponseEntity<Object> handleException(Exception e) {
-    var response = CommonResponseDTO.builder()
-        .error(e.getLocalizedMessage())
-        .build();
+  public ResponseEntity<Object> handleException(Exception e) {
 
     e.printStackTrace();
-    return ResponseEntity.internalServerError().body(response);
+    return ResponseEntity.internalServerError().body(getResponse(e));
+  }
+
+  @ExceptionHandler(BadCredentialsException.class)
+  public ResponseEntity<Object> handleBadCredentialsException(Exception e) {
+
+    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(getResponse(e));
+  }
+
+  private CommonResponseDTO<Object> getResponse(Exception e) {
+    return ResponseUtils.commonResponseWithError(e.getLocalizedMessage());
   }
 }
