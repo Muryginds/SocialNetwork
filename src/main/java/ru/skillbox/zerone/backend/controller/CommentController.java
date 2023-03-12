@@ -1,6 +1,6 @@
 package ru.skillbox.zerone.backend.controller;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.request.CommentRequest;
 import ru.skillbox.zerone.backend.model.dto.response.CommentDTO;
@@ -10,7 +10,7 @@ import ru.skillbox.zerone.backend.service.CommentService;
 
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class CommentController {
   private final CommentService commentService;
@@ -21,12 +21,6 @@ public class CommentController {
                                                     @PathVariable int id)  {
     return commentService.getComments(offset, itemPerPage, id);
   }
-//  @PostMapping("/post/{id}/comments")
-//  public ResponseEntity<AddCommentResponse> addComment(
-//      @PathVariable Long post,
-//      @RequestBody CommentRequest commentRequest) {
-//
-//    return ResponseEntity.ok(commentService.addComment(post, commentRequest));
   @PostMapping("/post/{id}/comments")
   public CommonResponseDTO<CommentDTO> addComment(@PathVariable int id,
                                                @RequestBody CommentRequest commentRequest)  {

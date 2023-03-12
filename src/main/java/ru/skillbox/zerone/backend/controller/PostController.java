@@ -1,4 +1,5 @@
 package ru.skillbox.zerone.backend.controller;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.request.PostRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
@@ -8,12 +9,11 @@ import ru.skillbox.zerone.backend.service.PostService;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class PostController {
   private final PostService postService;
-  public PostController(PostService postService) {
-    this.postService = postService;
-  }
+
   @PostMapping("/users/{id}/wall")
   public CommonResponseDTO<PostsDTO> getUserWall (@PathVariable int id,
                                                   @RequestParam(name = "publish_date", defaultValue = "0") long publishDate,
