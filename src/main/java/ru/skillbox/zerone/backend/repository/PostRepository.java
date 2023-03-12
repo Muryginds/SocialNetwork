@@ -12,15 +12,9 @@ import java.time.LocalDateTime;
 public interface PostRepository extends JpaRepository<Post, Long> {
   Page<Post> findPostsByPostTextContains(String text, Pageable pageable);
 
-//    Set<Post> findById(int id);
-
     Page<Post> findPostsByAuthorId (long id, Pageable pageable);
 
     Page<Post> findPostsByPostTextContainsAndAuthorLastNameAndUpdateTimeBetween(String text, String author, LocalDateTime dateFrom, LocalDateTime dateTo, Pageable pageable);
 
-
-//  Set<Post> findPostsByTag(String tag);
-
-//  Page<Post> findPostsByAuthorAndCurrentDate(int id, Pageable pageable);
 
  }

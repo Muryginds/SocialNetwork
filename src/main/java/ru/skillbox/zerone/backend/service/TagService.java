@@ -1,26 +1,25 @@
 package ru.skillbox.zerone.backend.service;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.skillbox.zerone.backend.model.dto.response.*;
+import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.TagDTO;
 import ru.skillbox.zerone.backend.model.entity.Tag;
-import ru.skillbox.zerone.backend.repository.PostRepository;
 import ru.skillbox.zerone.backend.repository.TagRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
-
-import org.springframework.data.domain.Page;
 
 @Service
 @AllArgsConstructor
 public class TagService {
 
   private final TagRepository tagRepository;
-  private final PostRepository postRepository;
 
   public CommonListResponseDTO<TagDTO> getTags (String tag, int offset, int itemPerPage) {
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);

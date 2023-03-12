@@ -6,18 +6,21 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.skillbox.zerone.backend.exception.CommentNotFoundException;
+import ru.skillbox.zerone.backend.exception.PostNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.CommentRequest;
-import ru.skillbox.zerone.backend.model.dto.response.*;
+import ru.skillbox.zerone.backend.model.dto.response.CommentDTO;
+import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.ImageDTO;
 import ru.skillbox.zerone.backend.model.entity.Comment;
 import ru.skillbox.zerone.backend.model.entity.Post;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.CommentType;
-import ru.skillbox.zerone.backend.repository.*;
-import ru.skillbox.zerone.backend.exception.PostNotFoundException;
-import ru.skillbox.zerone.backend.exception.CommentNotFoundException;
+import ru.skillbox.zerone.backend.repository.CommentRepository;
+import ru.skillbox.zerone.backend.repository.PostRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
-
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -36,7 +39,7 @@ public class CommentService {
 
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
     Page<Comment> pageableCommentList = commentRepository
-        .findCommentsByPostIdAndParentIsNull(post.getId(), pageable);
+        .findCommentsByPostId(post.getId(), pageable);
 
     return getPostResponse(offset, itemPerPage, pageableCommentList, user);
   }
@@ -57,24 +60,29 @@ public class CommentService {
     return new ArrayList<>(commentDTOList);
   }
 
-  public CommonResponseDTO<CommentDTO> comment(long id, CommentRequest commentRequest) throws PostNotFoundException, CommentNotFoundException {
+  public CommonResponseDTO<CommentDTO> addComment(long id, CommentRequest commentRequest) throws PostNotFoundException, CommentNotFoundException {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
     Comment comment = new Comment();
+    comment.setCommentText(commentRequest.getCommentText());
+    comment.setPost(post);
+
+//    if (commentRequest.getParentId() != null)
     if (commentRequest.getParentId() != null) {
        Comment parentComment = commentRepository
           .findById(commentRequest.getParentId()).orElseThrow(CommentNotFoundException::new);
-      comment.setParent(parentComment);
+       comment.setParent(parentComment);
+      comment.setCommentText(commentRequest.getCommentText());
+       comment.setType(CommentType.COMMENT);
+    }else {
+      comment.setCommentText(commentRequest.getCommentText());
+      comment.setType(CommentType.POST);
     }
-    comment.setCommentText(commentRequest.getCommentText());
     comment.setPost(post);
-    comment.setType(CommentType.POST);
     comment.setTime(LocalDateTime.now());
     comment.setAuthor(user);
     comment = commentRepository.save(comment);
-
     // Тут должен быть лист Изображений
-
 //    sendNotification(comment);
     return getCommentResponse(comment, user);
   }
@@ -99,38 +107,51 @@ public class CommentService {
 
       CommentDTO commentDTO = new CommentDTO();
       commentDTO.setCommentText(comment.getCommentText());
+//      commentDTO.setBlocked(comment.isBlocked());
       commentDTO.setAuthor(userMapper.userToUserDTO(user));
-
-//   а здесь нужно было засетать Автора отфильтрованного!!
+      //   а здесь нужно было засетать Автора отфильтрованного!!
       commentDTO.setId(comment.getId());
       commentDTO.setTime(comment.getTime());
 
 //      Здесь должны быть лайки!!
 
-      if (comment.getParent() != null)
+      if (comment.getParent() != null) {
         commentDTO.setParentId(comment.getParent().getId());
-      commentDTO.setPostId(comment.getPost().getId());
+        commentDTO.setType(CommentType.COMMENT);
+        commentDTO.setCommentText(comment.getCommentText());
+      }else {
+        commentDTO.setType(CommentType.POST);
+        commentDTO.setCommentText(comment.getCommentText());
+            }
+
+      commentDTO.setDeleted(comment.getIsDeleted());
+      commentDTO.setPost(comment.getPost().getId());
       commentDTO.setSubComments(new ArrayList<>());
       List<ImageDTO> images = new ArrayList<>();
       commentDTO.setImages(images);
       return commentDTO;
     }
 
-  public CommonResponseDTO<CommentDTO> deleteComment(long commentId) {
+  public CommonResponseDTO<CommentDTO> deleteComment(long id) {
     User user = CurrentUserUtils.getCurrentUser();
-    Comment comment = findComment(commentId);
-    comment.setIsDeleted(Objects.equals(comment.getAuthor().getId(), user.getId()) || comment.getIsDeleted());
-//    comment.setDeletedTimestamp(LocalDateTime.now());
-    commentRepository.save(comment);
+//    Comment comment = findComment(commentId);
+//    comment.setIsDeleted(Objects.equals(comment.getAuthor().getId(), user.getId()) || comment.getIsDeleted());
+    Comment comment = commentRepository.findById(id).orElseThrow(PostNotFoundException::new);
+    if (!user.getId().equals(comment.getAuthor().getId()));
+    comment.setIsDeleted(true);
+//      post.setIsDeletedTime(LocalDateTime.now());
+    commentRepository.saveAndFlush(comment);
+//    comment.setTime(LocalDateTime.now());
+//    commentRepository.save(comment);
     return getCommentResponse(comment, user);
   }
 
 
-  public CommonResponseDTO<CommentDTO> recoveryComment(int commentId) {
+  public CommonResponseDTO<CommentDTO> recoveryComment(int id) {
     User user = CurrentUserUtils.getCurrentUser();
-    Comment comment = findComment(commentId);
+    Comment comment = findComment(id);
     comment.setIsDeleted(!Objects.equals(comment.getAuthor().getId(), user.getId()) && comment.getIsDeleted());
-    commentRepository.save(comment);
+    commentRepository.saveAndFlush(comment);
     return getCommentResponse(comment, user);
   }
 
@@ -149,8 +170,43 @@ public class CommentService {
     return getCommentResponse(comment, user);
   }
 
-  private Comment findComment(long itemId) throws CommentNotFoundException {
-    return commentRepository.findById(itemId)
+  private Comment findComment(long id) throws CommentNotFoundException {
+    return commentRepository.findById(id)
         .orElseThrow(CommentNotFoundException::new);
   }
+
+//  public AddCommentResponse addComment(long post, CommentRequest commentRequest) {
+//
+//    User user = CurrentUserUtils.getCurrentUser();
+//
+//    Comment comment = Comment.builder()
+//        .time(LocalDateTime.now(ZoneOffset.UTC))
+//        .post(postRepository.getById(post))
+//        .author(user)
+//        .commentText(commentRequest.getCommentText())
+//        .isBlocked(false)
+//        .build();
+//    if(commentRequest.getParentId() != null) {
+//      comment.setParent(commentRepository.getById(commentRequest.getParentId()));
+//
+//    }
+//
+//    commentRepository.save(comment);
+//
+//    return AddCommentResponse.builder()
+//        .error("string")
+//        .timestamp(LocalDateTime.now().toEpochSecond(ZoneOffset.UTC))
+//        .data(AddCommentResponse.Data.builder()
+//            .id(comment.getId())
+//            .parentId(comment.getParent() != null ? comment.getParent().getId() : null)
+//            .post(comment.getPost().getId())
+//            .timestamp(comment.getTime().toEpochSecond(ZoneOffset.UTC))
+//            .authorId(user.getId())
+//            .commentText(comment.getCommentText())
+////            .isBlocked(comment.isBlocked())
+//            .build())
+//        .build();
+//  }
+
+
 }

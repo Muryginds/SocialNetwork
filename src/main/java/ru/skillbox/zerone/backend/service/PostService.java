@@ -61,6 +61,7 @@ public class PostService {
     postsDTO.setComments(commentService.getPage4Comments(0,5,post, user));
     Set<Like> likes = likeRepository.findLikesByPost(post);
     postsDTO.setLikes(likes.size());
+
     postsDTO.setTags(new ArrayList<>());
 
 //    Тут должен быть сет Тэгов вместо пустого листа!!
@@ -100,7 +101,7 @@ public class PostService {
 
   }
 
-  public CommonResponseDTO<PostsDTO> getPostById(long id) throws PostNotFoundException {
+  public CommonResponseDTO<PostsDTO> getPostById(long id) throws PostNotFoundException, UserAndAuthorEqualsException {
 
     Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
     User user = CurrentUserUtils.getCurrentUser();
@@ -126,8 +127,11 @@ public class PostService {
     User user = CurrentUserUtils.getCurrentUser();
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
     Page<Post> pageablePostList;
-
+    if (id == user.getId()) {
       pageablePostList = postRepository.findPostsByAuthorId(id, pageable);
+    }else{
+      pageablePostList = Page.empty();
+    }
 
     return getPostResponse(offset, itemPerPage, pageablePostList, user);
   }
