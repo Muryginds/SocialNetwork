@@ -1,5 +1,7 @@
 package ru.skillbox.zerone.backend.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -25,11 +27,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
       WHERE u.city = :city
       AND u.isBlocked = false
       """)
-  List<Long> findUsersByCity(String city);
+  Page<Long> findUsersByCity(String city, Pageable pageable);
 
   @Query(value = """
       SELECT u.id FROM User u
       WHERE u.isBlocked = false
       """)
-  List<Long> findAllUsers();
+  Page<Long> findAllUsers(Pageable pageable);
 }

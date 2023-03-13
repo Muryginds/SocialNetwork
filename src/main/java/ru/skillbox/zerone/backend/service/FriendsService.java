@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.FriendsAdditionException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
@@ -237,7 +238,7 @@ public class FriendsService {
 
   public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage) {
     var user = CurrentUserUtils.getCurrentUser();
-    Recommendation repositoryByUserId = createRecommendations(user);
+    Recommendation repositoryByUserId = createRecommendations(user, offset, itemPerPage);
     var recommendations = userRepository.findUsersById(repositoryByUserId.getRecommendedFriends());
     return CommonListResponseDTO.<UserDTO>builder()
         .total(recommendations.size())
@@ -247,11 +248,12 @@ public class FriendsService {
         .build();
   }
 
-  public Recommendation createRecommendations(User user) {
-    var currentFriends = recommendationRepository.findCurrentUserFriends(user.getId());
-    var allUsers = new ArrayList<>(userRepository.findAllUsers().stream().limit(200).toList());
-    var recommendedUsersByCity = userRepository.findUsersByCity(user.getCity());
-    List<Long> recommendedUsersId = new ArrayList<>(recommendedUsersByCity);
+  public Recommendation createRecommendations(User user, int offset, int itemPerPage) {
+    Pageable pageable = PageRequest.of(offset, itemPerPage);
+    var currentFriends = recommendationRepository.findCurrentUserFriends(user.getId(), pageable).stream().toList();
+    var allUsers = new ArrayList<>(userRepository.findAllUsers(pageable).stream().toList());
+    var recommendedUsersByCity = userRepository.findUsersByCity(user.getCity(), pageable).stream().toList();
+    List<Long> recommendedUsersId = new ArrayList<>(recommendedUsersByCity.stream().toList());
 
     recommendedUsersId.removeAll(currentFriends);
     recommendedUsersId.remove(user.getId());
