@@ -51,8 +51,6 @@ public class CommentService {
     List<CommentDTO> commentDTOList = new ArrayList<>();
     pcomments.forEach(comment -> {
       CommentDTO commentData = getCommentDTO(comment, user);
-      comment.getComments()
-          .forEach(pcomment -> commentData.getSubComments().add(getCommentDTO(pcomment, user)));
       commentDTOList.add(commentData);
     });
     return new ArrayList<>(commentDTOList);
