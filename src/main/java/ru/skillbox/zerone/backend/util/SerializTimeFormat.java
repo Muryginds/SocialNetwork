@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
- public class SerialaizTimeFormat extends LocalDateTimeDeserializer {
+ public class SerializTimeFormat extends LocalDateTimeDeserializer {
 
-  public SerialaizTimeFormat() {
+  public SerializTimeFormat() {
     super(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
   }
 

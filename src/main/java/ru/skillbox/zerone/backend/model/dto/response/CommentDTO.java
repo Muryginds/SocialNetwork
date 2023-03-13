@@ -3,8 +3,10 @@ package ru.skillbox.zerone.backend.model.dto.response;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import ru.skillbox.zerone.backend.model.enumerated.CommentType;
+
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Data
 public class CommentDTO {
   @JsonProperty("parent_id")
