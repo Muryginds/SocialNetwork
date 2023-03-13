@@ -39,8 +39,25 @@ services:
     depends_on:
       - postgres
     networks:
-      - backend
+      - postgres
     restart: on-failure:5
+
+  support:
+    container_name: support
+    image: support
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified
+      SPRING_DATASOURCE_USERNAME: skillbox
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      -  "8083:8083"
+    networks:
+      - postgres
+    depends_on:
+      - backend
+    working_dir: /app
+    command: java -jar support.jar
+    restart: unless-stopped
 
   grafana:
     container_name: grafana
@@ -77,9 +94,6 @@ services:
 
 networks:
   postgres:
-    name: postgres_network
-  backend:
-    name: postgres_network
   monitoring:
 
 volumes:
