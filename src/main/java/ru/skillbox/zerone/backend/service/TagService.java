@@ -12,6 +12,8 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.Tag;
 import ru.skillbox.zerone.backend.repository.TagRepository;
+import ru.skillbox.zerone.backend.util.ResponseUtils;
+
 import java.util.List;
 
 
@@ -38,7 +40,7 @@ public class TagService {
 
     tagRepository.deleteById(id);
 
-    return CommonResponseDTO.<MessageResponseDTO>builder().data(new MessageResponseDTO("Ok")).build();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   @Transactional
