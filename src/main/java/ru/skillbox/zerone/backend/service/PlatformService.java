@@ -1,14 +1,21 @@
 package ru.skillbox.zerone.backend.service;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.model.dto.response.BasicEntityDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
+import ru.skillbox.zerone.backend.repository.CountryRepository;
 
 import java.util.ArrayList;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class PlatformService {
+  private final VKRestClientService vkRestClientService;
+  private final CountryRepository countryRepository;
+
   private static final Map<String, BasicEntityDTO> LANGUAGES = Map.of(
       "Русский", new BasicEntityDTO(0L, "русский"),
       "English", new BasicEntityDTO(1L, "english"),
@@ -26,22 +33,25 @@ public class PlatformService {
   }
 
   public CommonListResponseDTO<BasicEntityDTO> getCountries(String country, int offset, int itemPerPage) {
-    //
+    var countriesPage = countryRepository.findAllByNameContains(country, PageRequest.of(offset, itemPerPage));
+    var countriesDTO = countriesPage.map(c -> new BasicEntityDTO(c.getId().longValue(), c.getName())).getContent();
+
     return CommonListResponseDTO.<BasicEntityDTO>builder()
-        //.total(LANGUAGES.size())
+        .total(countriesPage.getTotalElements())
         .perPage(itemPerPage)
         .offset(offset)
-        //.data(new ArrayList<>(LANGUAGES.values()))
+        .data(countriesDTO)
         .build();
   }
 
   public CommonListResponseDTO<BasicEntityDTO> getCities(int countryId, String city, int offset, int itemPerPage) {
-    //
+    var cities = vkRestClientService.getCities(countryId, city, offset, itemPerPage);
+
     return CommonListResponseDTO.<BasicEntityDTO>builder()
-        //.total(LANGUAGES.size())
+        .total(cities.size())
         .perPage(itemPerPage)
         .offset(offset)
-        //.data(new ArrayList<>(LANGUAGES.values()))
+        .data(cities)
         .build();
   }
 }
