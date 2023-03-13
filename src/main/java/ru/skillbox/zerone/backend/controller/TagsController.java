@@ -23,7 +23,7 @@ public class TagsController {
     return tagService.addTag(tagDTO);
   }
 
-  @DeleteMapping//(params = {"id"})
+  @DeleteMapping
   public CommonResponseDTO<MessageResponseDTO> deleteTag(@RequestParam Long id) {
     return tagService.deleteTag(id);
   }

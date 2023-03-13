@@ -46,10 +46,9 @@ public class TagService {
     Pageable pageable = PageRequest.of(offset, itemPerPage);
     Page<Tag> pageableTagList;
 
-    if (tag.equals("")) {
-      pageableTagList =tagRepository.findAll(pageable);
-    }
-    else {
+    if (tag.isEmpty()) {
+      pageableTagList = tagRepository.findAll(pageable);
+    } else {
       pageableTagList = tagRepository.findByTag(tag, pageable);
     }
 

@@ -8,7 +8,6 @@ import ru.skillbox.zerone.backend.model.entity.Tag;
 
 @NonNullApi
 public interface TagRepository extends JpaRepository<Tag, Long> {
-  void deleteById(Long id);
 
   Page<Tag> findByTag(String tag, Pageable pageable);
 
