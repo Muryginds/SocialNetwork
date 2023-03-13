@@ -38,8 +38,8 @@ public class FriendsController {
 
   @GetMapping("/friends/request")
   public CommonListResponseDTO<UserDTO> getFriendRequestList(@RequestParam(name = "name", defaultValue = "") String name,
-                                                      @RequestParam(name = "offset", defaultValue = "0") int offset,
-                                                      @RequestParam(name = "itemPerPage", defaultValue = "20") int itemPerPage) {
+                                                             @RequestParam(name = "offset", defaultValue = "0") int offset,
+                                                             @RequestParam(name = "itemPerPage", defaultValue = "20") int itemPerPage) {
     return friendsService.getFriendRequestList(name, offset, itemPerPage);
   }
 
@@ -50,7 +50,7 @@ public class FriendsController {
 
   @GetMapping("/friends/recommendations")
   public CommonListResponseDTO<UserDTO> getRecommendations(@RequestParam(name = "offset", defaultValue = "0") int offset,
-                                                              @RequestParam(name = "itemPerPage", defaultValue = "10") int itemPerPage) {
+                                                           @RequestParam(name = "itemPerPage", defaultValue = "10") int itemPerPage) {
     return friendsService.getRecommendations(offset, itemPerPage);
   }
 }

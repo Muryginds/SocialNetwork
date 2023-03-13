@@ -11,15 +11,25 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
   boolean existsByEmail(String email);
+
   Optional<User> findUserByEmail(String email);
-  @Query(value = """
-SELECT u FROM User u
-WHERE u.id IN :ids
-""") List<User> findUsersById (List<Long> ids);
 
   @Query(value = """
-SELECT u.id FROM User u
-WHERE u.city = :city
-AND u.isBlocked = false
-""") List<Long> findUsersByCity ( String city);
+      SELECT u FROM User u
+      WHERE u.id IN :ids
+      """)
+  List<User> findUsersById(List<Long> ids);
+
+  @Query(value = """
+      SELECT u.id FROM User u
+      WHERE u.city = :city
+      AND u.isBlocked = false
+      """)
+  List<Long> findUsersByCity(String city);
+
+  @Query(value = """
+      SELECT u.id FROM User u
+      WHERE u.isBlocked = false
+      """)
+  List<Long> findAllUsers();
 }

@@ -23,7 +23,6 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus.*;
 
@@ -237,9 +236,9 @@ public class FriendsService {
   }
 
   public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage) {
-//    createRecommendations();
     var user = CurrentUserUtils.getCurrentUser();
-    var recommendations = userRepository.findUsersById(recommendationRepository.findByUserId(user.getId()));
+    Recommendation repositoryByUserId = createRecommendations(user);
+    var recommendations = userRepository.findUsersById(repositoryByUserId.getRecommendedFriends());
     return CommonListResponseDTO.<UserDTO>builder()
         .total(recommendations.size())
         .offset(offset)
@@ -248,21 +247,25 @@ public class FriendsService {
         .build();
   }
 
-  public Recommendation createRecommendations () {
-    var user = CurrentUserUtils.getCurrentUser();
-
-    var recommendedUsersByCity = userRepository.findUsersByCity(user.getCity()).stream().limit(10).toList();
+  public Recommendation createRecommendations(User user) {
+    var currentFriends = recommendationRepository.findCurrentUserFriends(user.getId());
+    var allUsers = new ArrayList<>(userRepository.findAllUsers().stream().limit(200).toList());
+    var recommendedUsersByCity = userRepository.findUsersByCity(user.getCity());
     List<Long> recommendedUsersId = new ArrayList<>(recommendedUsersByCity);
-//    if (recommendedUsersId.size() < 10) {
-//      recommendedUsersId.addAll(recommendationRepository.findUsersWithLargestFriendList(user.getCity()).stream().limit(10).toList());
-//    }
-    var recommendations = recommendedUsersId.stream().distinct().toList();
 
+    recommendedUsersId.removeAll(currentFriends);
+    recommendedUsersId.remove(user.getId());
+    if (recommendedUsersId.size() < 10) {
+      allUsers.removeAll(recommendedUsersByCity);
+      allUsers.removeAll(currentFriends);
+      recommendedUsersId.addAll(allUsers);
+    }
 
-    // если рекомендаций <10 {}
+    var recommendations = recommendedUsersId.stream().distinct().limit(8).toList();
+
     return Recommendation.builder()
         .user(user)
-//        .recommendedFriends((recommendations.stream().mapToLong(L -> L).toArray()))
+        .recommendedFriends((recommendations))
         .build();
   }
 }
