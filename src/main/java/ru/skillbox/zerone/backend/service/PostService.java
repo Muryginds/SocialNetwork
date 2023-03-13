@@ -1,4 +1,5 @@
 package ru.skillbox.zerone.backend.service;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -10,12 +11,23 @@ import ru.skillbox.zerone.backend.exception.UserAndAuthorEqualsException;
 import ru.skillbox.zerone.backend.mapstruct.PostMapper;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.PostRequestDTO;
-import ru.skillbox.zerone.backend.model.dto.response.*;
-import ru.skillbox.zerone.backend.model.entity.*;
-import ru.skillbox.zerone.backend.repository.*;
+import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.PostsDTO;
+import ru.skillbox.zerone.backend.model.entity.Like;
+import ru.skillbox.zerone.backend.model.entity.Post;
+import ru.skillbox.zerone.backend.model.entity.User;
+import ru.skillbox.zerone.backend.repository.LikeRepository;
+import ru.skillbox.zerone.backend.repository.PostRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
-import java.time.*;
-import java.util.*;
+import ru.skillbox.zerone.backend.util.SerialaizTimeFormat;
+
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,15 +38,15 @@ public class PostService {
   private final LikeRepository likeRepository;
   private final CommentService commentService;
   private final UserMapper userMapper;
-  private final UserRepository userRepository;
+  private final SerialaizTimeFormat serialaizTimeFormat;
   private final PostMapper postMapper;
 
   private static final Pattern pattern = Pattern.compile("<img\\s+[^>]*src=\"([^\"]*)\"[^>]*>");
 
-  public CommonResponseDTO<PostsDTO> createPost(int id, long publishDate, PostRequestDTO postRequestDTO) throws PostCreationExecption{
+  public CommonResponseDTO<PostsDTO> createPost(int id, long publishDate, PostRequestDTO postRequestDTO) {
 
     User user = CurrentUserUtils.getCurrentUser();
-    if (user.getId() != id) throw new PostCreationExecption();
+    if (user.getId() != id) throw new PostCreationExecption("Создан прекрасный мир.");
 
     Post post = new Post();
     post.setPostText(postRequestDTO.getPostText());
@@ -64,8 +76,6 @@ public class PostService {
 
     postsDTO.setTags(new ArrayList<>());
 
-//    Тут должен быть сет Тэгов вместо пустого листа!!
-//    Тут должен быть сет Лайков!!
     if (LocalDateTime.now().isBefore(post.getTime())) {
       postsDTO.setType("QUEUED");
     } else postsDTO.setType("POSTED");
@@ -103,7 +113,7 @@ public class PostService {
 
   public CommonResponseDTO<PostsDTO> getPostById(long id) throws PostNotFoundException, UserAndAuthorEqualsException {
 
-    Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
+    Post post = postRepository.findById(id).orElseThrow();
     User user = CurrentUserUtils.getCurrentUser();
     CommonResponseDTO<PostsDTO> dataResponse = new CommonResponseDTO<>();
     dataResponse.setTimestamp(LocalDateTime.now());
@@ -111,8 +121,7 @@ public class PostService {
     return dataResponse;
   }
   private Post findPost(long Id) throws PostNotFoundException {
-    return postRepository.findById(Id)
-        .orElseThrow(PostNotFoundException::new);
+    return postRepository.findById(Id).orElseThrow();
   }
   private CommonResponseDTO<PostsDTO> getPostDTOResponse(Post post, User user) {
     CommonResponseDTO<PostsDTO> postDataResponse = new CommonResponseDTO<>();
@@ -136,7 +145,7 @@ public class PostService {
     return getPostResponse(offset, itemPerPage, pageablePostList, user);
   }
 
-  public CommonListResponseDTO<PostsDTO> getPosts(String text, long dateFrom, long dateTo, int offset, int itemPerPage, String author, String tag) {
+  public CommonListResponseDTO<PostsDTO> getPosts(String text,  long dateFrom, long dateTo, int offset, int itemPerPage, String author, String tag) {
     User user = CurrentUserUtils.getCurrentUser();
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
     Page<Post> pageablePostList;
@@ -147,8 +156,6 @@ public class PostService {
           datetimeFrom,datetimeTo, pageable);
     } else {
 
-//    Тут должен быть лист тегов!!
-      
       pageablePostList = postRepository.findPostsByPostTextContainsAndAuthorLastNameAndUpdateTimeBetween(text, author,
           datetimeFrom,datetimeTo, pageable);
     }
@@ -157,8 +164,8 @@ public class PostService {
 
   public CommonResponseDTO<PostsDTO> deletePostById (long id) throws PostNotFoundException, UserAndAuthorEqualsException {
       User user = CurrentUserUtils.getCurrentUser();
-      Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
-      if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException();
+      Post post = postRepository.findById(id).orElseThrow();
+      if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException("Людей вообще нет!");
       post.setIsDeleted(true);
 //      post.setIsDeletedTime(LocalDateTime.now());
       postRepository.saveAndFlush(post);
@@ -167,8 +174,8 @@ public class PostService {
 
   public CommonResponseDTO<PostsDTO> putPostIdRecover(long id) throws PostNotFoundException, UserAndAuthorEqualsException {
     User user = CurrentUserUtils.getCurrentUser();
-    Post post = postRepository.findById(id).orElseThrow(PostNotFoundException::new);
-    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException();
+    Post post = postRepository.findById(id).orElseThrow();
+    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException("Людей вообще нет!");
     post.setIsDeleted(false);
     postRepository.saveAndFlush(post);
     return getPostDTOResponse(post, user);
@@ -177,23 +184,13 @@ public class PostService {
   public CommonResponseDTO<PostsDTO> putPostById(int id, Long publishDate, PostRequestDTO requestBody) throws PostNotFoundException, UserAndAuthorEqualsException {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = findPost(id);
-    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException();
+    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException("Людей вообще нет!");
     post.setTitle(requestBody.getTitle());
     post.setPostText(requestBody.getPostText());
     List<String> tags = requestBody.getTags();
-
-    // Тут снова должен быть лист Тэгов
-
     post.setTime(Instant.ofEpochMilli(publishDate == 0 ? System.currentTimeMillis() : publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime());
     post = postRepository.saveAndFlush(post);
     Matcher images = pattern.matcher(requestBody.getPostText());
-
-    //Тут должны быть картинки
-
     return getPostDTOResponse(post, user);
   }
-
-
-
-
 }

@@ -11,11 +11,12 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-class SerialaizTimeFormat extends LocalDateTimeDeserializer {
+ public class SerialaizTimeFormat extends LocalDateTimeDeserializer {
 
   public SerialaizTimeFormat() {
     super(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
   }
+
 
   @Override
   public LocalDateTime deserialize(JsonParser parser, DeserializationContext context) throws IOException {

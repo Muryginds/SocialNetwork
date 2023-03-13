@@ -26,7 +26,7 @@ public class CommentDTO {
   @JsonProperty("my_like")
   private boolean myLike;
   @JsonProperty("images")
-  private List<ImageDTO> images;
+  private List<StorageDTO> images;
   @JsonProperty("comment_type")
   private CommentType type;
 }
