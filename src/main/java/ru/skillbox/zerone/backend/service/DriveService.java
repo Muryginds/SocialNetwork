@@ -6,6 +6,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.skillbox.zerone.backend.configuration.DriveManager;
+import ru.skillbox.zerone.backend.configuration.DriveProperties;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -19,22 +20,18 @@ public class DriveService {
 
   @Value("${output.path}")
   private String path;
-
-  @Value("${google-drive.months_to_subtract}")
-  private int monthsToSubtract;
-
   private String folderId;
-
+  private final DriveProperties driveProperties;
   private final DriveManager driveManager;
 
 
   @Scheduled(cron = "${cron.expression}")
   public void transferLogsToGoogleDrive() throws IOException {
 
-    com.google.api.services.drive.model.File folderFromDrive = driveManager.findFolderByName(path);
+    com.google.api.services.drive.model.File folderFromDrive = driveManager.findFolderByName();
 
-    folderId = (folderFromDrive == null) ? driveManager.createFolder(path).getId()
-        : driveManager.findFolderByName(path).getId();
+    folderId = (folderFromDrive == null) ? driveManager.createFolder(driveProperties.getFolderName()).getId()
+        : folderFromDrive.getId();
 
     List<com.google.api.services.drive.model.File> filesFromGoogleDrive = driveManager.listFilesFromFolder(folderId);
     List<String> gdFilenames = filesFromGoogleDrive.stream().map(com.google.api.services.drive.model.File::getName).toList();
@@ -82,7 +79,7 @@ public class DriveService {
 
       LocalDate createdDate = new java.sql.Date(file.getCreatedTime().getValue()).toLocalDate();
 
-      if (createdDate.isBefore(LocalDate.now().minusMonths(monthsToSubtract))) {
+      if (createdDate.isBefore(LocalDate.now().minusMonths(driveProperties.getMonthsToSubtract()))) {
         driveManager.deleteFile(file);
       }
     }

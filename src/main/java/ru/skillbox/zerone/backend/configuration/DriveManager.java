@@ -4,8 +4,8 @@ import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.model.File;
 import com.google.api.services.drive.model.FileList;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,38 +18,25 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DriveManager {
 
-  @Value("${google-drive.mimetype.folder}")
-  private String folderMimeType;
-
-  @Value("${google-drive.space}")
-  private String space;
-
-  @Value("${google-drive.fields}")
-  private String fields;
-
-  @Value("${google-drive.fields_set}")
-  private String fieldsSet;
-
-  @Value("${google-drive.file_type}")
-  private String fileType;
-
-  @Value("${google-drive.index_of_first_element}")
-  private int indexOfFirstElement;
-
+  private final DriveProperties driveProperties;
   private final Drive drive;
+  private String query;
 
-  public File findFolderByName(String folderName) throws IOException {
+  @PostConstruct
+  private void query() {
+    query = String.format(" name = '%s' "
+        + " and mimeType = '%s' ", driveProperties.getFolderName(), driveProperties.getMimeType());
+  }
+
+  public File findFolderByName() throws IOException {
 
     String pageToken = null;
     List<File> list = new ArrayList<>();
     FileList result;
 
-    String query = " name = '" + folderName + "' "
-        + " and mimeType = '" + folderMimeType + "' ";
-
     do {
-      result = drive.files().list().setQ(query).setSpaces(space)
-          .setFields(fields)
+      result = drive.files().list().setQ(query).setSpaces(driveProperties.getSpace())
+          .setFields(driveProperties.getFields())
           .setPageToken(pageToken).execute();
       list.addAll(result.getFiles());
 
@@ -59,7 +46,7 @@ public class DriveManager {
 
     if (!list.isEmpty()) {
 
-      return result.getFiles().get(indexOfFirstElement);
+      return result.getFiles().get(driveProperties.getIndexOfFirstElement());
     }
 
     return null;
@@ -70,9 +57,9 @@ public class DriveManager {
     File fileMetadata = new File();
 
     fileMetadata.setName(folderName);
-    fileMetadata.setMimeType(folderMimeType);
+    fileMetadata.setMimeType(driveProperties.getMimeType());
 
-    return drive.files().create(fileMetadata).setFields(fieldsSet).execute();
+    return drive.files().create(fileMetadata).setFields(driveProperties.getFieldsSet()).execute();
   }
 
 
@@ -81,11 +68,11 @@ public class DriveManager {
     if (folderId == null) {
       folderId = "root";
     }
-    String query = "'" + folderId + "' in parents";
+    String listFilesQuery = String.format("'%s' in parents", folderId);
 
     FileList result = drive.files().list()
-        .setQ(query)
-        .setFields(fields)
+        .setQ(listFilesQuery)
+        .setFields(driveProperties.getFields())
         .execute();
 
     return result.getFiles();
@@ -97,7 +84,7 @@ public class DriveManager {
     fileMetadata.setParents(Collections.singletonList(folderId));
     fileMetadata.setName(file.getName());
 
-    FileContent mediaContent = new FileContent(fileType, file);
+    FileContent mediaContent = new FileContent(driveProperties.getFileType(), file);
 
     drive.files().create(fileMetadata, mediaContent).execute();
   }

@@ -86,9 +86,9 @@ google-drive:
   authorize: 'user'
   index_of_first_element: 0
   months_to_subtract: 1
-  mimetype:
-    folder: 'application/vnd.google-apps.folder'
+  mime_type: 'application/vnd.google-apps.folder'
+  folder_name: logs
 cron:
-  expression: '0 0 3 15 * ?'
+  expression: '0 * * * * ?'
 output:
   path: logs
