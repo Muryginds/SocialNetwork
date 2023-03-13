@@ -20,7 +20,7 @@ import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.repository.LikeRepository;
 import ru.skillbox.zerone.backend.repository.PostRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
-import ru.skillbox.zerone.backend.util.SerialaizTimeFormat;
+
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -38,7 +38,6 @@ public class PostService {
   private final LikeRepository likeRepository;
   private final CommentService commentService;
   private final UserMapper userMapper;
-  private final SerialaizTimeFormat serialaizTimeFormat;
   private final PostMapper postMapper;
 
   private static final Pattern pattern = Pattern.compile("<img\\s+[^>]*src=\"([^\"]*)\"[^>]*>");

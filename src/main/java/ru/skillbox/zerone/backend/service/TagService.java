@@ -12,8 +12,8 @@ import ru.skillbox.zerone.backend.model.entity.Tag;
 import ru.skillbox.zerone.backend.repository.TagRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -24,7 +24,7 @@ public class TagService {
   public CommonListResponseDTO<TagDTO> getTags (String tag, int offset, int itemPerPage) {
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
     Page<Tag> pageableTagList = tagRepository.findByTagContains(tag, pageable);
-    List<TagDTO> result = pageableTagList.stream().map(x -> new TagDTO().setId(x.getId()).setTag(x.getTag())).collect(Collectors.toList());
+    List<TagDTO> result = new ArrayList<>();
 
     return CommonListResponseDTO.<TagDTO>builder()
         .total((int)pageableTagList.getTotalElements())
@@ -39,12 +39,7 @@ public class TagService {
   public CommonResponseDTO<TagDTO> postTag(TagDTO tag) {
     CommonResponseDTO<TagDTO> response = new CommonResponseDTO<>();
 
-//    Tag savedTag = tagRepository.save(tagRepository.findByTag(tag.getTag().replaceAll(" ", ""))
-//        .orElse(new Tag().setTag(tag.getTag().replaceAll(" ", "")));
-    response.setError("all r1ight");
-    response.setTimestamp(LocalDateTime.now());
-//    BeanUtils.copyProperties(savedTag, tag);
-    response.setData(tag);
+
     return response;
   }
 

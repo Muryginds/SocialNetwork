@@ -7,7 +7,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class TagDTO {
 
-  private int id;
+  private Long id;
 
   private String tag;
 }
