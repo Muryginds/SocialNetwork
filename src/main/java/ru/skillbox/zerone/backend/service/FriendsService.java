@@ -14,16 +14,16 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.StatusFriendDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.entity.Friendship;
+import ru.skillbox.zerone.backend.model.entity.Recommendation;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
 import ru.skillbox.zerone.backend.repository.FriendshipRepository;
+import ru.skillbox.zerone.backend.repository.RecommendationRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus.*;
 
@@ -31,6 +31,7 @@ import static ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus.*;
 @RequiredArgsConstructor
 public class FriendsService {
   private final FriendshipRepository friendshipRepository;
+  private final RecommendationRepository recommendationRepository;
   private final UserRepository userRepository;
   private final UserMapper userMapper;
 
@@ -236,11 +237,32 @@ public class FriendsService {
   }
 
   public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage) {
+//    createRecommendations();
+    var user = CurrentUserUtils.getCurrentUser();
+    var recommendations = userRepository.findUsersById(recommendationRepository.findByUserId(user.getId()));
     return CommonListResponseDTO.<UserDTO>builder()
-        .total(0)
+        .total(recommendations.size())
         .offset(offset)
         .perPage(itemPerPage)
-        .data(Collections.emptyList())
+        .data(userMapper.usersToUserDTO(recommendations))
+        .build();
+  }
+
+  public Recommendation createRecommendations () {
+    var user = CurrentUserUtils.getCurrentUser();
+
+    var recommendedUsersByCity = userRepository.findUsersByCity(user.getCity()).stream().limit(10).toList();
+    List<Long> recommendedUsersId = new ArrayList<>(recommendedUsersByCity);
+//    if (recommendedUsersId.size() < 10) {
+//      recommendedUsersId.addAll(recommendationRepository.findUsersWithLargestFriendList(user.getCity()).stream().limit(10).toList());
+//    }
+    var recommendations = recommendedUsersId.stream().distinct().toList();
+
+
+    // если рекомендаций <10 {}
+    return Recommendation.builder()
+        .user(user)
+//        .recommendedFriends((recommendations.stream().mapToLong(L -> L).toArray()))
         .build();
   }
 }
