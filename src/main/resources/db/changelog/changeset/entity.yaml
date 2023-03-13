@@ -1256,3 +1256,43 @@ databaseChangeLog:
                   name: expired
             indexName: blacklist_token_expired_idx
             tableName: blacklist_token
+  - changeSet:
+      id: 104
+      author: Riddle (generated)
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: recommendation_pkey
+                  name: id
+                  startWith: 2
+                  type: BIGINT
+              - column:
+                  name: recommended_friends
+                  type: INT8[]
+              - column:
+                  constraints:
+                    nullable: false
+                  name: user_id
+                  type: BIGINT
+            tableName: recommendation
+  - changeSet:
+      id: 105
+      author: Riddle (generated)
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: user_id
+            baseTableName: recommendation
+            constraintName: recommendation_user_fk
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: user
+            validate: true
+

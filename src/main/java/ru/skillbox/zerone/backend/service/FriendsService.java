@@ -258,6 +258,7 @@ public class FriendsService {
     if (recommendedUsersId.size() < 8) {
       allUsers.removeAll(recommendedUsersByCity);
       allUsers.removeAll(currentFriends);
+      Collections.shuffle(allUsers);
       recommendedUsersId.addAll(allUsers);
     }
 
