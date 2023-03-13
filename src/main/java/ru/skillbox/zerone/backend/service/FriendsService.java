@@ -255,7 +255,7 @@ public class FriendsService {
 
     recommendedUsersId.removeAll(currentFriends);
     recommendedUsersId.remove(user.getId());
-    if (recommendedUsersId.size() < 10) {
+    if (recommendedUsersId.size() < 8) {
       allUsers.removeAll(recommendedUsersByCity);
       allUsers.removeAll(currentFriends);
       recommendedUsersId.addAll(allUsers);
