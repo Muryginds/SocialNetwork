@@ -3,6 +3,7 @@ package ru.skillbox.zerone.backend.model.dto.response;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import ru.skillbox.zerone.backend.model.enumerated.PostType;
 
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ import java.util.List;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PostsDTO {
+public class PostDTO {
   private long id;
   private String title;
   @JsonProperty("post_text")
@@ -22,7 +23,7 @@ public class PostsDTO {
   @JsonProperty("my_like")
   private boolean myLike;
   private List<String> tags;
-  private String type;
+  private PostType type;
   private UserDTO author;
   private LocalDateTime timestamp = LocalDateTime.now();
 }
