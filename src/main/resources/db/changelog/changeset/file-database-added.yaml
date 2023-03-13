@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: create file
+      id: create file database
       author: ivan_anokhin
       changes:
         - createTable:

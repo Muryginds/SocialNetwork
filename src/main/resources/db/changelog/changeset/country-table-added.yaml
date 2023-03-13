@@ -1,0 +1,2067 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: muryginds
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: country_pkey
+                  name: id
+                  type: SMALLINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(255)
+            tableName: country
+  - changeSet:
+      id: 2
+      author: muryginds
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "30"
+              - column:
+                  name: name
+                  value: Афганистан
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "21"
+              - column:
+                  name: name
+                  value: Албания
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "22"
+              - column:
+                  name: name
+                  value: Алжир
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "23"
+              - column:
+                  name: name
+                  value: Американское Самоа
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "26"
+              - column:
+                  name: name
+                  value: Андорра
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "25"
+              - column:
+                  name: name
+                  value: Ангола
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "27"
+              - column:
+                  name: name
+                  value: Антигуа и Барбуда
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "5"
+              - column:
+                  name: name
+                  value: Азербайджан
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "28"
+              - column:
+                  name: name
+                  value: Аргентина
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "19"
+              - column:
+                  name: name
+                  value: Австралия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "20"
+              - column:
+                  name: name
+                  value: Австрия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "31"
+              - column:
+                  name: name
+                  value: Багамы
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "34"
+              - column:
+                  name: name
+                  value: Бахрейн
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "32"
+              - column:
+                  name: name
+                  value: Бангладеш
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "6"
+              - column:
+                  name: name
+                  value: Армения
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "33"
+              - column:
+                  name: name
+                  value: Барбадос
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "36"
+              - column:
+                  name: name
+                  value: Бельгия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "38"
+              - column:
+                  name: name
+                  value: Бермуды
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "47"
+              - column:
+                  name: name
+                  value: Бутан
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "40"
+              - column:
+                  name: name
+                  value: Боливия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "41"
+              - column:
+                  name: name
+                  value: Босния и Герцеговина
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "42"
+              - column:
+                  name: name
+                  value: Ботсвана
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "43"
+              - column:
+                  name: name
+                  value: Бразилия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "35"
+              - column:
+                  name: name
+                  value: Белиз
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "49"
+              - column:
+                  name: name
+                  value: Великобритания
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "186"
+              - column:
+                  name: name
+                  value: Соломоновы Острова
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "52"
+              - column:
+                  name: name
+                  value: Виргинские острова, Великобритания
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "44"
+              - column:
+                  name: name
+                  value: Бруней
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "39"
+              - column:
+                  name: name
+                  value: Болгария
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "132"
+              - column:
+                  name: name
+                  value: Мьянма
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "46"
+              - column:
+                  name: name
+                  value: Бурунди
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "3"
+              - column:
+                  name: name
+                  value: Беларусь
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "91"
+              - column:
+                  name: name
+                  value: Камбоджа
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "92"
+              - column:
+                  name: name
+                  value: Камерун
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "10"
+              - column:
+                  name: name
+                  value: Канада
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "90"
+              - column:
+                  name: name
+                  value: Кабо-Верде
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "149"
+              - column:
+                  name: name
+                  value: Острова Кайман
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "213"
+              - column:
+                  name: name
+                  value: Центральноафриканская Республика
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "220"
+              - column:
+                  name: name
+                  value: Шри-Ланка
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "214"
+              - column:
+                  name: name
+                  value: Чад
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "216"
+              - column:
+                  name: name
+                  value: Чили
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "97"
+              - column:
+                  name: name
+                  value: Китай
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "192"
+              - column:
+                  name: name
+                  value: Тайвань
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "98"
+              - column:
+                  name: name
+                  value: Колумбия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "99"
+              - column:
+                  name: name
+                  value: Коморы
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "100"
+              - column:
+                  name: name
+                  value: Конго
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "101"
+              - column:
+                  name: name
+                  value: Конго, демократическая республика
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "150"
+              - column:
+                  name: name
+                  value: Острова Кука
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "102"
+              - column:
+                  name: name
+                  value: Коста-Рика
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "212"
+              - column:
+                  name: name
+                  value: Хорватия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "104"
+              - column:
+                  name: name
+                  value: Куба
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "95"
+              - column:
+                  name: name
+                  value: Кипр
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "215"
+              - column:
+                  name: name
+                  value: Чехия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "37"
+              - column:
+                  name: name
+                  value: Бенин
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "73"
+              - column:
+                  name: name
+                  value: Дания
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "74"
+              - column:
+                  name: name
+                  value: Доминика
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "75"
+              - column:
+                  name: name
+                  value: Доминиканская Республика
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "221"
+              - column:
+                  name: name
+                  value: Эквадор
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "166"
+              - column:
+                  name: name
+                  value: Сальвадор
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "222"
+              - column:
+                  name: name
+                  value: Экваториальная Гвинея
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "224"
+              - column:
+                  name: name
+                  value: Эфиопия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "223"
+              - column:
+                  name: name
+                  value: Эритрея
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "14"
+              - column:
+                  name: name
+                  value: Эстония
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "204"
+              - column:
+                  name: name
+                  value: Фарерские острова
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "208"
+              - column:
+                  name: name
+                  value: Фолклендские острова
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "205"
+              - column:
+                  name: name
+                  value: Фиджи
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "207"
+              - column:
+                  name: name
+                  value: Финляндия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "209"
+              - column:
+                  name: name
+                  value: Франция
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "210"
+              - column:
+                  name: name
+                  value: Французская Гвиана
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "211"
+              - column:
+                  name: name
+                  value: Французская Полинезия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "231"
+              - column:
+                  name: name
+                  value: Джибути
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "56"
+              - column:
+                  name: name
+                  value: Габон
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "7"
+              - column:
+                  name: name
+                  value: Грузия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "59"
+              - column:
+                  name: name
+                  value: Гамбия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "154"
+              - column:
+                  name: name
+                  value: Палестинская автономия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "65"
+              - column:
+                  name: name
+                  value: Германия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "60"
+              - column:
+                  name: name
+                  value: Гана
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "66"
+              - column:
+                  name: name
+                  value: Гибралтар
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "96"
+              - column:
+                  name: name
+                  value: Кирибати
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "71"
+              - column:
+                  name: name
+                  value: Греция
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "70"
+              - column:
+                  name: name
+                  value: Гренландия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "69"
+              - column:
+                  name: name
+                  value: Гренада
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "61"
+              - column:
+                  name: name
+                  value: Гваделупа
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "72"
+              - column:
+                  name: name
+                  value: Гуам
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "62"
+              - column:
+                  name: name
+                  value: Гватемала
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "63"
+              - column:
+                  name: name
+                  value: Гвинея
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "58"
+              - column:
+                  name: name
+                  value: Гайана
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "57"
+              - column:
+                  name: name
+                  value: Гаити
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "67"
+              - column:
+                  name: name
+                  value: Гондурас
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "50"
+              - column:
+                  name: name
+                  value: Венгрия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "86"
+              - column:
+                  name: name
+                  value: Исландия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "80"
+              - column:
+                  name: name
+                  value: Индия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "81"
+              - column:
+                  name: name
+                  value: Индонезия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "84"
+              - column:
+                  name: name
+                  value: Иран
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "83"
+              - column:
+                  name: name
+                  value: Ирак
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "85"
+              - column:
+                  name: name
+                  value: Ирландия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "8"
+              - column:
+                  name: name
+                  value: Израиль
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "88"
+              - column:
+                  name: name
+                  value: Италия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "103"
+              - column:
+                  name: name
+                  value: Кот-д'Ивуар
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "228"
+              - column:
+                  name: name
+                  value: Ямайка
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "229"
+              - column:
+                  name: name
+                  value: Япония
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "4"
+              - column:
+                  name: name
+                  value: Казахстан
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "82"
+              - column:
+                  name: name
+                  value: Иордания
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "94"
+              - column:
+                  name: name
+                  value: Кения
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "173"
+              - column:
+                  name: name
+                  value: Северная Корея
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "226"
+              - column:
+                  name: name
+                  value: Южная Корея
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "105"
+              - column:
+                  name: name
+                  value: Кувейт
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "11"
+              - column:
+                  name: name
+                  value: Кыргызстан
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "106"
+              - column:
+                  name: name
+                  value: Лаос
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "109"
+              - column:
+                  name: name
+                  value: Ливан
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "107"
+              - column:
+                  name: name
+                  value: Лесото
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "12"
+              - column:
+                  name: name
+                  value: Латвия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "108"
+              - column:
+                  name: name
+                  value: Либерия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "110"
+              - column:
+                  name: name
+                  value: Ливия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "111"
+              - column:
+                  name: name
+                  value: Лихтенштейн
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "13"
+              - column:
+                  name: name
+                  value: Литва
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "112"
+              - column:
+                  name: name
+                  value: Люксембург
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "115"
+              - column:
+                  name: name
+                  value: Мадагаскар
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "118"
+              - column:
+                  name: name
+                  value: Малави
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "119"
+              - column:
+                  name: name
+                  value: Малайзия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "121"
+              - column:
+                  name: name
+                  value: Мальдивы
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "120"
+              - column:
+                  name: name
+                  value: Мали
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "122"
+              - column:
+                  name: name
+                  value: Мальта
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "124"
+              - column:
+                  name: name
+                  value: Мартиника
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "114"
+              - column:
+                  name: name
+                  value: Мавритания
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "113"
+              - column:
+                  name: name
+                  value: Маврикий
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "126"
+              - column:
+                  name: name
+                  value: Мексика
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "129"
+              - column:
+                  name: name
+                  value: Монако
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "130"
+              - column:
+                  name: name
+                  value: Монголия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "15"
+              - column:
+                  name: name
+                  value: Молдова
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "230"
+              - column:
+                  name: name
+                  value: Черногория
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "131"
+              - column:
+                  name: name
+                  value: Монтсеррат
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "123"
+              - column:
+                  name: name
+                  value: Марокко
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "128"
+              - column:
+                  name: name
+                  value: Мозамбик
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "146"
+              - column:
+                  name: name
+                  value: Оман
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "133"
+              - column:
+                  name: name
+                  value: Намибия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "134"
+              - column:
+                  name: name
+                  value: Науру
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "135"
+              - column:
+                  name: name
+                  value: Непал
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "139"
+              - column:
+                  name: name
+                  value: Нидерланды
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "138"
+              - column:
+                  name: name
+                  value: Кюрасао
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "29"
+              - column:
+                  name: name
+                  value: Аруба
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "235"
+              - column:
+                  name: name
+                  value: Бонайре, Синт-Эстатиус и Саба
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "234"
+              - column:
+                  name: name
+                  value: Синт-Мартен
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "143"
+              - column:
+                  name: name
+                  value: Новая Каледония
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "48"
+              - column:
+                  name: name
+                  value: Вануату
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "142"
+              - column:
+                  name: name
+                  value: Новая Зеландия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "140"
+              - column:
+                  name: name
+                  value: Никарагуа
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "136"
+              - column:
+                  name: name
+                  value: Нигер
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "137"
+              - column:
+                  name: name
+                  value: Нигерия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "141"
+              - column:
+                  name: name
+                  value: Ниуэ
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "148"
+              - column:
+                  name: name
+                  value: Остров Норфолк
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "144"
+              - column:
+                  name: name
+                  value: Норвегия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "174"
+              - column:
+                  name: name
+                  value: Северные Марианские острова
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "127"
+              - column:
+                  name: name
+                  value: Микронезия, федеративные штаты
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "125"
+              - column:
+                  name: name
+                  value: Маршалловы Острова
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "153"
+              - column:
+                  name: name
+                  value: Палау
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "152"
+              - column:
+                  name: name
+                  value: Пакистан
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "155"
+              - column:
+                  name: name
+                  value: Панама
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "156"
+              - column:
+                  name: name
+                  value: Папуа — Новая Гвинея
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "157"
+              - column:
+                  name: name
+                  value: Парагвай
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "158"
+              - column:
+                  name: name
+                  value: Перу
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "206"
+              - column:
+                  name: name
+                  value: Филиппины
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "160"
+              - column:
+                  name: name
+                  value: Польша
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "161"
+              - column:
+                  name: name
+                  value: Португалия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "64"
+              - column:
+                  name: name
+                  value: Гвинея-Бисау
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "54"
+              - column:
+                  name: name
+                  value: Восточный Тимор
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "162"
+              - column:
+                  name: name
+                  value: Пуэрто-Рико
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "93"
+              - column:
+                  name: name
+                  value: Катар
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "163"
+              - column:
+                  name: name
+                  value: Реюньон
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "165"
+              - column:
+                  name: name
+                  value: Румыния
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "1"
+              - column:
+                  name: name
+                  value: Россия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "164"
+              - column:
+                  name: name
+                  value: Руанда
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "172"
+              - column:
+                  name: name
+                  value: Святая Елена
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "178"
+              - column:
+                  name: name
+                  value: Сент-Китс и Невис
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "24"
+              - column:
+                  name: name
+                  value: Ангилья
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "179"
+              - column:
+                  name: name
+                  value: Сент-Люсия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "180"
+              - column:
+                  name: name
+                  value: Сент-Пьер и Микелон
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "177"
+              - column:
+                  name: name
+                  value: Сент-Винсент и Гренадины
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "168"
+              - column:
+                  name: name
+                  value: Сан-Марино
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "169"
+              - column:
+                  name: name
+                  value: Сан-Томе и Принсипи
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "170"
+              - column:
+                  name: name
+                  value: Саудовская Аравия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "176"
+              - column:
+                  name: name
+                  value: Сенегал
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "181"
+              - column:
+                  name: name
+                  value: Сербия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "175"
+              - column:
+                  name: name
+                  value: Сейшелы
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "190"
+              - column:
+                  name: name
+                  value: Сьерра-Леоне
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "182"
+              - column:
+                  name: name
+                  value: Сингапур
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "184"
+              - column:
+                  name: name
+                  value: Словакия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "55"
+              - column:
+                  name: name
+                  value: Вьетнам
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "185"
+              - column:
+                  name: name
+                  value: Словения
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "187"
+              - column:
+                  name: name
+                  value: Сомали
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "227"
+              - column:
+                  name: name
+                  value: Южно-Африканская Республика
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "79"
+              - column:
+                  name: name
+                  value: Зимбабве
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "87"
+              - column:
+                  name: name
+                  value: Испания
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "188"
+              - column:
+                  name: name
+                  value: Судан
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "189"
+              - column:
+                  name: name
+                  value: Суринам
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "171"
+              - column:
+                  name: name
+                  value: Эсватини
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "218"
+              - column:
+                  name: name
+                  value: Швеция
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "217"
+              - column:
+                  name: name
+                  value: Швейцария
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "183"
+              - column:
+                  name: name
+                  value: Сирия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "16"
+              - column:
+                  name: name
+                  value: Таджикистан
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "191"
+              - column:
+                  name: name
+                  value: Таиланд
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "194"
+              - column:
+                  name: name
+                  value: Того
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "195"
+              - column:
+                  name: name
+                  value: Токелау
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "196"
+              - column:
+                  name: name
+                  value: Тонга
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "197"
+              - column:
+                  name: name
+                  value: Тринидад и Тобаго
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "145"
+              - column:
+                  name: name
+                  value: Объединенные Арабские Эмираты
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "199"
+              - column:
+                  name: name
+                  value: Тунис
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "200"
+              - column:
+                  name: name
+                  value: Турция
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "17"
+              - column:
+                  name: name
+                  value: Туркменистан
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "151"
+              - column:
+                  name: name
+                  value: Острова Теркс и Кайкос
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "198"
+              - column:
+                  name: name
+                  value: Тувалу
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "201"
+              - column:
+                  name: name
+                  value: Уганда
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "2"
+              - column:
+                  name: name
+                  value: Украина
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "117"
+              - column:
+                  name: name
+                  value: Северная Македония
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "76"
+              - column:
+                  name: name
+                  value: Египет
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "193"
+              - column:
+                  name: name
+                  value: Танзания
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "9"
+              - column:
+                  name: name
+                  value: США
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "53"
+              - column:
+                  name: name
+                  value: Виргинские острова, США
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "45"
+              - column:
+                  name: name
+                  value: Буркина-Фасо
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "203"
+              - column:
+                  name: name
+                  value: Уругвай
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "18"
+              - column:
+                  name: name
+                  value: Узбекистан
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "51"
+              - column:
+                  name: name
+                  value: Венесуэла
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "202"
+              - column:
+                  name: name
+                  value: Уоллис и Футуна
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "167"
+              - column:
+                  name: name
+                  value: Самоа
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "89"
+              - column:
+                  name: name
+                  value: Йемен
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "77"
+              - column:
+                  name: name
+                  value: Замбия
+            tableName: country
+        - insert:
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "232"
+              - column:
+                  name: name
+                  value: Южный Судан
+            tableName: country
