@@ -169,6 +169,7 @@ public class UserService {
     userRepository.save(user);
     return userMapper.userToUserDTO(user);
   }
+
   public CommonResponseDTO<UserDTO> deleteUser() {
     var user = CurrentUserUtils.getCurrentUser();
     user.setIsDeleted(true);

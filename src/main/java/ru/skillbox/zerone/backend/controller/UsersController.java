@@ -17,13 +17,13 @@ public class UsersController {
 
   @GetMapping("/me")
   public CommonResponseDTO<UserDTO> getCurrentUser() {
-      return userService.getCurrentUser();
+    return userService.getCurrentUser();
   }
 
   @GetMapping("/{id}")
   public CommonResponseDTO<UserDTO> getById(@PathVariable @Min(1) Long id) {
-  return userService.getById(id);
-}
+    return userService.getById(id);
+  }
 
   @PutMapping("/me")
   public UserDTO editUserSettings(@RequestBody UserDTO updateUser) {
