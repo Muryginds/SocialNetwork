@@ -6,4 +6,5 @@ import ru.skillbox.zerone.backend.model.entity.File;
 
 @Repository
 public interface FileRepository extends JpaRepository<File, Long> {
+  void deleteByPublicId(String publicId);
 }
