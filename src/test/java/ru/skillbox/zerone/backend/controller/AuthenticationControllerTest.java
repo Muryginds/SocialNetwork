@@ -1,28 +1,27 @@
 package ru.skillbox.zerone.backend.controller;
 
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.skillbox.zerone.backend.AbstractIntegrationTest;
-import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.repository.UserRepository;
-import ru.skillbox.zerone.backend.service.RoleService;
+import ru.skillbox.zerone.backend.security.JwtTokenProvider;
+import ru.skillbox.zerone.backend.testData.UserMockUtils;
+import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
-import java.util.List;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Transactional
 @AutoConfigureMockMvc
-class AuthenticationControllerTest extends AbstractIntegrationTest {
+class AuthenticationControllerTest extends AbstractIntegrationTest implements UserMockUtils {
   private static final String TEST_ACCOUNT_EMAIL = "testAccount@hotmail.com";
   private static final String TEST_ACCOUNT_FIRSTNAME = "Серж";
   private static final String TEST_ACCOUNT_LASTNAME = "Богданов";
@@ -31,25 +30,20 @@ class AuthenticationControllerTest extends AbstractIntegrationTest {
   @Autowired
   private PasswordEncoder passwordEncoder;
   @Autowired
-  private RoleService roleService;
-  @Autowired
   private UserRepository userRepository;
+  @Autowired
+  private JwtTokenProvider jwtTokenProvider;
 
-  @BeforeEach
-  void setUp() {
-    var user = User.builder()
-        .email(TEST_ACCOUNT_EMAIL)
-        .firstName(TEST_ACCOUNT_FIRSTNAME)
-        .lastName(TEST_ACCOUNT_LASTNAME)
-        .password(passwordEncoder.encode(TEST_ACCOUNT_EMAIL))
-        .isApproved(true)
-        .confirmationCode("test")
-        .roles(List.of(roleService.getBasicUserRole()))
-        .build();
-    userRepository.save(user);
-  }
+//  @BeforeEach
+//  void setUp() {
+//    var user = getTestUser(TEST_ACCOUNT_EMAIL, passwordEncoder.encode(TEST_ACCOUNT_EMAIL));
+//        user.setFirstName(TEST_ACCOUNT_FIRSTNAME);
+//        user.setLastName(TEST_ACCOUNT_LASTNAME);
+//    userRepository.save(user);
+//  }
 
   @Test
+  @Sql(scripts = "classpath:mock-user-insert.sql")
   void testLogin_whenValidInput_thenReturnSuccessResponse() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/auth/login")
             .contentType(MediaType.APPLICATION_JSON)
@@ -68,6 +62,7 @@ class AuthenticationControllerTest extends AbstractIntegrationTest {
   }
 
   @Test
+  @Sql(scripts = "classpath:mock-user-insert.sql")
   void testLogin_whenWrongPassword_thenReturnClientError() throws Exception {
     mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/auth/login")
             .contentType(MediaType.APPLICATION_JSON)
@@ -113,15 +108,18 @@ class AuthenticationControllerTest extends AbstractIntegrationTest {
         .andExpect(jsonPath("$.data").doesNotExist());
   }
 
-/*  @Test
+  @Test
+  @WithUserDetails(TEST_ACCOUNT_EMAIL)
+  @Sql(scripts = "classpath:mock-user-insert.sql")
   void testLogout_whenValidToken_thenReturnSuccessResponse() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/auth/logout")
-            .header("Authorization", token))
+    var user = CurrentUserUtils.getCurrentUser();
+    var token = jwtTokenProvider.createToken(user.getEmail(), user.getRoles());
+    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/auth/logout").header("Authorization", token))
         .andExpect(status().isOk())
         .andExpect(content().json("""
             {
-              "data": {"message": "OK"}
+              "data": {"message": "Logged out"}
             }
             """));
-  }*/
+  }
 }
