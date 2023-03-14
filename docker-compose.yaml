@@ -44,7 +44,7 @@ services:
 
   support:
     container_name: support
-    image: support
+    image: vladimirpanfilov/support
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified
       SPRING_DATASOURCE_USERNAME: skillbox
@@ -57,7 +57,7 @@ services:
       - backend
     working_dir: /app
     command: java -jar support.jar
-    restart: unless-stopped
+    restart: on-failure:5
 
   grafana:
     container_name: grafana
