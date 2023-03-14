@@ -53,7 +53,7 @@ public class PostService {
     post.setTitle(postRequestDTO.getTitle());
     post.setAuthor(user);
     if (publishDate == 0) {
-      post.setTime(Instant.now().atZone(ZoneId.systemDefault()).toLocalDateTime());
+      post.setTime(LocalDateTime.now());
     } else {
       post.setTime(Instant.ofEpochMilli(publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime());
     }

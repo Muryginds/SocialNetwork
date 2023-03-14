@@ -38,21 +38,21 @@ public class CommentService {
 
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
     Page<Comment> pageableCommentList = commentRepository
-        .findCommentsByPostId(post.getId(), pageable);
+        .findCommentsByPostIdAndParentNull(post.getId(), pageable);
 
     return getPostResponse(offset, itemPerPage, pageableCommentList, user);
   }
-
   public CommonListResponseDTO<CommentDTO> getComments(int offset, int itemPerPage, long id) {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow();
     return getPage4Comments(offset, itemPerPage, post, user);
   }
 
-  public List<CommentDTO> getCommentDTO4Response(Set<Comment> pcomments, User user) {
+  public List<CommentDTO> getCommentDTO4Response(Set<Comment> comments, User user) {
     List<CommentDTO> commentDTOList = new ArrayList<>();
-    pcomments.forEach(comment -> {
+    comments.forEach(comment -> {
       CommentDTO commentData = getCommentDTO(comment, user);
+      commentData.getSubComments().add(getCommentDTO(comment, user));
       commentDTOList.add(commentData);
     });
     return new ArrayList<>(commentDTOList);
@@ -123,6 +123,7 @@ public class CommentService {
     commentDTO.setDeleted(comment.getIsDeleted());
     commentDTO.setPost(comment.getPost().getId());
     commentDTO.setSubComments(new ArrayList<>());
+
     List<StorageDTO> images = new ArrayList<>();
     commentDTO.setImages(images);
     return commentDTO;
@@ -164,4 +165,6 @@ public class CommentService {
     return commentRepository.findById(id)
         .orElseThrow();
   }
+//      comment.getComments()
+  //          .forEach(pomment -> commentData.getSubComments().add(getCommentDTO(pomment, user)));
 }
