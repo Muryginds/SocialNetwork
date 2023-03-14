@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.skillbox.zerone.backend.model.entity.Tag;
 
-@NonNullApi
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
   Page<Tag> findByTag(String tag, Pageable pageable);
