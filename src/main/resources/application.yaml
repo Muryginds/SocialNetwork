@@ -72,3 +72,23 @@ vk-api:
   find-countries-method-uri: /database.getCountries
   find-cities-method-uri: /database.getCities
   version: 5.131
+
+google-drive:
+  app_name: 'ZeroneSocialNetLogs'
+  tokens_path: 'tokens'
+  credentials_path: '/credentials.json'
+  space: 'drive'
+  fields: 'nextPageToken, files(id, name, createdTime, mimeType, size)'
+  fields_set: 'id, name'
+  file_type: 'text/log'
+  access_type: 'offline'
+  port: 8089
+  authorize: 'user'
+  index_of_first_element: 0
+  months_to_subtract: 1
+  mime_type: 'application/vnd.google-apps.folder'
+  folder_name: logs
+cron:
+  expression: '0 0 3 15 * ?'
+output:
+  path: logs
