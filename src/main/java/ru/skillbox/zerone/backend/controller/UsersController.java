@@ -29,4 +29,7 @@ public class UsersController {
   public UserDTO editUserSettings(@RequestBody UserDTO updateUser) {
     return userService.editUserSettings(updateUser);
   }
+
+  @DeleteMapping("/me")
+  public CommonResponseDTO<UserDTO> deleteUser() {return null;}
 }

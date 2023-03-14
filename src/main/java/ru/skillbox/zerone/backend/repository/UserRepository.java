@@ -25,6 +25,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query(value = """
       SELECT u.id FROM User u
       WHERE u.city = :city
+      AND u.isDeleted = false
       AND u.isBlocked = false
       """)
   Page<Long> findUsersByCity(String city, Pageable pageable);
@@ -32,6 +33,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
   @Query(value = """
       SELECT u.id FROM User u
       WHERE u.isBlocked = false
+      AND u.isDeleted = false
       """)
   Page<Long> findAllUsers(Pageable pageable);
 }
