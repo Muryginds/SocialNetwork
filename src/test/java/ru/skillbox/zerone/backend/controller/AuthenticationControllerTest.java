@@ -9,13 +9,15 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.skillbox.zerone.backend.AbstractIntegrationTest;
 import ru.skillbox.zerone.backend.security.JwtTokenProvider;
 import ru.skillbox.zerone.backend.testData.UserMockUtils;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
 @AutoConfigureMockMvc
@@ -31,7 +33,7 @@ class AuthenticationControllerTest extends AbstractIntegrationTest implements Us
   @Test
   @Sql(scripts = "classpath:mock-user-insert.sql")
   void testLogin_whenValidInput_thenReturnSuccessResponse() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/auth/login")
+    mockMvc.perform(post("/api/v1/auth/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(MessageFormatter.format("""
                     {
@@ -50,7 +52,7 @@ class AuthenticationControllerTest extends AbstractIntegrationTest implements Us
   @Test
   @Sql(scripts = "classpath:mock-user-insert.sql")
   void testLogin_whenWrongPassword_thenReturnClientError() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/auth/login")
+    mockMvc.perform(post("/api/v1/auth/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content(MessageFormatter.format("""
                     {
@@ -66,7 +68,7 @@ class AuthenticationControllerTest extends AbstractIntegrationTest implements Us
 
   @Test
   void testLogin_whenAccountNotExist_thenReturn400Error() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/auth/login")
+    mockMvc.perform(post("/api/v1/auth/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
                     {
@@ -81,7 +83,7 @@ class AuthenticationControllerTest extends AbstractIntegrationTest implements Us
 
   @Test
   void testLogin_whenEmailNotValid_thenReturnServerError() throws Exception {
-    mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/auth/login")
+    mockMvc.perform(post("/api/v1/auth/login")
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
                     {
@@ -100,12 +102,8 @@ class AuthenticationControllerTest extends AbstractIntegrationTest implements Us
   void testLogout_whenValidToken_thenReturnSuccessResponse() throws Exception {
     var user = CurrentUserUtils.getCurrentUser();
     var token = jwtTokenProvider.createToken(user.getEmail(), user.getRoles());
-    mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/auth/logout").header("Authorization", token))
+    mockMvc.perform(get("/api/v1/auth/logout").header("Authorization", token))
         .andExpect(status().isOk())
-        .andExpect(content().json("""
-            {
-              "data": {"message": "Logged out"}
-            }
-            """));
+        .andExpect(jsonPath("$.data.message").value("Logged out"));
   }
 }
