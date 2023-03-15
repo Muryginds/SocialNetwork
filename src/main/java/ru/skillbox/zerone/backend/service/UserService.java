@@ -11,9 +11,7 @@ import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.*;
-import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
-import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
-import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
+import ru.skillbox.zerone.backend.model.dto.response.*;
 import ru.skillbox.zerone.backend.model.entity.ChangeEmailHistory;
 import ru.skillbox.zerone.backend.model.entity.NotificationSetting;
 import ru.skillbox.zerone.backend.model.entity.User;
@@ -25,8 +23,12 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static ru.skillbox.zerone.backend.model.enumerated.NotificationType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -172,20 +174,12 @@ public class UserService {
     return userMapper.userToUserDTO(user);
   }
 
- @Transactional
-  public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationTypeDTO typeDTO) {
-    User user = CurrentUserUtils.getCurrentUser();
-    NotificationType notificationType = NotificationType.valueOf(typeDTO.getType());
+  @Transactional
+  public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationSettingDTO typeDTO) {
+    var setting = getNotificationSetting();
     boolean enabled = typeDTO.getEnable();
-   Optional<NotificationSetting> optionalSetting = notificationSettingRepository.findByUser(user);
-   NotificationSetting setting;
-   if (optionalSetting.isPresent()) {
-     setting = optionalSetting.get();
-   } else {
-     setting = new NotificationSetting();
-     setting.setUser(user);
-   }
-   switch (notificationType) {
+    NotificationType notificationType = NotificationType.valueOf(typeDTO.getType());
+    switch (notificationType) {
       case POST -> setting.setPostEnabled(enabled);
       case POST_COMMENT -> setting.setPostCommentEnabled(enabled);
       case COMMENT_COMMENT -> setting.setCommentCommentEnabled(enabled);
@@ -195,5 +189,37 @@ public class UserService {
     }
     notificationSettingRepository.save(setting);
     return ResponseUtils.commonResponseDataOk();
+  }
+
+  public CommonListResponseDTO<NotificationSettingDTO> getNotificationSettingList() {
+    var setting = getNotificationSetting();
+    List<NotificationSettingDTO> data = new ArrayList<>();
+    addSetting(data, POST, setting.getPostEnabled());
+    addSetting(data, POST_COMMENT, setting.getPostCommentEnabled());
+    addSetting(data, COMMENT_COMMENT, setting.getCommentCommentEnabled());
+    addSetting(data, FRIEND_REQUEST, setting.getFriendRequestEnabled());
+    addSetting(data, MESSAGE, setting.getMessagesEnabled());
+    addSetting(data, FRIEND_BIRTHDAY, setting.getFriendBirthdayEnabled());
+
+    var result = CommonListResponseDTO.<NotificationSettingDTO>builder()
+        .data(data).build();
+    return result;
+  }
+
+  private NotificationSetting getNotificationSetting() {
+    User user = CurrentUserUtils.getCurrentUser();
+    Optional<NotificationSetting> optionalSetting = notificationSettingRepository.findByUser(user);
+    NotificationSetting setting;
+    if (optionalSetting.isPresent()) {
+      setting = optionalSetting.get();
+    } else {
+      setting = new NotificationSetting();
+      setting.setUser(user);
+    }
+    return setting;
+  }
+  private void addSetting(List<NotificationSettingDTO> data, NotificationType type, boolean enabled) {
+    var setting = new NotificationSettingDTO(type.name(), enabled);
+    data.add(setting);
   }
 }

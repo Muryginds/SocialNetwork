@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.request.*;
+import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.NotificationSettingListDTO;
 import ru.skillbox.zerone.backend.service.UserService;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 
@@ -37,7 +39,12 @@ public class AccountController {
   }
 
   @PutMapping("/notifications")
-  public CommonResponseDTO<MessageResponseDTO> setNotificationType(@RequestBody NotificationTypeDTO typeDTO) {
+  public CommonResponseDTO<MessageResponseDTO> setNotificationType(@RequestBody NotificationSettingDTO typeDTO) {
     return userService.setNotificationType(typeDTO);
+  }
+
+  @GetMapping("/notifications")
+  public CommonListResponseDTO<NotificationSettingDTO> getNotificationSettingList() {
+    return userService.getNotificationSettingList();
   }
 }
