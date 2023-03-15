@@ -3,6 +3,7 @@ package ru.skillbox.zerone.backend.mapstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
+import ru.skillbox.zerone.backend.model.entity.Role;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.service.RoleService;
 
@@ -20,7 +21,9 @@ public abstract class UserMapperDecorator implements UserMapper {
   public User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO) {
     var user = userMapper.registerRequestDTOToUser(registerRequestDTO);
     user.setPassword(passwordEncoder.encode(user.getPassword()));
-    user.setRoles(new ArrayList<>() {{ add(roleService.getBasicUserRole());}});
+    var roles = new ArrayList<Role>();
+    roles.add(roleService.getBasicUserRole());
+    user.setRoles(roles);
     return user;
   }
 }
