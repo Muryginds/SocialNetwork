@@ -56,7 +56,6 @@ services:
     depends_on:
       - backend
     working_dir: /app
-    command: java -jar support.jar
     restart: on-failure:5
 
   grafana:

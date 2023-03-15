@@ -4,10 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.skillbox.zerone.backend.model.dto.request.ChangeEmailDTO;
-import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordDTO;
-import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
-import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
+import ru.skillbox.zerone.backend.model.dto.request.*;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.service.UserService;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
@@ -37,5 +34,10 @@ public class AccountController {
   @PutMapping("/email")
   public CommonResponseDTO<MessageResponseDTO> sendMessageForChangeEmail(@RequestBody ChangeEmailDTO requestDto) {
     return userService.sendMessageForChangeEmail(requestDto);
+  }
+
+  @PutMapping("/notifications")
+  public CommonResponseDTO<MessageResponseDTO> setNotificationType(@RequestBody NotificationTypeDTO typeDTO) {
+    return userService.setNotificationType(typeDTO);
   }
 }
