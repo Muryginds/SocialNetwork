@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-
 @Entity
 @Table(name = "comment",
     indexes = {
@@ -77,9 +76,7 @@ public class Comment {
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private Boolean isDeleted = false;
 
-
   @OneToMany
   @JoinColumn(name = "parent_id")
   private Set<Comment> comments = new HashSet<>();
-
 }

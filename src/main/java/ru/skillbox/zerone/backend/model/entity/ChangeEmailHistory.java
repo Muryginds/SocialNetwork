@@ -37,5 +37,4 @@ public class ChangeEmailHistory {
   @Builder.Default
   @Column(name = "time", columnDefinition = "timestamp without time zone")
   private LocalDateTime time = LocalDateTime.now();
-
 }

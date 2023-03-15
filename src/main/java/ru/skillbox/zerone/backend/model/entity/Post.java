@@ -61,5 +61,4 @@ public class Post {
   @Builder.Default
   @Column(name = "is_deleted", columnDefinition = "boolean default false")
   private Boolean isDeleted = false;
-
 }
