@@ -6,13 +6,11 @@ import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.skillbox.zerone.backend.AbstractIntegrationTest;
-import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.security.JwtTokenProvider;
 import ru.skillbox.zerone.backend.testData.UserMockUtils;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
@@ -28,19 +26,7 @@ class AuthenticationControllerTest extends AbstractIntegrationTest implements Us
   @Autowired
   private MockMvc mockMvc;
   @Autowired
-  private PasswordEncoder passwordEncoder;
-  @Autowired
-  private UserRepository userRepository;
-  @Autowired
   private JwtTokenProvider jwtTokenProvider;
-
-//  @BeforeEach
-//  void setUp() {
-//    var user = getTestUser(TEST_ACCOUNT_EMAIL, passwordEncoder.encode(TEST_ACCOUNT_EMAIL));
-//        user.setFirstName(TEST_ACCOUNT_FIRSTNAME);
-//        user.setLastName(TEST_ACCOUNT_LASTNAME);
-//    userRepository.save(user);
-//  }
 
   @Test
   @Sql(scripts = "classpath:mock-user-insert.sql")
