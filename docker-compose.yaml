@@ -55,7 +55,6 @@ services:
       - postgres
     depends_on:
       - backend
-    working_dir: /app
     restart: on-failure:5
 
   grafana:
