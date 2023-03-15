@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Entity
 @Table(name = "tag")
 @Data
@@ -24,5 +23,5 @@ public class Tag {
   @NotNull
   @NotBlank
   @Column(name = "tag")
-  private String tag;
+  private String name;
 }

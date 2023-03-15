@@ -18,14 +18,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DriveService {
 
-  @Value("${output.path}")
+  @Value("${log-settings.output-path}")
   private String path;
   private String folderId;
   private final DriveProperties driveProperties;
   private final DriveManager driveManager;
 
 
-  @Scheduled(cron = "${cron.expression}")
+  @Scheduled(cron = "${scheduled-tasks.google-drive-scanner}")
   public void transferLogsToGoogleDrive() throws IOException {
 
     com.google.api.services.drive.model.File folderFromDrive = driveManager.findFolderByName();

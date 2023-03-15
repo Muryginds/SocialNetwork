@@ -31,15 +31,15 @@ public class FriendsController {
 
   @GetMapping("/friends")
   public CommonListResponseDTO<UserDTO> getFriendList(@RequestParam(name = "name", defaultValue = "") String name,
-                                                      @RequestParam(name = "offset", defaultValue = "0") int offset,
-                                                      @RequestParam(name = "itemPerPage", defaultValue = "20") int itemPerPage) {
+                                                      @RequestParam(name = "offset", defaultValue = "0") @Min(0) int offset,
+                                                      @RequestParam(name = "itemPerPage", defaultValue = "20") @Min(0) int itemPerPage) {
     return friendsService.getFriendList(name, offset, itemPerPage);
   }
 
   @GetMapping("/friends/request")
   public CommonListResponseDTO<UserDTO> getFriendRequestList(@RequestParam(name = "name", defaultValue = "") String name,
-                                                      @RequestParam(name = "offset", defaultValue = "0") int offset,
-                                                      @RequestParam(name = "itemPerPage", defaultValue = "20") int itemPerPage) {
+                                                      @RequestParam(name = "offset", defaultValue = "0") @Min(0) int offset,
+                                                      @RequestParam(name = "itemPerPage", defaultValue = "20") @Min(0) int itemPerPage) {
     return friendsService.getFriendRequestList(name, offset, itemPerPage);
   }
 
@@ -49,8 +49,8 @@ public class FriendsController {
   }
 
   @GetMapping("/friends/recommendations")
-  public CommonListResponseDTO<UserDTO> getRecommendations(@RequestParam(name = "offset", defaultValue = "0") int offset,
-                                                              @RequestParam(name = "itemPerPage", defaultValue = "20") int itemPerPage) {
+  public CommonListResponseDTO<UserDTO> getRecommendations(@RequestParam(name = "offset", defaultValue = "0") @Min(0)int offset,
+                                                           @RequestParam(name = "itemPerPage", defaultValue = "20") @Min(0) int itemPerPage) {
     return friendsService.getRecommendations(offset, itemPerPage);
   }
 }

@@ -10,11 +10,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-
 @Entity
 @Table(name = "post",
-    indexes = @Index(name = "post_author_id_idx", columnList = "author_id")
-)
+    indexes = @Index(name = "post_author_id_idx",
+        columnList = "author_id"))
 @Data
 @Builder
 @AllArgsConstructor

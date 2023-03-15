@@ -88,7 +88,10 @@ google-drive:
   months_to_subtract: 1
   mime_type: 'application/vnd.google-apps.folder'
   folder_name: logs
-cron:
-  expression: '0 0 3 15 * ?'
-output:
-  path: logs
+
+scheduled-tasks:
+  google-drive-scanner: '0 0 3 15 * ?'
+  vk-countries-uploader: '0 5 8 * * SUN'
+
+log-settings:
+  output-path: logs
