@@ -41,7 +41,7 @@ public class VKRestClientService {
       BF,UY,UZ,VE,WF,WS,YE,ZM,AB,OS,SS,DN,LN
       """;
 
-  @Scheduled(cron = "0 5 8 * * SUN")
+  @Scheduled(cron = "${scheduled-tasks.vk-countries-uploader}")
   public void uploadCountries() {
     var response = webClient.post()
         .uri(uriBuilder -> uriBuilder
