@@ -15,12 +15,12 @@ services:
       - postgres
     restart: on-failure:5
 
-#  frontend:
-#    container_name: frontend
-#    image: dimok82/zeone
-#    ports:
-#      - "80:80"
-#    restart: on-failure:5
+  frontend:
+    container_name: frontend
+    image: dimok82/zeone
+    ports:
+      - "80:80"
+    restart: on-failure:5
 
   backend:
     container_name: backend
@@ -57,38 +57,38 @@ services:
       - backend
     restart: on-failure:5
 
-#  grafana:
-#    container_name: grafana
-#    image: grafana/grafana
-#    build: './config/grafana'
-#    ports:
-#      - 3000:3000
-#    volumes:
-#      - ./grafana:/var/lib/grafana
-#    environment:
-#      - GF_SECURITY_ADMIN_USER=admin
-#      - GF_SECURITY_ADMIN_PASSWORD=admin
-#    networks:
-#      monitoring:
-#        aliases:
-#          - grafana
-#    depends_on:
-#      - prometheus
-#    restart: on-failure:5
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    build: './config/grafana'
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      monitoring:
+        aliases:
+          - grafana
+    depends_on:
+      - prometheus
+    restart: on-failure:5
 
-#  prometheus:
-#    container_name: prometheus
-#    image: prom/prometheus
-#    ports:
-#      - 9090:9090
-#    volumes:
-#      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
-#      - ./prometheus:/prometheus
-#    networks:
-#      monitoring:
-#        aliases:
-#          - prometheus
-#    restart: on-failure:5
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus:/prometheus
+    networks:
+      monitoring:
+        aliases:
+          - prometheus
+    restart: on-failure:5
 
 networks:
   postgres:
