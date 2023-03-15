@@ -53,7 +53,6 @@ public class Comment {
   )
   private Comment parent;
 
-
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id",
