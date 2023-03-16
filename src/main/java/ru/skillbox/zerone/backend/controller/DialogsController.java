@@ -7,10 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.request.DialogRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.MessageRequestDTO;
-import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
-import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
-import ru.skillbox.zerone.backend.model.dto.response.DialogDataDTO;
-import ru.skillbox.zerone.backend.model.dto.response.MessageDataDTO;
+import ru.skillbox.zerone.backend.model.dto.response.*;
 import ru.skillbox.zerone.backend.service.DialogsService;
 
 @Validated
@@ -21,12 +18,12 @@ public class DialogsController {
   private final DialogsService dialogsService;
 
   @GetMapping("/unreaded")
-  public CommonResponseDTO<Object> getMessages() {
+  public CommonResponseDTO<CountDTO> getUnreadedMessages() {
     return dialogsService.getUnreaded();
   }
 
   @PostMapping("/{id}/messages")
-  public CommonResponseDTO<MessageDataDTO> getMessages(@PathVariable @Min(1) Long id,
+  public CommonResponseDTO<MessageDataDTO> postMessages(@PathVariable @Min(1) Long id,
                                                        @RequestBody MessageRequestDTO messageRequestDTO) {
     return dialogsService.postMessages(id, messageRequestDTO);
   }
