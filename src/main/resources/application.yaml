@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
-    password: password
-    username: skillbox
+    url: jdbc:postgresql://localhost:5432/bookstore?stringtype=unspecified
+    password: 123
+    username: root
   jpa:
     hibernate:
       ddl-auto: validate
