@@ -72,3 +72,7 @@ vk-api:
   find-countries-method-uri: /database.getCountries
   find-cities-method-uri: /database.getCities
   version: 5.131
+
+
+kafka:
+  spring.kafka.consumer.group-id=app.1
