@@ -2,7 +2,9 @@ package ru.skillbox.zerone.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.helpers.MessageFormatter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
@@ -11,9 +13,14 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+
+
 @Service
 @RequiredArgsConstructor
 public class MailService {
+
+  @Autowired
+  private KafkaTemplate<String, String> kafkaTemplate;
   private static final String ACCOUNT_CONFIRMATION_MESSAGE_THEME = "Подтверждение аккаунта";
   private static final String EMAIL_CONFIRMATION_MESSAGE_THEME = "Подтверждение смены пароля";
   private final JavaMailSender emailSender;
@@ -28,7 +35,8 @@ public class MailService {
             createVerificationLink(email, verifyCode, pathUri, hostAddress)).getMessage()
     );
 
-    emailSender.send(message);
+    //emailSender.send(message);
+    kafkaTemplate.send("baeldung", String.valueOf(message));
   }
 
   public void sendVerificationChangeEmail(String email, String verifyCode, String pathUri, String hostAddress) {
@@ -39,7 +47,8 @@ public class MailService {
             createVerificationLink(email, verifyCode, pathUri, hostAddress)).getMessage()
     );
 
-    emailSender.send(message);
+    //emailSender.send(message);
+    kafkaTemplate.send("baeldung", String.valueOf(message));
   }
 
   private SimpleMailMessage createVerificationMessage(String addressee, String theme, String text) {
