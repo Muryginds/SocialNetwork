@@ -3,14 +3,14 @@ variables:
 
 image: maven:3.8.7-eclipse-temurin-19
 
-stages:          # List of stages for jobs, and their order of execution
+stages:          # List of stages for jobs, and their order of execution 
   - build
   - test
   - package
   - deploy
   - sonarqube
 
-build-job:       # This job runs in the build stage, which runs first.
+build-job:       # This job runs in the build stage, which runs first. 
   stage: build
   tags:
     - students
@@ -59,23 +59,6 @@ package-job:       # This job runs in the package stage, which runs third.
       - .m2/repository
       - target
 
-sonarqube:
-  stage: sonarqube
-  tags:
-    - students
-  image: maven:3.6.3-jdk-11
-  variables:
-    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
-    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
-  cache:
-    key: "${CI_JOB_NAME}"
-    paths:
-      - .sonar/cache
-  script:
-    - mvn verify sonar:sonar -Dsonar.projectKey=javapro_team34_zerone_backend_AYbqBy6oTiAZcQoSvA8J
-  allow_failure: true
-
-
 
 deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
   stage: deploy
@@ -106,5 +89,20 @@ deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
     #копирование файла из репо на сервер
     - ssh $DEV_USER@$DEV_HOST "docker compose stop"
     - ssh $DEV_USER@$DEV_HOST "docker compose up -d"
-
-
+sonarqube-check:
+  stage: sonarqube
+  tags:
+    - students
+  image: maven:3.6.3-jdk-11
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script:
+    - mvn verify sonar:sonar -Dsonar.projectKey=javapro_team34_zerone_backend_AYbqBy6oTiAZcQoSvA8J
+  allow_failure: true
+  only:
+    - master
