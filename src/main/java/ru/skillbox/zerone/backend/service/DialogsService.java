@@ -1,6 +1,8 @@
 package ru.skillbox.zerone.backend.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.DialogException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
@@ -36,7 +38,13 @@ public class DialogsService {
   }
 
   public CommonResponseDTO<CountDTO> getUnreaded() {
-    return null;
+    var user = CurrentUserUtils.getCurrentUser();
+    var countUnread = dialogRepository.findAllByUser(user).stream()
+        .mapToInt(d -> {
+          var companion = user.equals(d.getRecipient()) ? d.getSender() : d.getRecipient();
+          return messageRepository.countByDialogAndAuthorAndReadStatus(d, companion, ReadStatus.SENT);
+        }).sum();
+    return ResponseUtils.commonResponseWithData(new CountDTO(countUnread));
   }
 
   public CommonResponseDTO<DialogDataDTO> postDialogs(DialogRequestDTO dialogRequestDTO) {
@@ -65,7 +73,7 @@ public class DialogsService {
     }
 
     var dialog = optionalDialog.get();
-    var lastMessage = messageRepository.findByDialogAndAuthor(dialog, companion).orElse(null);
+    var lastMessage = messageRepository.findFirstByDialogAndAuthorOrderBySentTimeDesc(dialog, companion).orElse(null);
     //lastMessage - любое или unread? если оно не unread - надо менять на статус read?
 
     var dialogDTO = DialogDataDTO.builder()
@@ -79,6 +87,35 @@ public class DialogsService {
   }
 
   public CommonListResponseDTO<DialogDataDTO> getDialogs(String name, int offset, int itemPerPage) {
-    return null;
+    var user = CurrentUserUtils.getCurrentUser();
+    var pageRequest = PageRequest.of(offset / itemPerPage, itemPerPage);
+
+    Page<Dialog> dialogs;
+    if (name.isBlank()) {
+      dialogs = dialogRepository.getPageOfDialogsByUser(user, pageRequest);
+    } else {
+      dialogs = dialogRepository.getPageOfDialogsByUserAndQuery(user, name, pageRequest);
+    }
+
+    var dialogsDTOs = dialogs.map(d -> {
+          //пользователь может быть как recipient, так и sender - поэтому определяем где собеседник
+          //тут на каждый диалог приходится делать 2 запроса
+          var companion = user.equals(d.getRecipient()) ? d.getSender() : d.getRecipient();
+          var lastMessage = messageRepository.findFirstByDialogAndAuthorOrderBySentTimeDesc(d, companion).orElse(null);
+          return DialogDataDTO.builder()
+              .id(d.getId())
+              .recipientId(d.getRecipient().getId()) //может быть и наш пользователь и компанион, но считаем анрид всегда относительно нашего пользователя?
+              .unreadCount(messageRepository.countByDialogAndAuthorAndReadStatus(d, companion, ReadStatus.SENT))
+              .lastMessage(messageMapper.messageToMessageDataDTO(lastMessage))
+              .build();
+        })
+        .toList();
+
+    return CommonListResponseDTO.<DialogDataDTO>builder()
+        .total(dialogs.getTotalPages())
+        .perPage(itemPerPage)
+        .offset(offset)
+        .data(dialogsDTOs)
+        .build();
   }
 }

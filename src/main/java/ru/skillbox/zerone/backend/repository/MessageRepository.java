@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface MessageRepository extends JpaRepository<Message, Long> {
 
-  Optional<Message> findByDialogAndAuthor(Dialog dialog, User author);
+  Optional<Message> findFirstByDialogAndAuthorOrderBySentTimeDesc(Dialog dialog, User author);
+
   int countByDialogAndAuthorAndReadStatus(Dialog dialog, User author, ReadStatus status);
 }
