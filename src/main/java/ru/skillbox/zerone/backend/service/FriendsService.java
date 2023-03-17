@@ -204,20 +204,19 @@ public class FriendsService {
     return CommonListResponseDTO.<UserDTO>builder()
         .total(friendshipPage.getTotalElements())
         .perPage(itemPerPage)
-        .offset(offset/itemPerPage)
+        .offset(offset)
         .data(userMapper.usersToUserDTO(friends))
         .build();
   }
 
   private Page<Friendship> getPageOfFriendsByFriendStatus(FriendshipStatus status, String name, int offset, int itemPerPage) {
     var user = CurrentUserUtils.getCurrentUser();
-    var pageable = PageRequest.of(offset/itemPerPage, itemPerPage);
+    var pageRequest = PageRequest.of(offset / itemPerPage, itemPerPage);
 
     if (name.isBlank()) {
-      return friendshipRepository.findAllBySrcPersonAndStatus(user, status, pageable);
+      return friendshipRepository.findAllBySrcPersonAndStatus(user, status, pageRequest);
     } else {
-      return friendshipRepository.findAllBySrcPersonAndStatusAndDstPersonNameLike(
-          user, status, name, pageable);
+      return friendshipRepository.findAllBySrcPersonAndStatusAndDstPersonNameLike(user, status, name, pageRequest);
     }
   }
 
@@ -238,7 +237,7 @@ public class FriendsService {
   public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage) {
     return CommonListResponseDTO.<UserDTO>builder()
         .total(0)
-        .offset(offset/itemPerPage)
+        .offset(offset)
         .perPage(itemPerPage)
         .data(Collections.emptyList())
         .build();
