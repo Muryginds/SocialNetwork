@@ -31,9 +31,6 @@
 		<commons-codec.version>1.15</commons-codec.version>
 		<com.cloudinary.version>1.32.2</com.cloudinary.version>
 		<io.micrometer.version>1.10.4</io.micrometer.version>
-		<sonar.host.url>http://localhost:9000</sonar.host.url>
-		<sonar.login>sqp_aa13a9ec2b3f21e9310ed83b63603b229608d997</sonar.login>
-		<sonar.qualitygate.wait>true</sonar.qualitygate.wait>
 	</properties>
 
 	<dependencies>
@@ -176,11 +173,6 @@
 						</exclude>
 					</excludes>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.sonarsource.scanner.maven</groupId>
-				<artifactId>sonar-maven-plugin</artifactId>
-				<version>3.9.0.2155</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
