@@ -23,17 +23,17 @@ public class DialogsController {
   }
 
   @PostMapping("/{id}/messages")
-  public CommonResponseDTO<MessageDataDTO> postMessages(@PathVariable @Min(1) Long id,
+  public CommonResponseDTO<MessageDataDTO> postMessages(@PathVariable @Min(1) long id,
                                                         @RequestBody MessageRequestDTO messageRequestDTO) {
     return dialogsService.postMessages(id, messageRequestDTO);
   }
 
   @GetMapping("/{id}/messages")
-  public CommonListResponseDTO<MessageDataDTO> getMessages(@PathVariable @Min(1) Long id,
+  public CommonListResponseDTO<MessageDataDTO> getMessages(@PathVariable @Min(1) long id,
                                                            @RequestParam(name = "query", defaultValue = "") String query,
                                                            @RequestParam(name = "offset", defaultValue = "0") @Min(0) int offset,
                                                            @RequestParam(name = "itemPerPage", defaultValue = "1000") @Min(0) int itemPerPage,
-                                                           @RequestParam(name = "fromMessageId", defaultValue = "0") @Min(0) int fromMessageId) {
+                                                           @RequestParam(name = "fromMessageId", defaultValue = "0") @Min(0) long fromMessageId) {
     return dialogsService.getMessages(id, query, offset, itemPerPage, fromMessageId);
   }
 

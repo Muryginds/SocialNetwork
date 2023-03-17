@@ -1,16 +1,19 @@
 package ru.skillbox.zerone.backend.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.DialogException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
+import ru.skillbox.zerone.backend.mapstruct.DialogMapper;
 import ru.skillbox.zerone.backend.mapstruct.MessageMapper;
 import ru.skillbox.zerone.backend.model.dto.request.DialogRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.MessageRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.*;
 import ru.skillbox.zerone.backend.model.entity.Dialog;
+import ru.skillbox.zerone.backend.model.entity.Message;
 import ru.skillbox.zerone.backend.model.enumerated.ReadStatus;
 import ru.skillbox.zerone.backend.repository.DialogRepository;
 import ru.skillbox.zerone.backend.repository.MessageRepository;
@@ -28,29 +31,60 @@ public class DialogsService {
   private final MessageRepository messageRepository;
   private final UserRepository userRepository;
   private final MessageMapper messageMapper;
+  private final DialogMapper dialogMapper;
 
-  public CommonListResponseDTO<MessageDataDTO> getMessages(Long id, String query, int offset, int itemPerPage, int fromMessageId) {
-    return null;
+  @Transactional
+  @SuppressWarnings("SimplifyStreamApiCallChains")
+  public CommonListResponseDTO<MessageDataDTO> getMessages(long id, String query, int offset, int itemPerPage, long fromMessageId) {
+    var dialog = dialogRepository.findById(id)
+        .orElseThrow(() -> new DialogException(String.format("Диалог для id: \"%s\" не найден", id)));
+
+    var pageRequest = PageRequest.of(offset / itemPerPage, itemPerPage);
+
+    Page<Message> messagesPage;
+    if (query.isBlank()) {
+      messagesPage = messageRepository.findByDialogAndIdIsAfter(dialog, fromMessageId, pageRequest);
+    } else {
+      messagesPage = messageRepository.findByDialogAndMessageTextContainingIgnoreCaseAndIdIsAfter(dialog, query, fromMessageId, pageRequest);
+    }
+
+    var unreadedMessages = messagesPage.getContent().stream()
+        .filter(m -> ReadStatus.SENT.equals(m.getReadStatus()))
+        .map(u -> {u.setReadStatus(ReadStatus.READ); return u;})
+        .toList();
+    messageRepository.saveAll(unreadedMessages);
+
+    return CommonListResponseDTO.<MessageDataDTO>builder()
+        .offset(offset)
+        .perPage(itemPerPage)
+        .total(messagesPage.getTotalElements())
+        .data(messageMapper.messagesListToMessageDataDTOs(messagesPage.getContent()))
+        .build();
   }
 
-  public CommonResponseDTO<MessageDataDTO> postMessages(Long id, MessageRequestDTO messageRequestDTO) {
-    return null;
+  @Transactional
+  public CommonResponseDTO<MessageDataDTO> postMessages(long id, MessageRequestDTO messageRequestDTO) {
+    var dialog = dialogRepository.findById(id)
+        .orElseThrow(() -> new DialogException(String.format("Диалог для id: \"%s\" не найден", id)));
+    var message = messageMapper.messageRequestDTOToMessage(messageRequestDTO, dialog);
+    messageRepository.save(message);
+
+    var responseData = messageMapper.messageToMessageDataDTO(message);
+
+    return ResponseUtils.commonResponseWithData(responseData);
   }
 
   public CommonResponseDTO<CountDTO> getUnreaded() {
     var user = CurrentUserUtils.getCurrentUser();
-    var countUnread = dialogRepository.findAllByUser(user).stream()
-        .mapToInt(d -> {
-          var companion = user.equals(d.getRecipient()) ? d.getSender() : d.getRecipient();
-          return messageRepository.countByDialogAndAuthorAndReadStatus(d, companion, ReadStatus.SENT);
-        }).sum();
+    var countUnread = dialogRepository.countUnreadMessagesByUser(user, ReadStatus.SENT);
     return ResponseUtils.commonResponseWithData(new CountDTO(countUnread));
   }
 
+  @Transactional
   public CommonResponseDTO<DialogDataDTO> postDialogs(DialogRequestDTO dialogRequestDTO) {
     var id = dialogRequestDTO.getUserIds().get(0);
-    if (Objects.isNull(id) || id < 0) {
-      throw new DialogException(String.format("Wrong id: \"%s\" given", id));
+    if (Objects.isNull(id) || id < 1) {
+      throw new DialogException(String.format("Получен неверный id: \"%s\"", id));
     }
     var user = CurrentUserUtils.getCurrentUser();
     var companion = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
@@ -63,29 +97,29 @@ public class DialogsService {
           .build();
       dialogRepository.save(dialog);
 
-      var dialogDTO = DialogDataDTO.builder()
-          .recipientId(dialog.getRecipient().getId())
-          .id(dialog.getId())
-          .unreadCount(0)
+      var message = Message.builder()
+          .messageText(String.format("%s начал(а) беседу", user.getFirstName()))
+          .dialog(dialog)
+          .author(user)
           .build();
+      messageRepository.save(message);
 
-      return ResponseUtils.commonResponseWithData(dialogDTO);
+      var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, message, 0);
+
+      return ResponseUtils.commonResponseWithData(dialogDataDTO);
     }
 
     var dialog = optionalDialog.get();
+    //send by anyone or only companion?
     var lastMessage = messageRepository.findFirstByDialogAndAuthorOrderBySentTimeDesc(dialog, companion).orElse(null);
-    //lastMessage - любое или unread? если оно не unread - надо менять на статус read?
+    int unreadCount = messageRepository.countByDialogAndAuthorAndReadStatus(dialog, companion, ReadStatus.SENT);
 
-    var dialogDTO = DialogDataDTO.builder()
-        .id(dialog.getId())
-        .recipientId(companion.getId())
-        .unreadCount(messageRepository.countByDialogAndAuthorAndReadStatus(dialog, companion, ReadStatus.SENT))
-        .lastMessage(messageMapper.messageToMessageDataDTO(lastMessage))
-        .build();
+    var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, lastMessage, unreadCount);
 
-    return ResponseUtils.commonResponseWithData(dialogDTO);
+    return ResponseUtils.commonResponseWithData(dialogDataDTO);
   }
 
+  @Transactional
   public CommonListResponseDTO<DialogDataDTO> getDialogs(String name, int offset, int itemPerPage) {
     var user = CurrentUserUtils.getCurrentUser();
     var pageRequest = PageRequest.of(offset / itemPerPage, itemPerPage);
@@ -98,16 +132,11 @@ public class DialogsService {
     }
 
     var dialogsDTOs = dialogs.map(d -> {
-          //пользователь может быть как recipient, так и sender - поэтому определяем где собеседник
-          //тут на каждый диалог приходится делать 2 запроса
           var companion = user.equals(d.getRecipient()) ? d.getSender() : d.getRecipient();
+          //send by anyone or only companion?
           var lastMessage = messageRepository.findFirstByDialogAndAuthorOrderBySentTimeDesc(d, companion).orElse(null);
-          return DialogDataDTO.builder()
-              .id(d.getId())
-              .recipientId(d.getRecipient().getId()) //может быть и наш пользователь и компанион, но считаем анрид всегда относительно нашего пользователя?
-              .unreadCount(messageRepository.countByDialogAndAuthorAndReadStatus(d, companion, ReadStatus.SENT))
-              .lastMessage(messageMapper.messageToMessageDataDTO(lastMessage))
-              .build();
+          int unreadCount = messageRepository.countByDialogAndAuthorAndReadStatus(d, companion, ReadStatus.SENT);
+          return dialogMapper.dialogToDialogDataDTO(d, lastMessage, unreadCount);
         })
         .toList();
 

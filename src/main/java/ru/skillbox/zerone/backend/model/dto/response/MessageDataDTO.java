@@ -18,6 +18,8 @@ public class MessageDataDTO {
   private boolean sendByMe;
   @JsonProperty("read_status")
   private String readStatus;
+  @JsonProperty("dialog_id")
+  private long dialogId;
   private long id;
   private LocalDateTime time;
   @JsonProperty("author_id")
