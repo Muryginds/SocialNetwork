@@ -7,9 +7,13 @@ spring:
     properties:
       hibernate:
         format_sql: false
-    show-sql: true
+    show-sql: false
   sql:
     init:
       mode: always
   liquibase:
     enabled: false
+
+socket-server:
+  port: 1111
+  host: localhost
