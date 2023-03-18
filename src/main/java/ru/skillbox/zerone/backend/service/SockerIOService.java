@@ -26,14 +26,27 @@ public class SockerIOService {
   private final SocketIORepository socketIORepository;
   private final DialogRepository dialogRepository;
   private final JwtTokenProvider jwtTokenProvider;
+  private final BlacklistService blacklistService;
 
   public void authRequest(SocketIOClient client, AuthRequest authRequest) {
-    if (authRequest.getToken() == null) {
+    String token = authRequest.getToken();
+    if (token == null) {
       client.sendEvent("auth-response", "not");
+      return;
     }
-    String email = jwtTokenProvider.getUsername(authRequest.getToken());
-    socketIORepository.saveSessionIdEmail(client.getSessionId().toString(), email);
+    String email = jwtTokenProvider.getUsername(token);
+    String sessionId = client.getSessionId().toString();
+    socketIORepository.saveSessionIdEmail(sessionId, email);
+    socketIORepository.saveSessionIdToken(sessionId, token);
     client.sendEvent("auth-response", "ok");
+  }
+
+  public void disconnect(SocketIOClient client) {
+    String token = socketIORepository.findTokenBySessionId(client.getSessionId().toString());
+    if (token == null) {
+      return;
+    }
+    blacklistService.processLogout(token);
   }
 
   public void startTyping(SocketIOClient client, TypingData data) throws UnexpectedException {

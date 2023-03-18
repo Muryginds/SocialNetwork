@@ -37,6 +37,9 @@ public class BlacklistService {
         .token(token)
         .expired(expiration)
         .build();
+    if (blacklistRepository.existsByToken(token)) {
+      return;
+    }
     blacklistRepository.save(blacklistToken);
     long newCount = COUNT.incrementAndGet();
     if  (newCount % interval == 0) {

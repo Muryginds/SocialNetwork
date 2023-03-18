@@ -2,6 +2,7 @@ package ru.skillbox.zerone.backend.controller;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.annotation.OnConnect;
+import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +24,11 @@ public class SocketIOController {
   @OnConnect()
   public void onConnect(SocketIOClient client) {
     log.info(client.getSessionId().toString() + " connected");
+  }
+
+  @OnDisconnect
+  public void onDisconnect(SocketIOClient client) {
+    sockerIOService.disconnect(client);
   }
 
   @OnEvent("auth")
