@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.skillbox.zerone.backend.model.dto.socket.request.AuthRequest;
+import ru.skillbox.zerone.backend.model.dto.socket.request.ReadMessagesData;
 import ru.skillbox.zerone.backend.model.dto.socket.request.TypingData;
 import ru.skillbox.zerone.backend.service.SockerIOService;
 
@@ -39,5 +40,9 @@ public class SocketIOController {
     sockerIOService.stopTyping(client, data);
   }
 
+  @OnEvent("read-messages")
+  public void onReadMessages(SocketIOClient client, ReadMessagesData data) {
+    sockerIOService.readMessages(client, data);
+  }
 
 }

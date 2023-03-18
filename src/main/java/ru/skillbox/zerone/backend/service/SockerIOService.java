@@ -6,11 +6,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.model.dto.socket.request.AuthRequest;
+import ru.skillbox.zerone.backend.model.dto.socket.request.ReadMessagesData;
 import ru.skillbox.zerone.backend.model.dto.socket.request.TypingData;
 import ru.skillbox.zerone.backend.model.dto.socket.response.StartTypingResponse;
 import ru.skillbox.zerone.backend.model.entity.Dialog;
 import ru.skillbox.zerone.backend.repository.DialogRepository;
 import ru.skillbox.zerone.backend.repository.SocketIORepository;
+import ru.skillbox.zerone.backend.security.JwtTokenProvider;
 
 import java.rmi.UnexpectedException;
 import java.util.Collection;
@@ -23,15 +25,13 @@ public class SockerIOService {
   private final SocketIOServer server;
   private final SocketIORepository socketIORepository;
   private final DialogRepository dialogRepository;
+  private final JwtTokenProvider jwtTokenProvider;
 
   public void authRequest(SocketIOClient client, AuthRequest authRequest) {
     if (authRequest.getToken() == null) {
       client.sendEvent("auth-response", "not");
     }
-    String email = socketIORepository.findEmailByToken(authRequest.getToken());
-    if (email == null) {
-      client.sendEvent("auth-response", "not");
-    }
+    String email = jwtTokenProvider.getUsername(authRequest.getToken());
     socketIORepository.saveSessionIdEmail(client.getSessionId().toString(), email);
     client.sendEvent("auth-response", "ok");
   }
@@ -60,5 +60,10 @@ public class SockerIOService {
         cl.sendEvent("stop-typing-response", response);
       }
     });
+  }
+
+  public void readMessages(SocketIOClient client, ReadMessagesData data) {
+    int unreadMessagesCount = 0;
+    client.sendEvent("unread-response", String.valueOf(unreadMessagesCount));
   }
 }

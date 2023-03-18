@@ -1,32 +1,31 @@
-package ru.skillbox.zerone.backend.model.dto.request;
+package ru.skillbox.zerone.backend.model.dto.socket.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.InstantDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
-import lombok.Data;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
+import ru.skillbox.zerone.backend.model.dto.socket.Dto;
 import ru.skillbox.zerone.backend.model.enumerated.NotificationType;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
-@Data
-public class NotificationDTO {
-  @JsonProperty("id")
-  private Long id;
+public class SocketNotificationData implements Dto {
+  private int id;
+  @JsonProperty("event_type")
+  private NotificationType eventType;
   @JsonSerialize(using = InstantSerializer.class)
   @JsonDeserialize(using = InstantDeserializer.class)
   @JsonProperty("sent_time")
-  private LocalDateTime sentTime;
-  @JsonProperty("event_type")
-  private NotificationType eventType;
+  private Instant sentTime;
+  @JsonProperty("entity_id")
+  private int entityId;
   @JsonProperty("entity_author")
   private UserDTO entityAuthor;
-  @JsonProperty("current_entity_id")
-  private Long currentEntityId;
-  @JsonProperty("entity_id")
-  private Long entityId;
   @JsonProperty("parent_entity_id")
-  private Long parentEntityId;
+  private int parentId;
+  @JsonProperty("current_entity_id")
+  private int currentEntityId;
+
 }
