@@ -1,6 +1,5 @@
 package ru.skillbox.zerone.backend.mapstruct;
 
-import com.tej.JooQDemo.jooq.sample.model.tables.records.UserRecord;
 import org.mapstruct.DecoratedWith;
 import org.mapstruct.Mapper;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
@@ -17,8 +16,4 @@ public interface UserMapper {
   User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO);
 
   List<UserDTO> usersToUserDTO(List<User> userList);
-
-  UserDTO userRecordToUserDTO(UserRecord userRecord);
-
-  List<UserDTO> userRecordsToUserDTO(List<UserRecord> userRecordsList);
 }

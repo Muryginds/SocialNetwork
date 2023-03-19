@@ -37,7 +37,7 @@ public class PostController {
     return postService.getFeeds(text, offset, itemPerPage);
   }
 
-  @GetMapping("/post")
+  /*@GetMapping("/post")
   public CommonListResponseDTO<PostDTO> getPosts(@RequestParam(name = "text", defaultValue = "") String text,
                                                  @RequestParam(name = "date_from", defaultValue = "-1") long dateFrom,
                                                  @RequestParam(name = "date_to", defaultValue = "-1") long dateTo,
@@ -46,7 +46,7 @@ public class PostController {
                                                  @RequestParam(name = "author", defaultValue = "") String author,
                                                  @RequestParam(name = "tag", defaultValue = "") String tag) {
     return postService.getPosts(text, dateFrom, dateTo, offset, itemPerPage, author, tag);
-  }
+  }*/
 
   @GetMapping("/post/{id}")
   public CommonResponseDTO<PostDTO> getPostById(@PathVariable int id) {

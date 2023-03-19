@@ -22,7 +22,6 @@ import ru.skillbox.zerone.backend.repository.LikeRepository;
 import ru.skillbox.zerone.backend.repository.PostRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
-
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -65,7 +64,7 @@ public class PostService {
     return result;
   }
 
-  private PostDTO getPostsDTO(Post post, User user) {
+  public PostDTO getPostsDTO(Post post, User user) {
 
     PostDTO postDTO = postMapper.postToPostsDTO(post);
 

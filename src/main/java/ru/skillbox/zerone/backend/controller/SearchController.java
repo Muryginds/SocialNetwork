@@ -1,12 +1,12 @@
 package ru.skillbox.zerone.backend.controller;
 
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.PostDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.service.SearchService;
 
@@ -24,17 +24,20 @@ public class SearchController {
                                                 @RequestParam(name = "city", required = false) String city,
                                                 @RequestParam(name = "age_from", required = false) Integer ageFrom,
                                                 @RequestParam(name = "age_to", required = false) Integer ageTo,
-                                                @RequestParam(name = "itemPerPage", defaultValue = "20") @Min(0) int itemPerPage) {
+                                                @RequestParam(name = "offset", defaultValue = "0") int offset,
+                                                @RequestParam(name = "itemPerPage", defaultValue = "10") int itemPerPage) {
 
-    return searchService.searchUsers(name, lastName, country, city, ageFrom, ageTo, itemPerPage);
+    return searchService.searchUsers(name, lastName, country, city, ageFrom, ageTo, offset, itemPerPage);
   }
 
-  /*@GetMapping("/post")
+  @GetMapping("/post")
   public CommonListResponseDTO<PostDTO> getPost(@RequestParam(name = "author", required = false) String author,
-                                           @RequestParam(name = "date_from", required = false) String dateFrom,
-                                           @RequestParam(name = "itemPerPage", defaultValue = "20") @Min(0) int itemPerPage) {
+                                                @RequestParam(name = "tag", required = false) String tag,
+                                                @RequestParam(name = "date_from") long dateFrom,
+                                                @RequestParam(name = "offset", defaultValue = "0") int offset,
+                                                @RequestParam(name = "itemPerPage", defaultValue = "10") int itemPerPage) {
 
-    return searchService.searchPosts(author, dateFrom, itemPerPage);
-  }*/
+    return searchService.searchPosts(author, tag, dateFrom, offset, itemPerPage);
+  }
 
 }
