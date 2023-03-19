@@ -225,7 +225,7 @@
 							</jdbc>
                             <generator>
                                 <database>
-									<name>org.jooq.meta.jdbc.JDBCDatabase</name>
+									<name>org.jooq.meta.postgres.PostgresDatabase</name>
 									<includes>.*</includes>
 									<excludes></excludes>
 									<inputSchema>public</inputSchema>
