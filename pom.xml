@@ -218,11 +218,11 @@
                         </goals>
                         <configuration>
                             <jdbc>
-                                <driver>org.postgresql.Driver</driver>
-                                <url>jdbc:postgresql://localhost:5432/bookstore</url>
-                                <user>root</user>
-                                <password>123</password>
-                            </jdbc>
+								<driver>org.postgresql.Driver</driver>
+								<url>jdbc:postgresql://localhost:5432/skillbox</url>
+								<user>skillbox</user>
+								<password>password</password>
+							</jdbc>
                             <generator>
                                 <database>
 									<name>org.jooq.meta.jdbc.JDBCDatabase</name>
