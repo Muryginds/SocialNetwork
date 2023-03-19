@@ -37,16 +37,7 @@ public class SockerIOService {
     String email = jwtTokenProvider.getUsername(token);
     String sessionId = client.getSessionId().toString();
     socketIORepository.saveSessionIdEmail(sessionId, email);
-    socketIORepository.saveSessionIdToken(sessionId, token);
     client.sendEvent("auth-response", "ok");
-  }
-
-  public void disconnect(SocketIOClient client) {
-    String token = socketIORepository.findTokenBySessionId(client.getSessionId().toString());
-    if (token == null) {
-      return;
-    }
-    blacklistService.processLogout(token);
   }
 
   public void startTyping(SocketIOClient client, TypingData data) throws UnexpectedException {

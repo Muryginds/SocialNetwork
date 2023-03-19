@@ -6,12 +6,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.InstantDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
-import ru.skillbox.zerone.backend.model.dto.socket.Dto;
 import ru.skillbox.zerone.backend.model.enumerated.NotificationType;
 
 import java.time.Instant;
 
-public class SocketNotificationData implements Dto {
+public class SocketNotificationData {
   private int id;
   @JsonProperty("event_type")
   private NotificationType eventType;

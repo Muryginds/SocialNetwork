@@ -1,8 +1,7 @@
-package ru.skillbox.zerone.backend.controller;
+package ru.skillbox.zerone.backend.handler;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.annotation.OnConnect;
-import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,18 +16,13 @@ import java.rmi.UnexpectedException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class SocketIOController {
+public class SocketIOHandler {
 
   private final SockerIOService sockerIOService;
 
   @OnConnect()
   public void onConnect(SocketIOClient client) {
     log.info(client.getSessionId().toString() + " connected");
-  }
-
-  @OnDisconnect
-  public void onDisconnect(SocketIOClient client) {
-    sockerIOService.disconnect(client);
   }
 
   @OnEvent("auth")
