@@ -219,13 +219,13 @@
                         <configuration>
                             <jdbc>
 								<driver>org.postgresql.Driver</driver>
-								<url>jdbc:postgresql://localhost:5432/skillbox</url>
+								<url>jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified</url>
 								<user>skillbox</user>
 								<password>password</password>
 							</jdbc>
                             <generator>
                                 <database>
-									<name>org.jooq.meta.postgres.PostgresDatabase</name>
+									<name>org.jooq.meta.jdbc.JDBCDatabase</name>
 									<includes>.*</includes>
 									<excludes></excludes>
 									<inputSchema>public</inputSchema>
