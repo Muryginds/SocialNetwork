@@ -2,6 +2,8 @@ server:
   port: 8086
 
 spring:
+  kafka:
+    bootstrap-servers: localhost:9092
   datasource:
     url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
     password: password
@@ -19,21 +21,6 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
-  mail:
-    host: smtp.mail.ru
-    port: 465
-    username: zerone34@mail.ru
-    password: UKeakYphbz3NrSvAkq9R
-    test-connection: true
-    properties:
-      mail:
-        debug: false
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-          ssl:
-            enable: true
 
 jwt:
   token:
@@ -74,5 +61,3 @@ vk-api:
   version: 5.131
 
 
-kafka:
-  spring.kafka.consumer.group-id=app.1

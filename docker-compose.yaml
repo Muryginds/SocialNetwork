@@ -1,3 +1,10 @@
+version: "3.7"
+
+networks:
+  kafka-net:
+    name: kafka-net
+    driver: bridge
+
 services:
   zookeeper:
     image: zookeeper:3.7.0
@@ -39,7 +46,6 @@ services:
       KAFKA_BROKERCONNECT: "kafka:29092"
     depends_on:
       - "kafka"
-
   postgres:
     container_name: postgres
     image: postgres
@@ -79,25 +85,6 @@ services:
       - postgres
     restart: on-failure:5
 
-  grafana:
-    container_name: grafana
-    image: grafana/grafana
-    build: './config/grafana'
-    ports:
-      - 3000:3000
-    volumes:
-      - ./grafana:/var/lib/grafana
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    networks:
-      monitoring:
-        aliases:
-          - grafana
-    depends_on:
-      - prometheus
-    restart: on-failure:5
-
   prometheus:
     container_name: prometheus
     image: prom/prometheus
@@ -111,6 +98,3 @@ services:
         aliases:
           - prometheus
     restart: on-failure:5
-
-volumes:
-  postgres:

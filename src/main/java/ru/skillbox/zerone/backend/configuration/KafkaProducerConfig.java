@@ -8,32 +8,36 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
+import org.springframework.kafka.support.serializer.JsonSerializer;
+import org.springframework.stereotype.Component;
+import ru.skillbox.zerone.backend.model.dto.request.MessageDTO;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
 @Configuration
+@Component
 public class KafkaProducerConfig {
-  @Value(value = "${spring.kafka.bootstrap-servers}")
-  private String bootstrapAddress;  //нужна ли эта переменная?
+
+  @Value("${spring.kafka.bootstrap-servers}")
+  private String bootstrapServer;
 
   @Bean
-  public ProducerFactory<String, String> producerFactory() {
-    Map<String, Object> configProps = new HashMap<>();
-    configProps.put(
-        ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-        bootstrapAddress);
-    configProps.put(
-        ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-        StringSerializer.class);
-    configProps.put(
-        ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-        StringSerializer.class);
+  public ProducerFactory<String, MessageDTO> userProducerFactory(){
+
+    Map<String,Object> configProps = new HashMap<>();
+
+    configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServer);
+    configProps.put(JsonSerializer.ADD_TYPE_INFO_HEADERS, false);
+    configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+    configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getName());
+
     return new DefaultKafkaProducerFactory<>(configProps);
   }
 
   @Bean
-  public KafkaTemplate<String, String> kafkaTemplate() {
-    return new KafkaTemplate<>(producerFactory());
+  public KafkaTemplate<String, MessageDTO> userKafkaTemplate(){
+    return new KafkaTemplate<>(userProducerFactory());
   }
 }

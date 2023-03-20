@@ -3,12 +3,10 @@ package ru.skillbox.zerone.backend.service;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
+import ru.skillbox.zerone.backend.configuration.KafkaProducerMessage;
+import ru.skillbox.zerone.backend.model.dto.request.MessageDTO;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -19,46 +17,46 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class MailService {
 
-  @Autowired
-  private KafkaTemplate<String, String> kafkaTemplate;
   private static final String ACCOUNT_CONFIRMATION_MESSAGE_THEME = "Подтверждение аккаунта";
   private static final String EMAIL_CONFIRMATION_MESSAGE_THEME = "Подтверждение смены пароля";
-  private final JavaMailSender emailSender;
-  @Value("${spring.mail.username}")
-  private String senderMail;
+  @Autowired
+  private KafkaProducerMessage kafkaProducerMessage;
+
+  MessageDTO messageDto;
+
 
   public void sendVerificationEmail(String email, String verifyCode, String pathUri, String hostAddress) {
-    var message = createVerificationMessage(
-        email,
-        ACCOUNT_CONFIRMATION_MESSAGE_THEME,
-        MessageFormatter.format("Пожалуйста, подтвердите ваш аккаунт, перейдя по ссылке: {}",
-            createVerificationLink(email, verifyCode, pathUri, hostAddress)).getMessage()
-    );
 
+    messageDto = new MessageDTO().setEmail(email).setTHEME(ACCOUNT_CONFIRMATION_MESSAGE_THEME)
+        .setVerificationLink(MessageFormatter.format("Пожалуйста, подтвердите ваш аккаунт, перейдя по ссылке: {}",   //вот это и передать
+            createVerificationLink(email, verifyCode, pathUri, hostAddress)).getMessage());
+
+//    var message = createVerificationMessage(
+//        email,
+//        ACCOUNT_CONFIRMATION_MESSAGE_THEME,
+//        MessageFormatter.format("Пожалуйста, подтвердите ваш аккаунт, перейдя по ссылке: {}", //вот это и передать
+//            createVerificationLink(email, verifyCode, pathUri, hostAddress)).getMessage()
+    //);
+
+    kafkaProducerMessage.sendMessage(messageDto);
     //emailSender.send(message);
-    kafkaTemplate.send("baeldung", String.valueOf(message));
   }
 
   public void sendVerificationChangeEmail(String email, String verifyCode, String pathUri, String hostAddress) {
-    var message = createVerificationMessage(
-        email,
-        EMAIL_CONFIRMATION_MESSAGE_THEME,
-        MessageFormatter.format("Пожалуйста, подтвердите смену email, перейдя по ссылке: {}",
-            createVerificationLink(email, verifyCode, pathUri, hostAddress)).getMessage()
-    );
+
+     messageDto = new MessageDTO().setEmail(email).setTHEME(EMAIL_CONFIRMATION_MESSAGE_THEME)
+        .setVerificationLink(MessageFormatter.format("Пожалуйста, подтвердите смену email, перейдя по ссылке: {}",   //вот это и передать
+            createVerificationLink(email, verifyCode, pathUri, hostAddress)).getMessage());
+//    var message = createVerificationMessage(
+//        email,
+//        EMAIL_CONFIRMATION_MESSAGE_THEME,
+//        MessageFormatter.format("Пожалуйста, подтвердите смену email, перейдя по ссылке: {}",   //вот это и передать
+//            createVerificationLink(email, verifyCode, pathUri, hostAddress)).getMessage()
+//    );
+
+    kafkaProducerMessage.sendMessage(messageDto);
 
     //emailSender.send(message);
-    kafkaTemplate.send("baeldung", String.valueOf(message));
-  }
-
-  private SimpleMailMessage createVerificationMessage(String addressee, String theme, String text) {
-    var message = new SimpleMailMessage();
-    message.setFrom(senderMail);
-    message.setTo(addressee);
-    message.setSubject(theme);
-    message.setText(text);
-
-    return message;
   }
 
   private String createVerificationLink(String userId, String token, String path, String siteAddress) {
