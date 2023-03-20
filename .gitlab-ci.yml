@@ -37,25 +37,18 @@ test-job:       # This job runs in the test stage, which runs second.
     paths:
       - .m2/repository
       - target
-sonarqube-job:
-  image: sonarsource/sonar-scanner-cli:latest
-  stage:
-    sonarqube
-  tags:
-    - students
-  variables:
-    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar" 
-    GIT_DEPTH: "0"  
-  cache:
-    key: "${CI_JOB_NAME}"
-    paths:
-      - .sonar/cache
-  script:
-    - mvn verify sonar:sonar -Dsonar.projectKey=javapro_team34_zerone_backend_AYb_v1j8spJW8gHm24yV
-  allow_failure: true
-  only:
-    - master
-
+sonarqube-check:
+    stage:
+        sonarqube
+    variables:
+        SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+        GIT_DEPTH: "0"
+    cache:
+        paths:
+            - .sonar/cache
+    script:
+        - mvn verify sonar:sonar -Dsonar.projectKey=javapro_team34_zerone_backend_AYb_v1j8spJW8gHm24yV
+    allow_failure: true
 
 package-job:       # This job runs in the package stage, which runs third.
   stage: package
