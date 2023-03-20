@@ -17,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import ru.skillbox.zerone.backend.configuration.properties.GoogleDriveProperties;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -31,8 +32,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GoogleDriveConfig {
 
-  private final DriveProperties driveProperties;
-
+  private final GoogleDriveProperties googleDriveProperties;
 
   @Bean
   public JsonFactory jsonFactory() {
@@ -47,9 +47,9 @@ public class GoogleDriveConfig {
   @Bean
   public Credential credentials(NetHttpTransport httpTransport, JsonFactory jsonFactory) throws IOException {
 
-    InputStream inputStream = GoogleDriveConfig.class.getResourceAsStream(driveProperties.getCredentialsPath());
+    InputStream inputStream = GoogleDriveConfig.class.getResourceAsStream(googleDriveProperties.getCredentialsPath());
     if (inputStream == null) {
-      throw new FileNotFoundException("Resource not found: " + driveProperties.getCredentialsPath());
+      throw new FileNotFoundException("Resource not found: " + googleDriveProperties.getCredentialsPath());
     }
 
     GoogleClientSecrets clientSecrets =
@@ -59,12 +59,12 @@ public class GoogleDriveConfig {
 
     GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
         httpTransport, jsonFactory, clientSecrets, scopes)
-        .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(driveProperties.getTokensPath())))
-        .setAccessType(driveProperties.getAccessType())
+        .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(googleDriveProperties.getTokensPath())))
+        .setAccessType(googleDriveProperties.getAccessType())
         .build();
-    LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(driveProperties.getPort()).build();
+    LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(googleDriveProperties.getPort()).build();
 
-    return new AuthorizationCodeInstalledApp(flow, receiver).authorize(driveProperties.getAuthorize());
+    return new AuthorizationCodeInstalledApp(flow, receiver).authorize(googleDriveProperties.getAuthorize());
   }
 
 
@@ -72,7 +72,7 @@ public class GoogleDriveConfig {
   public Drive instance(JsonFactory jsonFactory, Credential credential, HttpTransport httpTransport) {
 
     return new Drive.Builder(httpTransport, jsonFactory, credential)
-        .setApplicationName(driveProperties.getAppName())
+        .setApplicationName(googleDriveProperties.getAppName())
         .build();
   }
 }

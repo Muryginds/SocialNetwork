@@ -5,8 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import ru.skillbox.zerone.backend.configuration.DriveManager;
-import ru.skillbox.zerone.backend.configuration.DriveProperties;
+import ru.skillbox.zerone.backend.configuration.properties.GoogleDriveProperties;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -21,16 +20,15 @@ public class DriveService {
   @Value("${log-settings.output-path}")
   private String path;
   private String folderId;
-  private final DriveProperties driveProperties;
+  private final GoogleDriveProperties googleDriveProperties;
   private final DriveManager driveManager;
-
 
   @Scheduled(cron = "${scheduled-tasks.google-drive-scanner}")
   public void transferLogsToGoogleDrive() throws IOException {
 
     com.google.api.services.drive.model.File folderFromDrive = driveManager.findFolderByName();
 
-    folderId = (folderFromDrive == null) ? driveManager.createFolder(driveProperties.getFolderName()).getId()
+    folderId = (folderFromDrive == null) ? driveManager.createFolder(googleDriveProperties.getFolderName()).getId()
         : folderFromDrive.getId();
 
     List<com.google.api.services.drive.model.File> filesFromGoogleDrive = driveManager.listFilesFromFolder(folderId);
@@ -79,7 +77,7 @@ public class DriveService {
 
       LocalDate createdDate = new java.sql.Date(file.getCreatedTime().getValue()).toLocalDate();
 
-      if (createdDate.isBefore(LocalDate.now().minusMonths(driveProperties.getMonthsToSubtract()))) {
+      if (createdDate.isBefore(LocalDate.now().minusMonths(googleDriveProperties.getMonthsToSubtract()))) {
         driveManager.deleteFile(file);
       }
     }

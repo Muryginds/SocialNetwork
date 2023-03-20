@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import ru.skillbox.zerone.backend.configuration.VKWebClientProperties;
+import ru.skillbox.zerone.backend.configuration.properties.VKWebClientProperties;
 import ru.skillbox.zerone.backend.exception.VKAPIException;
 import ru.skillbox.zerone.backend.model.dto.response.BasicEntityDTO;
 import ru.skillbox.zerone.backend.model.dto.response.VKCityResponseDTO;

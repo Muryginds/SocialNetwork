@@ -1,4 +1,4 @@
-package ru.skillbox.zerone.backend.configuration;
+package ru.skillbox.zerone.backend.service;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
@@ -7,25 +7,25 @@ import com.google.api.services.drive.model.FileList;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.skillbox.zerone.backend.configuration.properties.GoogleDriveProperties;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 public class DriveManager {
 
-  private final DriveProperties driveProperties;
+  private final GoogleDriveProperties googleDriveProperties;
   private final Drive drive;
   private String query;
 
   @PostConstruct
   private void query() {
     query = String.format(" name = '%s' "
-        + " and mimeType = '%s' ", driveProperties.getFolderName(), driveProperties.getMimeType());
+        + " and mimeType = '%s' ", googleDriveProperties.getFolderName(), googleDriveProperties.getMimeType());
   }
 
   public File findFolderByName() throws IOException {
@@ -35,8 +35,8 @@ public class DriveManager {
     FileList result;
 
     do {
-      result = drive.files().list().setQ(query).setSpaces(driveProperties.getSpace())
-          .setFields(driveProperties.getFields())
+      result = drive.files().list().setQ(query).setSpaces(googleDriveProperties.getSpace())
+          .setFields(googleDriveProperties.getFields())
           .setPageToken(pageToken).execute();
       list.addAll(result.getFiles());
 
@@ -46,7 +46,7 @@ public class DriveManager {
 
     if (!list.isEmpty()) {
 
-      return result.getFiles().get(driveProperties.getIndexOfFirstElement());
+      return result.getFiles().get(googleDriveProperties.getIndexOfFirstElement());
     }
 
     return null;
@@ -57,11 +57,10 @@ public class DriveManager {
     File fileMetadata = new File();
 
     fileMetadata.setName(folderName);
-    fileMetadata.setMimeType(driveProperties.getMimeType());
+    fileMetadata.setMimeType(googleDriveProperties.getMimeType());
 
-    return drive.files().create(fileMetadata).setFields(driveProperties.getFieldsSet()).execute();
+    return drive.files().create(fileMetadata).setFields(googleDriveProperties.getFieldsSet()).execute();
   }
-
 
   public List<File> listFilesFromFolder(String folderId) throws IOException {
 
@@ -72,7 +71,7 @@ public class DriveManager {
 
     FileList result = drive.files().list()
         .setQ(listFilesQuery)
-        .setFields(driveProperties.getFields())
+        .setFields(googleDriveProperties.getFields())
         .execute();
 
     return result.getFiles();
@@ -84,7 +83,7 @@ public class DriveManager {
     fileMetadata.setParents(Collections.singletonList(folderId));
     fileMetadata.setName(file.getName());
 
-    FileContent mediaContent = new FileContent(driveProperties.getFileType(), file);
+    FileContent mediaContent = new FileContent(googleDriveProperties.getFileType(), file);
 
     drive.files().create(fileMetadata, mediaContent).execute();
   }
