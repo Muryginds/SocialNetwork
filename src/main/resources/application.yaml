@@ -95,3 +95,7 @@ scheduled-tasks:
 
 log-settings:
   output-path: logs
+
+websocket:
+  host: 127.0.0.1
+  port: 8089
