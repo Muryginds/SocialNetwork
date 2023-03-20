@@ -110,8 +110,8 @@ public class DialogsService {
     }
 
     var dialog = optionalDialog.get();
-    //send by anyone or only companion?
-    var lastMessage = messageRepository.findFirstByDialogAndAuthorOrderBySentTimeDesc(dialog, companion).orElse(null);
+    var lastMessage = messageRepository.findFirstByDialogOrderBySentTimeDesc(dialog)
+        .orElseThrow(() -> new DialogException(String.format("Для диалога с id %s не найдено сообщений", dialog.getId())));
     int unreadCount = messageRepository.countByDialogAndAuthorAndReadStatus(dialog, companion, ReadStatus.SENT);
 
     var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, lastMessage, unreadCount);
@@ -133,8 +133,8 @@ public class DialogsService {
 
     var dialogsDTOs = dialogs.map(d -> {
           var companion = user.equals(d.getRecipient()) ? d.getSender() : d.getRecipient();
-          //send by anyone or only companion?
-          var lastMessage = messageRepository.findFirstByDialogAndAuthorOrderBySentTimeDesc(d, companion).orElse(null);
+          var lastMessage = messageRepository.findFirstByDialogOrderBySentTimeDesc(d)
+              .orElseThrow(() -> new DialogException(String.format("Для диалога с id %s не найдено сообщений", d.getId())));
           int unreadCount = messageRepository.countByDialogAndAuthorAndReadStatus(d, companion, ReadStatus.SENT);
           return dialogMapper.dialogToDialogDataDTO(d, lastMessage, unreadCount);
         })
