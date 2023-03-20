@@ -38,10 +38,11 @@ test-job:       # This job runs in the test stage, which runs second.
       - .m2/repository
       - target
 
-sonarqube-check:
+sonarqube-job:
   stage: sonarqube
   tags:
     - students
+    
   image: maven:3.6.3-jdk-11
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
