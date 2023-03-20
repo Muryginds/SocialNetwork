@@ -4,14 +4,12 @@ import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.annotation.OnConnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.skillbox.zerone.backend.model.dto.socket.request.AuthRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.socket.request.ReadMessagesDataDTO;
 import ru.skillbox.zerone.backend.model.dto.socket.request.TypingDataDTO;
 import ru.skillbox.zerone.backend.service.SocketIOService;
 
-@Slf4j
 @Component
 @RequiredArgsConstructor
 public class SocketIOHandler {

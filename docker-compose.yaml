@@ -32,6 +32,7 @@ services:
       SPRING_PROFILES_ACTIVE: prod
     ports:
       -  "8086:8086"
+      -  "1111:1111"
     volumes:
       - ./jars:/app
     working_dir: /app
