@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.configuration;
 
 import com.corundumstudio.socketio.SocketIOServer;
+import com.corundumstudio.socketio.annotation.SpringAnnotationScanner;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +10,6 @@ import ru.skillbox.zerone.backend.configuration.properties.SocketIOProperties;
 @Configuration
 @RequiredArgsConstructor
 public class SocketIOConfig {
-
   private final SocketIOProperties socketIOProperties;
 
   @Bean
@@ -20,5 +20,10 @@ public class SocketIOConfig {
     var server = new SocketIOServer(config);
     server.start();
     return server;
+  }
+
+  @Bean
+  public SpringAnnotationScanner scanner(SocketIOServer server) {
+    return new SpringAnnotationScanner(server);
   }
 }

@@ -14,7 +14,7 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
   Optional<Message> findFirstByDialogOrderBySentTimeDesc(Dialog dialog);
 
-  int countByDialogAndAuthorAndReadStatus(Dialog dialog, User author, ReadStatus status);
+  int countByDialogAndAuthorNotAndReadStatus(Dialog dialog, User author, ReadStatus status);
 
   Page<Message> findByDialogAndMessageTextContainingIgnoreCaseAndIdIsAfter(Dialog dialog, String query, long fromMessageId, Pageable pageable);
 

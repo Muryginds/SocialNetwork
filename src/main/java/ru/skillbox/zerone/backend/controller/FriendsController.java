@@ -10,47 +10,47 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.StatusFriendDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
-import ru.skillbox.zerone.backend.service.FriendsService;
+import ru.skillbox.zerone.backend.service.FriendService;
 
 @Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class FriendsController {
-  private final FriendsService friendsService;
+  private final FriendService friendService;
 
   @PostMapping("/friends/{id}")
   public CommonResponseDTO<Object> addFriend(@PathVariable @Min(1) long id) {
-    return friendsService.addFriend(id);
+    return friendService.addFriend(id);
   }
 
   @DeleteMapping("/friends/{id}")
   public CommonResponseDTO<Object> removeFriend(@PathVariable @Min(1) long id) {
-    return friendsService.removeFriend(id);
+    return friendService.removeFriend(id);
   }
 
   @GetMapping("/friends")
   public CommonListResponseDTO<UserDTO> getFriendList(@RequestParam(name = "name", defaultValue = "") String name,
                                                       @RequestParam(name = "offset", defaultValue = "0") @Min(0) int offset,
                                                       @RequestParam(name = "itemPerPage", defaultValue = "20") @Min(0) int itemPerPage) {
-    return friendsService.getFriendList(name, offset, itemPerPage);
+    return friendService.getFriendList(name, offset, itemPerPage);
   }
 
   @GetMapping("/friends/request")
   public CommonListResponseDTO<UserDTO> getFriendRequestList(@RequestParam(name = "name", defaultValue = "") String name,
                                                              @RequestParam(name = "offset", defaultValue = "0") @Min(0) int offset,
                                                              @RequestParam(name = "itemPerPage", defaultValue = "20") @Min(0) int itemPerPage) {
-    return friendsService.getFriendRequestList(name, offset, itemPerPage);
+    return friendService.getFriendRequestList(name, offset, itemPerPage);
   }
 
   @PostMapping("/is/friends")
   public CommonListResponseDTO<StatusFriendDTO> checkIsFriend(@Valid @RequestBody IsFriendsDTO isFriendsDTO) {
-    return friendsService.checkIsFriends(isFriendsDTO);
+    return friendService.checkIsFriends(isFriendsDTO);
   }
 
   @GetMapping("/friends/recommendations")
   public CommonListResponseDTO<UserDTO> getRecommendations(@RequestParam(name = "offset", defaultValue = "0") @Min(0) int offset,
                                                            @RequestParam(name = "itemPerPage", defaultValue = "20") @Min(0) int itemPerPage) {
-    return friendsService.getRecommendations(offset, itemPerPage);
+    return friendService.getRecommendations(offset, itemPerPage);
   }
 }

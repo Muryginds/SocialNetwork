@@ -8,24 +8,24 @@ import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.request.DialogRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.MessageRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.*;
-import ru.skillbox.zerone.backend.service.DialogsService;
+import ru.skillbox.zerone.backend.service.DialogService;
 
 @Validated
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/dialogs")
 public class DialogsController {
-  private final DialogsService dialogsService;
+  private final DialogService dialogService;
 
   @GetMapping("/unreaded")
   public CommonResponseDTO<CountDTO> getUnreadedMessages() {
-    return dialogsService.getUnreaded();
+    return dialogService.getUnreaded();
   }
 
   @PostMapping("/{id}/messages")
   public CommonResponseDTO<MessageDataDTO> postMessages(@PathVariable @Min(1) long id,
                                                         @RequestBody MessageRequestDTO messageRequestDTO) {
-    return dialogsService.postMessages(id, messageRequestDTO);
+    return dialogService.postMessages(id, messageRequestDTO);
   }
 
   @GetMapping("/{id}/messages")
@@ -34,18 +34,18 @@ public class DialogsController {
                                                            @RequestParam(name = "offset", defaultValue = "0") @Min(0) int offset,
                                                            @RequestParam(name = "itemPerPage", defaultValue = "1000") @Min(0) int itemPerPage,
                                                            @RequestParam(name = "fromMessageId", defaultValue = "0") @Min(0) long fromMessageId) {
-    return dialogsService.getMessages(id, query, offset, itemPerPage, fromMessageId);
+    return dialogService.getMessages(id, query, offset, itemPerPage, fromMessageId);
   }
 
   @PostMapping
   public CommonResponseDTO<DialogDataDTO> postDialogs(@Valid @RequestBody DialogRequestDTO dialogRequestDTO) {
-    return dialogsService.postDialogs(dialogRequestDTO);
+    return dialogService.postDialogs(dialogRequestDTO);
   }
 
   @GetMapping
   public CommonListResponseDTO<DialogDataDTO> getDialogs(@RequestParam(name = "name", defaultValue = "") String name,
                                                          @RequestParam(name = "offset", defaultValue = "0") @Min(0) int offset,
                                                          @RequestParam(name = "itemPerPage", defaultValue = "1000") @Min(0) int itemPerPage) {
-    return dialogsService.getDialogs(name, offset, itemPerPage);
+    return dialogService.getDialogs(name, offset, itemPerPage);
   }
 }

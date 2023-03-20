@@ -25,7 +25,7 @@ import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
-public class DialogsService {
+public class DialogService {
 
   private final DialogRepository dialogRepository;
   private final MessageRepository messageRepository;
@@ -37,7 +37,7 @@ public class DialogsService {
   @SuppressWarnings("SimplifyStreamApiCallChains")
   public CommonListResponseDTO<MessageDataDTO> getMessages(long id, String query, int offset, int itemPerPage, long fromMessageId) {
     var dialog = dialogRepository.findById(id)
-        .orElseThrow(() -> new DialogException(String.format("Диалог для id: \"%s\" не найден", id)));
+        .orElseThrow(() -> new DialogException(String.format("Диалог с id: \"%s\" не найден", id)));
 
     var pageRequest = PageRequest.of(offset / itemPerPage, itemPerPage);
 
@@ -65,7 +65,7 @@ public class DialogsService {
   @Transactional
   public CommonResponseDTO<MessageDataDTO> postMessages(long id, MessageRequestDTO messageRequestDTO) {
     var dialog = dialogRepository.findById(id)
-        .orElseThrow(() -> new DialogException(String.format("Диалог для id: \"%s\" не найден", id)));
+        .orElseThrow(() -> new DialogException(String.format("Диалог с id: \"%s\" не найден", id)));
     var message = messageMapper.messageRequestDTOToMessage(messageRequestDTO, dialog);
     messageRepository.save(message);
 
@@ -112,7 +112,7 @@ public class DialogsService {
     var dialog = optionalDialog.get();
     var lastMessage = messageRepository.findFirstByDialogOrderBySentTimeDesc(dialog)
         .orElseThrow(() -> new DialogException(String.format("Для диалога с id %s не найдено сообщений", dialog.getId())));
-    int unreadCount = messageRepository.countByDialogAndAuthorAndReadStatus(dialog, companion, ReadStatus.SENT);
+    int unreadCount = messageRepository.countByDialogAndAuthorNotAndReadStatus(dialog, companion, ReadStatus.SENT);
 
     var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, lastMessage, unreadCount);
 
@@ -135,7 +135,7 @@ public class DialogsService {
           var companion = user.equals(d.getRecipient()) ? d.getSender() : d.getRecipient();
           var lastMessage = messageRepository.findFirstByDialogOrderBySentTimeDesc(d)
               .orElseThrow(() -> new DialogException(String.format("Для диалога с id %s не найдено сообщений", d.getId())));
-          int unreadCount = messageRepository.countByDialogAndAuthorAndReadStatus(d, companion, ReadStatus.SENT);
+          int unreadCount = messageRepository.countByDialogAndAuthorNotAndReadStatus(d, companion, ReadStatus.SENT);
           return dialogMapper.dialogToDialogDataDTO(d, lastMessage, unreadCount);
         })
         .toList();
