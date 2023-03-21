@@ -1,11 +1,15 @@
 package ru.skillbox.zerone.backend.model.dto.socket.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.Data;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.enumerated.NotificationType;
 
 import java.time.Instant;
 
+@Data
+@Builder
 public class SocketNotificationDataDTO {
   private long id;
   @JsonProperty("event_type")

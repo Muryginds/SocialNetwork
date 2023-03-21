@@ -32,6 +32,7 @@ public class DialogService {
   private final UserRepository userRepository;
   private final MessageMapper messageMapper;
   private final DialogMapper dialogMapper;
+  private final SocketIOService socketIOService;
 
   @Transactional
   @SuppressWarnings("SimplifyStreamApiCallChains")
@@ -68,6 +69,7 @@ public class DialogService {
         .orElseThrow(() -> new DialogException(String.format("Диалог с id: \"%s\" не найден", id)));
     var message = messageMapper.messageRequestDTOToMessage(messageRequestDTO, dialog);
     messageRepository.save(message);
+    socketIOService.sendMessageEvent(message);
 
     var responseData = messageMapper.messageToMessageDataDTO(message);
 
@@ -77,6 +79,7 @@ public class DialogService {
   public CommonResponseDTO<CountDTO> getUnreaded() {
     var user = CurrentUserUtils.getCurrentUser();
     var countUnread = dialogRepository.countUnreadMessagesByUser(user, ReadStatus.SENT);
+
     return ResponseUtils.commonResponseWithData(new CountDTO(countUnread));
   }
 
@@ -103,6 +106,7 @@ public class DialogService {
           .author(user)
           .build();
       messageRepository.save(message);
+      socketIOService.sendMessageEvent(message);
 
       var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, message, 0);
 
@@ -113,7 +117,6 @@ public class DialogService {
     var lastMessage = messageRepository.findFirstByDialogOrderBySentTimeDesc(dialog)
         .orElseThrow(() -> new DialogException(String.format("Для диалога с id %s не найдено сообщений", dialog.getId())));
     int unreadCount = messageRepository.countByDialogAndAuthorNotAndReadStatus(dialog, companion, ReadStatus.SENT);
-
     var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, lastMessage, unreadCount);
 
     return ResponseUtils.commonResponseWithData(dialogDataDTO);

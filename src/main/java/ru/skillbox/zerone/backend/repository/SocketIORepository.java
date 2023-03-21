@@ -17,4 +17,19 @@ public class SocketIORepository {
   public Optional<UUID> findSessionByUserId(Long userId) {
     return Optional.ofNullable(sessionContainer.get(userId));
   }
+
+  public boolean checkSessionIsActive(UUID uuid) {
+    return sessionContainer.containsValue(uuid);
+  }
+
+  public void deleteByUUID(UUID uuid) {
+    var iterator = sessionContainer.entrySet().iterator();
+    while (iterator.hasNext()) {
+      var entry = iterator.next();
+      if (entry.getValue().equals(uuid)) {
+        iterator.remove();
+        return;
+      }
+    }
+  }
 }

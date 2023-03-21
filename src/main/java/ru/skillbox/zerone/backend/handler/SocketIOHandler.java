@@ -2,6 +2,7 @@ package ru.skillbox.zerone.backend.handler;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.annotation.OnConnect;
+import com.corundumstudio.socketio.annotation.OnDisconnect;
 import com.corundumstudio.socketio.annotation.OnEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import ru.skillbox.zerone.backend.service.SocketIOService;
 public class SocketIOHandler {
   private final SocketIOService socketIOService;
 
+  @SuppressWarnings("unused")
   @OnConnect
   public void onConnect(SocketIOClient client) {
     socketIOService.handleConnection(client);
@@ -38,5 +40,16 @@ public class SocketIOHandler {
   @OnEvent("read-messages")
   public void onReadMessages(SocketIOClient client, ReadMessagesDataDTO data) {
     socketIOService.readMessages(client, data);
+  }
+
+  @OnEvent("newListener")
+  public void newListener(SocketIOClient client) {
+    socketIOService.newListener(client);
+  }
+
+  @SuppressWarnings("unused")
+  @OnDisconnect
+  public void disconnect(SocketIOClient client) {
+    socketIOService.disconnect(client);
   }
 }
