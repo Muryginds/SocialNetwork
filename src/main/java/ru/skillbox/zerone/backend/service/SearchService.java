@@ -52,10 +52,10 @@ public class SearchService {
   private Condition createConditionForUsers(String name, String lastName, String country, String city, Integer ageFrom, Integer ageTo) {
 
     return trueCondition().
-        and((name != null) ? USER.FIRST_NAME.likeIgnoreCase("%" + name + "%") : noCondition()).
-        and((lastName != null) ? USER.LAST_NAME.likeIgnoreCase("%" + lastName + "%") : noCondition()).
-        and((country != null) ? USER.COUNTRY.likeIgnoreCase("%" + country + "%") : noCondition()).
-        and((city != null) ? USER.CITY.likeIgnoreCase("%" + city + "%") : noCondition()).
+        and((name != null) ? USER.FIRST_NAME.likeIgnoreCase(name.concat("%")) : noCondition()).
+        and((lastName != null) ? USER.LAST_NAME.likeIgnoreCase(lastName.concat("%")) : noCondition()).
+        and((country != null) ? USER.COUNTRY.likeIgnoreCase(country.concat("%")) : noCondition()).
+        and((city != null) ? USER.CITY.likeIgnoreCase(city.concat("%")) : noCondition()).
         and((ageFrom != null) ? USER.BIRTH_DATE.lessOrEqual(LocalDate.now().minusYears(ageFrom)) : noCondition()).
         and((ageTo != null) ? USER.BIRTH_DATE.greaterOrEqual(LocalDate.now().minusYears(ageTo)) : noCondition());
   }
@@ -92,17 +92,30 @@ public class SearchService {
     return POST.UPDATE_DATE.greaterOrEqual(getPubDate(pubDate))
         .and((author != null) ? POST.AUTHOR_ID.in(select(POST.AUTHOR_ID).from(POST)
             .join(USER).on(USER.ID.eq(POST.AUTHOR_ID))
-            .where(USER.FIRST_NAME.likeIgnoreCase(author)
-                .or(USER.LAST_NAME.likeIgnoreCase(author)))) : noCondition())
+            .where(conditionForAuthorName(author))) : noCondition())
         .and((tag != null) ? POST.ID.in(select(POST.ID).from(POST)
             .join(POST_TO_TAG).on(POST.ID.eq(POST_TO_TAG.POST_ID))
             .join(TAG).on(TAG.ID.eq(POST_TO_TAG.TAG_ID))
-            .where(TAG.TAG_.likeIgnoreCase("%" + tag))) : noCondition());
+            .where(TAG.TAG_.likeIgnoreCase("%".concat(tag)))) : noCondition());
   }
 
   private LocalDateTime getPubDate(long pubDate) {
 
     return LocalDateTime.ofInstant(Instant.ofEpochMilli(pubDate),
         TimeZone.getDefault().toZoneId());
+  }
+
+  private Condition conditionForAuthorName(String author) {
+
+    String[] authorName = author.split("\\s");
+
+    return (authorName.length > 1) ?
+        (USER.FIRST_NAME.likeIgnoreCase(authorName[0].concat("%"))
+            .and(USER.LAST_NAME.likeIgnoreCase(authorName[1].concat("%"))))
+            .or(USER.FIRST_NAME.likeIgnoreCase(authorName[1].concat("%"))
+                .and(USER.LAST_NAME.likeIgnoreCase(authorName[0].concat("%"))))
+        :
+        USER.FIRST_NAME.likeIgnoreCase(author.concat("%"))
+            .or(USER.LAST_NAME.likeIgnoreCase(author.concat("%")));
   }
 }

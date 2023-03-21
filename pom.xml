@@ -225,7 +225,7 @@
 							</jdbc>
                             <generator>
                                 <database>
-									<name>skillbox</name>
+									<name>org.jooq.meta.jdbc.JDBCDatabase</name>
 									<includes>.*</includes>
 									<excludes></excludes>
 									<inputSchema>public</inputSchema>

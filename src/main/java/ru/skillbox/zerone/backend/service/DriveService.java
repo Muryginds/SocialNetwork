@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend.service;
 
+import com.google.api.services.drive.model.File;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -13,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -28,10 +30,10 @@ public class DriveService {
   @Scheduled(cron = "${scheduled-tasks.google-drive-scanner}")
   public void transferLogsToGoogleDrive() throws IOException {
 
-    com.google.api.services.drive.model.File folderFromDrive = driveManager.findFolderByName();
+    Optional<File> folderFromDrive = driveManager.findFolderByName();
 
-    folderId = (folderFromDrive == null) ? driveManager.createFolder(driveProperties.getFolderName()).getId()
-        : folderFromDrive.getId();
+    folderId = (folderFromDrive.isEmpty()) ? driveManager.createFolder(driveProperties.getFolderName()).getId()
+        : folderFromDrive.get().getId();
 
     List<com.google.api.services.drive.model.File> filesFromGoogleDrive = driveManager.listFilesFromFolder(folderId);
     List<String> gdFilenames = filesFromGoogleDrive.stream().map(com.google.api.services.drive.model.File::getName).toList();
