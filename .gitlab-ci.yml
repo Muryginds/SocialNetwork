@@ -49,7 +49,7 @@ sonarqube-check:
         paths:
             - .sonar/cache
     script:
-        -  mvn verify sonar:sonar -Dsonar.projectKey=javapro_team34_zerone_backend_AYcIfufqOgrfdaLjkXd1
+        -  mvn verify sonar:sonar -Dsonar.projectKey=javapro_team34_zerone_backend_AYcIfufqOgrfdaLjkXd1 -Dsonar.login=admin -Dsonar.password=admin1
     allow_failure: true
 
 package-job:       # This job runs in the package stage, which runs third.
