@@ -220,7 +220,7 @@
                         <configuration>
                             <jdbc>
 								<driver>org.postgresql.Driver</driver>
-								<url>zerone-network.ru</url>
+								<url>jdbc:postgresql://zerone-network.ru:5432/skillbox?stringtype=unspecified</url>
 								<user>skillbox</user>
 								<password>password</password>
 							</jdbc>
