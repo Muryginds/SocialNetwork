@@ -35,7 +35,6 @@ public class FriendsService {
   private final RecommendationRepository recommendationRepository;
   private final UserRepository userRepository;
   private final UserMapper userMapper;
-  private final int recommendationCount = 8;
 
   @Transactional
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
@@ -239,7 +238,6 @@ public class FriendsService {
   }
 
   public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage) {
-    createRecommendations();
 
     var user = CurrentUserUtils.getCurrentUser();
     var recommendations = userRepository.findUsersByIdIn(recommendationRepository.findByUser(user).getRecommendedFriends());
@@ -251,6 +249,16 @@ public class FriendsService {
         .build();
   }
 
+  @Scheduled(cron = "0 0 2 * * ?")
+  public void createRecommendations() {
+    recommendationRepository.deleteAll();
+
+    var allUsers = userRepository.findAll();
+    for (User user : allUsers) {
+      recommendationRepository.save(findRecommendations(user, 0, 20));
+    }
+  }
+
   public Recommendation findRecommendations(User user, int offset, int itemPerPage) {
 
     Pageable pageable = PageRequest.of(offset, itemPerPage);
@@ -260,32 +268,23 @@ public class FriendsService {
 
     recommendedUsersId.removeAll(currentFriends);
     recommendedUsersId.remove(user.getId());
+
+    int recommendationCount = 8;
     if (recommendedUsersId.size() < recommendationCount) {
-      var allUsers = userRepository.findAllUsers(pageable).getContent();
-//      allUsers.removeAll(recommendedUsersByCity);
-//      allUsers.removeAll(currentFriends);
+      var allUsers = new ArrayList<>(userRepository.findAllUsers(pageable).stream().toList());
+      allUsers.removeAll(recommendedUsersByCity);
+      allUsers.removeAll(currentFriends);
       Collections.shuffle(allUsers);
       recommendedUsersId.addAll(allUsers);
     }
 
     var recommendations = recommendedUsersId.stream().distinct().limit(recommendationCount).toList();
-    System.out.println(user.getFirstName() );
-    System.out.println(currentFriends + "1");
-    System.out.println(recommendedUsersByCity + "2");
-    System.out.println(recommendations + "3");
 
     return Recommendation.builder()
         .user(user)
         .recommendedFriends((recommendations))
         .build();
   }
-//  @Scheduled(cron = "0 40 20 17 MAR *")
-  public void createRecommendations () {
-    recommendationRepository.deleteAll();
 
-    var allUsers = userRepository.findAll();
-    for (User user : allUsers) {
-      recommendationRepository.save(findRecommendations(user,20,20));
-    }
-  }
+
 }
