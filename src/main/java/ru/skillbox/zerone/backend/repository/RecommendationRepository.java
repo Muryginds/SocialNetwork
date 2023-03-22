@@ -5,6 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.skillbox.zerone.backend.model.entity.Recommendation;
+import ru.skillbox.zerone.backend.model.entity.User;
+
+import java.util.List;
 
 
 public interface RecommendationRepository extends JpaRepository<Recommendation, Long> {
@@ -13,4 +16,6 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
       WHERE r.srcPerson.id = :id
       """)
   Page<Long> findCurrentUserFriends(Long id, Pageable pageable);
+
+  Recommendation findByUser(User user);
 }

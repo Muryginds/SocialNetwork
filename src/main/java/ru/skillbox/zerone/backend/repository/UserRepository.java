@@ -20,7 +20,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
       SELECT u FROM User u
       WHERE u.id IN :ids
       """)
-  List<User> findUsersById(List<Long> ids);
+  List<User> findUsersByIdIn(List<Long> ids);
 
   @Query(value = """
       SELECT u.id FROM User u

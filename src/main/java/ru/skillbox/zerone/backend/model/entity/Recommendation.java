@@ -24,7 +24,7 @@ public class Recommendation {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
-  Long id;
+  private Long id;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
@@ -32,5 +32,5 @@ public class Recommendation {
       foreignKey = @ForeignKey(name = "recommendation_user_fk"))
   User user;
   @Column(name = "recommended_friends")
-  List<Long> recommendedFriends;
+  private List<Long> recommendedFriends;
 }
