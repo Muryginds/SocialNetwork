@@ -2,8 +2,8 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.DialogException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
@@ -36,18 +36,13 @@ public class DialogService {
 
   @Transactional
   @SuppressWarnings("SimplifyStreamApiCallChains")
-  public CommonListResponseDTO<MessageDataDTO> getMessages(long id, String query, int offset, int itemPerPage, long fromMessageId) {
+  public CommonListResponseDTO<MessageDataDTO> getMessages(long id, int offset, int itemPerPage) {
     var dialog = dialogRepository.findById(id)
         .orElseThrow(() -> new DialogException(String.format("Диалог с id: \"%s\" не найден", id)));
 
-    var pageRequest = PageRequest.of(offset / itemPerPage, itemPerPage);
+    var pageRequest = PageRequest.of(offset / itemPerPage, itemPerPage).withSort(Sort.by("id").descending());
 
-    Page<Message> messagesPage;
-    if (query.isBlank()) {
-      messagesPage = messageRepository.findByDialogAndIdIsAfter(dialog, fromMessageId, pageRequest);
-    } else {
-      messagesPage = messageRepository.findByDialogAndMessageTextContainingIgnoreCaseAndIdIsAfter(dialog, query, fromMessageId, pageRequest);
-    }
+    var messagesPage = messageRepository.findByDialog(dialog, pageRequest);
 
     var unreadedMessages = messagesPage.getContent().stream()
         .filter(m -> ReadStatus.SENT.equals(m.getReadStatus()))
@@ -109,6 +104,7 @@ public class DialogService {
           .author(user)
           .build();
       messageRepository.save(message);
+      // отдельный поток нужен?
       socketIOService.sendMessageEvent(message);
 
       var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, message, 0, companion);
@@ -126,19 +122,14 @@ public class DialogService {
   }
 
   @Transactional
-  public CommonListResponseDTO<DialogDataDTO> getDialogs(String name, int offset, int itemPerPage) {
+  public CommonListResponseDTO<DialogDataDTO> getDialogs(int offset, int itemPerPage) {
     var user = CurrentUserUtils.getCurrentUser();
     var pageRequest = PageRequest.of(offset / itemPerPage, itemPerPage);
 
-    Page<Dialog> dialogs;
-    if (name.isBlank()) {
-      dialogs = dialogRepository.getPageOfDialogsByUser(user, pageRequest);
-    } else {
-      dialogs = dialogRepository.getPageOfDialogsByUserAndQuery(user, name, pageRequest);
-    }
+    var dialogsPage = dialogRepository.getPageOfDialogsByUser(user, pageRequest);
 
-    var dialogsDTOs = dialogs.map(d -> {
-          var companion = user.equals(d.getRecipient()) ? d.getSender() : d.getRecipient();
+    var dialogsDTOs = dialogsPage.map(d -> {
+          var companion = user.getId().equals(d.getRecipient().getId()) ? d.getSender() : d.getRecipient();
           var lastMessage = messageRepository.findFirstByDialogOrderBySentTimeDesc(d)
               .orElseThrow(() -> new DialogException(String.format("Для диалога с id %s не найдено сообщений", d.getId())));
           int unreadCount = messageRepository.countByDialogAndAuthorAndReadStatus(d, companion, ReadStatus.SENT);
@@ -147,7 +138,7 @@ public class DialogService {
         .toList();
 
     return CommonListResponseDTO.<DialogDataDTO>builder()
-        .total(dialogs.getTotalPages())
+        .total(dialogsPage.getTotalPages())
         .perPage(itemPerPage)
         .offset(offset)
         .data(dialogsDTOs)

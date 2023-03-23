@@ -16,7 +16,5 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
   int countByDialogAndAuthorAndReadStatus(Dialog dialog, User author, ReadStatus status);
 
-  Page<Message> findByDialogAndMessageTextContainingIgnoreCaseAndIdIsAfter(Dialog dialog, String query, long fromMessageId, Pageable pageable);
-
-  Page<Message> findByDialogAndIdIsAfter(Dialog dialog, long fromMessageId, Pageable pageable);
+  Page<Message> findByDialog(Dialog dialog, Pageable pageable);
 }

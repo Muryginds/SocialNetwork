@@ -30,11 +30,9 @@ public class DialogsController {
 
   @GetMapping("/{id}/messages")
   public CommonListResponseDTO<MessageDataDTO> getMessages(@PathVariable @Min(1) long id,
-                                                           @RequestParam(name = "query", defaultValue = "") String query,
                                                            @RequestParam(name = "offset", defaultValue = "0") @Min(0) int offset,
-                                                           @RequestParam(name = "itemPerPage", defaultValue = "1000") @Min(0) int itemPerPage,
-                                                           @RequestParam(name = "fromMessageId", defaultValue = "0") @Min(0) long fromMessageId) {
-    return dialogService.getMessages(id, query, offset, itemPerPage, fromMessageId);
+                                                           @RequestParam(name = "itemPerPage", defaultValue = "1000") @Min(0) int itemPerPage) {
+    return dialogService.getMessages(id, offset, itemPerPage);
   }
 
   @PostMapping
@@ -43,9 +41,8 @@ public class DialogsController {
   }
 
   @GetMapping
-  public CommonListResponseDTO<DialogDataDTO> getDialogs(@RequestParam(name = "name", defaultValue = "") String name,
-                                                         @RequestParam(name = "offset", defaultValue = "0") @Min(0) int offset,
+  public CommonListResponseDTO<DialogDataDTO> getDialogs(@RequestParam(name = "offset", defaultValue = "0") @Min(0) int offset,
                                                          @RequestParam(name = "itemPerPage", defaultValue = "1000") @Min(0) int itemPerPage) {
-    return dialogService.getDialogs(name, offset, itemPerPage);
+    return dialogService.getDialogs(offset, itemPerPage);
   }
 }

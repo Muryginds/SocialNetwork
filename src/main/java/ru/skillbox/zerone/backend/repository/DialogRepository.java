@@ -22,14 +22,6 @@ public interface DialogRepository extends JpaRepository<Dialog, Long> {
 
   @Query("""
       SELECT d FROM Dialog d
-      WHERE
-      (d.recipient = :user AND (LOWER(d.sender.firstName) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(d.sender.lastName) LIKE LOWER(CONCAT('%', :query, '%'))))
-       OR (d.sender = :user AND (LOWER(d.recipient.firstName) LIKE LOWER(CONCAT('%', :query, '%')) OR LOWER(d.recipient.lastName) LIKE LOWER(CONCAT('%', :query, '%'))))
-      """)
-  Page<Dialog> getPageOfDialogsByUserAndQuery(User user, String query, Pageable pageable);
-
-  @Query("""
-      SELECT d FROM Dialog d
       WHERE d.recipient = :user OR d.sender = :user
       """)
   Page<Dialog> getPageOfDialogsByUser(User user, Pageable pageable);
