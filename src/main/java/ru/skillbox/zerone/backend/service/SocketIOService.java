@@ -2,6 +2,8 @@ package ru.skillbox.zerone.backend.service;
 
 import com.corundumstudio.socketio.SocketIOClient;
 import com.corundumstudio.socketio.SocketIOServer;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +40,16 @@ public class SocketIOService {
   private final UserRepository userRepository;
   private final JwtTokenProvider jwtTokenProvider;
   private final MessageMapper messageMapper;
+
+  @PostConstruct
+  public void startOnCreate() {
+    server.start();
+  }
+
+  @PreDestroy
+  public void stopOnClose() {
+    server.stop();
+  }
 
   @Transactional
   public void authRequest(SocketIOClient client, AuthRequestDTO authRequestDTO) {

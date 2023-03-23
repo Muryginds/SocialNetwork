@@ -17,9 +17,10 @@ public class SocketIOConfig {
     com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
     config.setHostname(socketIOProperties.getHost());
     config.setPort(socketIOProperties.getPort());
-    var server = new SocketIOServer(config);
-    server.start();
-    return server;
+    var socketConfig = config.getSocketConfig();
+    socketConfig.setReuseAddress(true);
+    config.setSocketConfig(socketConfig);
+    return new SocketIOServer(config);
   }
 
   @Bean
