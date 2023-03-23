@@ -18,11 +18,9 @@ import ru.skillbox.zerone.backend.model.dto.socket.response.SocketListResponseDT
 import ru.skillbox.zerone.backend.model.dto.socket.response.StartTypingResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.Message;
 import ru.skillbox.zerone.backend.model.entity.User;
+import ru.skillbox.zerone.backend.model.entity.WebSocketConnection;
 import ru.skillbox.zerone.backend.model.enumerated.ReadStatus;
-import ru.skillbox.zerone.backend.repository.DialogRepository;
-import ru.skillbox.zerone.backend.repository.MessageRepository;
-import ru.skillbox.zerone.backend.repository.SocketIORepository;
-import ru.skillbox.zerone.backend.repository.UserRepository;
+import ru.skillbox.zerone.backend.repository.*;
 import ru.skillbox.zerone.backend.security.JwtTokenProvider;
 
 import java.time.LocalDateTime;
@@ -37,7 +35,7 @@ public class SocketIOService {
   private static final String DIALOG_NOT_FOUND_WITH_ID_MESSAGE_PATTERN = "Диалог с id: \"%s\" не найден";
   private static final String AUTH_RESPONSE_EVENT_TITLE = "auth-response";
   private final SocketIOServer server;
-  private final SocketIORepository socketIORepository;
+  private final WebSocketConnectionRepository webSocketConnectionRepository;
   private final DialogRepository dialogRepository;
   private final MessageRepository messageRepository;
   private final UserRepository userRepository;
@@ -64,7 +62,7 @@ public class SocketIOService {
     String email = jwtTokenProvider.getUsername(token);
     var user = userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
     var sessionId = client.getSessionId();
-    socketIORepository.saveSession(user.getId(), sessionId);
+    webSocketConnectionRepository.save(new WebSocketConnection(user.getId(), sessionId));
 
     user.setLastOnlineTime(LocalDateTime.now());
     userRepository.save(user);
@@ -77,11 +75,12 @@ public class SocketIOService {
         .orElseThrow(() -> new DialogException(String.format(DIALOG_NOT_FOUND_WITH_ID_MESSAGE_PATTERN, data.getDialogId())));
     var curUser = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getRecipient() : dialog.getSender();
     var companion = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getSender() : dialog.getRecipient();
-    var companionSessionId = socketIORepository.findSessionByUserId(companion.getId());
+
+    var companionSessionId = webSocketConnectionRepository.findById(companion.getId());
     companionSessionId.ifPresent(s -> {
       switch (type) {
-        case "start" -> startTyping(s, curUser, dialog.getId());
-        case "stop" -> stopTyping(s, curUser, dialog.getId());
+        case "start" -> startTyping(s.getSessionId(), curUser, dialog.getId());
+        case "stop" -> stopTyping(s.getSessionId(), curUser, dialog.getId());
         default -> throw new NoSuchElementException(String.format("Wrong eventType: %s", type));
       }
     });
@@ -114,10 +113,12 @@ public class SocketIOService {
   public void readMessages(SocketIOClient client, ReadMessagesDataDTO data) {
     var dialog = dialogRepository.findById(data.getDialogId())
         .orElseThrow(() -> new DialogException(String.format(DIALOG_NOT_FOUND_WITH_ID_MESSAGE_PATTERN, data.getDialogId())));
-    var curUserId = socketIORepository.getUserIdBySessionId(client.getSessionId()).orElse(0L);
-    var user = userRepository.findById(curUserId).orElseThrow(() -> new UserNotFoundException(curUserId));
-    var unreadMessagesCount = messageRepository.countByDialogAndAuthorAndReadStatus(dialog, user, ReadStatus.SENT);
-    client.sendEvent("unread-response", unreadMessagesCount);
+    var optionalCurUserId = webSocketConnectionRepository.findBySessionId(client.getSessionId());
+    optionalCurUserId.ifPresent(connection -> {
+      var user = userRepository.findById(connection.getUserId()).orElseThrow(() -> new UserNotFoundException(connection.getUserId()));
+      var unreadMessagesCount = messageRepository.countByDialogAndAuthorAndReadStatus(dialog, user, ReadStatus.SENT);
+      client.sendEvent("unread-response", unreadMessagesCount);
+    });
   }
 
   public void handleConnection(SocketIOClient client) {
@@ -126,7 +127,7 @@ public class SocketIOService {
 
   public void newListener(SocketIOClient client) {
     var sessionId = client.getSessionId();
-    if (socketIORepository.checkSessionIsActive(sessionId)) {
+    if (webSocketConnectionRepository.existsBySessionId(sessionId)) {
       client.sendEvent(AUTH_RESPONSE_EVENT_TITLE, "ok");
     } else {
       client.sendEvent(AUTH_RESPONSE_EVENT_TITLE, "not");
@@ -137,10 +138,10 @@ public class SocketIOService {
     var user = message.getDialog().getRecipient().getId().equals(message.getAuthor().getId()) ?
         message.getDialog().getSender() :
         message.getDialog().getRecipient();
-    var companionSessionId = socketIORepository.findSessionByUserId(user.getId());
+    var companionSessionId = webSocketConnectionRepository.findById(user.getId());
 
     companionSessionId.ifPresent(s -> {
-      var companionClient = server.getClient(s);
+      var companionClient = server.getClient(s.getSessionId());
 
       if (!Objects.isNull(companionClient)) {
         var response = messageMapper.messageToSocketMessageDataDTO(message);
@@ -157,12 +158,12 @@ public class SocketIOService {
   }
 
   public void disconnect(SocketIOClient client) {
-    var curUserId = socketIORepository.getUserIdBySessionId(client.getSessionId()).orElse(0L);
-    if (curUserId > 0) {
-      var user = userRepository.findById(curUserId).orElseThrow(() -> new UserNotFoundException(curUserId));
+    var optionalSession = webSocketConnectionRepository.findBySessionId(client.getSessionId());
+    optionalSession.ifPresent(s -> {
+      var user = userRepository.findById(s.getUserId()).orElseThrow(() -> new UserNotFoundException(s.getUserId()));
       user.setLastOnlineTime(LocalDateTime.now());
       userRepository.save(user);
-    }
-    socketIORepository.deleteByUUID(client.getSessionId());
+      webSocketConnectionRepository.delete(s);
+    });
   }
 }

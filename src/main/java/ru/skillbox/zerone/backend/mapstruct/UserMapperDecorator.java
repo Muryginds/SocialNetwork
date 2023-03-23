@@ -6,7 +6,7 @@ import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.entity.Role;
 import ru.skillbox.zerone.backend.model.entity.User;
-import ru.skillbox.zerone.backend.repository.SocketIORepository;
+import ru.skillbox.zerone.backend.repository.WebSocketConnectionRepository;
 import ru.skillbox.zerone.backend.service.RoleService;
 
 import java.time.LocalDateTime;
@@ -21,7 +21,7 @@ public abstract class UserMapperDecorator implements UserMapper {
   @Autowired
   private RoleService roleService;
   @Autowired
-  private SocketIORepository socketIORepository;
+  private WebSocketConnectionRepository webSocketConnectionRepository;
 
   @Override
   public User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO) {
@@ -36,7 +36,7 @@ public abstract class UserMapperDecorator implements UserMapper {
   @Override
   public UserDTO userToUserDTO(User user) {
     var userDTO = userMapper.userToUserDTO(user);
-    if (socketIORepository.findSessionByUserId(user.getId()).isPresent()) {
+    if (webSocketConnectionRepository.existsById(user.getId())) {
       userDTO.setLastOnlineTime(LocalDateTime.now());
     }
     return userDTO;
