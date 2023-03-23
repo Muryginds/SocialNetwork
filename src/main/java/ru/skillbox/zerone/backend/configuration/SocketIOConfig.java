@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend.configuration;
 
+import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.SpringAnnotationScanner;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +20,10 @@ public class SocketIOConfig {
 
   @Bean
   public SocketIOServer socketIOServer() {
-    com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
+    Configuration config = new Configuration();
     config.setHostname(host);
     config.setPort(port);
+
     SocketIOServer socketIOServer = new SocketIOServer(config);
     socketIOServer.start();
     return socketIOServer;
