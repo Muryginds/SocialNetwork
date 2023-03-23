@@ -1,6 +1,8 @@
 package ru.skillbox.zerone.backend.model.dto.socket.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
 import lombok.Builder;
 import lombok.Data;
 
@@ -11,6 +13,7 @@ import java.time.Instant;
 public class SocketMessageDataDTO {
   private long id;
   @JsonProperty("time")
+  @JsonSerialize(using = InstantSerializer.class)
   private Instant time;
   @JsonProperty("author_id")
   private long authorId;

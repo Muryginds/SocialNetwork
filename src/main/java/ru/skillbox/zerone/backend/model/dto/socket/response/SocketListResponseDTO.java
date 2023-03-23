@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.model.dto.socket.response;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,8 +11,8 @@ import java.time.Instant;
 @Builder
 public class SocketListResponseDTO<T> {
   private String error;
-  @JsonProperty("read_status")
-  private String readStatus;
-  private Instant timestamp;
+  @Builder.Default
+  @JsonSerialize(using = InstantSerializer.class)
+  private Instant timestamp = Instant.now();
   private T data;
 }

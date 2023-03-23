@@ -14,20 +14,21 @@ import java.util.List;
 public interface MessageMapper {
   @Mapping(target = "dialogId", source = "message.dialog.id")
   @Mapping(target = "time", source = "message.sentTime")
-  @Mapping(target = "sendByMe", expression = "java(ru.skillbox.zerone.backend.util.CurrentUserUtils.getCurrentUser().equals(message.getAuthor()))")
+  @Mapping(target = "sendByMe", expression = "java(ru.skillbox.zerone.backend.util.CurrentUserUtils.getCurrentUser().getId().equals(message.getAuthor().getId()))")
   @Mapping(target = "authorId", source = "message.author.id")
   MessageDataDTO messageToMessageDataDTO (Message message);
 
   List<MessageDataDTO> messagesListToMessageDataDTOs (List<Message> messages);
 
-  @SuppressWarnings("UnmappedTargetProperties")
+  @Mapping(target = "sentTime", ignore = true)
+  @Mapping(target = "readStatus", ignore = true)
   @Mapping(target = "author", expression = "java(ru.skillbox.zerone.backend.util.CurrentUserUtils.getCurrentUser())")
   @Mapping(target = "dialog", source = "dialog")
   @Mapping(target = "id", expression = "java(null)")
   Message messageRequestDTOToMessage(MessageRequestDTO messageRequestDTO, Dialog dialog);
 
-  @Mapping(target = "time", expression = "java(java.time.Instant.from(message.getSentTime()))")
-  @Mapping(target = "isSendByMe", expression = "java(ru.skillbox.zerone.backend.util.CurrentUserUtils.getCurrentUser().equals(message.getAuthor()))")
+  @Mapping(target = "time", expression = "java(message.getSentTime().atZone(java.time.ZoneId.systemDefault()).toInstant())")
+  @Mapping(target = "isSendByMe", expression = "java(ru.skillbox.zerone.backend.util.CurrentUserUtils.getCurrentUser().getId().equals(message.getAuthor().getId()))")
   @Mapping(target = "dialogId", source = "message.dialog.id")
   @Mapping(target = "authorId", source = "message.author.id")
   @Mapping(target = "id", source = "message.id")

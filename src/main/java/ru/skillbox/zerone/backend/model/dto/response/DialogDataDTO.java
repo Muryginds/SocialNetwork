@@ -17,5 +17,5 @@ public class DialogDataDTO {
   private MessageDataDTO lastMessage;
   private long id;
   @JsonProperty("recipient_id")
-  private long recipientId;
+  private UserDTO companion;
 }

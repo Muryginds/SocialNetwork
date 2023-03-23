@@ -7,6 +7,6 @@ import java.util.List;
 
 @Data
 public class DialogRequestDTO {
-  @JsonProperty("user_ids")
-  private List<Long> userIds;
+  @JsonProperty("users_ids")
+  private List<Long> usersIds;
 }
