@@ -21,9 +21,7 @@ import ru.skillbox.zerone.backend.repository.MessageRepository;
 import ru.skillbox.zerone.backend.repository.SocketIORepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.security.JwtTokenProvider;
-import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -39,7 +37,7 @@ public class SocketIOService {
   private final MessageRepository messageRepository;
   private final UserRepository userRepository;
   private final JwtTokenProvider jwtTokenProvider;
-  private final MessageMapper  messageMapper;
+  private final MessageMapper messageMapper;
 
   @Transactional
   public void authRequest(SocketIOClient client, AuthRequestDTO authRequestDTO) {
@@ -52,21 +50,25 @@ public class SocketIOService {
     var user = userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
     var sessionId = client.getSessionId();
     socketIORepository.saveSession(user.getId(), sessionId);
+
+    user.setLastOnlineTime(LocalDateTime.now());
+    userRepository.save(user);
+
     client.sendEvent(AUTH_RESPONSE_EVENT_TITLE, "ok");
   }
 
-  @Transactional
   public void startTyping(TypingDataDTO data) {
     var dialog = dialogRepository.findById(data.getDialogId())
         .orElseThrow(() -> new DialogException(String.format(DIALOG_NOT_FOUND_WITH_ID_MESSAGE_PATTERN, data.getDialogId())));
-    var companion = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getRecipient() : dialog.getSender();
+    var curUser = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getRecipient() : dialog.getSender();
+    var companion = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getSender() : dialog.getRecipient();
     var companionSessionId = socketIORepository.findSessionByUserId(companion.getId());
     companionSessionId.ifPresent(s -> {
       var companionClient = server.getClient(s);
       if (!Objects.isNull(companionClient)) {
         var response = StartTypingResponseDTO.builder()
-            .author(companion.getFirstName())
-            .authorId(data.getAuthorId())
+            .author(curUser.getFirstName())
+            .authorId(curUser.getId())
             .dialogId(data.getDialogId())
             .build();
         companionClient.sendEvent("start-typing-response", response);
@@ -74,17 +76,17 @@ public class SocketIOService {
     });
   }
 
-  @Transactional
   public void stopTyping(TypingDataDTO data) {
     var dialog = dialogRepository.findById(data.getDialogId())
         .orElseThrow(() -> new DialogException(String.format(DIALOG_NOT_FOUND_WITH_ID_MESSAGE_PATTERN, data.getDialogId())));
-    var companion = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getRecipient() : dialog.getSender();
+    var curUser = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getRecipient() : dialog.getSender();
+    var companion = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getSender() : dialog.getRecipient();
     var companionSessionId = socketIORepository.findSessionByUserId(companion.getId());
     companionSessionId.ifPresent(s -> {
       var companionClient = server.getClient(s);
       if (!Objects.isNull(companionClient)) {
         var response = StartTypingResponseDTO.builder()
-            .authorId(data.getAuthorId())
+            .authorId(curUser.getId())
             .dialogId(data.getDialogId())
             .build();
         companionClient.sendEvent("stop-typing-response", response);
@@ -96,8 +98,9 @@ public class SocketIOService {
   public void readMessages(SocketIOClient client, ReadMessagesDataDTO data) {
     var dialog = dialogRepository.findById(data.getDialogId())
         .orElseThrow(() -> new DialogException(String.format(DIALOG_NOT_FOUND_WITH_ID_MESSAGE_PATTERN, data.getDialogId())));
-    var user = CurrentUserUtils.getCurrentUser();
-    var unreadMessagesCount = messageRepository.countByDialogAndAuthorNotAndReadStatus(dialog, user, ReadStatus.SENT);
+    var curUserId = socketIORepository.getUserIdBySessionId(client.getSessionId()).orElse(0L);
+    var user = userRepository.findById(curUserId).orElseThrow(() -> new UserNotFoundException(curUserId));
+    var unreadMessagesCount = messageRepository.countByDialogAndAuthorAndReadStatus(dialog, user, ReadStatus.SENT);
     client.sendEvent("unread-response", unreadMessagesCount);
   }
 
@@ -114,21 +117,19 @@ public class SocketIOService {
     }
   }
 
-  @Transactional
   public void sendMessageEvent(Message message) {
-    var user = CurrentUserUtils.getCurrentUser();
-    if (message.getAuthor().equals(user)) {
-      return;
-    }
-    var companionSessionId = socketIORepository.findSessionByUserId(message.getAuthor().getId());
+    var user = message.getDialog().getRecipient().getId().equals(message.getAuthor().getId()) ?
+        message.getDialog().getSender() :
+        message.getDialog().getRecipient();
+    var companionSessionId = socketIORepository.findSessionByUserId(user.getId());
+
     companionSessionId.ifPresent(s -> {
       var companionClient = server.getClient(s);
+
       if (!Objects.isNull(companionClient)) {
         var response = messageMapper.messageToSocketMessageDataDTO(message);
         var listResponse = SocketListResponseDTO.builder()
-            .readStatus(ReadStatus.SENT.toString())
             .data(response)
-            .timestamp(Instant.now())
             .build();
 
         message.setReadStatus(ReadStatus.READ);
@@ -139,11 +140,13 @@ public class SocketIOService {
     });
   }
 
-  @Transactional
   public void disconnect(SocketIOClient client) {
+    var curUserId = socketIORepository.getUserIdBySessionId(client.getSessionId()).orElse(0L);
+    if (curUserId > 0) {
+      var user = userRepository.findById(curUserId).orElseThrow(() -> new UserNotFoundException(curUserId));
+      user.setLastOnlineTime(LocalDateTime.now());
+      userRepository.save(user);
+    }
     socketIORepository.deleteByUUID(client.getSessionId());
-    var user = CurrentUserUtils.getCurrentUser();
-    user.setLastOnlineTime(LocalDateTime.now());
-    userRepository.save(user);
   }
 }

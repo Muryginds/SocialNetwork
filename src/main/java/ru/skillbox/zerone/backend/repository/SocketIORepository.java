@@ -3,6 +3,7 @@ package ru.skillbox.zerone.backend.repository;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,6 +21,15 @@ public class SocketIORepository {
 
   public boolean checkSessionIsActive(UUID uuid) {
     return sessionContainer.containsValue(uuid);
+  }
+
+  public Optional<Long> getUserIdBySessionId(UUID uuid) {
+    for (Map.Entry<Long, UUID> entry : sessionContainer.entrySet()) {
+      if (entry.getValue().equals(uuid)) {
+        return Optional.of(entry.getKey());
+      }
+    }
+    return Optional.empty();
   }
 
   public void deleteByUUID(UUID uuid) {
