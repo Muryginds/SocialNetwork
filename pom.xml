@@ -226,8 +226,8 @@
 							</jdbc>
                             <generator>
                                 <database>
-									<name>org.jooq.meta.jdbc.JDBCDatabase</name>
-									<includes>.*</includes>
+									<name>org.jooq.meta.postgres.PostgresDatabase</name>
+									<includes>USER|POST|POST_TO_TAG|TAG</includes>
 									<excludes></excludes>
 									<inputSchema>public</inputSchema>
 									<forcedTypes>

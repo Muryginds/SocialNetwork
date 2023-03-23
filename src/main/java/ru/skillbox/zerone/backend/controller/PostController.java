@@ -7,6 +7,7 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.PostDTO;
 import ru.skillbox.zerone.backend.service.PostService;
+import ru.skillbox.zerone.backend.service.SearchService;
 
 
 @RestController
@@ -14,6 +15,7 @@ import ru.skillbox.zerone.backend.service.PostService;
 @RequestMapping("/api/v1")
 public class PostController {
   private final PostService postService;
+  private final SearchService searchService;
 
   @PostMapping("/users/{id}/wall")
   public CommonResponseDTO<PostDTO> getUserWall(@PathVariable int id,
@@ -37,16 +39,14 @@ public class PostController {
     return postService.getFeeds(text, offset, itemPerPage);
   }
 
-  /*@GetMapping("/post")
-  public CommonListResponseDTO<PostDTO> getPosts(@RequestParam(name = "text", defaultValue = "") String text,
-                                                 @RequestParam(name = "date_from", defaultValue = "-1") long dateFrom,
-                                                 @RequestParam(name = "date_to", defaultValue = "-1") long dateTo,
+  @GetMapping("/post")
+  public CommonListResponseDTO<PostDTO> getPosts(@RequestParam(name = "author", required = false) String author,
+                                                 @RequestParam(name = "tag", required = false) String tag,
+                                                 @RequestParam(name = "date_from") long dateFrom,
                                                  @RequestParam(name = "offset", defaultValue = "0") int offset,
-                                                 @RequestParam(name = "itemPerPage", defaultValue = "20") int itemPerPage,
-                                                 @RequestParam(name = "author", defaultValue = "") String author,
-                                                 @RequestParam(name = "tag", defaultValue = "") String tag) {
-    return postService.getPosts(text, dateFrom, dateTo, offset, itemPerPage, author, tag);
-  }*/
+                                                 @RequestParam(name = "itemPerPage", defaultValue = "10") int itemPerPage) {
+    return searchService.searchPosts(author, tag, dateFrom, offset, itemPerPage);
+  }
 
   @GetMapping("/post/{id}")
   public CommonResponseDTO<PostDTO> getPostById(@PathVariable int id) {
