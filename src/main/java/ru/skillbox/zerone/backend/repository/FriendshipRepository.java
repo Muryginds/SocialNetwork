@@ -26,4 +26,6 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
       User srcUser, FriendshipStatus status, String name, Pageable pageable);
 
   List<Friendship> findAllBySrcPersonAndDstPersonIdIn(User user, List<Long> userIds);
+
+  List<Friendship> findAllBySrcPersonAndStatus(User srcUser, FriendshipStatus status);
 }

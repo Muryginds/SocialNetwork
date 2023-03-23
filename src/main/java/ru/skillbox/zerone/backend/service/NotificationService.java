@@ -5,10 +5,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.skillbox.zerone.backend.exception.CommentNotFoundException;
+import ru.skillbox.zerone.backend.exception.DialogException;
+import ru.skillbox.zerone.backend.exception.FriendsAdditionException;
+import ru.skillbox.zerone.backend.exception.PostNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.NotificationDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.*;
+import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
 import ru.skillbox.zerone.backend.model.enumerated.ReadStatus;
 import ru.skillbox.zerone.backend.repository.*;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
@@ -23,12 +28,17 @@ import static ru.skillbox.zerone.backend.model.enumerated.NotificationType.*;
 @RequiredArgsConstructor
 public class NotificationService {
 
+  private static final String POST_NOT_FOUND = "Пост с id = \"%s\" не найден";
+  private static final String COMMENT_NOT_FOUND = "Комментарий с id = \"%s\" не найден";
+  private static final String DIALOG_NOT_FOUND = "Диалог с сообщением с id = \"%s\" не найден";
+  private static final String FRIENDSHIP_NOT_FOUND = "Дружба с id = \"%s\" не найдена";
   private final UserMapper userMapper;
   private final NotificationRepository notificationRepository;
   private final CommentRepository commentRepository;
   private final PostRepository postRepository;
   private final MessageRepository messageRepository;
   private final DialogRepository dialogRepository;
+  private final FriendshipRepository friendshipRepository;
 
   public CommonListResponseDTO<NotificationDTO> getNotifications(
       int offset, int itemPerPage) {
@@ -93,15 +103,20 @@ public class NotificationService {
     User author;
     switch (notification.getType()) {
       case POST -> {
-        author = postRepository.findById(entityId).get().getAuthor();
+        author = postRepository.findById(entityId).orElseThrow(
+                () -> new PostNotFoundException(String.format(POST_NOT_FOUND, entityId)))
+            .getAuthor();
       }
       case POST_COMMENT -> {
         builder.currentEntityId(entityId);
-        author = commentRepository.findById(entityId).get().getAuthor();
+        author = commentRepository.findById(entityId).orElseThrow(
+                () -> getCommentException(entityId))
+            .getAuthor();
       }
       case COMMENT_COMMENT -> {
         builder.currentEntityId(entityId);
-        Comment comment = commentRepository.findById(entityId).get();
+        Comment comment = commentRepository.findById(entityId).orElseThrow(
+            () -> getCommentException(entityId));
         author = comment.getAuthor();
         if (comment.getParent() != null) {
           builder.parentEntityId(comment.getParent().getId());
@@ -110,14 +125,20 @@ public class NotificationService {
         }
       }
       case MESSAGE -> {
-        Dialog dialog = dialogRepository.findByMessageId(entityId).get();
+        Dialog dialog = dialogRepository.findByMessageId(entityId)
+            .orElseThrow(() -> new DialogException(String.format(DIALOG_NOT_FOUND, entityId)));
         builder.parentEntityId(dialog.getId());
         author = notification.getPerson().getId().equals(dialog.getRecipient().getId()) ?
             dialog.getSender() :
             dialog.getRecipient();
       }
       case FRIEND_REQUEST -> {
-        author = null;
+        Friendship friendship = friendshipRepository.findById(entityId)
+            .orElseThrow(() -> new FriendsAdditionException(
+                String.format(FRIENDSHIP_NOT_FOUND, entityId)));
+        author = notification.getPerson().getId().equals(friendship.getDstPerson().getId()) ?
+            friendship.getSrcPerson() :
+            friendship.getDstPerson();
       }
       default -> author = null;
     }
@@ -126,52 +147,78 @@ public class NotificationService {
     return builder.build();
   }
 
+  private CommentNotFoundException getCommentException(Long entityId) {
+    return new CommentNotFoundException(String.format(COMMENT_NOT_FOUND, entityId));
+  }
+
 //  public UserDTO getEntityAuthorDTO(Notification notification) {
 //    return userMapper.userToUserDTO(notification.getPerson());
 //  }
 
   public void savePost(Post post) {
-    var notification = Notification.builder()
-        .type(POST)
-        .person(post.getAuthor())
-        .entityId(post.getId())
-        .build();
-    notificationRepository.save(notification);
+    List<Friendship> friendships = friendshipRepository
+        .findAllBySrcPersonAndStatus(post.getAuthor(), FriendshipStatus.FRIEND);
+    List<Notification> notifications = new ArrayList<>();
+    friendships.forEach(fr ->  {
+      notifications.add(Notification.builder()
+          .type(POST)
+          .person(fr.getDstPerson())
+          .entityId(fr.getId())
+          .build());
+    });
+    notificationRepository.saveAll(notifications);
   }
 
-  public void savePostComment(Comment comment) {
-    var notification = Notification.builder()
+  public void saveComment(Comment comment) {
+    if (comment.getParent() == null) {
+      savePostComment(comment);
+    } else {
+      saveCommentComment(comment);
+    }
+  }
+
+  private void savePostComment(Comment comment) {
+    notificationRepository.save(Notification.builder()
         .type(POST_COMMENT)
         .person(comment.getPost().getAuthor())
         .entityId(comment.getId())
-        .build();
-    notificationRepository.save(notification);
+        .build());
   }
 
-  public void saveCommentComment(Comment comment) {
-    var notification = Notification.builder()
-        .type(COMMENT_COMMENT)
-        .person(comment.getParent().getAuthor())
-        .entityId(comment.getId())
-        .build();
-    notificationRepository.save(notification);
+  private void saveCommentComment(Comment comment) {
+    List<User> dstPersons = new ArrayList<>();
+    dstPersons.add(comment.getPost().getAuthor());
+    User parentAuthor = comment.getParent().getAuthor();
+    if (!parentAuthor.equals(dstPersons.get(0))) {
+      dstPersons.add(parentAuthor);
+    }
+    List<Notification> notifications = new ArrayList<>();
+    dstPersons.forEach(dstPerson -> {
+      notifications.add(Notification.builder()
+          .type(COMMENT_COMMENT)
+          .person(dstPerson)
+          .entityId(comment.getId())
+          .build());
+    });
+    notificationRepository.saveAll(notifications);
   }
 
-  public void saveFriendship(User srcPerson, User dstPerson) {
+  public void saveFriendship(User dstPerson, Friendship friendship) {
     var notification = Notification.builder()
         .type(FRIEND_REQUEST)
-        .person(srcPerson)
-        .entityId(dstPerson.getId())
+        .person(dstPerson)
+        .entityId(friendship.getId())
         .build();
     notificationRepository.save(notification);
   }
 
   public void saveMessage(User dstPerson, Message message) {
     var notification = Notification.builder()
-        .type(FRIEND_REQUEST)
+        .type(MESSAGE)
         .person(dstPerson)
         .entityId(message.getId())
         .build();
     notificationRepository.save(notification);
   }
+
 }

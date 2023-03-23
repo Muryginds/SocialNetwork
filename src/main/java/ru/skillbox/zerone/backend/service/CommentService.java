@@ -33,6 +33,7 @@ public class CommentService {
   private final PostRepository postRepository;
   private final CommentRepository commentRepository;
   private final UserMapper userMapper;
+  private final NotificationService notificationService;
 
   public CommonListResponseDTO<CommentDTO> getPage4Comments(int offset, int itemPerPage, Post post, User user) {
 
@@ -64,21 +65,23 @@ public class CommentService {
     Comment comment = new Comment();
     comment.setCommentText(commentRequest.getCommentText());
     comment.setPost(post);
-
-    if (commentRequest.getParentId() != null) {
-      Comment parentComment = commentRepository
-          .findById(commentRequest.getParentId()).orElseThrow();
-      comment.setParent(parentComment);
-      comment.setCommentText(commentRequest.getCommentText());
-      comment.setType(CommentType.COMMENT);
-    } else {
-      comment.setCommentText(commentRequest.getCommentText());
-      comment.setType(CommentType.POST);
-    }
+    comment.setCommentText(commentRequest.getCommentText());
     comment.setPost(post);
     comment.setTime(LocalDateTime.now());
     comment.setAuthor(user);
+
+    Comment parentComment = null;
+    if (commentRequest.getParentId() != null) {
+      parentComment = commentRepository
+          .findById(commentRequest.getParentId()).orElseThrow();
+      comment.setParent(parentComment);
+      comment.setType(CommentType.COMMENT);
+    } else {
+      comment.setType(CommentType.POST);
+    }
     comment = commentRepository.save(comment);
+
+    notificationService.saveComment(comment);
 
     return getCommentResponse(comment, user);
   }
