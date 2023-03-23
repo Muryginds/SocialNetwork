@@ -39,7 +39,7 @@ spring:
       host: 0.0.0.0
       database: 0
       port: 6379
-      #password: password
+      password: password123
       timeout: 60000
 
 jwt:
