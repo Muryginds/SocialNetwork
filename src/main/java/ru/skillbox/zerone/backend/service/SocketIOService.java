@@ -17,6 +17,7 @@ import ru.skillbox.zerone.backend.model.dto.socket.request.TypingDataDTO;
 import ru.skillbox.zerone.backend.model.dto.socket.response.SocketListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.socket.response.StartTypingResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.Message;
+import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.ReadStatus;
 import ru.skillbox.zerone.backend.repository.DialogRepository;
 import ru.skillbox.zerone.backend.repository.MessageRepository;
@@ -25,7 +26,9 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.security.JwtTokenProvider;
 
 import java.time.LocalDateTime;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -69,41 +72,42 @@ public class SocketIOService {
     client.sendEvent(AUTH_RESPONSE_EVENT_TITLE, "ok");
   }
 
-  public void startTyping(TypingDataDTO data) {
+  public void typingEvent(TypingDataDTO data, String type) {
     var dialog = dialogRepository.findById(data.getDialogId())
         .orElseThrow(() -> new DialogException(String.format(DIALOG_NOT_FOUND_WITH_ID_MESSAGE_PATTERN, data.getDialogId())));
     var curUser = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getRecipient() : dialog.getSender();
     var companion = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getSender() : dialog.getRecipient();
     var companionSessionId = socketIORepository.findSessionByUserId(companion.getId());
     companionSessionId.ifPresent(s -> {
-      var companionClient = server.getClient(s);
-      if (!Objects.isNull(companionClient)) {
-        var response = StartTypingResponseDTO.builder()
-            .author(curUser.getFirstName())
-            .authorId(curUser.getId())
-            .dialogId(data.getDialogId())
-            .build();
-        companionClient.sendEvent("start-typing-response", response);
+      switch (type) {
+        case "start" -> startTyping(s, curUser, dialog.getId());
+        case "stop" -> stopTyping(s, curUser, dialog.getId());
+        default -> throw new NoSuchElementException(String.format("Wrong eventType: %s", type));
       }
     });
   }
 
-  public void stopTyping(TypingDataDTO data) {
-    var dialog = dialogRepository.findById(data.getDialogId())
-        .orElseThrow(() -> new DialogException(String.format(DIALOG_NOT_FOUND_WITH_ID_MESSAGE_PATTERN, data.getDialogId())));
-    var curUser = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getRecipient() : dialog.getSender();
-    var companion = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getSender() : dialog.getRecipient();
-    var companionSessionId = socketIORepository.findSessionByUserId(companion.getId());
-    companionSessionId.ifPresent(s -> {
-      var companionClient = server.getClient(s);
-      if (!Objects.isNull(companionClient)) {
-        var response = StartTypingResponseDTO.builder()
-            .authorId(curUser.getId())
-            .dialogId(data.getDialogId())
-            .build();
-        companionClient.sendEvent("stop-typing-response", response);
-      }
-    });
+  public void startTyping(UUID sessionId, User curUser, Long dialogId) {
+    var companionClient = server.getClient(sessionId);
+    if (!Objects.isNull(companionClient)) {
+      var response = StartTypingResponseDTO.builder()
+          .author(curUser.getFirstName())
+          .authorId(curUser.getId())
+          .dialogId(dialogId)
+          .build();
+      companionClient.sendEvent("start-typing-response", response);
+    }
+  }
+
+  public void stopTyping(UUID sessionId, User curUser, Long dialogId) {
+    var companionClient = server.getClient(sessionId);
+    if (!Objects.isNull(companionClient)) {
+      var response = StartTypingResponseDTO.builder()
+          .authorId(curUser.getId())
+          .dialogId(dialogId)
+          .build();
+      companionClient.sendEvent("stop-typing-response", response);
+    }
   }
 
   @Transactional

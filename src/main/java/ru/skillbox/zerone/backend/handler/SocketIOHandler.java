@@ -29,12 +29,12 @@ public class SocketIOHandler {
 
   @OnEvent("start-typing")
   public void onStartTyping(TypingDataDTO data) {
-    socketIOService.startTyping(data);
+    socketIOService.typingEvent(data, "start");
   }
 
   @OnEvent("stop-typing")
   public void onStopTyping(TypingDataDTO data) {
-    socketIOService.stopTyping(data);
+    socketIOService.typingEvent(data, "stop");
   }
 
   @OnEvent("read-messages")
