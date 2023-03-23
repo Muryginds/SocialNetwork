@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.DialogException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
+import ru.skillbox.zerone.backend.exception.ZeroneSocketException;
 import ru.skillbox.zerone.backend.mapstruct.MessageMapper;
 import ru.skillbox.zerone.backend.model.dto.socket.request.AuthRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.socket.request.ReadMessagesDataDTO;
@@ -62,8 +63,11 @@ public class SocketIOService {
     String email = jwtTokenProvider.getUsername(token);
     var user = userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
     var sessionId = client.getSessionId();
-    webSocketConnectionRepository.save(new WebSocketConnection(user.getId(), sessionId));
-
+    WebSocketConnection connection = WebSocketConnection.builder()
+        .userId(user.getId().toString())
+        .sessionId(sessionId)
+        .build();
+    webSocketConnectionRepository.save(connection);
     user.setLastOnlineTime(LocalDateTime.now());
     userRepository.save(user);
 
@@ -76,12 +80,12 @@ public class SocketIOService {
     var curUser = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getRecipient() : dialog.getSender();
     var companion = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getSender() : dialog.getRecipient();
 
-    var companionSessionId = webSocketConnectionRepository.findById(companion.getId());
-    companionSessionId.ifPresent(s -> {
-      switch (type) {
+    var sessionIdList = webSocketConnectionRepository.findAllByUserId(companion.getId().toString());
+    sessionIdList.forEach(s -> {
+      switch (type.toLowerCase()) {
         case "start" -> startTyping(s.getSessionId(), curUser, dialog.getId());
         case "stop" -> stopTyping(s.getSessionId(), curUser, dialog.getId());
-        default -> throw new NoSuchElementException(String.format("Wrong eventType: %s", type));
+        default -> throw new NoSuchElementException(String.format("Неверный тип события: %s", type));
       }
     });
   }
@@ -113,9 +117,9 @@ public class SocketIOService {
   public void readMessages(SocketIOClient client, ReadMessagesDataDTO data) {
     var dialog = dialogRepository.findById(data.getDialogId())
         .orElseThrow(() -> new DialogException(String.format(DIALOG_NOT_FOUND_WITH_ID_MESSAGE_PATTERN, data.getDialogId())));
-    var optionalCurUserId = webSocketConnectionRepository.findBySessionId(client.getSessionId());
+    var optionalCurUserId = webSocketConnectionRepository.findById(client.getSessionId());
     optionalCurUserId.ifPresent(connection -> {
-      var user = userRepository.findById(connection.getUserId()).orElseThrow(() -> new UserNotFoundException(connection.getUserId()));
+      var user = userRepository.findById(Long.valueOf(connection.getUserId())).orElseThrow(() -> new UserNotFoundException(connection.getUserId()));
       var unreadMessagesCount = messageRepository.countByDialogAndAuthorAndReadStatus(dialog, user, ReadStatus.SENT);
       client.sendEvent("unread-response", unreadMessagesCount);
     });
@@ -127,43 +131,51 @@ public class SocketIOService {
 
   public void newListener(SocketIOClient client) {
     var sessionId = client.getSessionId();
-    if (webSocketConnectionRepository.existsBySessionId(sessionId)) {
+    if (webSocketConnectionRepository.existsById(sessionId)) {
       client.sendEvent(AUTH_RESPONSE_EVENT_TITLE, "ok");
     } else {
       client.sendEvent(AUTH_RESPONSE_EVENT_TITLE, "not");
     }
   }
 
-  public void sendMessageEvent(Message message) {
-    var user = message.getDialog().getRecipient().getId().equals(message.getAuthor().getId()) ?
-        message.getDialog().getSender() :
-        message.getDialog().getRecipient();
-    var companionSessionId = webSocketConnectionRepository.findById(user.getId());
+  public void sendMessageEvent(Message message) throws ZeroneSocketException {
+    try {
+      var user = message.getDialog().getRecipient().getId().equals(message.getAuthor().getId()) ?
+          message.getDialog().getSender() :
+          message.getDialog().getRecipient();
+      var sessionIdList = webSocketConnectionRepository.findAllByUserId(user.getId().toString());
 
-    companionSessionId.ifPresent(s -> {
-      var companionClient = server.getClient(s.getSessionId());
+      sessionIdList.forEach(s -> {
+        var userClient = server.getClient(s.getSessionId());
 
-      if (!Objects.isNull(companionClient)) {
-        var response = messageMapper.messageToSocketMessageDataDTO(message);
-        var listResponse = SocketListResponseDTO.builder()
-            .data(response)
-            .build();
+        if (!Objects.isNull(userClient)) {
+          var response = messageMapper.messageToSocketMessageDataDTO(message);
+          var listResponse = SocketListResponseDTO.builder()
+              .data(response)
+              .build();
 
-        message.setReadStatus(ReadStatus.READ);
-        messageRepository.save(message);
+          message.setReadStatus(ReadStatus.READ);
+          messageRepository.save(message);
 
-        companionClient.sendEvent("message", listResponse);
-      }
-    });
+          userClient.sendEvent("message", listResponse);
+        }
+      });
+    } catch (Exception e) {
+      throw new ZeroneSocketException(e);
+    }
   }
 
   public void disconnect(SocketIOClient client) {
-    var optionalSession = webSocketConnectionRepository.findBySessionId(client.getSessionId());
+    var optionalSession = webSocketConnectionRepository.findById(client.getSessionId());
     optionalSession.ifPresent(s -> {
-      var user = userRepository.findById(s.getUserId()).orElseThrow(() -> new UserNotFoundException(s.getUserId()));
+      var user = userRepository.findById(Long.valueOf(s.getUserId())).orElseThrow(() -> new UserNotFoundException(s.getUserId()));
       user.setLastOnlineTime(LocalDateTime.now());
       userRepository.save(user);
       webSocketConnectionRepository.delete(s);
+      log.debug(String.format("Client with session: %s disconnected", s.getSessionId()));
     });
+    if (optionalSession.isEmpty()) {
+      log.debug(String.format("No stored session found: %s", client.getSessionId()));
+    }
   }
 }

@@ -36,7 +36,7 @@ public abstract class UserMapperDecorator implements UserMapper {
   @Override
   public UserDTO userToUserDTO(User user) {
     var userDTO = userMapper.userToUserDTO(user);
-    if (webSocketConnectionRepository.existsById(user.getId())) {
+    if (webSocketConnectionRepository.existsByUserId(user.getId().toString())) {
       userDTO.setLastOnlineTime(LocalDateTime.now());
     }
     return userDTO;

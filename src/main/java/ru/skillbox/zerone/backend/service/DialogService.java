@@ -1,6 +1,5 @@
 package ru.skillbox.zerone.backend.service;
 
-import com.corundumstudio.socketio.handler.SocketIOException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.DialogException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
+import ru.skillbox.zerone.backend.exception.ZeroneSocketException;
 import ru.skillbox.zerone.backend.mapstruct.DialogMapper;
 import ru.skillbox.zerone.backend.mapstruct.MessageMapper;
 import ru.skillbox.zerone.backend.model.dto.request.DialogRequestDTO;
@@ -23,7 +23,6 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
-import java.util.Arrays;
 import java.util.Objects;
 
 @Slf4j
@@ -65,18 +64,14 @@ public class DialogService {
         .build();
   }
 
-  @Transactional(dontRollbackOn = SocketIOException.class)
+  @Transactional(dontRollbackOn = ZeroneSocketException.class)
   public CommonResponseDTO<MessageDataDTO> postMessages(long id, MessageRequestDTO messageRequestDTO) {
     var dialog = dialogRepository.findById(id)
         .orElseThrow(() -> new DialogException(String.format("Диалог с id: \"%s\" не найден", id)));
     var message = messageMapper.messageRequestDTOToMessage(messageRequestDTO, dialog);
     messageRepository.save(message);
 
-    try {
-      socketIOService.sendMessageEvent(message);
-    } catch (SocketIOException ex) {
-      log.info("IN postDialogs - socket exception occurred: {}", Arrays.toString(ex.getStackTrace()));
-    }
+    socketIOService.sendMessageEvent(message);
 
     var responseData = messageMapper.messageToMessageDataDTO(message);
 
@@ -90,7 +85,7 @@ public class DialogService {
     return ResponseUtils.commonResponseWithData(new CountDTO(countUnread));
   }
 
-  @Transactional(dontRollbackOn = SocketIOException.class)
+  @Transactional(dontRollbackOn = ZeroneSocketException.class)
   public CommonResponseDTO<DialogDataDTO> postDialogs(DialogRequestDTO dialogRequestDTO) {
     var id = dialogRequestDTO.getUsersIds().get(0);
     if (Objects.isNull(id) || id < 1) {
@@ -114,11 +109,7 @@ public class DialogService {
           .build();
       messageRepository.save(message);
 
-      try {
-        socketIOService.sendMessageEvent(message);
-      } catch (SocketIOException ex) {
-        log.info("IN postDialogs - socket exception occurred: {}", Arrays.toString(ex.getStackTrace()));
-      }
+      socketIOService.sendMessageEvent(message);
 
       var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, message, 0, companion);
 
