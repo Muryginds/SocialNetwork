@@ -8,7 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.CommentNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
-import ru.skillbox.zerone.backend.model.dto.request.CommentRequest;
+import ru.skillbox.zerone.backend.model.dto.request.CommentRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommentDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
@@ -58,7 +58,7 @@ public class CommentService {
     return new ArrayList<>(commentDTOList);
   }
 
-  public CommonResponseDTO<CommentDTO> addComment(long id, CommentRequest commentRequest) {
+  public CommonResponseDTO<CommentDTO> addComment(long id, CommentRequestDTO commentRequest) {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow();
     Comment comment = new Comment();
@@ -149,7 +149,7 @@ public class CommentService {
   }
 
 
-  public CommonResponseDTO<CommentDTO> putComment(long id, long commentId, CommentRequest commentRequest) {
+  public CommonResponseDTO<CommentDTO> putComment(long id, long commentId, CommentRequestDTO commentRequest) {
     User user = CurrentUserUtils.getCurrentUser();
     postRepository.findById(id).orElseThrow();
     if (commentRequest.getParentId() != null)

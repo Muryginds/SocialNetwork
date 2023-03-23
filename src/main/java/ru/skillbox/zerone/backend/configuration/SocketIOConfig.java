@@ -1,37 +1,29 @@
 package ru.skillbox.zerone.backend.configuration;
 
-import com.corundumstudio.socketio.Configuration;
 import com.corundumstudio.socketio.SocketIOServer;
 import com.corundumstudio.socketio.annotation.SpringAnnotationScanner;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Configuration;
+import ru.skillbox.zerone.backend.configuration.properties.SocketIOProperties;
 
-@Component
+@Configuration
 @RequiredArgsConstructor
 public class SocketIOConfig {
-
-  @Value("${socket-server.host}")
-  private String host;
-
-  @Value("${socket-server.port}")
-  private Integer port;
+  private final SocketIOProperties socketIOProperties;
 
   @Bean
   public SocketIOServer socketIOServer() {
-    Configuration config = new Configuration();
-    config.setHostname(host);
-    config.setPort(port);
-
-    SocketIOServer socketIOServer = new SocketIOServer(config);
-    socketIOServer.start();
-    return socketIOServer;
+    com.corundumstudio.socketio.Configuration config = new com.corundumstudio.socketio.Configuration();
+    config.setHostname(socketIOProperties.getHost());
+    config.setPort(socketIOProperties.getPort());
+    var server = new SocketIOServer(config);
+    server.start();
+    return server;
   }
 
   @Bean
   public SpringAnnotationScanner scanner(SocketIOServer server) {
     return new SpringAnnotationScanner(server);
   }
-
 }

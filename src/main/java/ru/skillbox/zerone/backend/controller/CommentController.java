@@ -2,7 +2,7 @@ package ru.skillbox.zerone.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.skillbox.zerone.backend.model.dto.request.CommentRequest;
+import ru.skillbox.zerone.backend.model.dto.request.CommentRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommentDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
@@ -23,7 +23,7 @@ public class CommentController {
   }
   @PostMapping("/post/{id}/comments")
   public CommonResponseDTO<CommentDTO> addComment(@PathVariable int id,
-                                               @RequestBody CommentRequest commentRequest)  {
+                                               @RequestBody CommentRequestDTO commentRequest)  {
     return commentService.addComment(id, commentRequest);
   }
 
@@ -40,7 +40,7 @@ public class CommentController {
   @PutMapping("/post/{id}/comments/{comment_id}")
   public CommonResponseDTO<CommentDTO> putComment(@PathVariable int id,
                                                   @PathVariable(name = "comment_id") int commentId,
-                                                  @RequestBody CommentRequest commentRequest) {
+                                                  @RequestBody CommentRequestDTO commentRequest) {
     return commentService.putComment(id, commentId, commentRequest);
   }
 }
