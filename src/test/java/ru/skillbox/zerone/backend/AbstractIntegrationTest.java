@@ -6,7 +6,9 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
+import ru.skillbox.zerone.backend.service.SocketIOService;
 
+@SuppressWarnings("resource")
 @SpringBootTest
 @ActiveProfiles("test")
 abstract public class AbstractIntegrationTest {
@@ -21,4 +23,6 @@ abstract public class AbstractIntegrationTest {
 
   @MockBean
   JavaMailSenderImpl javaMailSender;
+  @MockBean
+  SocketIOService socketIOService;
 }
