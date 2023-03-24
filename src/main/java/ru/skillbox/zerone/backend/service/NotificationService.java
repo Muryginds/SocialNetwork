@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend.service;
 
+import com.corundumstudio.socketio.SocketIOServer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,12 +13,15 @@ import ru.skillbox.zerone.backend.exception.PostNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.NotificationDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.socket.response.SocketNotificationDataDTO;
 import ru.skillbox.zerone.backend.model.entity.*;
+import ru.skillbox.zerone.backend.model.enumerated.CommentType;
 import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
 import ru.skillbox.zerone.backend.model.enumerated.ReadStatus;
 import ru.skillbox.zerone.backend.repository.*;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +43,9 @@ public class NotificationService {
   private final MessageRepository messageRepository;
   private final DialogRepository dialogRepository;
   private final FriendshipRepository friendshipRepository;
+  private final SocketIOServer socketIOServer;
+  private final SocketIORepository socketIORepository;
+  private final SocketIOService socketIOService;
 
   public CommonListResponseDTO<NotificationDTO> getNotifications(
       int offset, int itemPerPage) {
@@ -159,7 +166,7 @@ public class NotificationService {
     List<Friendship> friendships = friendshipRepository
         .findAllBySrcPersonAndStatus(post.getAuthor(), FriendshipStatus.FRIEND);
     List<Notification> notifications = new ArrayList<>();
-    friendships.forEach(fr ->  {
+    friendships.forEach(fr -> {
       notifications.add(Notification.builder()
           .type(POST)
           .person(fr.getDstPerson())
@@ -170,7 +177,7 @@ public class NotificationService {
   }
 
   public void saveComment(Comment comment) {
-    if (comment.getParent() == null) {
+    if (comment.getType().equals(CommentType.POST)) {
       savePostComment(comment);
     } else {
       saveCommentComment(comment);
@@ -178,11 +185,17 @@ public class NotificationService {
   }
 
   private void savePostComment(Comment comment) {
-    notificationRepository.save(Notification.builder()
+    Notification notification = notificationRepository.save(Notification.builder()
         .type(POST_COMMENT)
         .person(comment.getPost().getAuthor())
         .entityId(comment.getId())
         .build());
+    notificationRepository.save(notification);
+
+    var dataDTO = prepareSocketNotificationDataDTO(notification, comment);
+
+    socketIOService.sendEventToPerson(notification.getPerson(),
+        "comment-notification-response", dataDTO);
   }
 
   private void saveCommentComment(Comment comment) {
@@ -201,6 +214,28 @@ public class NotificationService {
           .build());
     });
     notificationRepository.saveAll(notifications);
+
+    notifications.forEach(notification -> {
+      var dataDTO = prepareSocketNotificationDataDTO(notification, comment);
+      socketIOService.sendEventToPerson(
+          notification.getPerson(), "comment-notification-response", dataDTO);
+    });
+  }
+
+  private SocketNotificationDataDTO prepareSocketNotificationDataDTO(
+      Notification notification, Comment comment) {
+    Long parentId = comment.getType().equals(POST) ?
+        comment.getId() : comment.getParent().getId();
+    var dataDTO = SocketNotificationDataDTO.builder()
+        .id(notification.getId())
+        .eventType(notification.getType())
+        .sentTime(notification.getSentTime().toInstant(ZoneOffset.of("Europe/Moscow")))
+        .entityId(comment.getPost().getId())
+        .entityAuthor(userMapper.userToUserDTO(comment.getAuthor()))
+        .parentId(parentId)
+        .currentEntityId(notification.getEntityId())
+        .build();
+    return dataDTO;
   }
 
   public void saveFriendship(User dstPerson, Friendship friendship) {
@@ -212,7 +247,10 @@ public class NotificationService {
     notificationRepository.save(notification);
   }
 
-  public void saveMessage(User dstPerson, Message message) {
+  public void saveMessage(Message message) {
+    var dstPerson = message.getDialog().getRecipient().getId().equals(message.getAuthor().getId()) ?
+        message.getDialog().getSender() :
+        message.getDialog().getRecipient();
     var notification = Notification.builder()
         .type(MESSAGE)
         .person(dstPerson)

@@ -33,6 +33,7 @@ public class DialogService {
   private final MessageMapper messageMapper;
   private final DialogMapper dialogMapper;
   private final SocketIOService socketIOService;
+  private final NotificationService notificationService;
 
   @Transactional
   @SuppressWarnings("SimplifyStreamApiCallChains")
@@ -68,6 +69,8 @@ public class DialogService {
     var message = messageMapper.messageRequestDTOToMessage(messageRequestDTO, dialog);
     messageRepository.save(message);
     socketIOService.sendMessageEvent(message);
+
+    notificationService.saveMessage(message);
 
     var responseData = messageMapper.messageToMessageDataDTO(message);
 
@@ -106,6 +109,8 @@ public class DialogService {
       messageRepository.save(message);
       // отдельный поток нужен?
       socketIOService.sendMessageEvent(message);
+
+      notificationService.saveMessage(message);
 
       var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, message, 0, companion);
 

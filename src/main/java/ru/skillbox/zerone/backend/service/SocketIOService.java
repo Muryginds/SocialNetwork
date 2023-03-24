@@ -15,15 +15,19 @@ import ru.skillbox.zerone.backend.model.dto.socket.request.TypingDataDTO;
 import ru.skillbox.zerone.backend.model.dto.socket.response.SocketListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.socket.response.StartTypingResponseDTO;
 import ru.skillbox.zerone.backend.model.entity.Message;
+import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.ReadStatus;
 import ru.skillbox.zerone.backend.repository.DialogRepository;
 import ru.skillbox.zerone.backend.repository.MessageRepository;
 import ru.skillbox.zerone.backend.repository.SocketIORepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.security.JwtTokenProvider;
+import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -138,6 +142,14 @@ public class SocketIOService {
         companionClient.sendEvent("message", listResponse);
       }
     });
+  }
+
+  public <T> void sendEventToPerson(User person, String event, T dto) {
+    Optional<UUID> optionalUUID = socketIORepository.findSessionByUserId(person.getId());
+    if (optionalUUID.isPresent()) {
+      SocketIOClient client = server.getClient(optionalUUID.get());
+      client.sendEvent(event, dto);
+    }
   }
 
   public void disconnect(SocketIOClient client) {

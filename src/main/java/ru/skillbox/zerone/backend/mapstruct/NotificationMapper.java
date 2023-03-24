@@ -15,7 +15,7 @@ public interface NotificationMapper {
       "java(ru.skillbox.zerone.backend.service.NotificationService.getCurrentEntityId(notification))")
 //  @Mapping(target = "parentEntityId", expression = "java(ru.skillbox.zerone.backend.service.NotificationService.getParentEntityId(notification))")
 //  @Mapping(target = "entityAuthor", expression = "java(ru.skillbox.zerone.backend.service.NotificationService.getEntityAuthorDTO(notification))")
-  NotificationDTO notificationToNotification(Notification notification);
+  NotificationDTO notificationToNotificationDTO(Notification notification);
 
   List<NotificationDTO> notificationsToNotificationDTOs(List<Notification> notifications);
 }
