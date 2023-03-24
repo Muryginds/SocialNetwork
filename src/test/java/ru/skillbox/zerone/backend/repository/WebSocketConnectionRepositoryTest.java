@@ -32,6 +32,7 @@ class WebSocketConnectionRepositoryTest extends AbstractIntegrationTest {
 
   @Test
   void testFindAllByUserId_whenTwoSessionForOneUserExist_thenReturnCorrectResult() {
+    assertFalse(repository.findAllByUserId(firstUserId).isEmpty());
     assertEquals(List.of(firstUserConnectionOne, firstUserConnectionTwo).size(), repository.findAllByUserId(firstUserId).size());
   }
 
