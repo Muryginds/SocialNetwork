@@ -3,8 +3,10 @@ package ru.skillbox.zerone.backend.service;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -42,6 +44,8 @@ public class FriendsService {
   private final RecommendationRepository recommendationRepository;
   private final UserRepository userRepository;
   private final UserMapper userMapper;
+  @Autowired
+  private HttpServletRequest request;
 
   @Transactional
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
@@ -248,13 +252,9 @@ public class FriendsService {
 //    var ip = InetAddress.getLocalHost();
     File database = new File("src/main/resources/GeoIP/GeoLite2-City.mmdb");
     DatabaseReader dbReader = new DatabaseReader.Builder(database).build();
-    CityResponse response = dbReader.city(InetAddress.getByName("5.101.29.255"));
+    CityResponse response = dbReader.city(InetAddress.getByName(getClientIpAddress()));
 
-
-    String countryName = response.getCountry().getName();
     String cityName = response.getCity().getName();
-    String postal = response.getPostal().getCode();
-    String state = response.getLeastSpecificSubdivision().getName();
     System.out.println(cityName);
 
     var user = CurrentUserUtils.getCurrentUser();
@@ -265,6 +265,13 @@ public class FriendsService {
         .perPage(itemPerPage)
         .data(userMapper.usersToUserDTO(recommendations))
         .build();
+  }
+  private String getClientIpAddress() {
+    String ipAddress = request.getHeader("X-FORWARDED-FOR");
+    if (ipAddress == null) {
+      ipAddress = request.getRemoteAddr();
+    }
+    return  ipAddress;
   }
 
   @Scheduled(cron = "0 0 2 * * ?")
