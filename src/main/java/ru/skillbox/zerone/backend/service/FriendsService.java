@@ -252,6 +252,7 @@ public class FriendsService {
 //    var ip = InetAddress.getLocalHost();
     File database = new File("src/main/resources/GeoIP/GeoLite2-City.mmdb");
     DatabaseReader dbReader = new DatabaseReader.Builder(database).build();
+    System.out.println();
     CityResponse response = dbReader.city(InetAddress.getByName(getClientIpAddress()));
 
     String cityName = response.getCity().getName();

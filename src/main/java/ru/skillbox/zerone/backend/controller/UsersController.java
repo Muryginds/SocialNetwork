@@ -30,6 +30,6 @@ public class UsersController {
     return userService.editUserSettings(updateUser);
   }
 
-  @DeleteMapping("/me")
-  public CommonResponseDTO<UserDTO> deleteUser() {return userService.deleteUser();}
+//  @DeleteMapping("/me")
+//  public CommonResponseDTO<UserDTO> deleteUser() {return userService.deleteUser();}
 }
