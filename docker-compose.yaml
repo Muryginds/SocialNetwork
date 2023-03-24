@@ -11,6 +11,8 @@ services:
       - postgres:/data/postgres
     ports:
       - "5432:5432"
+    networks:
+      - postgres
     restart: on-failure:5
 
   frontend:
@@ -36,6 +38,23 @@ services:
     command: java -jar backend.jar
     depends_on:
       - postgres
+    networks:
+      - postgres
+    restart: on-failure:5
+
+  support:
+    container_name: support
+    image: vladimirpanfilov/support
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified
+      SPRING_DATASOURCE_USERNAME: skillbox
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      -  "8083:8083"
+    networks:
+      - postgres
+    depends_on:
+      - backend
     restart: on-failure:5
 
   grafana:
@@ -70,8 +89,20 @@ services:
         aliases:
           - prometheus
     restart: on-failure:5
+  sonarqube:
+    container_name: sonarqube
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    networks:
+      - postgres
+    depends_on:
+      - postgres
+    restart: on-failure:5
+
+networks:
+  postgres:
+  monitoring:
 
 volumes:
   postgres:
-networks:
-  monitoring:

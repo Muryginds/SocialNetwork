@@ -12,6 +12,8 @@ public interface UserMockUtils {
     return User.builder()
         .email(email)
         .password(password)
+        .isApproved(true)
+        .confirmationCode("test")
         .roles(List.of(new Role(1L, USER_ROLE)))
         .build();
   }

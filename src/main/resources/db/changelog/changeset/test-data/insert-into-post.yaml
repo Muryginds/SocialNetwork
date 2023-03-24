@@ -1,16 +1,16 @@
 databaseChangeLog:
 - changeSet:
-    id: 1
+    id: posts
     author: muryginds
     changes:
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Защита информации в компьютерных системах – это область компьютерной
@@ -29,16 +29,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.248
             - column:
                 name: author_id
-                valueNumeric: 13
+                valueNumeric: "13"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Для разработки веб-приложений используется множество языков программирования,
@@ -55,16 +55,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.253
             - column:
                 name: author_id
-                valueNumeric: 87
+                valueNumeric: "87"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Разработка мобильных приложений – это процесс создания приложений
@@ -82,16 +82,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.259
             - column:
                 name: author_id
-                valueNumeric: 82
+                valueNumeric: "82"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Криптовалюты и блокчейн – это технологии, которые позволяют создавать
@@ -110,16 +110,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.263
             - column:
                 name: author_id
-                valueNumeric: 92
+                valueNumeric: "92"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Разработка игр – это процесс создания компьютерных игр. Для разработки
@@ -138,16 +138,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.268
             - column:
                 name: author_id
-                valueNumeric: 1
+                valueNumeric: "1"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Безопасность информации и кибербезопасность – это области, связанные
@@ -165,16 +165,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.614
             - column:
                 name: author_id
-                valueNumeric: 83
+                valueNumeric: "83"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Искусственный интеллект (ИИ) и машинное обучение – это технологии,
@@ -193,16 +193,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.275
             - column:
                 name: author_id
-                valueNumeric: 64
+                valueNumeric: "64"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Разработка веб-приложений – это процесс создания приложений, которые
@@ -221,16 +221,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.28
             - column:
                 name: author_id
-                valueNumeric: 90
+                valueNumeric: "90"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Анализ данных и бизнес-интеллект – это области, связанные с обработкой,
@@ -248,16 +248,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.618
             - column:
                 name: author_id
-                valueNumeric: 7
+                valueNumeric: "7"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Разработка программного обеспечения – это процесс создания программного
@@ -275,16 +275,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.622
             - column:
                 name: author_id
-                valueNumeric: 30
+                valueNumeric: "30"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Автоматизация тестирования программного обеспечения – это процесс
@@ -302,16 +302,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.285
             - column:
                 name: author_id
-                valueNumeric: 27
+                valueNumeric: "27"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Блокчейн – это распределенная база данных, которая используется
@@ -329,16 +329,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.291
             - column:
                 name: author_id
-                valueNumeric: 71
+                valueNumeric: "71"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Разработка мобильных приложений – это процесс создания приложений
@@ -356,16 +356,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.297
             - column:
                 name: author_id
-                valueNumeric: 43
+                valueNumeric: "43"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Интернет вещей – это концепция, согласно которой все устройства,
@@ -384,16 +384,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.302
             - column:
                 name: author_id
-                valueNumeric: 20
+                valueNumeric: "20"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Облачные технологии – это технологии, которые позволяют хранить,
@@ -411,16 +411,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.306
             - column:
                 name: author_id
-                valueNumeric: 92
+                valueNumeric: "92"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Анализ данных – это процесс извлечения полезной информации из данных.
@@ -438,16 +438,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.316
             - column:
                 name: author_id
-                valueNumeric: 29
+                valueNumeric: "29"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Разработка игр – это процесс создания компьютерных игр, который
@@ -466,16 +466,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.436
             - column:
                 name: author_id
-                valueNumeric: 82
+                valueNumeric: "82"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Искусственный интеллект – это область компьютерной науки, которая
@@ -494,16 +494,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.312
             - column:
                 name: author_id
-                valueNumeric: 100
+                valueNumeric: "100"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Кибербезопасность – это защита компьютерных систем, сетей и данных
@@ -521,16 +521,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.321
             - column:
                 name: author_id
-                valueNumeric: 17
+                valueNumeric: "17"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Искусственный интеллект – это технология, которая позволяет компьютерным
@@ -549,16 +549,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.405
             - column:
                 name: author_id
-                valueNumeric: 54
+                valueNumeric: "54"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Веб-скрейпинг - это процесс извлечения данных с веб-сайтов. В этом
@@ -575,16 +575,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.492
             - column:
                 name: author_id
-                valueNumeric: 93
+                valueNumeric: "93"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Искусственный интеллект и машинное обучение - это технологии, которые
@@ -603,16 +603,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.542
             - column:
                 name: author_id
-                valueNumeric: 12
+                valueNumeric: "12"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Интернет вещей – это сеть физических объектов, в которую встроены
@@ -631,16 +631,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.339
             - column:
                 name: author_id
-                valueNumeric: 15
+                valueNumeric: "15"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Архитектура компьютеров – это общая структура и организация компьютерных
@@ -659,16 +659,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.345
             - column:
                 name: author_id
-                valueNumeric: 38
+                valueNumeric: "38"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Разработка игр – это процесс создания компьютерных игр для различных
@@ -686,16 +686,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.326
             - column:
                 name: author_id
-                valueNumeric: 64
+                valueNumeric: "64"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Робототехника – это область инженерии, которая занимается проектированием,
@@ -713,16 +713,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.33
             - column:
                 name: author_id
-                valueNumeric: 77
+                valueNumeric: "77"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Сетевые технологии – это технологии, которые позволяют различным
@@ -740,16 +740,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.351
             - column:
                 name: author_id
-                valueNumeric: 6
+                valueNumeric: "6"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Информационные системы – это системы, которые используются для
@@ -767,16 +767,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.357
             - column:
                 name: author_id
-                valueNumeric: 41
+                valueNumeric: "41"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Python - один из самых популярных языков программирования в мире.
@@ -795,16 +795,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.586
             - column:
                 name: author_id
-                valueNumeric: 57
+                valueNumeric: "57"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Telegram - это популярный мессенджер со множеством возможностей.
@@ -821,16 +821,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.638
             - column:
                 name: author_id
-                valueNumeric: 70
+                valueNumeric: "70"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Большие данные – это огромные объемы структурированных и неструктурированных
@@ -849,16 +849,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.335
             - column:
                 name: author_id
-                valueNumeric: 31
+                valueNumeric: "31"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Виртуальная реальность – это технология, которая позволяет пользователю
@@ -877,16 +877,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.362
             - column:
                 name: author_id
-                valueNumeric: 26
+                valueNumeric: "26"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Машинное обучение – это область искусственного интеллекта, которая
@@ -905,16 +905,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.366
             - column:
                 name: author_id
-                valueNumeric: 91
+                valueNumeric: "91"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Создание онлайн-курсов становится все более популярным, и есть
@@ -933,16 +933,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.819
             - column:
                 name: author_id
-                valueNumeric: 29
+                valueNumeric: "29"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Криптография – это наука, которая занимается защитой информации
@@ -961,16 +961,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.379
             - column:
                 name: author_id
-                valueNumeric: 66
+                valueNumeric: "66"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Интернет вещей – это технология, которая позволяет объектам физического
@@ -988,16 +988,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.385
             - column:
                 name: author_id
-                valueNumeric: 52
+                valueNumeric: "52"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Облачные технологии – это технологии, которые позволяют использовать
@@ -1015,16 +1015,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.39
             - column:
                 name: author_id
-                valueNumeric: 54
+                valueNumeric: "54"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Графический дизайн – это процесс создания графических элементов
@@ -1042,16 +1042,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.394
             - column:
                 name: author_id
-                valueNumeric: 4
+                valueNumeric: "4"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Большие данные – это огромные объемы данных, которые невозможно
@@ -1068,16 +1068,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.398
             - column:
                 name: author_id
-                valueNumeric: 1
+                valueNumeric: "1"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Распределенные системы – это сеть компьютеров, которые работают
@@ -1095,16 +1095,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.401
             - column:
                 name: author_id
-                valueNumeric: 80
+                valueNumeric: "80"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Машинное обучение – это область искусственного интеллекта, которая
@@ -1124,16 +1124,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.635
             - column:
                 name: author_id
-                valueNumeric: 60
+                valueNumeric: "60"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Квантовые вычисления – это новый тип вычислений, которые основаны
@@ -1151,16 +1151,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.423
             - column:
                 name: author_id
-                valueNumeric: 43
+                valueNumeric: "43"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Криптография – это наука, которая занимается защитой информации
@@ -1178,16 +1178,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.411
             - column:
                 name: author_id
-                valueNumeric: 65
+                valueNumeric: "65"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Информационная безопасность – это состояние, при котором информация
@@ -1205,16 +1205,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.415
             - column:
                 name: author_id
-                valueNumeric: 47
+                valueNumeric: "47"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Робототехника – это наука, которая занимается созданием роботов
@@ -1232,16 +1232,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.418
             - column:
                 name: author_id
-                valueNumeric: 33
+                valueNumeric: "33"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Интернет вещей – это сеть объектов, которые обмениваются данными
@@ -1259,16 +1259,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.432
             - column:
                 name: author_id
-                valueNumeric: 63
+                valueNumeric: "63"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Виртуализация – это технология, которая позволяет создавать виртуальные
@@ -1287,16 +1287,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.627
             - column:
                 name: author_id
-                valueNumeric: 58
+                valueNumeric: "58"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Большие данные – это наборы данных, которые имеют большой объем,
@@ -1314,16 +1314,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.428
             - column:
                 name: author_id
-                valueNumeric: 78
+                valueNumeric: "78"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Графический дизайн – это процесс создания графических элементов,
@@ -1341,16 +1341,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.631
             - column:
                 name: author_id
-                valueNumeric: 21
+                valueNumeric: "21"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Кибербезопасность – это область информационной безопасности, которая
@@ -1368,16 +1368,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.446
             - column:
                 name: author_id
-                valueNumeric: 93
+                valueNumeric: "93"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: "Are you planning to learn a new programming language this year?\
@@ -1398,16 +1398,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.451
             - column:
                 name: author_id
-                valueNumeric: 38
+                valueNumeric: "38"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Блокчейн – это децентрализованная технология, которая используется
@@ -1425,16 +1425,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.441
             - column:
                 name: author_id
-                valueNumeric: 96
+                valueNumeric: "96"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Chatbots are becoming increasingly popular in customer service
@@ -1452,16 +1452,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.455
             - column:
                 name: author_id
-                valueNumeric: 88
+                valueNumeric: "88"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Test-driven development (TDD) is a software development methodology
@@ -1479,16 +1479,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.46
             - column:
                 name: author_id
-                valueNumeric: 87
+                valueNumeric: "87"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Data science is a rapidly growing field that involves using statistical
@@ -1509,16 +1509,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.464
             - column:
                 name: author_id
-                valueNumeric: 86
+                valueNumeric: "86"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Writing high-quality code is essential for building maintainable
@@ -1536,16 +1536,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.468
             - column:
                 name: author_id
-                valueNumeric: 54
+                valueNumeric: "54"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: RESTful API - это веб-сервис, который следует архитектурному стилю
@@ -1563,16 +1563,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.482
             - column:
                 name: author_id
-                valueNumeric: 9
+                valueNumeric: "9"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: DevOps - это методология разработки программного обеспечения, которая
@@ -1590,16 +1590,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.486
             - column:
                 name: author_id
-                valueNumeric: 85
+                valueNumeric: "85"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Docker - это платформа контейнеризации, которая позволяет разработчикам
@@ -1617,16 +1617,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.472
             - column:
                 name: author_id
-                valueNumeric: 35
+                valueNumeric: "35"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Блокчейн - это технология распределенных реестров, которая лежит
@@ -1644,16 +1644,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.478
             - column:
                 name: author_id
-                valueNumeric: 39
+                valueNumeric: "39"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Искусственный интеллект (ИИ) – это область компьютерной науки,
@@ -1672,16 +1672,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.497
             - column:
                 name: author_id
-                valueNumeric: 87
+                valueNumeric: "87"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Разработка мобильных приложений является одной из наиболее востребованных
@@ -1699,16 +1699,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.503
             - column:
                 name: author_id
-                valueNumeric: 45
+                valueNumeric: "45"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: В современном мире огромное количество данных генерируется каждую
@@ -1726,16 +1726,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.511
             - column:
                 name: author_id
-                valueNumeric: 9
+                valueNumeric: "9"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Выбор языка программирования для начинающих может быть сложным,
@@ -1754,16 +1754,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.517
             - column:
                 name: author_id
-                valueNumeric: 89
+                valueNumeric: "89"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Кластеризация в машинном обучении - это задача разбиения объектов
@@ -1782,16 +1782,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.524
             - column:
                 name: author_id
-                valueNumeric: 3
+                valueNumeric: "3"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Рекуррентные нейронные сети (RNN) - это класс нейронных сетей,
@@ -1809,16 +1809,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.529
             - column:
                 name: author_id
-                valueNumeric: 50
+                valueNumeric: "50"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Сверточные нейронные сети (CNN) - это класс нейронных сетей, которые
@@ -1836,16 +1836,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.533
             - column:
                 name: author_id
-                valueNumeric: 76
+                valueNumeric: "76"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Рекомендательная система - это система, которая предлагает пользователям
@@ -1863,16 +1863,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.537
             - column:
                 name: author_id
-                valueNumeric: 33
+                valueNumeric: "33"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Обучение нейронной сети - это процесс настройки параметров сети
@@ -1889,16 +1889,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.815
             - column:
                 name: author_id
-                valueNumeric: 20
+                valueNumeric: "20"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Интернет-технологии продолжают активно развиваться, создавая новые
@@ -1918,16 +1918,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.546
             - column:
                 name: author_id
-                valueNumeric: 51
+                valueNumeric: "51"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Разработка мобильных приложений - это одна из самых популярных
@@ -1946,16 +1946,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.551
             - column:
                 name: author_id
-                valueNumeric: 26
+                valueNumeric: "26"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Современный бизнес невозможно представить без использования IT-технологий.
@@ -1973,16 +1973,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.556
             - column:
                 name: author_id
-                valueNumeric: 74
+                valueNumeric: "74"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Выбор языка программирования может быть сложным, особенно если
@@ -2001,16 +2001,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.563
             - column:
                 name: author_id
-                valueNumeric: 28
+                valueNumeric: "28"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: DevOps - это методология разработки программного обеспечения, объединяющая
@@ -2030,16 +2030,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.568
             - column:
                 name: author_id
-                valueNumeric: 62
+                valueNumeric: "62"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Адаптивный веб-дизайн - это подход к созданию веб-сайтов, который
@@ -2057,16 +2057,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.573
             - column:
                 name: author_id
-                valueNumeric: 41
+                valueNumeric: "41"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Машинное обучение - это область искусственного интеллекта, которая
@@ -2085,16 +2085,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.578
             - column:
                 name: author_id
-                valueNumeric: 19
+                valueNumeric: "19"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Создание своего блога может быть очень веселым и увлекательным
@@ -2113,16 +2113,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.582
             - column:
                 name: author_id
-                valueNumeric: 53
+                valueNumeric: "53"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Node.js - это среда выполнения JavaScript, которая позволяет разрабатывать
@@ -2141,16 +2141,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.59
             - column:
                 name: author_id
-                valueNumeric: 90
+                valueNumeric: "90"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Android - это самая популярная мобильная платформа в мире. В этой
@@ -2169,16 +2169,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.594
             - column:
                 name: author_id
-                valueNumeric: 34
+                valueNumeric: "34"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: 'Машинное обучение является одной из наиболее популярных областей
@@ -2197,16 +2197,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.598
             - column:
                 name: author_id
-                valueNumeric: 45
+                valueNumeric: "45"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: HTML и CSS - это основы фронтенд-разработки, и, возможно, самые
@@ -2224,16 +2224,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.602
             - column:
                 name: author_id
-                valueNumeric: 58
+                valueNumeric: "58"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Pygame - это библиотека для разработки игр на Python. В этой статье
@@ -2251,16 +2251,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.605
             - column:
                 name: author_id
-                valueNumeric: 58
+                valueNumeric: "58"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Express.js - это популярный фреймворк для создания веб-приложений
@@ -2278,16 +2278,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.61
             - column:
                 name: author_id
-                valueNumeric: 70
+                valueNumeric: "70"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Выбрать язык программирования может быть сложно, особенно для начинающих.
@@ -2308,16 +2308,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.643
             - column:
                 name: author_id
-                valueNumeric: 35
+                valueNumeric: "35"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Алгоритм - это последовательность инструкций, которые выполняют
@@ -2338,16 +2338,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.651
             - column:
                 name: author_id
-                valueNumeric: 81
+                valueNumeric: "81"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Программирование - отрасль, которая постоянно развивается и изменяется.
@@ -2368,16 +2368,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.655
             - column:
                 name: author_id
-                valueNumeric: 46
+                valueNumeric: "46"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Алгоритмизация и программирование - основы информационных технологий.
@@ -2398,16 +2398,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.659
             - column:
                 name: author_id
-                valueNumeric: 47
+                valueNumeric: "47"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Git - это система контроля версий, которая позволяет программистам
@@ -2427,16 +2427,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.663
             - column:
                 name: author_id
-                valueNumeric: 77
+                valueNumeric: "77"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: MySQL – это одна из самых популярных реляционных СУБД, используемых
@@ -2455,16 +2455,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.668
             - column:
                 name: author_id
-                valueNumeric: 83
+                valueNumeric: "83"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: RESTful API – это способ организации взаимодействия между клиентом
@@ -2483,16 +2483,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.672
             - column:
                 name: author_id
-                valueNumeric: 89
+                valueNumeric: "89"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Объектно-ориентированное программирование (ООП) - это методология
@@ -2513,16 +2513,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.646
             - column:
                 name: author_id
-                valueNumeric: 90
+                valueNumeric: "90"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Если вы разрабатываете приложение на Python и заботитесь о его
@@ -2540,16 +2540,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.71
             - column:
                 name: author_id
-                valueNumeric: 58
+                valueNumeric: "58"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Docker – это инструмент для создания, развертывания и управления
@@ -2568,16 +2568,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.684
             - column:
                 name: author_id
-                valueNumeric: 58
+                valueNumeric: "58"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Хороший пользовательский интерфейс - это один из главных факторов
@@ -2595,16 +2595,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.714
             - column:
                 name: author_id
-                valueNumeric: 30
+                valueNumeric: "30"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Создание собственного блога - отличный способ поделиться своими
@@ -2623,16 +2623,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.718
             - column:
                 name: author_id
-                valueNumeric: 86
+                valueNumeric: "86"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Git - это одна из самых популярных систем контроля версий для разработки
@@ -2650,16 +2650,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.722
             - column:
                 name: author_id
-                valueNumeric: 96
+                valueNumeric: "96"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: В этой статье мы расскажем, как создать свой блог с нуля. Сначала
@@ -2677,16 +2677,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.688
             - column:
                 name: author_id
-                valueNumeric: 26
+                valueNumeric: "26"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Резервное копирование данных – это важный процесс, который помогает
@@ -2704,16 +2704,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.693
             - column:
                 name: author_id
-                valueNumeric: 13
+                valueNumeric: "13"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Защита компьютера от вирусов – важный аспект безопасности в современном
@@ -2731,16 +2731,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.696
             - column:
                 name: author_id
-                valueNumeric: 17
+                valueNumeric: "17"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Облачные технологии – это новый тренд в мире информационных технологий,
@@ -2758,16 +2758,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.701
             - column:
                 name: author_id
-                valueNumeric: 69
+                valueNumeric: "69"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Искусственный интеллект – это технология, которая позволяет компьютерам
@@ -2785,16 +2785,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.705
             - column:
                 name: author_id
-                valueNumeric: 57
+                valueNumeric: "57"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Программирование – это умение создавать программное обеспечение.
@@ -2811,16 +2811,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.835
             - column:
                 name: author_id
-                valueNumeric: 67
+                valueNumeric: "67"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Алгоритм – это последовательность действий, необходимых для решения
@@ -2837,16 +2837,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.731
             - column:
                 name: author_id
-                valueNumeric: 55
+                valueNumeric: "55"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Искусственный интеллект – это область компьютерных наук, изучающая,
@@ -2864,16 +2864,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.735
             - column:
                 name: author_id
-                valueNumeric: 98
+                valueNumeric: "98"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Существует множество языков программирования, и выбор подходящего
@@ -2890,16 +2890,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.739
             - column:
                 name: author_id
-                valueNumeric: 51
+                valueNumeric: "51"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: База данных – это организованная коллекция данных, которые могут
@@ -2917,16 +2917,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.743
             - column:
                 name: author_id
-                valueNumeric: 95
+                valueNumeric: "95"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Если вы хотите попробовать Linux, но не знаете, с чего начать,
@@ -2944,16 +2944,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.747
             - column:
                 name: author_id
-                valueNumeric: 3
+                valueNumeric: "3"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: В этом посте я расскажу, какие угрозы могут подстерегать ваш компьютер,
@@ -2971,16 +2971,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.755
             - column:
                 name: author_id
-                valueNumeric: 32
+                valueNumeric: "32"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Блокчейн - это технология, которая позволяет создавать безопасные,
@@ -2998,16 +2998,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.761
             - column:
                 name: author_id
-                valueNumeric: 93
+                valueNumeric: "93"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Существует множество способов ускорить работу веб-приложения. Один
@@ -3023,16 +3023,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.765
             - column:
                 name: author_id
-                valueNumeric: 65
+                valueNumeric: "65"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Искусственный интеллект может значительно улучшить диагностику
@@ -3049,16 +3049,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.769
             - column:
                 name: author_id
-                valueNumeric: 20
+                valueNumeric: "20"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Современные технологии позволяют создавать автомобили, обладающие
@@ -3075,16 +3075,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.774
             - column:
                 name: author_id
-                valueNumeric: 34
+                valueNumeric: "34"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Блокчейн-технологии могут быть использованы в бизнесе для обеспечения
@@ -3101,16 +3101,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.778
             - column:
                 name: author_id
-                valueNumeric: 53
+                valueNumeric: "53"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Разработка мобильных приложений для iOS и Android имеет свои особенности
@@ -3127,16 +3127,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.782
             - column:
                 name: author_id
-                valueNumeric: 91
+                valueNumeric: "91"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Виртуализация — это технология, которая позволяет использовать
@@ -3153,16 +3153,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.79
             - column:
                 name: author_id
-                valueNumeric: 20
+                valueNumeric: "20"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Машинное обучение — это раздел искусственного интеллекта, изучающий
@@ -3183,16 +3183,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.794
             - column:
                 name: author_id
-                valueNumeric: 95
+                valueNumeric: "95"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Языки программирования - это средства, используемые программистами
@@ -3211,16 +3211,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.798
             - column:
                 name: author_id
-                valueNumeric: 13
+                valueNumeric: "13"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Блокчейн - это технология распределенных баз данных, которая используется
@@ -3240,16 +3240,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.802
             - column:
                 name: author_id
-                valueNumeric: 36
+                valueNumeric: "36"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Создание сайта может быть сложным процессом, особенно если у вас
@@ -3268,16 +3268,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.807
             - column:
                 name: author_id
-                valueNumeric: 99
+                valueNumeric: "99"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: В этой статье мы расскажем о том, как разработать приложение для
@@ -3294,16 +3294,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.848
             - column:
                 name: author_id
-                valueNumeric: 41
+                valueNumeric: "41"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: В этой статье мы расскажем о 5 лучших фреймворках для разработки
@@ -3320,16 +3320,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.853
             - column:
                 name: author_id
-                valueNumeric: 16
+                valueNumeric: "16"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: В этой статье мы расскажем о том, как защитить веб-приложение от
@@ -3346,16 +3346,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.862
             - column:
                 name: author_id
-                valueNumeric: 67
+                valueNumeric: "67"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Регулярные физические упражнения не только полезны для физического
@@ -3375,16 +3375,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.885
             - column:
                 name: author_id
-                valueNumeric: 24
+                valueNumeric: "24"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: В цифровую эпоху кибербезопасность становится все более важной.
@@ -3403,16 +3403,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.895
             - column:
                 name: author_id
-                valueNumeric: 73
+                valueNumeric: "73"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Выбор интегрированной среды разработки (IDE) является важным этапом
@@ -3430,16 +3430,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.909
             - column:
                 name: author_id
-                valueNumeric: 99
+                valueNumeric: "99"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: VPN-сервер может помочь обеспечить безопасность и конфиденциальность
@@ -3457,16 +3457,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.913
             - column:
                 name: author_id
-                valueNumeric: 100
+                valueNumeric: "100"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Машинное обучение – одна из наиболее перспективных и востребованных
@@ -3484,16 +3484,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.918
             - column:
                 name: author_id
-                valueNumeric: 27
+                valueNumeric: "27"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Git является одной из самых популярных систем управления версиями.
@@ -3511,16 +3511,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.922
             - column:
                 name: author_id
-                valueNumeric: 85
+                valueNumeric: "85"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Python является одним из самых популярных языков программирования
@@ -3538,16 +3538,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.928
             - column:
                 name: author_id
-                valueNumeric: 87
+                valueNumeric: "87"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Фриланс в IT-индустрии становится все популярнее среди людей, которые
@@ -3565,16 +3565,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.932
             - column:
                 name: author_id
-                valueNumeric: 13
+                valueNumeric: "13"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Производительность веб-приложения играет ключевую роль в его успехе.
@@ -3591,16 +3591,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.935
             - column:
                 name: author_id
-                valueNumeric: 59
+                valueNumeric: "59"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Flask – это легковесный фреймворк для создания веб-приложений на
@@ -3618,16 +3618,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.679
             - column:
                 name: author_id
-                valueNumeric: 70
+                valueNumeric: "70"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Игры на ПК — это одно из самых любимых развлечений многих людей.
@@ -3645,16 +3645,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.939
             - column:
                 name: author_id
-                valueNumeric: 55
+                valueNumeric: "55"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Если вы являетесь фанатом компьютерных игр, то наверняка интересуетесь
@@ -3671,16 +3671,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.944
             - column:
                 name: author_id
-                valueNumeric: 9
+                valueNumeric: "9"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Если вы хотите установить Windows 10 на свой компьютер, то есть
@@ -3697,16 +3697,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.948
             - column:
                 name: author_id
-                valueNumeric: 96
+                valueNumeric: "96"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Многие люди предпочитают работать на компьютерах Mac из-за их удобства
@@ -3724,16 +3724,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.952
             - column:
                 name: author_id
-                valueNumeric: 33
+                valueNumeric: "33"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Видео-блогинг стал очень популярным за последнее время, и многие
@@ -3751,16 +3751,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.955
             - column:
                 name: author_id
-                valueNumeric: 87
+                valueNumeric: "87"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: В настоящее время многие люди работают из дома, что может быть
@@ -3779,16 +3779,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.961
             - column:
                 name: author_id
-                valueNumeric: 11
+                valueNumeric: "11"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Блокчейн - это технология, которая позволяет создавать цифровые
@@ -3808,16 +3808,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.97
             - column:
                 name: author_id
-                valueNumeric: 29
+                valueNumeric: "29"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Python - это интерпретируемый язык программирования, который широко
@@ -3837,16 +3837,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.974
             - column:
                 name: author_id
-                valueNumeric: 12
+                valueNumeric: "12"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Технологии продолжают развиваться со сверхъестественной скоростью,
@@ -3865,16 +3865,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.978
             - column:
                 name: author_id
-                valueNumeric: 3
+                valueNumeric: "3"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Быстрая загрузка сайта - один из важнейших факторов, который влияет
@@ -3893,16 +3893,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.982
             - column:
                 name: author_id
-                valueNumeric: 14
+                valueNumeric: "14"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Выбор лучшего веб-хостинга для своего сайта может быть сложным
@@ -3921,16 +3921,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.985
             - column:
                 name: author_id
-                valueNumeric: 56
+                valueNumeric: "56"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Python — один из самых популярных языков программирования в научных
@@ -3948,16 +3948,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.988
             - column:
                 name: author_id
-                valueNumeric: 48
+                valueNumeric: "48"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Если вы работаете с Python и хотите улучшить производительность
@@ -3976,16 +3976,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.726
             - column:
                 name: author_id
-                valueNumeric: 71
+                valueNumeric: "71"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Python — мощный язык программирования для анализа данных, и для
@@ -4003,16 +4003,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.997
             - column:
                 name: author_id
-                valueNumeric: 9
+                valueNumeric: "9"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Nginx — популярный веб-сервер, используемый для обслуживания многих
@@ -4029,16 +4029,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.001
             - column:
                 name: author_id
-                valueNumeric: 91
+                valueNumeric: "91"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Python — один из самых популярных языков программирования для веб-разработки,
@@ -4056,16 +4056,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.005
             - column:
                 name: author_id
-                valueNumeric: 3
+                valueNumeric: "3"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Если вы хотите стать разработчиком, то рано или поздно придется
@@ -4084,16 +4084,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.011
             - column:
                 name: author_id
-                valueNumeric: 44
+                valueNumeric: "44"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Быть программистом - это не просто работа, это образ жизни. Если
@@ -4112,16 +4112,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.016
             - column:
                 name: author_id
-                valueNumeric: 10
+                valueNumeric: "10"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Хостинг - это то место, где ваш сайт будет размещаться в интернете.
@@ -4140,16 +4140,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.025
             - column:
                 name: author_id
-                valueNumeric: 83
+                valueNumeric: "83"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Новые технологии меняют мир авиации. Современные самолеты оснащены
@@ -4169,16 +4169,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.028
             - column:
                 name: author_id
-                valueNumeric: 14
+                valueNumeric: "14"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Искусственный интеллект - это не просто технология будущего, а
@@ -4197,16 +4197,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.033
             - column:
                 name: author_id
-                valueNumeric: 5
+                valueNumeric: "5"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: 'Выбор ноутбука - это ответственный шаг, который зависит от многих
@@ -4225,16 +4225,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.036
             - column:
                 name: author_id
-                valueNumeric: 57
+                valueNumeric: "57"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Создание своего собственного сайта - это возможность не только
@@ -4253,16 +4253,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.041
             - column:
                 name: author_id
-                valueNumeric: 58
+                valueNumeric: "58"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Если вы только начали изучать программирование, может показаться,
@@ -4280,16 +4280,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.045
             - column:
                 name: author_id
-                valueNumeric: 34
+                valueNumeric: "34"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Мир программирования постоянно меняется, и каждый год появляются
@@ -4306,16 +4306,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.049
             - column:
                 name: author_id
-                valueNumeric: 54
+                valueNumeric: "54"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Выбор языка программирования может показаться сложным заданием,
@@ -4332,16 +4332,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.053
             - column:
                 name: author_id
-                valueNumeric: 96
+                valueNumeric: "96"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Python - один из самых популярных языков программирования в мире.
@@ -4358,16 +4358,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.057
             - column:
                 name: author_id
-                valueNumeric: 32
+                valueNumeric: "32"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Работа программистом может быть очень интересной и высокооплачиваемой,
@@ -4384,16 +4384,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.06
             - column:
                 name: author_id
-                valueNumeric: 82
+                valueNumeric: "82"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Если вы хотите научиться программировать, но не знаете, с чего
@@ -4411,16 +4411,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.064
             - column:
                 name: author_id
-                valueNumeric: 29
+                valueNumeric: "29"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: WordPress – это отличная платформа для создания интернет-магазинов.
@@ -4437,16 +4437,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.072
             - column:
                 name: author_id
-                valueNumeric: 71
+                valueNumeric: "71"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Фриланс – это отличный способ заработать деньги в веб-разработке.
@@ -4463,16 +4463,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.076
             - column:
                 name: author_id
-                valueNumeric: 73
+                valueNumeric: "73"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Фреймворки – это отличный инструмент для разработки веб-приложений.
@@ -4490,16 +4490,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.082
             - column:
                 name: author_id
-                valueNumeric: 26
+                valueNumeric: "26"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: "Криптовалюта – это цифровые деньги, которые используются для о\
@@ -4527,16 +4527,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.085
             - column:
                 name: author_id
-                valueNumeric: 61
+                valueNumeric: "61"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: "Существует несколько способов заработка на криптовалюте: \r\n\
@@ -4559,16 +4559,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.088
             - column:
                 name: author_id
-                valueNumeric: 94
+                valueNumeric: "94"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Начать программировать может быть непросто, но с этими десятью
@@ -4586,16 +4586,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.096
             - column:
                 name: author_id
-                valueNumeric: 58
+                valueNumeric: "58"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Настройка среды разработки является важным шагом при работе с Python.
@@ -4613,16 +4613,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.1
             - column:
                 name: author_id
-                valueNumeric: 61
+                valueNumeric: "61"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: REST API - это способ передачи данных между сервером и клиентом,
@@ -4640,16 +4640,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.104
             - column:
                 name: author_id
-                valueNumeric: 92
+                valueNumeric: "92"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: JavaScript - это язык программирования, который широко используется
@@ -4667,16 +4667,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.109
             - column:
                 name: author_id
-                valueNumeric: 61
+                valueNumeric: "61"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Разработка веб-сайтов - это интересная и перспективная область,
@@ -4693,16 +4693,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.113
             - column:
                 name: author_id
-                valueNumeric: 93
+                valueNumeric: "93"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Хотите узнать, на какой операционной системе работает сайт? Это
@@ -4719,16 +4719,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.116
             - column:
                 name: author_id
-                valueNumeric: 18
+                valueNumeric: "18"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Написание текстов - это отличный способ заработка в интернете.
@@ -4745,16 +4745,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.119
             - column:
                 name: author_id
-                valueNumeric: 56
+                valueNumeric: "56"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Машинное обучение – это подход к разработке и применению алгоритмов,
@@ -4773,16 +4773,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.24
             - column:
                 name: author_id
-                valueNumeric: 12
+                valueNumeric: "12"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Искусственный интеллект (ИИ) – это область компьютерной науки,
@@ -4803,16 +4803,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.255
             - column:
                 name: author_id
-                valueNumeric: 21
+                valueNumeric: "21"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Разработка программного обеспечения – это процесс создания компьютерных
@@ -4830,16 +4830,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.37
             - column:
                 name: author_id
-                valueNumeric: 27
+                valueNumeric: "27"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Производительность сайта имеет большое значение для пользователей
@@ -4856,16 +4856,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.123
             - column:
                 name: author_id
-                valueNumeric: 95
+                valueNumeric: "95"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Личный блог - это отличный способ поделиться своими мыслями и идеями,
@@ -4882,16 +4882,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.127
             - column:
                 name: author_id
-                valueNumeric: 95
+                valueNumeric: "95"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Многие люди испытывают трудности с управлением своим временем и
@@ -4909,16 +4909,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.13
             - column:
                 name: author_id
-                valueNumeric: 91
+                valueNumeric: "91"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Изучение иностранных языков - это не только увлекательно, но и
@@ -4935,16 +4935,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.133
             - column:
                 name: author_id
-                valueNumeric: 52
+                valueNumeric: "52"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Блокчейн - это распределенная база данных, которая используется
@@ -4963,16 +4963,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.824
             - column:
                 name: author_id
-                valueNumeric: 30
+                valueNumeric: "30"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Искусственный интеллект - это одна из самых востребованных областей
@@ -4992,16 +4992,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.829
             - column:
                 name: author_id
-                valueNumeric: 30
+                valueNumeric: "30"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Искусственный интеллект - это сфера компьютерной науки, которая
@@ -5019,16 +5019,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.751
             - column:
                 name: author_id
-                valueNumeric: 95
+                valueNumeric: "95"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: 'Если вы только начинаете изучать программирование, то один из
@@ -5047,16 +5047,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.785
             - column:
                 name: author_id
-                valueNumeric: 39
+                valueNumeric: "39"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Работа в современном мире невозможна без компьютера, и особенно
@@ -5080,16 +5080,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.811
             - column:
                 name: author_id
-                valueNumeric: 11
+                valueNumeric: "11"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Игровые наушники – это не только звук, но и комфорт, ведь играете
@@ -5111,16 +5111,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.84
             - column:
                 name: author_id
-                valueNumeric: 75
+                valueNumeric: "75"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: В этой статье мы рассмотрим несколько способов улучшения производительности
@@ -5137,16 +5137,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.845
             - column:
                 name: author_id
-                valueNumeric: 84
+                valueNumeric: "84"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: В этой статье мы расскажем о том, как выбрать правильный язык программирования
@@ -5164,16 +5164,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.858
             - column:
                 name: author_id
-                valueNumeric: 84
+                valueNumeric: "84"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Python - один из наиболее популярных языков программирования, используемый
@@ -5198,16 +5198,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.866
             - column:
                 name: author_id
-                valueNumeric: 44
+                valueNumeric: "44"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Java - это объектно-ориентированный язык программирования, который
@@ -5233,16 +5233,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.87
             - column:
                 name: author_id
-                valueNumeric: 47
+                valueNumeric: "47"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: В индустрии IT произошел новый технологический прорыв, который
@@ -5266,16 +5266,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.875
             - column:
                 name: author_id
-                valueNumeric: 50
+                valueNumeric: "50"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Облачные технологии являются одним из ключевых инструментов для
@@ -5301,16 +5301,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.881
             - column:
                 name: author_id
-                valueNumeric: 46
+                valueNumeric: "46"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Виртуальная реальность (VR) имеет большой потенциал в образовании,
@@ -5329,16 +5329,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.89
             - column:
                 name: author_id
-                valueNumeric: 28
+                valueNumeric: "28"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Собеседование на должность разработчика может быть очень сложным,
@@ -5357,16 +5357,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.899
             - column:
                 name: author_id
-                valueNumeric: 36
+                valueNumeric: "36"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Python – один из наиболее популярных языков программирования на
@@ -5384,16 +5384,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.904
             - column:
                 name: author_id
-                valueNumeric: 87
+                valueNumeric: "87"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Программирование - это процесс создания компьютерных программ,
@@ -5414,16 +5414,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.965
             - column:
                 name: author_id
-                valueNumeric: 92
+                valueNumeric: "92"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Правильный выбор системы управления базами данных (СУБД) может
@@ -5442,16 +5442,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:38.993
             - column:
                 name: author_id
-                valueNumeric: 48
+                valueNumeric: "48"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Создание собственного блога - это отличный способ поделиться своими
@@ -5470,16 +5470,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.021
             - column:
                 name: author_id
-                valueNumeric: 41
+                valueNumeric: "41"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Выбор хостинга для своего сайта – это очень важный шаг. В этом
@@ -5496,16 +5496,16 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.068
             - column:
                 name: author_id
-                valueNumeric: 16
+                valueNumeric: "16"
           tableName: post
       - insert:
           columns:
             - column:
                 name: is_blocked
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: is_deleted
-                valueBoolean: false
+                valueBoolean: "false"
             - column:
                 name: post_text
                 value: Python - это один из наиболее популярных языков программирования
@@ -5524,5 +5524,5 @@ databaseChangeLog:
                 valueDate: 2023-02-19T18:57:39.093
             - column:
                 name: author_id
-                valueNumeric: 2
+                valueNumeric: "2"
           tableName: post

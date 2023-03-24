@@ -1,6 +1,6 @@
 databaseChangeLog:
 - changeSet:
-    id: 1
+    id: users
     author: muryginds
     changes:
     - insert:
@@ -5760,7 +5760,7 @@ databaseChangeLog:
                 value: ACTIVE
           tableName: user
 - changeSet:
-    id: 2
+    id: users-to-roles
     author: muryginds
     changes:
     - insert:

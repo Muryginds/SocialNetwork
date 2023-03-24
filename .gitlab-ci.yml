@@ -6,6 +6,7 @@ image: maven:3.8.7-eclipse-temurin-19
 stages:          # List of stages for jobs, and their order of execution 
   - build
   - test
+  - sonarqube
   - package
   - deploy
 
@@ -36,6 +37,20 @@ test-job:       # This job runs in the test stage, which runs second.
     paths:
       - .m2/repository
       - target
+sonarqube-check:
+    stage:
+        sonarqube
+    tags:
+      - students
+    variables:
+        SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+        GIT_DEPTH: "0"
+    cache:
+        paths:
+            - .sonar/cache
+    script:
+        -  mvn verify sonar:sonar -Dsonar.projectKey=javapro_team34_zerone_backend_AYcJWhGuf3krGjKJWJH6 -Dsonar.login=$SONAR_LOGIN -Dsonar.password=$SONAR_PASSWORD -Dsonar.java.coveragePlugin=jacoco -Dsonar.java.binaries=target/classes
+    allow_failure: true
 
 package-job:       # This job runs in the package stage, which runs third.
   stage: package

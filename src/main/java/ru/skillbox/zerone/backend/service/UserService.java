@@ -1,9 +1,5 @@
 package ru.skillbox.zerone.backend.service;
 
-
-import com.maxmind.geoip2.DatabaseReader;
-import com.maxmind.geoip2.exception.GeoIp2Exception;
-import com.maxmind.geoip2.model.CityResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,24 +10,22 @@ import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
-import ru.skillbox.zerone.backend.model.dto.request.ChangeEmailDTO;
-import ru.skillbox.zerone.backend.model.dto.request.ChangePasswordDTO;
-import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
-import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
+import ru.skillbox.zerone.backend.model.dto.request.*;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.entity.ChangeEmailHistory;
+import ru.skillbox.zerone.backend.model.entity.NotificationSetting;
 import ru.skillbox.zerone.backend.model.entity.User;
+import ru.skillbox.zerone.backend.model.enumerated.NotificationType;
 import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 import ru.skillbox.zerone.backend.repository.ChangeEmailHistoryRepository;
+import ru.skillbox.zerone.backend.repository.NotificationSettingRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.InetAddress;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -43,7 +37,7 @@ public class UserService {
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
   private final MailServiceConfig mailServiceConfig;
-
+  private final NotificationSettingRepository notificationSettingRepository;
 
 
   public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordDTO request) {
@@ -123,8 +117,6 @@ public class UserService {
 
     userRepository.save(user);
 
-
-
     mailService.sendVerificationEmail(
         user.getEmail(),
         verificationUuid.toString(),
@@ -135,7 +127,7 @@ public class UserService {
   }
 
   @Transactional
-  public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) throws IOException, GeoIp2Exception {
+  public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
     var user = userRepository.findUserByEmail(request.getEmail())
         .orElseThrow(() -> new RegistrationCompleteException("Wrong email or key"));
 
@@ -150,7 +142,6 @@ public class UserService {
     user.setIsApproved(true);
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
-
 
     return ResponseUtils.commonResponseDataOk();
   }
@@ -181,10 +172,28 @@ public class UserService {
     return userMapper.userToUserDTO(user);
   }
 
-  public CommonResponseDTO<UserDTO> deleteUser() {
-    var user = CurrentUserUtils.getCurrentUser();
-    user.setIsDeleted(true);
-
-    return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));
+ @Transactional
+  public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationTypeDTO typeDTO) {
+    User user = CurrentUserUtils.getCurrentUser();
+    NotificationType notificationType = NotificationType.valueOf(typeDTO.getType());
+    boolean enabled = typeDTO.getEnable();
+   Optional<NotificationSetting> optionalSetting = notificationSettingRepository.findByUser(user);
+   NotificationSetting setting;
+   if (optionalSetting.isPresent()) {
+     setting = optionalSetting.get();
+   } else {
+     setting = new NotificationSetting();
+     setting.setUser(user);
+   }
+   switch (notificationType) {
+      case POST -> setting.setPostEnabled(enabled);
+      case POST_COMMENT -> setting.setPostCommentEnabled(enabled);
+      case COMMENT_COMMENT -> setting.setCommentCommentEnabled(enabled);
+      case FRIEND_REQUEST -> setting.setFriendRequestEnabled(enabled);
+      case MESSAGE -> setting.setMessagesEnabled(enabled);
+      case FRIEND_BIRTHDAY -> setting.setFriendBirthdayEnabled(enabled);
+    }
+    notificationSettingRepository.save(setting);
+    return ResponseUtils.commonResponseDataOk();
   }
 }

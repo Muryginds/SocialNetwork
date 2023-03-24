@@ -23,5 +23,5 @@ public class Tag {
   @NotNull
   @NotBlank
   @Column(name = "tag")
-  private String tag;
+  private String name;
 }
