@@ -25,7 +25,7 @@
 		<org.postgresql.version>42.5.1</org.postgresql.version>
 		<org.bouncycastle.version>1.72</org.bouncycastle.version>
 		<io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
-		<org.testcontainers.version>1.17.3</org.testcontainers.version>
+		<org.testcontainers.version>1.17.6</org.testcontainers.version>
 		<com.dropbox.core.version>5.4.4</com.dropbox.core.version>
 		<net.logstash.logback.version>7.3</net.logstash.logback.version>
 		<commons-codec.version>1.15</commons-codec.version>
@@ -129,6 +129,12 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>${org.testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>postgresql</artifactId>
