@@ -1,5 +1,8 @@
 package ru.skillbox.zerone.backend.service;
 
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CityResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +27,10 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.*;
 
 import static ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus.*;
@@ -237,7 +244,18 @@ public class FriendsService {
         .build();
   }
 
-  public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage) {
+  public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage) throws IOException, GeoIp2Exception {
+//    var ip = InetAddress.getLocalHost();
+    File database = new File("src/main/resources/GeoIP/GeoLite2-City.mmdb");
+    DatabaseReader dbReader = new DatabaseReader.Builder(database).build();
+    CityResponse response = dbReader.city(InetAddress.getByName("5.101.29.255"));
+
+
+    String countryName = response.getCountry().getName();
+    String cityName = response.getCity().getName();
+    String postal = response.getPostal().getCode();
+    String state = response.getLeastSpecificSubdivision().getName();
+    System.out.println(cityName);
 
     var user = CurrentUserUtils.getCurrentUser();
     var recommendations = userRepository.findUsersByIdIn(recommendationRepository.findByUser(user).getRecommendedFriends());

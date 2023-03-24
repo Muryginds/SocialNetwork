@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
+    url: jdbc:postgresql://localhost:5432/postgres?stringtype=unspecified
     password: password
     username: skillbox
   jpa:

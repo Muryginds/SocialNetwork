@@ -1,5 +1,9 @@
 package ru.skillbox.zerone.backend.service;
 
+
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
+import com.maxmind.geoip2.model.CityResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +29,9 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.InetAddress;
 import java.util.UUID;
 
 @Service
@@ -36,6 +43,7 @@ public class UserService {
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
   private final MailServiceConfig mailServiceConfig;
+
 
 
   public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordDTO request) {
@@ -115,6 +123,8 @@ public class UserService {
 
     userRepository.save(user);
 
+
+
     mailService.sendVerificationEmail(
         user.getEmail(),
         verificationUuid.toString(),
@@ -125,7 +135,7 @@ public class UserService {
   }
 
   @Transactional
-  public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
+  public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) throws IOException, GeoIp2Exception {
     var user = userRepository.findUserByEmail(request.getEmail())
         .orElseThrow(() -> new RegistrationCompleteException("Wrong email or key"));
 
@@ -140,6 +150,7 @@ public class UserService {
     user.setIsApproved(true);
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
+
 
     return ResponseUtils.commonResponseDataOk();
   }

@@ -27,10 +27,10 @@ public class Recommendation {
   private Long id;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", referencedColumnName = "id",
       foreignKey = @ForeignKey(name = "recommendation_user_fk"))
-  User user;
+  private User user;
   @Column(name = "recommended_friends")
   private List<Long> recommendedFriends;
 }
