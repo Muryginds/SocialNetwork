@@ -1,4 +1,4 @@
-package ru.skillbox.zerone.backend.configuration;
+package ru.skillbox.zerone.backend.configuration.properties;
 
 
 import lombok.Getter;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "google-drive")
 @Getter
 @Setter
-public class DriveProperties {
+public class GoogleDriveProperties {
 
   private int port;
   private String authorize;

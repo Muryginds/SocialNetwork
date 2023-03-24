@@ -5,9 +5,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: validate
-    properties:
-      hibernate:
-        format_sql: true
     show-sql: false
   liquibase:
     enabled: true

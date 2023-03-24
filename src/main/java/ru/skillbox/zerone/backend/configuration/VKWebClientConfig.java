@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
+import ru.skillbox.zerone.backend.configuration.properties.VKWebClientProperties;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
