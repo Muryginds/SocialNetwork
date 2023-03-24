@@ -61,17 +61,18 @@ public class SocketIOService {
       return;
     }
     String email = jwtTokenProvider.getUsername(token);
-    var user = userRepository.findUserByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
-    var sessionId = client.getSessionId();
-    WebSocketConnection connection = WebSocketConnection.builder()
-        .userId(user.getId().toString())
-        .sessionId(sessionId)
-        .build();
-    webSocketConnectionRepository.save(connection);
-    user.setLastOnlineTime(LocalDateTime.now());
-    userRepository.save(user);
+    userRepository.findUserByEmail(email).ifPresentOrElse(user -> {
+      var sessionId = client.getSessionId();
+      WebSocketConnection connection = WebSocketConnection.builder()
+          .userId(user.getId().toString())
+          .sessionId(sessionId)
+          .build();
+      webSocketConnectionRepository.save(connection);
+      user.setLastOnlineTime(LocalDateTime.now());
+      userRepository.save(user);
 
-    client.sendEvent(AUTH_RESPONSE_EVENT_TITLE, "ok");
+      client.sendEvent(AUTH_RESPONSE_EVENT_TITLE, "ok");
+    }, () -> client.sendEvent(AUTH_RESPONSE_EVENT_TITLE, "not"));
   }
 
   public void typingEvent(TypingDataDTO data, String type) {
