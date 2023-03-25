@@ -59,7 +59,8 @@ public class SearchService {
         .and((city != null) ? USER.CITY.containsIgnoreCase(city) : noCondition())
         .and((ageFrom != null) ? USER.BIRTH_DATE.lessOrEqual(LocalDate.now().minusYears(ageFrom)) : noCondition())
         .and((ageTo != null) ? USER.BIRTH_DATE.greaterOrEqual(LocalDate.now().minusYears(ageTo)) : noCondition())
-        .and(USER.IS_DELETED.eq(false));
+        .and(USER.IS_DELETED.eq(false))
+        .and(USER.IS_APPROVED.eq(true));
   }
 
   @Transactional
