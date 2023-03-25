@@ -1,0 +1,16 @@
+INSERT INTO tag (id, tag)
+VALUES (1000000, 'Test tag 1'),
+       (2000000, 'Test tag 2'),
+       (3000000, 'Test tag 3'),
+       (4000000, 'Test tag 4'),
+       (5000000, 'Test tag 5'),
+       (6000000, 'Test tag 6'),
+       (7000000, 'Test tag 7'),
+       (8000000, 'Test tag 8'),
+       (9000000, 'Test tag 9'),
+       (10000000, 'Test tag 10'),
+       (11000000, 'Test tag 11'),
+       (12000000, 'Test tag 12'),
+       (13000000, 'Test tag 13'),
+       (14000000, 'Test tag 14'),
+       (15000000, 'Test tag 15');
