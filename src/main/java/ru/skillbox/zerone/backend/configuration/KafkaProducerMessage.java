@@ -15,6 +15,8 @@ public class KafkaProducerMessage {
   private final String KAFKA_TOPIC = "message-topic";
 
   public void sendMessage(MessageDTO messageDTO){
+
+    System.out.println("sendMessageProducer");
     kafkaTemplate.send(KAFKA_TOPIC, messageDTO);
   }
 
