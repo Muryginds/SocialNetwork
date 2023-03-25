@@ -13,7 +13,6 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WebSocketConnectionRepositoryTest extends AbstractIntegrationTest {
-
   @Autowired
   private WebSocketConnectionRepository repository;
   private final UUID firstUserSessionId = UUID.randomUUID();

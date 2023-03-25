@@ -16,3 +16,6 @@ blacklist:
 mail-service:
   server-address: http://localhost:8086
   front-address: http://localhost:8080
+
+websocket:
+  port: 2222
