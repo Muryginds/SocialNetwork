@@ -34,6 +34,13 @@ spring:
             enable: true
           ssl:
             enable: true
+  data:
+    redis:
+      host: 0.0.0.0
+      database: 0
+      port: 6379
+      password: password123
+      timeout: 60000
 
 jwt:
   token:
@@ -95,3 +102,7 @@ scheduled-tasks:
 
 log-settings:
   output-path: logs
+
+websocket:
+  host: 0.0.0.0
+  port: 1111

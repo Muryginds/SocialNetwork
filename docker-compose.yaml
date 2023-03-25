@@ -15,6 +15,17 @@ services:
       - postgres
     restart: on-failure:5
 
+  redis:
+    container_name: redis
+    image: redis:6.2.11
+    ports:
+      - "6379:6379"
+    restart: on-failure:5
+    environment:
+     REDIS_PASSWORD: password123
+    volumes:
+      - redis:/data/redis
+
   frontend:
     container_name: frontend
     image: dimok82/zeone
@@ -32,6 +43,7 @@ services:
       SPRING_PROFILES_ACTIVE: prod
     ports:
       -  "8086:8086"
+      -  "1111:1111"
     volumes:
       - ./jars:/app
     working_dir: /app
@@ -89,11 +101,16 @@ services:
         aliases:
           - prometheus
     restart: on-failure:5
+
   sonarqube:
     container_name: sonarqube
     image: sonarqube
     ports:
       - "9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_extensions:/opt/sonarqube/extensions
     networks:
       - postgres
     depends_on:
@@ -106,3 +123,4 @@ networks:
 
 volumes:
   postgres:
+  redis:
