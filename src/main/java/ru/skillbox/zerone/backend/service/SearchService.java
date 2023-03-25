@@ -5,9 +5,12 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
+import org.jooq.Record;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
-import ru.skillbox.zerone.backend.model.dto.response.PostDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.entity.Post;
 import ru.skillbox.zerone.backend.model.entity.User;
@@ -15,13 +18,12 @@ import ru.skillbox.zerone.backend.model.entity.User;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.TimeZone;
 
 import static com.tej.JooQDemo.jooq.sample.model.Tables.*;
-import static org.jooq.impl.DSL.*;
+import static org.jooq.impl.DSL.noCondition;
+import static org.jooq.impl.DSL.trueCondition;
 
 
 @Service
@@ -29,7 +31,6 @@ import static org.jooq.impl.DSL.*;
 public class SearchService {
 
   private final DSLContext dslContext;
-  private final PostService postService;
 
 
   @Transactional
@@ -37,13 +38,13 @@ public class SearchService {
 
     Condition condition = createConditionForUsers(name, lastName, country, city, ageFrom, ageTo);
 
-    int count = dslContext.fetchCount(USER, condition);
+    int usersCount = dslContext.fetchCount(USER, condition);
 
     List<UserDTO> users = dslContext.select().from(USER)
         .where(condition).offset(offset).limit(itemPerPage).fetchInto(UserDTO.class);
 
     return CommonListResponseDTO.<UserDTO>builder()
-        .total(count)
+        .total(usersCount)
         .data(users)
         .build();
 
@@ -51,52 +52,48 @@ public class SearchService {
 
   private Condition createConditionForUsers(String name, String lastName, String country, String city, Integer ageFrom, Integer ageTo) {
 
-    return trueCondition().
-        and((name != null) ? USER.FIRST_NAME.likeIgnoreCase(name.concat("%")) : noCondition()).
-        and((lastName != null) ? USER.LAST_NAME.likeIgnoreCase(lastName.concat("%")) : noCondition()).
-        and((country != null) ? USER.COUNTRY.likeIgnoreCase(country.concat("%")) : noCondition()).
-        and((city != null) ? USER.CITY.likeIgnoreCase(city.concat("%")) : noCondition()).
-        and((ageFrom != null) ? USER.BIRTH_DATE.lessOrEqual(LocalDate.now().minusYears(ageFrom)) : noCondition()).
-        and((ageTo != null) ? USER.BIRTH_DATE.greaterOrEqual(LocalDate.now().minusYears(ageTo)) : noCondition());
+    return trueCondition()
+        .and((name != null) ? USER.FIRST_NAME.containsIgnoreCase(name) : noCondition())
+        .and((lastName != null) ? USER.LAST_NAME.containsIgnoreCase(lastName) : noCondition())
+        .and((country != null) ? USER.COUNTRY.containsIgnoreCase(country) : noCondition())
+        .and((city != null) ? USER.CITY.containsIgnoreCase(city) : noCondition())
+        .and((ageFrom != null) ? USER.BIRTH_DATE.lessOrEqual(LocalDate.now().minusYears(ageFrom)) : noCondition())
+        .and((ageTo != null) ? USER.BIRTH_DATE.greaterOrEqual(LocalDate.now().minusYears(ageTo)) : noCondition())
+        .and(USER.IS_DELETED.eq(false));
   }
 
   @Transactional
-  public CommonListResponseDTO<PostDTO> searchPosts(String author, String tag, long pubDate, int offset, int itemPerPage) {
+  public Page<Post> searchPosts(String text, String author, String tag, long pubDate, Pageable pageable) {
 
-    List<PostDTO> postDTOS = new ArrayList<>();
+    Condition condition = createConditionForPosts(text, author, tag, pubDate);
 
-    Condition condition = createConditionForPosts(author, tag, pubDate);
+    long postsCount = dslContext.fetchCount(POST, condition);
 
-    int count = dslContext.fetchCount(POST, condition);
+    List<Post> postRecords = dslContext.select()
+        .from(POST)
+        .join(USER).on(USER.ID.eq(POST.AUTHOR_ID))
+        .where(condition).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch(this::recordToPost);
 
-    List<Post> postRecords = dslContext.select().from(POST)
-        .where(condition).offset(offset).limit(itemPerPage).fetchInto(Post.class);
-
-    postRecords.forEach(post -> {
-
-      User user = Objects.requireNonNull(dslContext.select().from(USER)
-          .join(POST).on(POST.AUTHOR_ID.eq(USER.ID)).where(POST.ID.eq(post.getId())).fetchAny()).into(User.class);
-
-      PostDTO postDTO = postService.getPostsDTO(post, user);
-      postDTOS.add(postDTO);
-    });
-
-    return CommonListResponseDTO.<PostDTO>builder()
-        .total(count)
-        .data(postDTOS)
-        .build();
+    return new PageImpl<>(postRecords, pageable, postsCount);
   }
 
-  private Condition createConditionForPosts(String author, String tag, long pubDate) {
+  private Condition createConditionForPosts(String text, String author, String tag, Long pubDate) {
 
-    return POST.UPDATE_DATE.greaterOrEqual(getPubDate(pubDate))
-        .and((author != null) ? POST.AUTHOR_ID.in(select(POST.AUTHOR_ID).from(POST)
+    return trueCondition()
+        .and((pubDate != null) ? POST.UPDATE_DATE.greaterOrEqual(getPubDate(pubDate)) : noCondition())
+        .and((text != null) ? POST.POST_TEXT.containsIgnoreCase(text)
+            .or(POST.TITLE.containsIgnoreCase(text)) : noCondition())
+        .and((author != null) ? POST.AUTHOR_ID.in(dslContext.select(POST.AUTHOR_ID).from(POST)
             .join(USER).on(USER.ID.eq(POST.AUTHOR_ID))
             .where(conditionForAuthorName(author))) : noCondition())
-        .and((tag != null) ? POST.ID.in(select(POST.ID).from(POST)
+        .and((tag != null) ? POST.ID.in(dslContext.select(POST.ID).from(POST)
             .join(POST_TO_TAG).on(POST.ID.eq(POST_TO_TAG.POST_ID))
             .join(TAG).on(TAG.ID.eq(POST_TO_TAG.TAG_ID))
-            .where(TAG.TAG_.likeIgnoreCase("%".concat(tag)))) : noCondition());
+            .where(TAG.TAG_.containsIgnoreCase(tag))) : noCondition())
+        .and(POST.IS_DELETED.eq(false))
+        .and(POST.IS_BLOCKED.eq(false))
+        .and(POST.TIME.lessThan(LocalDateTime.now()));
+
   }
 
   private LocalDateTime getPubDate(long pubDate) {
@@ -110,12 +107,48 @@ public class SearchService {
     String[] authorName = author.split("\\s");
 
     return (authorName.length > 1) ?
-        (USER.FIRST_NAME.likeIgnoreCase(authorName[0].concat("%"))
-            .and(USER.LAST_NAME.likeIgnoreCase(authorName[1].concat("%"))))
-            .or(USER.FIRST_NAME.likeIgnoreCase(authorName[1].concat("%"))
-                .and(USER.LAST_NAME.likeIgnoreCase(authorName[0].concat("%"))))
+        (USER.FIRST_NAME.containsIgnoreCase(authorName[0])
+            .and(USER.LAST_NAME.containsIgnoreCase(authorName[1])))
+            .or(USER.FIRST_NAME.containsIgnoreCase(authorName[1])
+                .and(USER.LAST_NAME.containsIgnoreCase(authorName[0])))
         :
-        USER.FIRST_NAME.likeIgnoreCase(author.concat("%"))
-            .or(USER.LAST_NAME.likeIgnoreCase(author.concat("%")));
+        USER.FIRST_NAME.containsIgnoreCase(author)
+            .or(USER.LAST_NAME.containsIgnoreCase(author));
+  }
+
+  public Post recordToPost(Record postRecord) {
+    return Post.builder()
+        .id(postRecord.get(POST.ID))
+        .title(postRecord.get(POST.TITLE))
+        .postText(postRecord.get(POST.POST_TEXT))
+        .author(this.recordToUser(postRecord))
+        .isBlocked(postRecord.get(POST.IS_BLOCKED))
+        .isDeleted(postRecord.get(POST.IS_DELETED))
+        .updateTime(postRecord.get(POST.UPDATE_DATE))
+        .time(postRecord.get(POST.TIME))
+        .build();
+
+  }
+
+  private User recordToUser(Record userRecord) {
+    return User.builder()
+        .id(userRecord.get(USER.ID))
+        .firstName(userRecord.get(USER.FIRST_NAME))
+        .lastName(userRecord.get(USER.LAST_NAME))
+        .about(userRecord.get(USER.ABOUT))
+        .email(userRecord.get(USER.EMAIL))
+        .birthDate(userRecord.get(USER.BIRTH_DATE))
+        .city(userRecord.get(USER.CITY))
+        .country(userRecord.get(USER.COUNTRY))
+        .isApproved(userRecord.get(USER.IS_APPROVED))
+        .phone(userRecord.get(USER.PHONE))
+        .photo(userRecord.get(USER.PHOTO))
+        .regDate(userRecord.get(USER.REG_DATE))
+        .status(userRecord.get(USER.STATUS))
+        .lastOnlineTime(userRecord.get(USER.LAST_ONLINE_TIME))
+        .messagePermissions(userRecord.get(USER.MESSAGE_PERMISSION))
+        .isBlocked(userRecord.get(USER.IS_BLOCKED))
+        .isDeleted(userRecord.get(USER.IS_DELETED))
+        .build();
   }
 }

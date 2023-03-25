@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import ru.skillbox.zerone.backend.configuration.DriveManager;
-import ru.skillbox.zerone.backend.configuration.DriveProperties;
+import ru.skillbox.zerone.backend.configuration.properties.GoogleDriveProperties;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -23,7 +22,7 @@ public class DriveService {
   @Value("${log-settings.output-path}")
   private String path;
   private String folderId;
-  private final DriveProperties driveProperties;
+  private final GoogleDriveProperties driveProperties;
   private final DriveManager driveManager;
 
 

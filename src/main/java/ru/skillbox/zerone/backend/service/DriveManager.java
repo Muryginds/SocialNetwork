@@ -1,4 +1,4 @@
-package ru.skillbox.zerone.backend.configuration;
+package ru.skillbox.zerone.backend.service;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
@@ -7,6 +7,7 @@ import com.google.api.services.drive.model.FileList;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.skillbox.zerone.backend.configuration.properties.GoogleDriveProperties;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class DriveManager {
 
-  private final DriveProperties driveProperties;
+  private final GoogleDriveProperties driveProperties;
   private final Drive drive;
   private String query;
 
