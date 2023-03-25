@@ -1,10 +1,5 @@
 version: "3.7"
 
-networks:
-  kafka-net:
-    name: kafka-net
-    driver: bridge
-
 services:
   zookeeper:
     image: zookeeper:3.7.0
@@ -68,7 +63,30 @@ services:
       - postgres:/data/postgres
     ports:
       - "5432:5432"
-    restart: on-failure
+    networks:
+      - postgres
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 5
+        window: 60s
+
+  redis:
+    container_name: redis
+    image: redis:6.2.11
+    ports:
+      - "6379:6379"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 5
+        window: 60s
+    environment:
+     REDIS_PASSWORD: password123
+    volumes:
+      - redis:/data/redis
 
   frontend:
     container_name: frontend
@@ -92,11 +110,14 @@ services:
       SPRING_PROFILES_ACTIVE: prod
     ports:
       -  "8086:8086"
+      -  "1111:1111"
     volumes:
       - ./jars:/app
     working_dir: /app
     command: java -jar backend.jar
     depends_on:
+      - postgres
+    networks:
       - postgres
     deploy:
       restart_policy:
@@ -104,6 +125,45 @@ services:
         delay: 3s
         max_attempts: 5
         window: 60s
+
+  support:
+    container_name: support
+    image: vladimirpanfilov/support
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified
+      SPRING_DATASOURCE_USERNAME: skillbox
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      -  "8083:8083"
+    networks:
+      - postgres
+    depends_on:
+      - backend
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 5
+        window: 60s
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    build: './config/grafana'
+    ports:
+      - 3000:3000
+    volumes:
+      - ./grafana:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      monitoring:
+        aliases:
+          - grafana
+    depends_on:
+      - prometheus
+    restart: on-failure:5
 
   prometheus:
     container_name: prometheus
@@ -123,3 +183,35 @@ services:
         delay: 3s
         max_attempts: 5
         window: 60s
+
+  sonarqube:
+    container_name: sonarqube
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_conf:/opt/sonarqube/conf
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    networks:
+      - postgres
+    depends_on:
+      - postgres
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 5
+        window: 60s
+
+
+networks:
+  kafka-net:
+    name: kafka-net
+    driver: bridge
+  postgres:
+  monitoring:
+
+volumes:
+   postgres:
+   redis:

@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import ru.skillbox.zerone.backend.configuration.VKWebClientProperties;
+import ru.skillbox.zerone.backend.configuration.properties.VKWebClientProperties;
 import ru.skillbox.zerone.backend.exception.VKAPIException;
 import ru.skillbox.zerone.backend.model.dto.response.BasicEntityDTO;
 import ru.skillbox.zerone.backend.model.dto.response.VKCityResponseDTO;
@@ -41,7 +41,7 @@ public class VKRestClientService {
       BF,UY,UZ,VE,WF,WS,YE,ZM,AB,OS,SS,DN,LN
       """;
 
-  @Scheduled(cron = "0 5 8 * * SUN")
+  @Scheduled(cron = "${scheduled-tasks.vk-countries-uploader}")
   public void uploadCountries() {
     var response = webClient.post()
         .uri(uriBuilder -> uriBuilder

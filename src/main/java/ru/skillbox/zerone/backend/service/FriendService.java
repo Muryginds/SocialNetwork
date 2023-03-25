@@ -29,14 +29,14 @@ import static ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus.*;
 
 @Service
 @RequiredArgsConstructor
-public class FriendsService {
+public class FriendService {
   private final FriendshipRepository friendshipRepository;
   private final UserRepository userRepository;
   private final UserMapper userMapper;
 
   @Transactional
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
-  public CommonResponseDTO<Object> addFriend(Long id) {
+  public CommonResponseDTO<Object> addFriend(long id) {
     var user = CurrentUserUtils.getCurrentUser();
     var friend = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
@@ -118,7 +118,7 @@ public class FriendsService {
 
   @Transactional
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
-  public CommonResponseDTO<Object> removeFriend(Long id) {
+  public CommonResponseDTO<Object> removeFriend(long id) {
     var user = CurrentUserUtils.getCurrentUser();
     var friend = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
@@ -211,13 +211,12 @@ public class FriendsService {
 
   private Page<Friendship> getPageOfFriendsByFriendStatus(FriendshipStatus status, String name, int offset, int itemPerPage) {
     var user = CurrentUserUtils.getCurrentUser();
-    var pageable = PageRequest.of(offset, itemPerPage);
+    var pageRequest = PageRequest.of(offset / itemPerPage, itemPerPage);
 
     if (name.isBlank()) {
-      return friendshipRepository.findAllBySrcPersonAndStatus(user, status, pageable);
+      return friendshipRepository.findAllBySrcPersonAndStatus(user, status, pageRequest);
     } else {
-      return friendshipRepository.findAllBySrcPersonAndStatusAndDstPersonNameLike(
-          user, status, name, pageable);
+      return friendshipRepository.findAllBySrcPersonAndStatusAndDstPersonNameLike(user, status, name, pageRequest);
     }
   }
 

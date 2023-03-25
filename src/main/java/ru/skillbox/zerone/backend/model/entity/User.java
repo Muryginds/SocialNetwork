@@ -21,7 +21,7 @@ import java.util.List;
 @Entity
 @Table(name = "`user`",
     uniqueConstraints = {
-    @UniqueConstraint(name = "user_email_uk", columnNames = {"email"})}
+        @UniqueConstraint(name = "user_email_uk", columnNames = {"email"})}
 )
 @Data
 @Builder

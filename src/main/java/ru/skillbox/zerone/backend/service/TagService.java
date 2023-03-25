@@ -44,14 +44,14 @@ public class TagService {
   }
 
   @Transactional
-  public CommonListResponseDTO<TagDTO> getAllTags(String tag, Integer offset, Integer itemPerPage) {
+  public CommonListResponseDTO<TagDTO> getAllTags(String tagName, Integer offset, Integer itemPerPage) {
     Pageable pageable = PageRequest.of(offset, itemPerPage);
     Page<Tag> pageableTagList;
 
-    if (tag.isEmpty()) {
+    if (tagName.isEmpty()) {
       pageableTagList = tagRepository.findAll(pageable);
     } else {
-      pageableTagList = tagRepository.findByTag(tag, pageable);
+      pageableTagList = tagRepository.findByName(tagName, pageable);
     }
 
     List<TagDTO> tagDTOList = pageableTagList.map(tagMapper::tagToTagDTO).toList();
