@@ -2,11 +2,13 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.DialogException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
+import ru.skillbox.zerone.backend.exception.ZeroneSocketException;
 import ru.skillbox.zerone.backend.mapstruct.DialogMapper;
 import ru.skillbox.zerone.backend.mapstruct.MessageMapper;
 import ru.skillbox.zerone.backend.model.dto.request.DialogRequestDTO;
@@ -23,6 +25,7 @@ import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 import java.util.Objects;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DialogService {
@@ -62,12 +65,13 @@ public class DialogService {
         .build();
   }
 
-  @Transactional
+  @Transactional(dontRollbackOn = ZeroneSocketException.class)
   public CommonResponseDTO<MessageDataDTO> postMessages(long id, MessageRequestDTO messageRequestDTO) {
     var dialog = dialogRepository.findById(id)
         .orElseThrow(() -> new DialogException(String.format("Диалог с id: \"%s\" не найден", id)));
     var message = messageMapper.messageRequestDTOToMessage(messageRequestDTO, dialog);
     messageRepository.save(message);
+
     socketIOService.sendMessageEvent(message);
 
     notificationService.saveMessage(message);
@@ -84,7 +88,7 @@ public class DialogService {
     return ResponseUtils.commonResponseWithData(new CountDTO(countUnread));
   }
 
-  @Transactional
+  @Transactional(dontRollbackOn = ZeroneSocketException.class)
   public CommonResponseDTO<DialogDataDTO> postDialogs(DialogRequestDTO dialogRequestDTO) {
     var id = dialogRequestDTO.getUsersIds().get(0);
     if (Objects.isNull(id) || id < 1) {
@@ -107,7 +111,7 @@ public class DialogService {
           .author(user)
           .build();
       messageRepository.save(message);
-      // отдельный поток нужен?
+
       socketIOService.sendMessageEvent(message);
 
       notificationService.saveMessage(message);
