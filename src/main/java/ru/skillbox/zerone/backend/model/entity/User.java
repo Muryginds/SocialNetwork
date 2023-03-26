@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.skillbox.zerone.backend.model.enumerated.MessagePermissions;
 import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 
 import java.time.LocalDate;
@@ -89,12 +88,6 @@ public class User implements UserDetails {
   @Builder.Default
   @Column(name = "is_approved", columnDefinition = "boolean default false")
   private Boolean isApproved = false;
-
-  @NotNull
-  @Builder.Default
-  @Column(name = "message_permission", columnDefinition = "message_permission default 'ALL'")
-  @Enumerated(EnumType.STRING)
-  private MessagePermissions messagePermissions = MessagePermissions.ALL;
 
   @NotNull
   @Builder.Default

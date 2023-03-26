@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.zerone.backend.model.enumerated.MessagePermissions;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -36,8 +35,6 @@ public class UserDTO {
   private boolean isBlocked;
   @JsonProperty("is_deleted")
   private boolean isDeleted;
-  @JsonProperty("messages_permission")
-  private MessagePermissions messagePermissions;
   @JsonProperty("last_online_time")
   private LocalDateTime lastOnlineTime;
   private String phone;

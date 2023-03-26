@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/changeset/insert-test-data.yaml
   - include:
       file: db/changelog/changeset/file-database-added.yaml
+  - include:
+      file: db/changelog/changeset/remove-message-permission-type.yaml

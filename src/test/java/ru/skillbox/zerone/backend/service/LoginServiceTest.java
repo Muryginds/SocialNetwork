@@ -21,8 +21,7 @@ import ru.skillbox.zerone.backend.testData.UserMockUtils;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -51,20 +50,23 @@ class LoginServiceTest implements UserMockUtils {
   }
 
   @Test
-  void testLogin_whenValidUser_thenSuccess() {
+  void testLogin_whenValidUser_thenReturnUserDTOWithToken() {
+    var testToken = "token";
     when(userRepository.findUserByEmail(request.getEmail())).thenReturn(Optional.of(user));
 
     when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(null);
 
-    when(jwtTokenProvider.createToken(user.getEmail(), user.getRoles())).thenReturn("token");
+    when(jwtTokenProvider.createToken(user.getEmail(), user.getRoles())).thenReturn(testToken);
 
     UserDTO userDTO = new UserDTO();
     userDTO.setEmail(user.getEmail());
-    when(userMapper.userToUserDTO(user)).thenReturn(userDTO);
+    userDTO.setToken(testToken);
+    when(userMapper.userWithTokenToUserDTO(user, testToken)).thenReturn(userDTO);
 
     CommonResponseDTO<UserDTO> response = loginService.login(request);
     assertEquals(userDTO, response.getData());
-    assertEquals("token", response.getData().getToken());
+    assertEquals(testToken, response.getData().getToken());
+    assertNull(response.getError());
   }
 
   @Test
