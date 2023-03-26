@@ -61,7 +61,7 @@ class LoginServiceTest implements UserMockUtils {
     UserDTO userDTO = new UserDTO();
     userDTO.setEmail(user.getEmail());
     userDTO.setToken(testToken);
-    when(userMapper.userWithTokenToUserDTO(user, testToken)).thenReturn(userDTO);
+    when(userMapper.userToUserDTO(user, testToken)).thenReturn(userDTO);
 
     CommonResponseDTO<UserDTO> response = loginService.login(request);
     assertEquals(userDTO, response.getData());

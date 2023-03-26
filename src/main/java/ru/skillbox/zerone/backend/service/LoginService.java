@@ -38,7 +38,7 @@ public class LoginService {
 
     var token = jwtTokenProvider.createToken(email, user.getRoles());
 
-    return ResponseUtils.commonResponseWithData(userMapper.userWithTokenToUserDTO(user, token));
+    return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user, token));
   }
 
   public CommonResponseDTO<MessageResponseDTO> logout(String token) {
