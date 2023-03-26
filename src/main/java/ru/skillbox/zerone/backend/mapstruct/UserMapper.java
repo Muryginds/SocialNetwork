@@ -12,6 +12,7 @@ import java.util.List;
 @DecoratedWith(UserMapperDecorator.class)
 public interface UserMapper {
   UserDTO userToUserDTO (User user);
-  User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO);
+  UserDTO userWithTokenToUserDTO (User user, String token);
+  User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO, String confirmationCode);
   List<UserDTO> usersToUserDTO (List<User> userList);
 }

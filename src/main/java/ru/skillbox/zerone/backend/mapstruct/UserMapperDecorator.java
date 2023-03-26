@@ -24,8 +24,8 @@ public abstract class UserMapperDecorator implements UserMapper {
   private WebSocketConnectionRepository webSocketConnectionRepository;
 
   @Override
-  public User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO) {
-    var user = userMapper.registerRequestDTOToUser(registerRequestDTO);
+  public User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO, String confirmationCode) {
+    var user = userMapper.registerRequestDTOToUser(registerRequestDTO, confirmationCode);
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     List<Role> roles = new ArrayList<>();
     roles.add(roleService.getBasicUserRole());

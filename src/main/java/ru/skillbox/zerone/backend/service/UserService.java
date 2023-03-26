@@ -84,9 +84,9 @@ public class UserService {
   public CommonResponseDTO<MessageResponseDTO> changeEmailConfirm(String emailOld, String confirmationCode) {
 
     User user = CurrentUserUtils.getCurrentUser();
-    String token = user.getConfirmationCode();
+    String confirmationToken = user.getConfirmationCode();
 
-    if (token.equals(confirmationCode)) {
+    if (confirmationToken.equals(confirmationCode)) {
       throw new ChangeEmailException(confirmationCode, emailOld);
     }
 
@@ -111,15 +111,14 @@ public class UserService {
       throw new UserAlreadyExistException(request.getEmail());
     }
 
-    User user = userMapper.registerRequestDTOToUser(request);
-    var verificationUuid = UUID.randomUUID();
-    user.setConfirmationCode(verificationUuid.toString());
+    var confirmationCode = UUID.randomUUID().toString();
+    User user = userMapper.registerRequestDTOToUser(request, confirmationCode);
 
     userRepository.save(user);
 
     mailService.sendVerificationEmail(
         user.getEmail(),
-        verificationUuid.toString(),
+        confirmationCode,
         "/registration/complete",
         mailServiceConfig.getFrontAddress());
 
@@ -172,20 +171,20 @@ public class UserService {
     return userMapper.userToUserDTO(user);
   }
 
- @Transactional
+  @Transactional
   public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationTypeDTO typeDTO) {
     User user = CurrentUserUtils.getCurrentUser();
     NotificationType notificationType = NotificationType.valueOf(typeDTO.getType());
     boolean enabled = typeDTO.getEnable();
-   Optional<NotificationSetting> optionalSetting = notificationSettingRepository.findByUser(user);
-   NotificationSetting setting;
-   if (optionalSetting.isPresent()) {
-     setting = optionalSetting.get();
-   } else {
-     setting = new NotificationSetting();
-     setting.setUser(user);
-   }
-   switch (notificationType) {
+    Optional<NotificationSetting> optionalSetting = notificationSettingRepository.findByUser(user);
+    NotificationSetting setting;
+    if (optionalSetting.isPresent()) {
+      setting = optionalSetting.get();
+    } else {
+      setting = new NotificationSetting();
+      setting.setUser(user);
+    }
+    switch (notificationType) {
       case POST -> setting.setPostEnabled(enabled);
       case POST_COMMENT -> setting.setPostCommentEnabled(enabled);
       case COMMENT_COMMENT -> setting.setCommentCommentEnabled(enabled);
