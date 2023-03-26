@@ -21,6 +21,7 @@ import ru.skillbox.zerone.backend.model.enumerated.ReadStatus;
 import ru.skillbox.zerone.backend.repository.*;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
@@ -158,10 +159,6 @@ public class NotificationService {
     return new CommentNotFoundException(String.format(COMMENT_NOT_FOUND, entityId));
   }
 
-//  public UserDTO getEntityAuthorDTO(Notification notification) {
-//    return userMapper.userToUserDTO(notification.getPerson());
-//  }
-
   public void savePost(Post post) {
     List<Friendship> friendships = friendshipRepository
         .findAllBySrcPersonAndStatus(post.getAuthor(), FriendshipStatus.FRIEND);
@@ -229,7 +226,7 @@ public class NotificationService {
     var dataDTO = SocketNotificationDataDTO.builder()
         .id(notification.getId())
         .eventType(notification.getType())
-        .sentTime(notification.getSentTime().toInstant(ZoneOffset.of("Europe/Moscow")))
+        .sentTime(notification.getSentTime().atZone(ZoneId.systemDefault()).toInstant())
         .entityId(comment.getPost().getId())
         .entityAuthor(userMapper.userToUserDTO(comment.getAuthor()))
         .parentId(parentId)
