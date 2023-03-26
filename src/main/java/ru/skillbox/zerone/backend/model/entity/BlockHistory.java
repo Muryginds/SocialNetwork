@@ -29,23 +29,17 @@ public class BlockHistory {
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "user_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "block_history_user_fk")
-  )
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "post_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "block_history_post_fk")
-  )
+  @JoinColumn(name = "post_id", referencedColumnName = "id")
   private Post post;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "comment_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "block_history_comment_fk")
-  )
+  @JoinColumn(name = "comment_id", referencedColumnName = "id")
   private Comment comment;
 
   @NotNull

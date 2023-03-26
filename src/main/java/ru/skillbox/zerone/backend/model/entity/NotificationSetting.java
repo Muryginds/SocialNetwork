@@ -21,9 +21,7 @@ public class NotificationSetting {
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "user_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "notification_setting_user_fk")
-  )
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 
   @NotNull

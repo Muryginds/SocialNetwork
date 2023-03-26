@@ -29,9 +29,7 @@ public class Post {
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "author_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "post_author_fk")
-  )
+  @JoinColumn(name = "author_id", referencedColumnName = "id")
   private User author;
 
   @NotNull

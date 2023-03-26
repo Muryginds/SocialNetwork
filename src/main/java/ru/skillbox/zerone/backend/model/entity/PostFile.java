@@ -22,9 +22,7 @@ public class PostFile {
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "post_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = " post_file_post_fk")
-  )
+  @JoinColumn(name = "post_id", referencedColumnName = "id")
   private Post post;
 
   @NotNull

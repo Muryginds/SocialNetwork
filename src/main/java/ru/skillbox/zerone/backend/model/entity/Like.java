@@ -28,15 +28,11 @@ public class Like {
   private LocalDateTime time = LocalDateTime.now();
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "post_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "like_post_fk")
-  )
+  @JoinColumn(name = "post_id", referencedColumnName = "id")
   private Post post;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "comment_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "like_comment_fk")
-  )
+  @JoinColumn(name = "comment_id", referencedColumnName = "id")
   private Comment comment;
 
   @NotNull
@@ -46,8 +42,6 @@ public class Like {
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "user_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "like_user_fk")
-  )
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 }

@@ -36,22 +36,16 @@ public class Comment {
   private CommentType type;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "post_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "comment_post_fk")
-  )
+  @JoinColumn(name = "post_id", referencedColumnName = "id")
   private Post post;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "parent_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "comment_parent_comment_fk")
-  )
+  @JoinColumn(name = "parent_id", referencedColumnName = "id")
   private Comment parent;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "comment_author_fk")
-  )
+  @JoinColumn(name = "author_id", referencedColumnName = "id")
   private User author;
 
   @NotNull

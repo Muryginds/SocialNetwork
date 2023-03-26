@@ -30,16 +30,12 @@ public class Message {
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "dialog_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "message_dialog_fk")
-  )
+  @JoinColumn(name = "dialog_id", referencedColumnName = "id")
   private Dialog dialog;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "message_author_fk")
-  )
+  @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id")
   private User author;
 
   @NotNull

@@ -21,15 +21,11 @@ public class Dialog {
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "sender_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "dialog_sender_user_fk")
-  )
+  @JoinColumn(name = "sender_id", referencedColumnName = "id")
   private User sender;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "recipient_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "dialog_recipient_user_fk")
-  )
+  @JoinColumn(name = "recipient_id", referencedColumnName = "id")
   private User recipient;
 }

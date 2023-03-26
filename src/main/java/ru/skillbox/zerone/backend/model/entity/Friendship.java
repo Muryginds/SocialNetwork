@@ -30,16 +30,12 @@ public class Friendship {
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "src_person_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "friendship_src_person_fk")
-  )
+  @JoinColumn(name = "src_person_id", referencedColumnName = "id")
   private User srcPerson;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "dst_person_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "friendship_dst_person_fk")
-  )
+  @JoinColumn(name = "dst_person_id", referencedColumnName = "id")
   private User dstPerson;
 
   @NotNull
