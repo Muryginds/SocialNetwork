@@ -18,7 +18,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @Transactional
 class TagControllerIT extends AbstractIntegrationTest {
   private static final String API_URL = "/api/v1/tags";
@@ -30,7 +29,7 @@ class TagControllerIT extends AbstractIntegrationTest {
 
   @Test
   @WithUserDetails("esperanza.padberg@yahoo.com")
-  void postTag_tagContainsOnlyNameAndTagNotContainsInDbAndUserIsAuthenticated_responseIsOkAndResponseContainsDataWithIdAndTag() throws Exception {
+  void postTag_tagContainsOnlyNameAndTagNotExistsInDbAndUserIsAuthenticated_responseIsOkAndResponseContainsDataWithIdAndTag() throws Exception {
     var tag = RandomStringUtils.randomAlphanumeric(1, 15);
     mockMvc.perform(post(API_URL)
             .contentType(MediaType.APPLICATION_JSON)
@@ -67,7 +66,7 @@ class TagControllerIT extends AbstractIntegrationTest {
 
   @Test
   @WithUserDetails("esperanza.padberg@yahoo.com")
-  void postTag_tagContainsNameAndIdAndTagNotContainsInDbAndUserIsAuthenticated_responseIsOkAndResponseContainsDataWithIdAndTagAndIdDoesNotEqualsSendValue() throws Exception {
+  void postTag_tagContainsNameAndIdAndTagNotExistsInDbAndUserIsAuthenticated_responseIsOkAndResponseContainsDataWithIdAndTagAndIdIsNotEqualsSendValue() throws Exception {
     var tag = RandomStringUtils.randomAlphanumeric(1, 15);
     var id = random.nextInt();
     mockMvc.perform(post(API_URL)
@@ -144,7 +143,7 @@ class TagControllerIT extends AbstractIntegrationTest {
   @Test
   @WithUserDetails("esperanza.padberg@yahoo.com")
   @Sql(scripts = "classpath:mock-tags-insert.sql")
-  void postTag_tagAlreadyContainsInDb_statusIsOkAndReturnExistingTag() throws Exception {
+  void postTag_tagAlreadyExistsInDb_statusIsOkAndReturnExistingTag() throws Exception {
     mockMvc.perform(post(API_URL)
             .contentType(MediaType.APPLICATION_JSON)
             .content("""
@@ -154,7 +153,7 @@ class TagControllerIT extends AbstractIntegrationTest {
                 """))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data.tag").value("Test tag 1"))
-        .andExpect(jsonPath("$.data.id").value(1000000))
+        .andExpect(jsonPath("$.data.id").value(1_000_000))
         .andExpect(jsonPath("$.error").doesNotExist())
         .andExpect(jsonPath("$.timestamp").exists())
         .andExpect(jsonPath("$.timestamp").isNotEmpty());
@@ -163,8 +162,8 @@ class TagControllerIT extends AbstractIntegrationTest {
   @Test
   @WithUserDetails("esperanza.padberg@yahoo.com")
   @Sql(scripts = "classpath:mock-tags-insert.sql")
-  void deleteTag_tagContainInDbAndUserIsAuthenticated_responseIsOk() throws Exception {
-    long tagId = 1000000;
+  void deleteTag_tagExistsInDbAndUserIsAuthenticated_responseIsOk() throws Exception {
+    long tagId = 1_000_000;
     mockMvc.perform(delete(API_URL).param("id", String.valueOf(tagId)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data.message").value("OK"))
@@ -176,7 +175,7 @@ class TagControllerIT extends AbstractIntegrationTest {
 
   @Test
   @WithUserDetails("esperanza.padberg@yahoo.com")
-  void deleteTag_tagNotContainInDbAndUserIsAuthenticated_responseIsOk() throws Exception {
+  void deleteTag_tagNotExistsInDbAndUserIsAuthenticated_responseIsOk() throws Exception {
     long tagId = random.nextLong(1_000_000, 100_000_000);
     mockMvc.perform(delete(API_URL).param("id", String.valueOf(tagId)))
         .andExpect(status().isOk())
@@ -188,7 +187,7 @@ class TagControllerIT extends AbstractIntegrationTest {
 
   @Test
   @Sql(scripts = "classpath:mock-tags-insert.sql")
-  void deleteTag_userIsNotAuthenticated_forbiddenAndTagContainsInDb() throws Exception {
+  void deleteTag_userIsNotAuthenticated_forbiddenAndTagExistsInDb() throws Exception {
     long tagId = 1_000_000;
     mockMvc.perform(delete(API_URL).param("id", String.valueOf(tagId)))
         .andExpect(status().isForbidden());
@@ -197,7 +196,7 @@ class TagControllerIT extends AbstractIntegrationTest {
 
   @Test
   @WithUserDetails("esperanza.padberg@yahoo.com")
-  void deleteTag_requestDoesNotContainsId_badRequest() throws Exception {
+  void deleteTag_requestDoesNotContainId_badRequest() throws Exception {
     mockMvc.perform(delete(API_URL))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.data").doesNotExist())
@@ -210,7 +209,7 @@ class TagControllerIT extends AbstractIntegrationTest {
   @Test
   @Sql(scripts = "classpath:mock-tags-insert.sql")
   @WithUserDetails("esperanza.padberg@yahoo.com")
-  void getTags_tagsAllTagsWithDefaultOffsetAndLimit_return10Tags() throws Exception {
+  void getTags_getAllTagsWithDefaultOffsetAndLimit_return10Tags() throws Exception {
     mockMvc.perform(get(API_URL))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.total").value(15))
@@ -250,7 +249,7 @@ class TagControllerIT extends AbstractIntegrationTest {
   @Test
   @Sql(scripts = "classpath:mock-tags-insert.sql")
   @WithUserDetails("esperanza.padberg@yahoo.com")
-  void getTags_get5TagsWithoutOffset5_return5Tags() throws Exception {
+  void getTags_get5TagsWithOffset5_return5Tags() throws Exception {
     mockMvc.perform(get(API_URL)
             .param("itemPerPage", String.valueOf(5))
             .param("offset", String.valueOf(5))
@@ -295,7 +294,7 @@ class TagControllerIT extends AbstractIntegrationTest {
   @Test
   @Sql(scripts = "classpath:mock-tags-insert.sql")
   @WithUserDetails("esperanza.padberg@yahoo.com")
-  void getTags_getWithOffset10000_return5Tags() throws Exception {
+  void getTags_getWithOffset10000_returnEmptyData() throws Exception {
     mockMvc.perform(get(API_URL)
             .param("offset", String.valueOf(10_000))
         )
@@ -312,7 +311,7 @@ class TagControllerIT extends AbstractIntegrationTest {
   @Test
   @Sql(scripts = "classpath:mock-tags-insert.sql")
   @WithUserDetails("esperanza.padberg@yahoo.com")
-  void getTags_geWithOffset10AndPerPage10_return5Tags() throws Exception {
+  void getTags_getWithOffset10AndPerPage10_return5Tags() throws Exception {
     mockMvc.perform(get(API_URL)
             .param("itemPerPage", String.valueOf(10))
             .param("offset", String.valueOf(10))
