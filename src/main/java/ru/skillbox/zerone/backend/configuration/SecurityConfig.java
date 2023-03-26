@@ -47,7 +47,7 @@ public class SecurityConfig {
     http
         .cors(SecurityConfigurerAdapter::and)
         .csrf(AbstractHttpConfigurer::disable)
-        .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+        .formLogin(AbstractAuthenticationFilterConfigurer::disable)
         .logout(LogoutConfigurer::permitAll)
         .authorizeHttpRequests(authz -> authz
             .requestMatchers(
