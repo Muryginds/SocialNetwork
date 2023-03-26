@@ -14,13 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "comment",
-    indexes = {
-        @Index(name = "comment_post_id_idx", columnList = "post_id"),
-        @Index(name = "comment_parent_id_idx", columnList = "parent_id"),
-        @Index(name = "comment_author_id_idx", columnList = "author_id")
-    }
-)
+@Table(name = "comment")
 @Data
 @Builder
 @AllArgsConstructor

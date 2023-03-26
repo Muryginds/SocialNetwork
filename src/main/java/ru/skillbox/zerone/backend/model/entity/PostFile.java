@@ -9,9 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "post_file",
-    indexes = @Index(name = "post_file_post_id_idx", columnList = "post_id")
-)
+@Table(name = "post_file")
 @Data
 @Builder
 @AllArgsConstructor

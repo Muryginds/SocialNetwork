@@ -11,11 +11,7 @@ import ru.skillbox.zerone.backend.model.enumerated.LikeType;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "`like`", indexes = {
-    @Index(name = "like_post_id_idx", columnList = "post_id"),
-    @Index(name = "like_comment_id_idx", columnList = "comment_id"),
-    @Index(name = "like_user_id_idx", columnList = "user_id")
-})
+@Table(name = "`like`")
 @Data
 @Builder
 @AllArgsConstructor

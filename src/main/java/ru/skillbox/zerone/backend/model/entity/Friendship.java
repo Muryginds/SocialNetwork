@@ -12,12 +12,7 @@ import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "friendship",
-    indexes = {
-        @Index(name = "friendship_src_person_id_idx", columnList = "src_person_id"),
-        @Index(name = "friendship_dst_person_id_idx", columnList = "dst_person_id")
-    }
-)
+@Table(name = "friendship")
 @Data
 @Builder
 @AllArgsConstructor

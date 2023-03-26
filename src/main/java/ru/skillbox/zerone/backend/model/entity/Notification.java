@@ -12,12 +12,7 @@ import ru.skillbox.zerone.backend.model.enumerated.ReadStatus;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "notification",
-    indexes = {
-        @Index(name = "notification_person_id_idx", columnList = "person_id"),
-        @Index(name = "notification_entity_id_idx", columnList = "entity_id")
-    }
-)
+@Table(name = "notification")
 @Data
 @Builder
 @AllArgsConstructor

@@ -12,11 +12,7 @@ import ru.skillbox.zerone.backend.model.enumerated.SupportRequestStatus;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "support_request",
-    indexes = {
-        @Index(name = "support_request_status_idx", columnList = "status")
-    }
-)
+@Table(name = "support_request")
 @Data
 @Builder
 @AllArgsConstructor

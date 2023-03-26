@@ -8,9 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "notification_setting",
-    indexes = @Index(name = "notification_setting_user_id_idx", columnList = "user_id")
-)
+@Table(name = "notification_setting")
 @Data
 @Builder
 @AllArgsConstructor

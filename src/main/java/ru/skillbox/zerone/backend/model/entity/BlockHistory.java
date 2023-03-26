@@ -11,13 +11,7 @@ import ru.skillbox.zerone.backend.model.enumerated.ActionType;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "block_history",
-    indexes = {
-        @Index(name = "block_history_user_id_idx", columnList = "user_id"),
-        @Index(name = "block_history_post_id_idx", columnList = "post_id"),
-        @Index(name = "block_history_comment_id_idx", columnList = "comment_id")
-    }
-)
+@Table(name = "block_history")
 @Data
 @Builder
 @AllArgsConstructor

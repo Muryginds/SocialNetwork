@@ -8,12 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "dialog",
-    indexes = {
-        @Index(name = "dialog_sender_id_idx", columnList = "sender_id"),
-        @Index(name = "dialog_recipient_id_idx", columnList = "recipient_id")
-    }
-)
+@Table(name = "dialog")
 @Data
 @Builder
 @AllArgsConstructor
