@@ -25,12 +25,12 @@ public class Notification {
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  @Column(name = "type", columnDefinition = "notification_type")
+  @Column(name = "type")
   private NotificationType type;
 
   @NotNull
   @Builder.Default
-  @Column(name = "sent_time", columnDefinition = "timestamp without time zone")
+  @Column(name = "sent_time")
   private LocalDateTime sentTime = LocalDateTime.now();
 
   @NotNull
@@ -45,6 +45,6 @@ public class Notification {
   @NotNull
   @Builder.Default
   @Enumerated(EnumType.STRING)
-  @Column(name = "status", columnDefinition = "read_status default 'SENT'")
+  @Column(name = "status")
   private ReadStatus status = ReadStatus.SENT;
 }

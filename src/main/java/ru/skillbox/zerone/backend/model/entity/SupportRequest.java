@@ -40,20 +40,20 @@ public class SupportRequest {
 
   @NotNull
   @NotBlank
-  @Column(name = "message", columnDefinition = "text")
+  @Column(name = "message")
   private String message;
 
   @NotNull
   @Builder.Default
-  @Column(name = "time", columnDefinition = "timestamp without time zone")
+  @Column(name = "time")
   private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
   @Builder.Default
-  @Column(name = "status", columnDefinition = "support_request_status default 'NEW'")
+  @Column(name = "status")
   @Enumerated(EnumType.STRING)
   private SupportRequestStatus status = SupportRequestStatus.NEW;
 
-  @Column(name = "answer", columnDefinition = "text")
+  @Column(name = "answer")
   private String answer;
 }

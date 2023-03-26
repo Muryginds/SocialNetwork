@@ -27,12 +27,12 @@ public class Comment {
 
   @NotNull
   @Builder.Default
-  @Column(name = "time", columnDefinition = "timestamp without time zone")
+  @Column(name = "time")
   private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  @Column(name = "type", columnDefinition = "comment_type")
+  @Column(name = "type")
   private CommentType type;
 
   @ManyToOne(fetch = FetchType.EAGER)
@@ -50,17 +50,17 @@ public class Comment {
 
   @NotNull
   @NotBlank
-  @Column(name = "comment_text", columnDefinition = "text")
+  @Column(name = "comment_text")
   private String commentText;
 
   @NotNull
   @Builder.Default
-  @Column(name = "is_blocked", columnDefinition = "boolean default false")
+  @Column(name = "is_blocked")
   private Boolean isBlocked = false;
 
   @NotNull
   @Builder.Default
-  @Column(name = "is_deleted", columnDefinition = "boolean default false")
+  @Column(name = "is_deleted")
   private Boolean isDeleted = false;
 
   @OneToMany

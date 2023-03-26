@@ -24,7 +24,7 @@ public class BlockHistory {
 
   @NotNull
   @Builder.Default
-  @Column(name = "time", columnDefinition = "timestamp without time zone")
+  @Column(name = "time")
   private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
@@ -45,6 +45,6 @@ public class BlockHistory {
   @NotNull
   @Builder.Default
   @Enumerated(EnumType.STRING)
-  @Column(name = "action", columnDefinition = "action_type default 'BLOCK'")
+  @Column(name = "action")
   private ActionType action = ActionType.BLOCK;
 }

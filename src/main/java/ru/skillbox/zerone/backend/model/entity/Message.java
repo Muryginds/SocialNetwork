@@ -25,7 +25,7 @@ public class Message {
 
   @NotNull
   @Builder.Default
-  @Column(name = "sent_time", columnDefinition = "timestamp without time zone")
+  @Column(name = "sent_time")
   private LocalDateTime sentTime = LocalDateTime.now();
 
   @NotNull
@@ -45,7 +45,7 @@ public class Message {
 
   @NotNull
   @Builder.Default
-  @Column(name = "read_status", columnDefinition = "read_status default 'SENT'")
+  @Column(name = "read_status")
   @Enumerated(EnumType.STRING)
   private ReadStatus readStatus = ReadStatus.SENT;
 }

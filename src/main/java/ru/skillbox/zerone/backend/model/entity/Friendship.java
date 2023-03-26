@@ -24,7 +24,7 @@ public class Friendship {
   private Long id;
 
   @NotNull
-  @Column(name = "status", columnDefinition = "friendship_status")
+  @Column(name = "status")
   @Enumerated(EnumType.STRING)
   private FriendshipStatus status;
 
@@ -41,6 +41,6 @@ public class Friendship {
   @NotNull
   @Builder.Default
   @UpdateTimestamp
-  @Column(name = "time", columnDefinition = "timestamp without time zone")
+  @Column(name = "time")
   private LocalDateTime time = LocalDateTime.now();
 }

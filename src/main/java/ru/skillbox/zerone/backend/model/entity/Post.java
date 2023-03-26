@@ -24,7 +24,7 @@ public class Post {
 
   @NotNull
   @Builder.Default
-  @Column(name = "time", columnDefinition = "timestamp without time zone")
+  @Column(name = "time")
   private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
@@ -44,17 +44,17 @@ public class Post {
 
   @NotNull
   @Builder.Default
-  @Column(name = "update_date", columnDefinition = "timestamp without time zone")
+  @Column(name = "update_date")
   @UpdateTimestamp
   private LocalDateTime updateTime = LocalDateTime.now();
 
   @NotNull
   @Builder.Default
-  @Column(name = "is_blocked", columnDefinition = "boolean default false")
+  @Column(name = "is_blocked")
   private Boolean isBlocked = false;
 
   @NotNull
   @Builder.Default
-  @Column(name = "is_deleted", columnDefinition = "boolean default false")
+  @Column(name = "is_deleted")
   private Boolean isDeleted = false;
 }

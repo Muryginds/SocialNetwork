@@ -26,27 +26,27 @@ public class NotificationSetting {
 
   @NotNull
   @Builder.Default
-  @Column(name = "post_enabled", columnDefinition = "boolean default false")
+  @Column(name = "post_enabled")
   private Boolean postEnabled = true;
 
   @NotNull
   @Builder.Default
-  @Column(name = "post_comment_enabled", columnDefinition = "boolean default false")
+  @Column(name = "post_comment_enabled")
   private Boolean postCommentEnabled = true;
 
   @NotNull
   @Builder.Default
-  @Column(name = "comment_comment_enabled", columnDefinition = "boolean default false")
+  @Column(name = "comment_comment_enabled")
   private Boolean commentCommentEnabled = true;
 
   @NotNull
   @Builder.Default
-  @Column(name = "friend_request_enabled", columnDefinition = "boolean default false")
+  @Column(name = "friend_request_enabled")
   private Boolean friendRequestEnabled = true;
 
   @NotNull
   @Builder.Default
-  @Column(name = "messages_enabled", columnDefinition = "boolean default false")
+  @Column(name = "messages_enabled")
   private Boolean messagesEnabled = true;
 
   @NotNull

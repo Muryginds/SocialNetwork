@@ -24,7 +24,7 @@ public class Like {
 
   @NotNull
   @Builder.Default
-  @Column(name = "time", columnDefinition = "timestamp without time zone")
+  @Column(name = "time")
   private LocalDateTime time = LocalDateTime.now();
 
   @ManyToOne(fetch = FetchType.EAGER)
@@ -37,7 +37,7 @@ public class Like {
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  @Column(name = "type", columnDefinition = "like_type")
+  @Column(name = "type")
   private LikeType type;
 
   @NotNull
