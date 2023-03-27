@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ru.skillbox</groupId>
@@ -180,6 +180,11 @@
 			<version>0.8.8</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jooq</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -238,6 +243,65 @@
 						<goals>
 							<goal>report</goal>
 						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+				<executions>
+					<execution>
+						<id>jooq-codegen</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<jdbc>
+								<driver>org.postgresql.Driver</driver>
+								<url>jdbc:postgresql://zerone-network.ru:5432/skillbox?stringtype=unspecified</url>
+								<user>skillbox</user>
+								<password>password</password>
+							</jdbc>
+							<generator>
+								<database>
+									<name>org.jooq.meta.postgres.PostgresDatabase</name>
+									<includes>USER|POST|POST_TO_TAG|TAG</includes>
+									<excludes></excludes>
+									<inputSchema>public</inputSchema>
+									<forcedTypes>
+										<forcedType>
+											<userType>ru.skillbox.zerone.backend.model.enumerated.MessagePermissions
+											</userType>
+											<enumConverter>true</enumConverter>
+											<includeExpression>.*\.MESSAGE_PERMISSION</includeExpression>
+										</forcedType>
+										<forcedType>
+											<userType>ru.skillbox.zerone.backend.model.enumerated.UserStatus</userType>
+											<enumConverter>true</enumConverter>
+											<includeExpression>.*\.STATUS</includeExpression>
+										</forcedType>
+									</forcedTypes>
+
+								</database>
+								<generate>
+									<pojos>true</pojos>
+									<pojosEqualsAndHashCode>
+										true
+									</pojosEqualsAndHashCode>
+									<javaTimeTypes>true</javaTimeTypes>
+									<fluentSetters>true</fluentSetters>
+								</generate>
+								<target>
+									<packageName>
+										com.tej.JooQDemo.jooq.sample.model
+									</packageName>
+									<directory>
+										target/generated-sources/jooq
+									</directory>
+								</target>
+							</generator>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
