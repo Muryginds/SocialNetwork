@@ -1,5 +1,6 @@
 version: "3.7"
 
+
 services:
   zookeeper:
     image: zookeeper:3.7.0
@@ -42,6 +43,9 @@ services:
   zeronekafka:
     image: zeronekafka
     container_name: zeronekafka
+    working_dir: /opt
+    networks:
+      - postgres
     deploy:
       restart_policy:
         condition: on-failure
@@ -50,6 +54,7 @@ services:
         window: 60s
     depends_on:
       - kafka
+      - zookeeper
 
   postgres:
     container_name: postgres
@@ -163,7 +168,12 @@ services:
           - grafana
     depends_on:
       - prometheus
-    restart: on-failure:5
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 5
+        window: 60s
 
   prometheus:
     container_name: prometheus
@@ -204,7 +214,6 @@ services:
         max_attempts: 5
         window: 60s
 
-
 networks:
   kafka-net:
     name: kafka-net
@@ -213,5 +222,8 @@ networks:
   monitoring:
 
 volumes:
-   postgres:
-   redis:
+  postgres:
+  redis:
+  sonarqube_data:
+  sonarqube_conf:
+  sonarqube_extensions:
