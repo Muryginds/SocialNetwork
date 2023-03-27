@@ -40,22 +40,6 @@ services:
     depends_on:
       - zookeeper
 
-  zeronekafka:
-    image: zeronekafka
-    container_name: zeronekafka
-    working_dir: /opt
-    networks:
-      - postgres
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 3s
-        max_attempts: 5
-        window: 60s
-    depends_on:
-      - kafka
-      - zookeeper
-
   postgres:
     container_name: postgres
     image: postgres
