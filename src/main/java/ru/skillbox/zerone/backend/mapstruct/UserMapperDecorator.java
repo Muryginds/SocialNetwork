@@ -36,6 +36,12 @@ public abstract class UserMapperDecorator implements UserMapper {
   @Override
   public UserDTO userToUserDTO(User user) {
     var userDTO = userMapper.userToUserDTO(user);
+    if (Boolean.TRUE.equals(user.getIsBlocked())) {
+      userDTO.setLastName(user.getLastName() + " (заблокирован)");
+    }
+    if (Boolean.TRUE.equals(user.getIsDeleted())) {
+        userDTO.setLastName(user.getLastName() + " (удален)");
+    }
     if (webSocketConnectionRepository.existsByUserId(user.getId().toString())) {
       userDTO.setLastOnlineTime(LocalDateTime.now());
     }
