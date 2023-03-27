@@ -104,7 +104,7 @@ public class PostService {
 
   public CommonListResponseDTO<PostDTO> getFeeds(String text, int offset, int itemPerPage) {
 
-    Pageable pageable = PageRequest.of(offset, itemPerPage);
+    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
     Page<Post> pageablePostList = postRepository.findPostsByPostTextContains(text, pageable);
     return getPostResponse(offset, itemPerPage, pageablePostList);
 
@@ -135,9 +135,7 @@ public class PostService {
   public CommonListResponseDTO<PostDTO> getAuthorWall(int id, int offset, int itemPerPage) {
 
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
-    Page<Post> pageablePostList;
-
-    pageablePostList = postRepository.findPostsByAuthorId(id, pageable);
+    Page<Post> pageablePostList = postRepository.findPostsByAuthorId(id, pageable);
 
     return getPostResponse(offset, itemPerPage, pageablePostList);
   }
