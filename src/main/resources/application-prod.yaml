@@ -1,6 +1,7 @@
 spring:
   jpa:
     show-sql: false
-
+  liquibase:
+    enabled: false
 mail-service:
   front-address: http://zerone-network.ru

@@ -4,6 +4,7 @@ variables:
 image: maven:3.8.7-eclipse-temurin-19
 
 stages:          # List of stages for jobs, and their order of execution 
+  - migrate
   - build
   - test
   - sonarqube
@@ -24,7 +25,17 @@ build-job:       # This job runs in the build stage, which runs first.
       - .m2/repository
       - target
 
-test-job:       # This job runs in the test stage, which runs second.
+migration-job:
+  stage: migrate
+  image: liquibase/liquibase
+  only:
+    - master
+  tags:
+    - prod
+  script:
+    - liquibase update --url=$DATABASE_URL --username=$DATABASE_USERNAME --password=$DATABASE_PASSWORD --changeLogFile=$CHANGELOG_PATH
+
+test-job: # This job runs in the test stage, which runs second.
   stage: test
   tags:
     - students
