@@ -1,6 +1,6 @@
 package ru.skillbox.zerone.backend.controller;
 
-import com.maxmind.geoip2.exception.GeoIp2Exception;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -9,9 +9,6 @@ import ru.skillbox.zerone.backend.model.dto.request.*;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.service.UserService;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
-
-import java.io.IOException;
-import java.net.UnknownHostException;
 
 @Validated
 @RestController
@@ -26,7 +23,7 @@ public class AccountController {
   }
 
   @PostMapping("/register/confirm")
-  public CommonResponseDTO<MessageResponseDTO> registrationConfirm(@Valid @RequestBody RegisterConfirmRequestDTO request) throws IOException, GeoIp2Exception {
+  public CommonResponseDTO<MessageResponseDTO> registrationConfirm(@Valid @RequestBody RegisterConfirmRequestDTO request) {
     return userService.registrationConfirm(request);
   }
 

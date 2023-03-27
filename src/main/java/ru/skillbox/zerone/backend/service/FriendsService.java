@@ -1,12 +1,8 @@
 package ru.skillbox.zerone.backend.service;
 
-import com.maxmind.geoip2.DatabaseReader;
-import com.maxmind.geoip2.exception.GeoIp2Exception;
-import com.maxmind.geoip2.model.CityResponse;
-import jakarta.servlet.http.HttpServletRequest;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,10 +25,6 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.*;
 
 import static ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus.*;
@@ -44,8 +36,7 @@ public class FriendsService {
   private final RecommendationRepository recommendationRepository;
   private final UserRepository userRepository;
   private final UserMapper userMapper;
-  @Autowired
-  private HttpServletRequest request;
+
 
   @Transactional
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
@@ -248,15 +239,8 @@ public class FriendsService {
         .build();
   }
 
-  public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage) throws IOException, GeoIp2Exception {
-//    var ip = InetAddress.getLocalHost();
-    File database = new File("src/main/resources/GeoIP/GeoLite2-City.mmdb");
-    DatabaseReader dbReader = new DatabaseReader.Builder(database).build();
-    System.out.println();
-    CityResponse response = dbReader.city(InetAddress.getByName(getClientIpAddress()));
+  public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage){
 
-    String cityName = response.getCity().getName();
-    System.out.println(cityName);
 
     var user = CurrentUserUtils.getCurrentUser();
     var recommendations = userRepository.findUsersByIdIn(recommendationRepository.findByUser(user).getRecommendedFriends());
@@ -267,22 +251,19 @@ public class FriendsService {
         .data(userMapper.usersToUserDTO(recommendations))
         .build();
   }
-  private String getClientIpAddress() {
-    String ipAddress = request.getHeader("X-FORWARDED-FOR");
-    if (ipAddress == null) {
-      ipAddress = request.getRemoteAddr();
-    }
-    return  ipAddress;
-  }
+
 
   @Scheduled(cron = "0 0 2 * * ?")
   public void createRecommendations() {
     recommendationRepository.deleteAll();
 
-    var allUsers = userRepository.findAll();
+    var allUsers = userRepository.findAllUsers();
     for (User user : allUsers) {
       recommendationRepository.save(findRecommendations(user, 0, 20));
     }
+  }
+  public void createPersonalRecommendations(User user) {
+    recommendationRepository.save(findRecommendations(user, 0, 20));
   }
 
   public Recommendation findRecommendations(User user, int offset, int itemPerPage) {
@@ -297,7 +278,7 @@ public class FriendsService {
 
     int recommendationCount = 8;
     if (recommendedUsersId.size() < recommendationCount) {
-      var allUsers = new ArrayList<>(userRepository.findAllUsers(pageable).stream().toList());
+      var allUsers = new ArrayList<>(userRepository.findAllUsersId());
       allUsers.removeAll(recommendedUsersByCity);
       allUsers.removeAll(currentFriends);
       Collections.shuffle(allUsers);

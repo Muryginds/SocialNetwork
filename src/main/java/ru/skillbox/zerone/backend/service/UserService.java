@@ -1,7 +1,11 @@
 package ru.skillbox.zerone.backend.service;
 
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.model.CityResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.configuration.MailServiceConfig;
@@ -25,6 +29,8 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
+import java.io.File;
+import java.net.InetAddress;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -34,10 +40,13 @@ public class UserService {
   private final UserRepository userRepository;
   private final ChangeEmailHistoryRepository changeEmailHistoryRepository;
   private final MailService mailService;
+  private final FriendsService friendsService;
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
   private final MailServiceConfig mailServiceConfig;
   private final NotificationSettingRepository notificationSettingRepository;
+  @Autowired
+  private HttpServletRequest request;
 
 
   public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordDTO request) {
@@ -117,11 +126,14 @@ public class UserService {
 
     userRepository.save(user);
 
+
+
     mailService.sendVerificationEmail(
         user.getEmail(),
         verificationUuid.toString(),
         "/registration/complete",
         mailServiceConfig.getFrontAddress());
+
 
     return ResponseUtils.commonResponseDataOk();
   }
@@ -140,8 +152,11 @@ public class UserService {
     }
 
     user.setIsApproved(true);
+    user.setCity(getClientIpAddress());
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
+    friendsService.createPersonalRecommendations(user);
+
 
     return ResponseUtils.commonResponseDataOk();
   }
@@ -195,5 +210,29 @@ public class UserService {
     }
     notificationSettingRepository.save(setting);
     return ResponseUtils.commonResponseDataOk();
+  }
+
+  public CommonResponseDTO<UserDTO> deleteUser() {
+    var user = CurrentUserUtils.getCurrentUser();
+    user.setIsDeleted(true);
+    userRepository.save(user);
+    return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));
+  }
+  private String getClientIpAddress()  {
+    try {
+      String ipAddress = request.getHeader("X-FORWARDED-FOR");
+      if (ipAddress == null) {
+        ipAddress = request.getRemoteAddr();
+      }
+      File database = new File("src/main/resources/GeoIP/GeoLite2-City.mmdb");
+      DatabaseReader dbReader = new DatabaseReader.Builder(database).build();
+      CityResponse response = dbReader.city(InetAddress.getByName(ipAddress));
+
+      return response.getCity().getName();
+
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      return null;
+    }
   }
 }

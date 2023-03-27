@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import ru.skillbox.zerone.backend.model.entity.Recommendation;
 import ru.skillbox.zerone.backend.model.entity.User;
 
-import java.util.List;
 
 
 public interface RecommendationRepository extends JpaRepository<Recommendation, Long> {

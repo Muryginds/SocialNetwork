@@ -29,6 +29,9 @@ public class LoginService {
     var email = request.getEmail();
     var user = userRepository.findUserByEmail(email)
         .orElseThrow(() -> new UserNotFoundException(email));
+    if(Boolean.TRUE.equals(user.getIsDeleted())) {
+      throw new BadCredentialsException("Пользователь удалён");
+    }
 
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, request.getPassword()));
