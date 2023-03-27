@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: remove-message-permission
+      author: muryginds
+      changes:
+        - sql:
+            sql: ALTER TABLE "user" DROP COLUMN message_permission;
+        - sql:
+            sql: DROP TYPE IF EXISTS message_permission CASCADE;

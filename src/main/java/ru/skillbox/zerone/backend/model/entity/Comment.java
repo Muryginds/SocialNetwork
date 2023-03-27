@@ -14,13 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "comment",
-    indexes = {
-        @Index(name = "comment_post_id_idx", columnList = "post_id"),
-        @Index(name = "comment_parent_id_idx", columnList = "parent_id"),
-        @Index(name = "comment_author_id_idx", columnList = "author_id")
-    }
-)
+@Table(name = "comment")
 @Data
 @Builder
 @AllArgsConstructor
@@ -33,46 +27,40 @@ public class Comment {
 
   @NotNull
   @Builder.Default
-  @Column(name = "time", columnDefinition = "timestamp without time zone")
+  @Column(name = "time")
   private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  @Column(name = "type", columnDefinition = "comment_type")
+  @Column(name = "type")
   private CommentType type;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "post_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "comment_post_fk")
-  )
+  @JoinColumn(name = "post_id", referencedColumnName = "id")
   private Post post;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "parent_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "comment_parent_comment_fk")
-  )
+  @JoinColumn(name = "parent_id", referencedColumnName = "id")
   private Comment parent;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "comment_author_fk")
-  )
+  @JoinColumn(name = "author_id", referencedColumnName = "id")
   private User author;
 
   @NotNull
   @NotBlank
-  @Column(name = "comment_text", columnDefinition = "text")
+  @Column(name = "comment_text")
   private String commentText;
 
   @NotNull
   @Builder.Default
-  @Column(name = "is_blocked", columnDefinition = "boolean default false")
+  @Column(name = "is_blocked")
   private Boolean isBlocked = false;
 
   @NotNull
   @Builder.Default
-  @Column(name = "is_deleted", columnDefinition = "boolean default false")
+  @Column(name = "is_deleted")
   private Boolean isDeleted = false;
 
   @OneToMany

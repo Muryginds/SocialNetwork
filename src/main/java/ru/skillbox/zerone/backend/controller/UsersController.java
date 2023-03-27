@@ -20,7 +20,7 @@ public class UsersController {
 
   @GetMapping("/me")
   public CommonResponseDTO<UserDTO> getCurrentUser() {
-      return userService.getCurrentUser();
+    return userService.getCurrentUser();
   }
 
   @GetMapping("/{id}")
@@ -42,7 +42,6 @@ public class UsersController {
                                                 @RequestParam(name = "age_to", required = false) Integer ageTo,
                                                 @RequestParam(name = "offset", defaultValue = "0") int offset,
                                                 @RequestParam(name = "itemPerPage", defaultValue = "10") int itemPerPage) {
-
     return searchService.searchUsers(name, lastName, country, city, ageFrom, ageTo, offset, itemPerPage);
   }
 }

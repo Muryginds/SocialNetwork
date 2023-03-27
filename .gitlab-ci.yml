@@ -31,12 +31,13 @@ migration-job:
   only:
     - master
   tags:
-    - prod
+    - students
   script:
-    - cd src/main/resources/
-    - liquibase update --url=$DATABASE_URL --username=$DATABASE_USERNAME --password=$DATABASE_PASSWORD --changeLogFile=$CHANGELOG_PATH
+    - echo "Liquibase migrations started"
+    - "cd src/main/resources/"
+    - "liquibase update --url=$DATABASE_URL --username=$DATABASE_USERNAME --password=$DATABASE_PASSWORD --changeLogFile=$CHANGELOG_PATH"
 
-test-job: # This job runs in the test stage, which runs second.
+test-job:
   stage: test
   tags:
     - students
@@ -49,22 +50,24 @@ test-job: # This job runs in the test stage, which runs second.
     paths:
       - .m2/repository
       - target
-sonarqube-check:
-    stage:
-        sonarqube
-    tags:
-      - students
-    variables:
-        SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-        GIT_DEPTH: "0"
-    cache:
-        paths:
-            - .sonar/cache
-    script:
-        -  mvn verify sonar:sonar -Dsonar.projectKey=javapro_team34_zerone_backend_AYcJWhGuf3krGjKJWJH6 -Dsonar.login=$SONAR_LOGIN -Dsonar.password=$SONAR_PASSWORD -Dsonar.java.coveragePlugin=jacoco -Dsonar.java.binaries=target/classes
-    allow_failure: true
 
-package-job:       # This job runs in the package stage, which runs third.
+sonarqube-check:
+  stage:
+    sonarqube
+  tags:
+    - students
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+  cache:
+    paths:
+      - .sonar/cache
+  script:
+    - echo "Sonarqube check started"
+    - "mvn verify sonar:sonar -Dsonar.projectKey=javapro_team34_zerone_backend_AYcJWhGuf3krGjKJWJH6 -Dsonar.login=$SONAR_LOGIN -Dsonar.password=$SONAR_PASSWORD -Dsonar.java.coveragePlugin=jacoco -Dsonar.java.binaries=target/classes"
+  allow_failure: true
+
+package-job:
   stage: package
   tags:
     - students
@@ -85,8 +88,7 @@ package-job:       # This job runs in the package stage, which runs third.
       - .m2/repository
       - target
 
-
-deploy_dev_server:  # This job runs in the deploy stage, which runs fourth.
+deploy_dev_server:
   stage: deploy
   tags:
     - students

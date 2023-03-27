@@ -11,11 +11,7 @@ import ru.skillbox.zerone.backend.model.enumerated.LikeType;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "`like`", indexes = {
-    @Index(name = "like_post_id_idx", columnList = "post_id"),
-    @Index(name = "like_comment_id_idx", columnList = "comment_id"),
-    @Index(name = "like_user_id_idx", columnList = "user_id")
-})
+@Table(name = "`like`")
 @Data
 @Builder
 @AllArgsConstructor
@@ -28,30 +24,24 @@ public class Like {
 
   @NotNull
   @Builder.Default
-  @Column(name = "time", columnDefinition = "timestamp without time zone")
+  @Column(name = "time")
   private LocalDateTime time = LocalDateTime.now();
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "post_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "like_post_fk")
-  )
+  @JoinColumn(name = "post_id", referencedColumnName = "id")
   private Post post;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "comment_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "like_comment_fk")
-  )
+  @JoinColumn(name = "comment_id", referencedColumnName = "id")
   private Comment comment;
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  @Column(name = "type", columnDefinition = "like_type")
+  @Column(name = "type")
   private LikeType type;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "user_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "like_user_fk")
-  )
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 }

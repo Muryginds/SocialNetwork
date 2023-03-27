@@ -16,7 +16,6 @@ import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 import java.util.List;
 
-
 @Service
 @RequiredArgsConstructor
 public class TagService {
@@ -65,5 +64,4 @@ public class TagService {
         .build();
 
   }
-
 }

@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ru.skillbox.zerone.backend.model.enumerated.MessagePermissions;
 import ru.skillbox.zerone.backend.model.enumerated.UserStatus;
 
 import java.time.LocalDate;
@@ -19,10 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "`user`",
-    uniqueConstraints = {
-        @UniqueConstraint(name = "user_email_uk", columnNames = {"email"})}
-)
+@Table(name = "`user`")
 @Data
 @Builder
 @Accessors(chain = true)
@@ -46,7 +42,7 @@ public class User implements UserDetails {
 
   @NotNull
   @Builder.Default
-  @Column(name = "reg_date", columnDefinition = "timestamp without time zone")
+  @Column(name = "reg_date")
   private LocalDateTime regDate = LocalDateTime.now();
 
   @Column(name = "birth_date")
@@ -73,7 +69,7 @@ public class User implements UserDetails {
 
   @NotNull
   @Builder.Default
-  @Column(name = "status", columnDefinition = "user_status default 'INACTIVE'")
+  @Column(name = "status")
   @Enumerated(EnumType.STRING)
   private UserStatus status = UserStatus.INACTIVE;
 
@@ -90,28 +86,22 @@ public class User implements UserDetails {
 
   @NotNull
   @Builder.Default
-  @Column(name = "is_approved", columnDefinition = "boolean default false")
+  @Column(name = "is_approved")
   private Boolean isApproved = false;
 
   @NotNull
   @Builder.Default
-  @Column(name = "message_permission", columnDefinition = "message_permission default 'ALL'")
-  @Enumerated(EnumType.STRING)
-  private MessagePermissions messagePermissions = MessagePermissions.ALL;
-
-  @NotNull
-  @Builder.Default
-  @Column(name = "last_online_time", columnDefinition = "timestamp without time zone")
+  @Column(name = "last_online_time")
   private LocalDateTime lastOnlineTime = LocalDateTime.now();
 
   @NotNull
   @Builder.Default
-  @Column(name = "is_blocked", columnDefinition = "boolean default false")
+  @Column(name = "is_blocked")
   private Boolean isBlocked = false;
 
   @NotNull
   @Builder.Default
-  @Column(name = "is_deleted", columnDefinition = "boolean default false")
+  @Column(name = "is_deleted")
   private Boolean isDeleted = false;
 
   @ManyToMany(fetch = FetchType.EAGER)

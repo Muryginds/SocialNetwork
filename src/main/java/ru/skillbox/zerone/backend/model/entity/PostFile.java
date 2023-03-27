@@ -9,9 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "post_file",
-    indexes = @Index(name = "post_file_post_id_idx", columnList = "post_id")
-)
+@Table(name = "post_file")
 @Data
 @Builder
 @AllArgsConstructor
@@ -24,9 +22,7 @@ public class PostFile {
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "post_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = " post_file_post_fk")
-  )
+  @JoinColumn(name = "post_id", referencedColumnName = "id")
   private Post post;
 
   @NotNull

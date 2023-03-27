@@ -7,12 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "post_to_tag",
-    indexes = {
-        @Index(name = "post_to_tag_post_id_idx", columnList = "post_id"),
-        @Index(name = "post_to_tag_tag_id_idx", columnList = "tag_id")
-    }
-)
+@Table(name = "post_to_tag")
 @Data
 @Builder
 @AllArgsConstructor
@@ -24,14 +19,10 @@ public class PostToTag {
   private Long id;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "post_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "post_to_tag_post_fk")
-  )
+  @JoinColumn(name = "post_id", referencedColumnName = "id")
   private Post post;
 
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "tag_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "post_to_tag_tag_fk")
-  )
+  @JoinColumn(name = "tag_id", referencedColumnName = "id")
   private Tag tag;
 }

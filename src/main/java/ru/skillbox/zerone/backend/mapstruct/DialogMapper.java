@@ -7,7 +7,6 @@ import ru.skillbox.zerone.backend.model.entity.Dialog;
 import ru.skillbox.zerone.backend.model.entity.Message;
 import ru.skillbox.zerone.backend.model.entity.User;
 
-
 @Mapper(uses = {UserMapper.class, MessageMapper.class})
 public interface DialogMapper {
   @Mapping(target = "id", source = "dialog.id")

@@ -24,8 +24,8 @@ public abstract class UserMapperDecorator implements UserMapper {
   private WebSocketConnectionRepository webSocketConnectionRepository;
 
   @Override
-  public User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO) {
-    var user = userMapper.registerRequestDTOToUser(registerRequestDTO);
+  public User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO, String confirmationCode) {
+    var user = userMapper.registerRequestDTOToUser(registerRequestDTO, confirmationCode);
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     List<Role> roles = new ArrayList<>();
     roles.add(roleService.getBasicUserRole());
@@ -36,6 +36,14 @@ public abstract class UserMapperDecorator implements UserMapper {
   @Override
   public UserDTO userToUserDTO(User user) {
     var userDTO = userMapper.userToUserDTO(user);
+    if (Boolean.TRUE.equals(user.getIsBlocked())) {
+      userDTO.setFirstName("Пользователь");
+      userDTO.setLastName(" заблокирован");
+    }
+    if (Boolean.TRUE.equals(user.getIsDeleted())) {
+      userDTO.setFirstName("Пользователь");
+      userDTO.setLastName(" удален");
+    }
     if (webSocketConnectionRepository.existsByUserId(user.getId().toString())) {
       userDTO.setLastOnlineTime(LocalDateTime.now());
     }

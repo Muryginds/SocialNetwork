@@ -1,6 +1,5 @@
 version: "3.7"
 
-
 services:
   zookeeper:
     image: zookeeper:3.7.0
@@ -97,6 +96,7 @@ services:
       SPRING_DATASOURCE_USERNAME: skillbox
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATA_REDIS_HOST: redis
     ports:
       -  "8086:8086"
       -  "1111:1111"
@@ -140,7 +140,7 @@ services:
     image: grafana/grafana
     build: './config/grafana'
     ports:
-      - 3000:3000
+      - "3000:3000"
     volumes:
       - ./grafana:/var/lib/grafana
     environment:
@@ -163,7 +163,7 @@ services:
     container_name: prometheus
     image: prom/prometheus
     ports:
-      - 9090:9090
+      - "9090:9090"
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./prometheus:/prometheus

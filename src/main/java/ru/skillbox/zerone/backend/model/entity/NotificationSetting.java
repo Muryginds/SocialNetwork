@@ -8,9 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "notification_setting",
-    indexes = @Index(name = "notification_setting_user_id_idx", columnList = "user_id")
-)
+@Table(name = "notification_setting")
 @Data
 @Builder
 @AllArgsConstructor
@@ -23,34 +21,32 @@ public class NotificationSetting {
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "user_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "notification_setting_user_fk")
-  )
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 
   @NotNull
   @Builder.Default
-  @Column(name = "post_enabled", columnDefinition = "boolean default false")
+  @Column(name = "post_enabled")
   private Boolean postEnabled = true;
 
   @NotNull
   @Builder.Default
-  @Column(name = "post_comment_enabled", columnDefinition = "boolean default false")
+  @Column(name = "post_comment_enabled")
   private Boolean postCommentEnabled = true;
 
   @NotNull
   @Builder.Default
-  @Column(name = "comment_comment_enabled", columnDefinition = "boolean default false")
+  @Column(name = "comment_comment_enabled")
   private Boolean commentCommentEnabled = true;
 
   @NotNull
   @Builder.Default
-  @Column(name = "friend_request_enabled", columnDefinition = "boolean default false")
+  @Column(name = "friend_request_enabled")
   private Boolean friendRequestEnabled = true;
 
   @NotNull
   @Builder.Default
-  @Column(name = "messages_enabled", columnDefinition = "boolean default false")
+  @Column(name = "messages_enabled")
   private Boolean messagesEnabled = true;
 
   @NotNull
