@@ -65,7 +65,7 @@ public class PostService {
     return result;
   }
 
-  public PostDTO getPostsDTO(Post post, User user) {
+  private PostDTO getPostsDTO(Post post, User user) {
 
     PostDTO postDTO = postMapper.postToPostsDTO(post);
 
