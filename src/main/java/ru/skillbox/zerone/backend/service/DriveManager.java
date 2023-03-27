@@ -1,4 +1,4 @@
-package ru.skillbox.zerone.backend.configuration;
+package ru.skillbox.zerone.backend.service;
 
 import com.google.api.client.http.FileContent;
 import com.google.api.services.drive.Drive;
@@ -7,18 +7,20 @@ import com.google.api.services.drive.model.FileList;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.skillbox.zerone.backend.configuration.properties.GoogleDriveProperties;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
 @RequiredArgsConstructor
 public class DriveManager {
 
-  private final DriveProperties driveProperties;
+  private final GoogleDriveProperties driveProperties;
   private final Drive drive;
   private String query;
 
@@ -28,7 +30,7 @@ public class DriveManager {
         + " and mimeType = '%s' ", driveProperties.getFolderName(), driveProperties.getMimeType());
   }
 
-  public File findFolderByName() throws IOException {
+  public Optional<File> findFolderByName() throws IOException {
 
     String pageToken = null;
     List<File> list = new ArrayList<>();
@@ -46,10 +48,10 @@ public class DriveManager {
 
     if (!list.isEmpty()) {
 
-      return result.getFiles().get(driveProperties.getIndexOfFirstElement());
+      return Optional.ofNullable(result.getFiles().get(driveProperties.getIndexOfFirstElement()));
     }
 
-    return null;
+    return Optional.empty();
   }
 
   public File createFolder(String folderName) throws IOException {

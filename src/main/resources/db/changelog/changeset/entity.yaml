@@ -656,6 +656,11 @@ databaseChangeLog:
                     nullable: false
                   name: dialog_id
                   type: BIGINT
+              - column:
+                  constraints:
+                    nullable: false
+                  name: author_id
+                  type: BIGINT
             tableName: message
   - changeSet:
       id: 35
@@ -830,6 +835,12 @@ databaseChangeLog:
               - column:
                   name: dialog_id
             indexName: message_dialog_id_idx
+            tableName: message
+        - createIndex:
+            columns:
+              - column:
+                  name: author_id
+            indexName: message_author_id_idx
             tableName: message
   - changeSet:
       id: 40
@@ -1090,6 +1101,17 @@ databaseChangeLog:
             onUpdate: NO ACTION
             referencedColumnNames: id
             referencedTableName: dialog
+            validate: true
+        - addForeignKeyConstraint:
+            baseColumnNames: author_id
+            baseTableName: message
+            constraintName: message_author_fk
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: NO ACTION
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: user
             validate: true
   - changeSet:
       id: 59

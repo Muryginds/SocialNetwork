@@ -13,7 +13,10 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "message",
-    indexes = @Index(name = "message_dialog_id_idx", columnList = "dialog_id")
+    indexes = {
+        @Index(name = "message_dialog_id_idx", columnList = "dialog_id"),
+        @Index(name = "message_author_id_idx", columnList = "author_id")
+    }
 )
 @Data
 @Builder
@@ -36,6 +39,13 @@ public class Message {
       foreignKey = @ForeignKey(name = "message_dialog_fk")
   )
   private Dialog dialog;
+
+  @NotNull
+  @ManyToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "author_id", nullable = false, referencedColumnName = "id",
+      foreignKey = @ForeignKey(name = "message_author_fk")
+  )
+  private User author;
 
   @NotNull
   @NotBlank

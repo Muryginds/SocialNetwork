@@ -1,4 +1,4 @@
-package ru.skillbox.zerone.backend.configuration;
+package ru.skillbox.zerone.backend.configuration.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

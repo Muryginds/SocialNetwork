@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class DriveLoggingAspect {
 
-  @Pointcut("execution(* ru.skillbox.zerone.backend.service.DriveService.transferFilesToGoogleDrive())")
+  @Pointcut("execution(* ru.skillbox.zerone.backend.service.DriveService.transferLogsToGoogleDrive())")
   public void transferFilesPointcut() {}
 
   @AfterThrowing(value = "transferFilesPointcut()", throwing = "ex")
   public void transferFilesAdvice(Exception ex) {
 
-    log.warn("transfer failed cause " + ex.getMessage());
+    log.warn("transfer failed cause {}", ex.getMessage());
   }
 
   @Pointcut("execution(* ru.skillbox.zerone.backend.configuration.GoogleDriveConfig.credentials())")
@@ -26,7 +26,7 @@ public class DriveLoggingAspect {
   @AfterThrowing(value = "credentialsPointcut()", throwing = "ex")
   public void credentialsAdvice(Exception ex) {
 
-    log.warn("access failed cause " + ex.getMessage());
+    log.warn("access failed cause {}", ex.getMessage());
   }
 
   @Pointcut("execution(* ru.skillbox.zerone.backend.configuration.GoogleDriveConfig.httpTransport())")
@@ -35,6 +35,6 @@ public class DriveLoggingAspect {
   @AfterThrowing(value = "httpTransportPointcut()", throwing = "ex")
   public void httpTransportAdvice(Exception ex) {
 
-    log.warn("access failed cause " + ex.getMessage());
+    log.warn("access failed cause {}", ex.getMessage());
   }
 }
