@@ -208,16 +208,10 @@ public class UserService {
 
   private NotificationSetting getNotificationSetting() {
     User user = CurrentUserUtils.getCurrentUser();
-    Optional<NotificationSetting> optionalSetting = notificationSettingRepository.findByUser(user);
-    NotificationSetting setting;
-    if (optionalSetting.isPresent()) {
-      setting = optionalSetting.get();
-    } else {
-      setting = new NotificationSetting();
-      setting.setUser(user);
-    }
-    return setting;
+    return notificationSettingRepository.findByUser(user)
+        .orElseGet(() -> NotificationSetting.builder().user(user).build());
   }
+
   private void addSetting(List<NotificationSettingDTO> data, NotificationType type, boolean enabled) {
     var setting = new NotificationSettingDTO(type.name(), enabled);
     data.add(setting);

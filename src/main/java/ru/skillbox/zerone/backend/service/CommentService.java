@@ -7,6 +7,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.CommentNotFoundException;
+import ru.skillbox.zerone.backend.exception.NotificationPermissionException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.CommentRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommentDTO;
@@ -18,6 +19,7 @@ import ru.skillbox.zerone.backend.model.entity.Post;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.CommentType;
 import ru.skillbox.zerone.backend.repository.CommentRepository;
+import ru.skillbox.zerone.backend.repository.NotificationSettingRepository;
 import ru.skillbox.zerone.backend.repository.PostRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
@@ -34,6 +36,7 @@ public class CommentService {
   private final CommentRepository commentRepository;
   private final UserMapper userMapper;
   private final NotificationService notificationService;
+  private final NotificationSettingRepository notificationSettingRepository;
 
   public CommonListResponseDTO<CommentDTO> getPage4Comments(int offset, int itemPerPage, Post post, User user) {
 
@@ -62,6 +65,14 @@ public class CommentService {
   public CommonResponseDTO<CommentDTO> addComment(long id, CommentRequestDTO commentRequest) {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow();
+
+    User author = post.getAuthor();
+    if (!notificationSettingRepository.findByUser(author).get().getPostEnabled()) {
+      throw new NotificationPermissionException(String.format(
+          "Пользователь %s запретил комментировать свои публикации", author.getLastName()
+      ));
+    }
+
     Comment comment = new Comment();
     comment.setCommentText(commentRequest.getCommentText());
     comment.setPost(post);
@@ -74,6 +85,12 @@ public class CommentService {
     if (commentRequest.getParentId() != null) {
       parentComment = commentRepository
           .findById(commentRequest.getParentId()).orElseThrow();
+      author = comment.getAuthor();
+      if (!notificationSettingRepository.findByUser(author).get().getCommentCommentEnabled()) {
+        throw new NotificationPermissionException(String.format(
+            "Пользователь %s запретил комментировать свои комментарии", author.getLastName()
+        ));
+      }
       comment.setParent(parentComment);
       comment.setType(CommentType.COMMENT);
     } else {

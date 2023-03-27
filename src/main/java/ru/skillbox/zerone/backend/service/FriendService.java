@@ -33,6 +33,7 @@ public class FriendService {
   private final FriendshipRepository friendshipRepository;
   private final UserRepository userRepository;
   private final UserMapper userMapper;
+  private final NotificationService notificationService;
 
   @Transactional
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
@@ -62,6 +63,8 @@ public class FriendService {
     }
 
     friendshipRepository.saveAll(friendshipList);
+
+    notificationService.saveFriendship(friendshipList);
 
     return CommonResponseDTO.builder()
         .message("ok")

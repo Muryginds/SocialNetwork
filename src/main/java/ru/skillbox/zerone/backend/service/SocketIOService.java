@@ -27,6 +27,7 @@ import ru.skillbox.zerone.backend.security.JwtTokenProvider;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -132,7 +133,7 @@ public class SocketIOService {
 
   public void newListener(SocketIOClient client) {
     var sessionId = client.getSessionId();
-    if (socketIORepository.checkSessionIsActive(sessionId)) {
+    if (webSocketConnectionRepository.existsById(sessionId)) {
       client.sendEvent(AUTH_RESPONSE_EVENT_TITLE, "ok");
     } else {
       client.sendEvent(AUTH_RESPONSE_EVENT_TITLE, "not");
@@ -164,6 +165,14 @@ public class SocketIOService {
     } catch (Exception e) {
       throw new ZeroneSocketException(e);
     }
+  }
+
+  public <T> void sendEventToPerson(User person, String event, T dto) {
+    webSocketConnectionRepository.findAllByUserId(person.getId().toString())
+        .forEach(socket -> {
+          SocketIOClient client = server.getClient(socket.getSessionId());
+          client.sendEvent(event, dto);
+        });
   }
 
   public void disconnect(SocketIOClient client) {

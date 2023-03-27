@@ -1,6 +1,5 @@
 package ru.skillbox.zerone.backend.service;
 
-import com.corundumstudio.socketio.SocketIOServer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +21,6 @@ import ru.skillbox.zerone.backend.repository.*;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,9 +42,8 @@ public class NotificationService {
   private final MessageRepository messageRepository;
   private final DialogRepository dialogRepository;
   private final FriendshipRepository friendshipRepository;
-  private final SocketIOServer socketIOServer;
-  private final SocketIORepository socketIORepository;
   private final SocketIOService socketIOService;
+  private final NotificationSettingRepository notificationSettingRepository;
 
   public CommonListResponseDTO<NotificationDTO> getNotifications(
       int offset, int itemPerPage) {
@@ -221,9 +218,9 @@ public class NotificationService {
 
   private SocketNotificationDataDTO prepareSocketNotificationDataDTO(
       Notification notification, Comment comment) {
-    Long parentId = comment.getType().equals(POST) ?
+    Long parentId = comment.getType().equals(CommentType.POST) ?
         comment.getId() : comment.getParent().getId();
-    var dataDTO = SocketNotificationDataDTO.builder()
+    return SocketNotificationDataDTO.builder()
         .id(notification.getId())
         .eventType(notification.getType())
         .sentTime(notification.getSentTime().atZone(ZoneId.systemDefault()).toInstant())
@@ -232,16 +229,28 @@ public class NotificationService {
         .parentId(parentId)
         .currentEntityId(notification.getEntityId())
         .build();
-    return dataDTO;
   }
 
-  public void saveFriendship(User dstPerson, Friendship friendship) {
-    var notification = Notification.builder()
-        .type(FRIEND_REQUEST)
-        .person(dstPerson)
-        .entityId(friendship.getId())
-        .build();
-    notificationRepository.save(notification);
+  public void saveFriendship(List<Friendship> friendships) {
+    friendships.forEach(friendship -> {
+      User person = friendship.getDstPerson();
+      checkFriendshipEnabled(friendship.getDstPerson());
+      checkFriendshipEnabled(friendship.getSrcPerson());
+      var notification = Notification.builder()
+          .type(FRIEND_REQUEST)
+          .person(friendship.getDstPerson())
+          .entityId(friendship.getId())
+          .build();
+      notificationRepository.save(notification);
+    });
+  }
+
+  private void checkFriendshipEnabled(User person) {
+    if (!notificationSettingRepository.findByUser(person).get().getFriendRequestEnabled()) {
+      throw new FriendsAdditionException(String.format(
+          "Пользователь %s запретил заявки в друзья", person.getLastName()
+      ));
+    }
   }
 
   public void saveMessage(Message message) {

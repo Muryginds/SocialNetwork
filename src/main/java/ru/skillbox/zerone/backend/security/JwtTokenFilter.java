@@ -10,7 +10,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
-import ru.skillbox.zerone.backend.repository.SocketIORepository;
 
 import java.io.IOException;
 
@@ -18,7 +17,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtTokenFilter extends GenericFilterBean {
   private final JwtTokenProvider jwtTokenProvider;
-  private final SocketIORepository socketIORepository;
 
   @Override
   public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
