@@ -40,7 +40,6 @@ public class DialogService {
   private final FriendshipRepository friendshipRepository;
 
   @Transactional
-  @SuppressWarnings("SimplifyStreamApiCallChains")
   public CommonListResponseDTO<MessageDataDTO> getMessages(long id, int offset, int itemPerPage) {
     var dialog = dialogRepository.findById(id)
         .orElseThrow(() -> new DialogException(String.format("Диалог с id: \"%s\" не найден", id)));
@@ -51,10 +50,7 @@ public class DialogService {
 
     var unreadedMessages = messagesPage.stream()
         .filter(m -> ReadStatus.SENT.equals(m.getReadStatus()))
-        .map(u -> {
-          u.setReadStatus(ReadStatus.READ);
-          return u;
-        })
+        .map(u -> u.setReadStatus(ReadStatus.READ))
         .toList();
     messageRepository.saveAll(unreadedMessages);
 

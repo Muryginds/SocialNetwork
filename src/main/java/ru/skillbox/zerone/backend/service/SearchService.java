@@ -1,6 +1,5 @@
 package ru.skillbox.zerone.backend.service;
 
-
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.jooq.Condition;
@@ -25,15 +24,14 @@ import static com.tej.JooQDemo.jooq.sample.model.Tables.*;
 import static org.jooq.impl.DSL.noCondition;
 import static org.jooq.impl.DSL.trueCondition;
 
-
 @Service
 @RequiredArgsConstructor
 public class SearchService {
 
   private final DSLContext dslContext;
 
-
   @Transactional
+  @SuppressWarnings("java:S107")
   public CommonListResponseDTO<UserDTO> searchUsers(String name, String lastName, String country, String city, Integer ageFrom, Integer ageTo, int offset, int itemPerPage) {
 
     Condition condition = createConditionForUsers(name, lastName, country, city, ageFrom, ageTo);
@@ -47,7 +45,6 @@ public class SearchService {
         .total(usersCount)
         .data(users)
         .build();
-
   }
 
   private Condition createConditionForUsers(String name, String lastName, String country, String city, Integer ageFrom, Integer ageTo) {
@@ -122,7 +119,7 @@ public class SearchService {
         .id(postRecord.get(POST.ID))
         .title(postRecord.get(POST.TITLE))
         .postText(postRecord.get(POST.POST_TEXT))
-        .author(this.recordToUser(postRecord))
+        .author(recordToUser(postRecord))
         .isBlocked(postRecord.get(POST.IS_BLOCKED))
         .isDeleted(postRecord.get(POST.IS_DELETED))
         .updateTime(postRecord.get(POST.UPDATE_DATE))

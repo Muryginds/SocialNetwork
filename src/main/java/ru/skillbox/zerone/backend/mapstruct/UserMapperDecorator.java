@@ -37,10 +37,12 @@ public abstract class UserMapperDecorator implements UserMapper {
   public UserDTO userToUserDTO(User user) {
     var userDTO = userMapper.userToUserDTO(user);
     if (Boolean.TRUE.equals(user.getIsBlocked())) {
-      userDTO.setLastName(user.getLastName() + " (заблокирован)");
+      userDTO.setFirstName("Пользователь");
+      userDTO.setLastName(" заблокирован");
     }
     if (Boolean.TRUE.equals(user.getIsDeleted())) {
-        userDTO.setLastName(user.getLastName() + " (удален)");
+      userDTO.setFirstName("Пользователь");
+      userDTO.setLastName(" удален");
     }
     if (webSocketConnectionRepository.existsByUserId(user.getId().toString())) {
       userDTO.setLastOnlineTime(LocalDateTime.now());

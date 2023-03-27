@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend.service;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -51,7 +52,7 @@ class LoginServiceTest implements UserMockUtils {
 
   @Test
   void testLogin_whenValidUser_thenReturnUserDTOWithToken() {
-    var testToken = "token";
+    var testToken = RandomStringUtils.randomAlphabetic(10, 25);
     when(userRepository.findUserByEmail(request.getEmail())).thenReturn(Optional.of(user));
 
     when(authenticationManager.authenticate(any(UsernamePasswordAuthenticationToken.class))).thenReturn(null);

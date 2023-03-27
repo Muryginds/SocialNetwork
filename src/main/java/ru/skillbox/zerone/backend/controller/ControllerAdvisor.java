@@ -11,8 +11,6 @@ import ru.skillbox.zerone.backend.exception.ZeroneException;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
-import java.util.Arrays;
-
 @ControllerAdvice
 @Slf4j
 public class ControllerAdvisor {
@@ -27,7 +25,7 @@ public class ControllerAdvisor {
 
   @ExceptionHandler(Exception.class)
   public ResponseEntity<Object> handleException(Exception e) {
-    log.error(Arrays.toString(e.getStackTrace()));
+    log.error("error", e);
     return ResponseEntity.internalServerError().body(getResponse(e));
   }
 
