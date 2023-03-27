@@ -38,14 +38,13 @@ public class PostController {
   }
 
   @GetMapping("/post")
-  public CommonListResponseDTO<PostDTO> getPosts(@RequestParam(name = "text", defaultValue = "") String text,
-                                                 @RequestParam(name = "date_from", defaultValue = "-1") long dateFrom,
-                                                 @RequestParam(name = "date_to", defaultValue = "-1") long dateTo,
+  public CommonListResponseDTO<PostDTO> getPosts(@RequestParam(name = "text", required = false) String text,
+                                                 @RequestParam(name = "author", required = false) String author,
+                                                 @RequestParam(name = "tag", required = false) String tag,
+                                                 @RequestParam(name = "date_from", defaultValue = "0") Long dateFrom,
                                                  @RequestParam(name = "offset", defaultValue = "0") int offset,
-                                                 @RequestParam(name = "itemPerPage", defaultValue = "20") int itemPerPage,
-                                                 @RequestParam(name = "author", defaultValue = "") String author,
-                                                 @RequestParam(name = "tag", defaultValue = "") String tag) {
-    return postService.getPosts(text, dateFrom, dateTo, offset, itemPerPage, author, tag);
+                                                 @RequestParam(name = "itemPerPage", defaultValue = "10") int itemPerPage) {
+    return postService.getPosts(text, author, tag, dateFrom, offset, itemPerPage);
   }
 
   @GetMapping("/post/{id}")
