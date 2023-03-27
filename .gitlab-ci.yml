@@ -33,6 +33,7 @@ migration-job:
   tags:
     - prod
   script:
+    - cd src/main/resources/
     - liquibase update --url=$DATABASE_URL --username=$DATABASE_USERNAME --password=$DATABASE_PASSWORD --changeLogFile=$CHANGELOG_PATH
 
 test-job: # This job runs in the test stage, which runs second.
