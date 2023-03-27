@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ru.skillbox</groupId>
@@ -25,12 +25,13 @@
 		<org.postgresql.version>42.5.1</org.postgresql.version>
 		<org.bouncycastle.version>1.72</org.bouncycastle.version>
 		<io.jsonwebtoken.version>0.11.5</io.jsonwebtoken.version>
-		<org.testcontainers.version>1.17.3</org.testcontainers.version>
+		<org.testcontainers.version>1.17.6</org.testcontainers.version>
 		<com.dropbox.core.version>5.4.4</com.dropbox.core.version>
 		<net.logstash.logback.version>7.3</net.logstash.logback.version>
 		<commons-codec.version>1.15</commons-codec.version>
 		<com.cloudinary.version>1.32.2</com.cloudinary.version>
 		<io.micrometer.version>1.10.4</io.micrometer.version>
+		<sonar.qualitygate.wait>true</sonar.qualitygate.wait>
 	</properties>
 
 	<dependencies>
@@ -65,6 +66,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -126,6 +131,12 @@
 
 		<dependency>
 			<groupId>org.testcontainers</groupId>
+			<artifactId>testcontainers</artifactId>
+			<version>${org.testcontainers.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>${org.testcontainers.version}</version>
 			<scope>test</scope>
@@ -136,21 +147,13 @@
 			<artifactId>micrometer-registry-prometheus</artifactId>
 			<version>${io.micrometer.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>net.logstash.logback</groupId>
-			<artifactId>logstash-logback-encoder</artifactId>
-			<version>${net.logstash.logback.version}</version>
-		</dependency>
+
 		<dependency>
 			<groupId>com.cloudinary</groupId>
 			<artifactId>cloudinary-http44</artifactId>
 			<version>${com.cloudinary.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.maxmind.geoip2</groupId>
-			<artifactId>geoip2</artifactId>
-			<version>4.0.1</version>
-		</dependency>
+
 		<dependency>
 			<groupId>com.google.api-client</groupId>
 			<artifactId>google-api-client</artifactId>
@@ -167,11 +170,26 @@
 			<version>1.34.1</version>
 		</dependency>
 		<dependency>
+			<groupId>com.corundumstudio.socketio</groupId>
+			<artifactId>netty-socketio</artifactId>
+			<version>1.7.23</version>
+		</dependency>
+		<dependency>
 			<groupId>org.jacoco</groupId>
 			<artifactId>org.jacoco.agent</artifactId>
 			<version>0.8.8</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jooq</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.maxmind.geoip2</groupId>
+			<artifactId>geoip2</artifactId>
+			<version>4.0.1</version>
+		</dependency>
+
 
 	</dependencies>
 
@@ -214,6 +232,84 @@
 						</compilerArg>
 					</compilerArgs>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.8</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+				<executions>
+					<execution>
+						<id>jooq-codegen</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<jdbc>
+								<driver>org.postgresql.Driver</driver>
+								<url>jdbc:postgresql://zerone-network.ru:5432/skillbox?stringtype=unspecified</url>
+								<user>skillbox</user>
+								<password>password</password>
+							</jdbc>
+							<generator>
+								<database>
+									<name>org.jooq.meta.postgres.PostgresDatabase</name>
+									<includes>USER|POST|POST_TO_TAG|TAG</includes>
+									<excludes></excludes>
+									<inputSchema>public</inputSchema>
+									<forcedTypes>
+										<forcedType>
+											<userType>ru.skillbox.zerone.backend.model.enumerated.MessagePermissions
+											</userType>
+											<enumConverter>true</enumConverter>
+											<includeExpression>.*\.MESSAGE_PERMISSION</includeExpression>
+										</forcedType>
+										<forcedType>
+											<userType>ru.skillbox.zerone.backend.model.enumerated.UserStatus</userType>
+											<enumConverter>true</enumConverter>
+											<includeExpression>.*\.STATUS</includeExpression>
+										</forcedType>
+									</forcedTypes>
+
+								</database>
+								<generate>
+									<pojos>true</pojos>
+									<pojosEqualsAndHashCode>
+										true
+									</pojosEqualsAndHashCode>
+									<javaTimeTypes>true</javaTimeTypes>
+									<fluentSetters>true</fluentSetters>
+								</generate>
+								<target>
+									<packageName>
+										com.tej.JooQDemo.jooq.sample.model
+									</packageName>
+									<directory>
+										target/generated-sources/jooq
+									</directory>
+								</target>
+							</generator>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
