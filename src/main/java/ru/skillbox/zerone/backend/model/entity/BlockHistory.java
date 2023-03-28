@@ -11,13 +11,7 @@ import ru.skillbox.zerone.backend.model.enumerated.ActionType;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "block_history",
-    indexes = {
-        @Index(name = "block_history_user_id_idx", columnList = "user_id"),
-        @Index(name = "block_history_post_id_idx", columnList = "post_id"),
-        @Index(name = "block_history_comment_id_idx", columnList = "comment_id")
-    }
-)
+@Table(name = "block_history")
 @Data
 @Builder
 @AllArgsConstructor
@@ -30,33 +24,27 @@ public class BlockHistory {
 
   @NotNull
   @Builder.Default
-  @Column(name = "time", columnDefinition = "timestamp without time zone")
+  @Column(name = "time")
   private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "user_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "block_history_user_fk")
-  )
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
   private User user;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "post_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "block_history_post_fk")
-  )
+  @JoinColumn(name = "post_id", referencedColumnName = "id")
   private Post post;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "comment_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "block_history_comment_fk")
-  )
+  @JoinColumn(name = "comment_id", referencedColumnName = "id")
   private Comment comment;
 
   @NotNull
   @Builder.Default
   @Enumerated(EnumType.STRING)
-  @Column(name = "action", columnDefinition = "action_type default 'BLOCK'")
+  @Column(name = "action")
   private ActionType action = ActionType.BLOCK;
 }

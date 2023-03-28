@@ -11,9 +11,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 @Entity
-@Table(name = "post",
-    indexes = @Index(name = "post_author_id_idx",
-        columnList = "author_id"))
+@Table(name = "post")
 @Data
 @Builder
 @AllArgsConstructor
@@ -26,14 +24,12 @@ public class Post {
 
   @NotNull
   @Builder.Default
-  @Column(name = "time", columnDefinition = "timestamp without time zone")
+  @Column(name = "time")
   private LocalDateTime time = LocalDateTime.now();
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "author_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "post_author_fk")
-  )
+  @JoinColumn(name = "author_id", referencedColumnName = "id")
   private User author;
 
   @NotNull
@@ -48,17 +44,17 @@ public class Post {
 
   @NotNull
   @Builder.Default
-  @Column(name = "update_date", columnDefinition = "timestamp without time zone")
+  @Column(name = "update_date")
   @UpdateTimestamp
   private LocalDateTime updateTime = LocalDateTime.now();
 
   @NotNull
   @Builder.Default
-  @Column(name = "is_blocked", columnDefinition = "boolean default false")
+  @Column(name = "is_blocked")
   private Boolean isBlocked = false;
 
   @NotNull
   @Builder.Default
-  @Column(name = "is_deleted", columnDefinition = "boolean default false")
+  @Column(name = "is_deleted")
   private Boolean isDeleted = false;
 }

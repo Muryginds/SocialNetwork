@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.slf4j.helpers.MessageFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.jdbc.Sql;
@@ -20,7 +19,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Transactional
-@AutoConfigureMockMvc
 class AuthenticationControllerTest extends AbstractIntegrationTest implements UserMockUtils {
   private static final String TEST_ACCOUNT_EMAIL = "testAccount@hotmail.com";
   private static final String TEST_ACCOUNT_FIRSTNAME = "Серж";

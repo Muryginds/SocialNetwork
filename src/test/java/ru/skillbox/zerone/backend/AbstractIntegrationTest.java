@@ -8,21 +8,18 @@ import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import java.util.random.RandomGenerator;
-
 @SuppressWarnings("resource")
 @SpringBootTest
 @ActiveProfiles("test")
 @AutoConfigureMockMvc
 abstract public class AbstractIntegrationTest {
-  public static final RandomGenerator random = RandomGenerator.getDefault();
 
   static {
     var redis = new GenericContainer<>(DockerImageName.parse("redis:6.2.11-alpine"))
         .withExposedPorts(6379);
     redis.start();
     System.setProperty("spring.data.redis.host", redis.getHost());
-    System.setProperty("spring.data.redis.port", redis.getMappedPort(6379).toString());
+    System.setProperty("spring.data.redis.port", redis.getFirstMappedPort().toString());
   }
 
   @MockBean

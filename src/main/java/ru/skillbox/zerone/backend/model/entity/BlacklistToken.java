@@ -15,10 +15,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "blacklist_token", indexes = {
-    @Index(name = "blacklist_token_token_idx", columnList = "token"),
-    @Index(name = "blacklist_token_expired_idx", columnList = "expired")
-})
+@Table(name = "blacklist_token")
 public class BlacklistToken {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

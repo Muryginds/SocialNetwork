@@ -274,15 +274,8 @@
 								<database>
 									<name>org.jooq.meta.postgres.PostgresDatabase</name>
 									<includes>USER|POST|POST_TO_TAG|TAG</includes>
-									<excludes></excludes>
 									<inputSchema>public</inputSchema>
 									<forcedTypes>
-										<forcedType>
-											<userType>ru.skillbox.zerone.backend.model.enumerated.MessagePermissions
-											</userType>
-											<enumConverter>true</enumConverter>
-											<includeExpression>.*\.MESSAGE_PERMISSION</includeExpression>
-										</forcedType>
 										<forcedType>
 											<userType>ru.skillbox.zerone.backend.model.enumerated.UserStatus</userType>
 											<enumConverter>true</enumConverter>

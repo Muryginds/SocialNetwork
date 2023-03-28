@@ -174,10 +174,10 @@ public class PostService {
     if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException("Людей вообще нет!");
     post.setTitle(requestBody.getTitle());
     post.setPostText(requestBody.getPostText());
-    List<String> tags = requestBody.getTags();
+    //List<String> tags = requestBody.getTags();
     post.setTime(Instant.ofEpochMilli(publishDate == 0 ? System.currentTimeMillis() : publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime());
     post = postRepository.saveAndFlush(post);
-    Matcher images = pattern.matcher(requestBody.getPostText());
+    //Matcher images = pattern.matcher(requestBody.getPostText());
     return getPostDTOResponse(post, user);
   }
 }
