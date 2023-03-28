@@ -6,7 +6,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
+import ru.skillbox.zerone.backend.service.FriendService;
 import ru.skillbox.zerone.backend.service.SearchService;
 import ru.skillbox.zerone.backend.service.UserService;
 
@@ -17,6 +19,7 @@ import ru.skillbox.zerone.backend.service.UserService;
 public class UsersController {
   private final UserService userService;
   private final SearchService searchService;
+  private final FriendService friendService;
 
   @GetMapping("/me")
   public CommonResponseDTO<UserDTO> getCurrentUser() {
@@ -43,5 +46,15 @@ public class UsersController {
                                                 @RequestParam(name = "offset", defaultValue = "0") int offset,
                                                 @RequestParam(name = "itemPerPage", defaultValue = "10") int itemPerPage) {
     return searchService.searchUsers(name, lastName, country, city, ageFrom, ageTo, offset, itemPerPage);
+  }
+
+  @PutMapping("/block/{id}")
+  public CommonResponseDTO<MessageResponseDTO> blockUser(@PathVariable @Min(1) Long id) {
+    return friendService.blockUser(id);
+  }
+
+  @DeleteMapping("/block/{id}")
+  public CommonResponseDTO<MessageResponseDTO> unblockUser(@PathVariable @Min(1) Long id) {
+    return friendService.unblockUser(id);
   }
 }
