@@ -41,9 +41,4 @@ public class AccountController {
   public CommonResponseDTO<MessageResponseDTO> setNotificationType(@RequestBody NotificationSettingDTO typeDTO) {
     return userService.setNotificationType(typeDTO);
   }
-
-  @GetMapping("/notifications")
-  public CommonListResponseDTO<NotificationSettingDTO> getNotificationSettingList() {
-    return userService.getNotificationSettingList();
-  }
 }

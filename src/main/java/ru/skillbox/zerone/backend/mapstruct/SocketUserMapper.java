@@ -22,7 +22,6 @@ public class SocketUserMapper {
         .about(user.getAbout())
         .isBlocked(user.getIsBlocked())
         .isDeleted(user.getIsDeleted())
-        .messagePermissions(user.getMessagePermissions())
         .lastOnlineTime(user.getLastOnlineTime().atZone(ZoneId.systemDefault()).toInstant())
         .phone(user.getPhone())
         .build();

@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.zerone.backend.model.enumerated.MessagePermissions;
 
 import java.time.Instant;
 
@@ -40,8 +39,6 @@ public class SocketUserDTO {
   private boolean isBlocked;
   @JsonProperty("is_deleted")
   private boolean isDeleted;
-  @JsonProperty("messages_permission")
-  private MessagePermissions messagePermissions;
   @JsonProperty("last_online_time")
   @JsonSerialize(using = InstantSerializer.class)
   @JsonDeserialize(using = InstantDeserializer.class)

@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.CommentNotFoundException;
 import ru.skillbox.zerone.backend.exception.DialogException;
-import ru.skillbox.zerone.backend.exception.FriendsAdditionException;
+import ru.skillbox.zerone.backend.exception.FriendshipException;
 import ru.skillbox.zerone.backend.exception.PostNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.SocketUserMapper;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
@@ -141,7 +141,7 @@ public class NotificationService {
       }
       case FRIEND_REQUEST -> {
         Friendship friendship = friendshipRepository.findById(entityId)
-            .orElseThrow(() -> new FriendsAdditionException(
+            .orElseThrow(() -> new FriendshipException(
                 String.format(FRIENDSHIP_NOT_FOUND, entityId)));
         author = notification.getPerson().getId().equals(friendship.getDstPerson().getId()) ?
             friendship.getSrcPerson() :
@@ -258,7 +258,7 @@ public class NotificationService {
 
   private void checkFriendshipEnabled(User person) {
     if (!notificationSettingRepository.findByUser(person).get().getFriendRequestEnabled()) {
-      throw new FriendsAdditionException(String.format(
+      throw new FriendshipException(String.format(
           "Пользователь %s запретил заявки в друзья", person.getLastName()
       ));
     }

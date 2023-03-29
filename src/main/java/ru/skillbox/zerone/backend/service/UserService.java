@@ -172,7 +172,7 @@ public class UserService {
   }
 
   @Transactional
-  public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationTypeDTO typeDTO) {
+  public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationSettingDTO typeDTO) {
     User user = CurrentUserUtils.getCurrentUser();
     NotificationType notificationType = NotificationType.valueOf(typeDTO.getType());
     boolean enabled = typeDTO.getEnable();

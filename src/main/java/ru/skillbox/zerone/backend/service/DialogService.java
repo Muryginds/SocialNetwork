@@ -38,6 +38,7 @@ public class DialogService {
   private final DialogMapper dialogMapper;
   private final SocketIOService socketIOService;
   private final FriendshipRepository friendshipRepository;
+  private final NotificationService notificationService;
 
   @Transactional
   public CommonListResponseDTO<MessageDataDTO> getMessages(long id, int offset, int itemPerPage) {
