@@ -26,8 +26,9 @@ public class DriveManager {
 
   @PostConstruct
   private void query() {
-    query = String.format(" name = '%s' "
-        + " and mimeType = '%s' ", driveProperties.getFolderName(), driveProperties.getMimeType());
+    query = new StringBuilder().append(" name = '").append(driveProperties.getFolderName())
+        .append("' and mimeType = '").append(driveProperties.getMimeType()).append("' ")
+        .toString();
   }
 
   public Optional<File> findFolderByName() throws IOException {

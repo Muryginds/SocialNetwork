@@ -23,7 +23,6 @@ class WebSocketConnectionRepositoryTest extends AbstractIntegrationTest {
   private final WebSocketConnection firstUserConnectionTwo = new WebSocketConnection(UUID.randomUUID(), firstUserId);
   private final WebSocketConnection secondUserConnection = new WebSocketConnection(secondUserSessionId, secondUserId);
 
-
   @BeforeEach
   void setUp() {
       repository.saveAll(List.of(firstUserConnectionOne, firstUserConnectionTwo, secondUserConnection));

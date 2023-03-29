@@ -93,7 +93,7 @@ public class DialogService {
     var optionalCompanionToUserFriendship = friendshipRepository.findBySrcPersonAndDstPerson(companion, user);
     optionalCompanionToUserFriendship.ifPresent(f -> {
       var status = f.getStatus();
-      if (FriendshipStatus.DEADLOCK.equals(status) || FriendshipStatus.WASBLOCKEDBY.equals(status)) {
+      if (FriendshipStatus.DEADLOCK.equals(status) || FriendshipStatus.BLOCKED.equals(status)) {
         throw new DialogException("Пользователь вас заблокировал, вы не можете отправлять ему сообщения");
       }
     });
