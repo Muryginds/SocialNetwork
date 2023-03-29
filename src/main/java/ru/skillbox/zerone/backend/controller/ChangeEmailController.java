@@ -15,6 +15,8 @@ public class ChangeEmailController {
 
   @PostMapping(value = "/changeemail/complete", params = {"userId", "token"})
   public CommonResponseDTO<MessageResponseDTO> changeEmailConfirm(@RequestParam String userId, @RequestParam String token) {
+    String debug = "debug";
+    System.out.println(debug);
     return userService.changeEmailConfirm(userId, token);
   }
 }

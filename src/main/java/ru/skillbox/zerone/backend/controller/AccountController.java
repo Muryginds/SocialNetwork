@@ -18,8 +18,6 @@ public class AccountController {
 
   @PostMapping("/register")
   public CommonResponseDTO<MessageResponseDTO> register(@Valid @RequestBody RegisterRequestDTO request) {
-    String test ;
-    test = "fasdf";
     return userService.registerAccount(request);
   }
 
@@ -35,6 +33,9 @@ public class AccountController {
 
   @PutMapping("/email")
   public CommonResponseDTO<MessageResponseDTO> sendMessageForChangeEmail(@RequestBody ChangeEmailDTO requestDto) {
+
+    String test ;
+    test = "fasdf";
     return userService.sendMessageForChangeEmail(requestDto);
   }
 
