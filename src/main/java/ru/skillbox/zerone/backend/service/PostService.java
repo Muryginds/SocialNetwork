@@ -37,7 +37,6 @@ public class PostService {
   private final PostRepository postRepository;
   private final LikeRepository likeRepository;
   private final CommentService commentService;
-  private final SearchService searchService;
   private final UserMapper userMapper;
   private final PostMapper postMapper;
 
@@ -144,9 +143,7 @@ public class PostService {
 
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
 
-    Page<Post> pageablePostList = searchService.searchPosts(text, author, tag, dateFrom, pageable);
-
-    return getPostResponse(offset, itemPerPage, pageablePostList);
+    return null;
   }
 
   public CommonResponseDTO<PostDTO> deletePostById(long id) {

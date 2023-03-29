@@ -171,7 +171,9 @@ public class SocketIOService {
     webSocketConnectionRepository.findAllByUserId(person.getId().toString())
         .forEach(socket -> {
           SocketIOClient client = server.getClient(socket.getSessionId());
-          client.sendEvent(event, dto);
+          if (client != null) {
+            client.sendEvent(event, dto);
+          }
         });
   }
 

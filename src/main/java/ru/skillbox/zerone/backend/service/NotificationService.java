@@ -9,6 +9,7 @@ import ru.skillbox.zerone.backend.exception.CommentNotFoundException;
 import ru.skillbox.zerone.backend.exception.DialogException;
 import ru.skillbox.zerone.backend.exception.FriendsAdditionException;
 import ru.skillbox.zerone.backend.exception.PostNotFoundException;
+import ru.skillbox.zerone.backend.mapstruct.SocketUserMapper;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.NotificationDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
@@ -31,11 +32,12 @@ import static ru.skillbox.zerone.backend.model.enumerated.NotificationType.*;
 @RequiredArgsConstructor
 public class NotificationService {
 
-  private static final String POST_NOT_FOUND = "Пост с id = \"%s\" не найден";
-  private static final String COMMENT_NOT_FOUND = "Комментарий с id = \"%s\" не найден";
-  private static final String DIALOG_NOT_FOUND = "Диалог с сообщением с id = \"%s\" не найден";
-  private static final String FRIENDSHIP_NOT_FOUND = "Дружба с id = \"%s\" не найдена";
+  private static final String POST_NOT_FOUND = "Пост с id = %s не найден";
+  private static final String COMMENT_NOT_FOUND = "Комментарий с id = %s не найден";
+  private static final String DIALOG_NOT_FOUND = "Диалог с сообщением с id = %s не найден";
+  private static final String FRIENDSHIP_NOT_FOUND = "Дружба с id = %s не найдена";
   private final UserMapper userMapper;
+  private final SocketUserMapper socketUserMapper;
   private final NotificationRepository notificationRepository;
   private final CommentRepository commentRepository;
   private final PostRepository postRepository;
@@ -225,7 +227,7 @@ public class NotificationService {
         .eventType(notification.getType())
         .sentTime(notification.getSentTime().atZone(ZoneId.systemDefault()).toInstant())
         .entityId(comment.getPost().getId())
-        .entityAuthor(userMapper.userToUserDTO(comment.getAuthor()))
+        .entityAuthor(socketUserMapper.userToSocketUserDTO(comment.getAuthor()))
         .parentId(parentId)
         .currentEntityId(notification.getEntityId())
         .build();
@@ -242,6 +244,15 @@ public class NotificationService {
           .entityId(friendship.getId())
           .build();
       notificationRepository.save(notification);
+
+      var dataDTO = SocketNotificationDataDTO.builder()
+          .id(notification.getId())
+          .eventType(notification.getType())
+          .sentTime(notification.getSentTime().atZone(ZoneId.systemDefault()).toInstant())
+          .entityId(CurrentUserUtils.getCurrentUser().getId())
+          .build();
+      socketIOService.sendEventToPerson(notification.getPerson(),
+          "friend-notification-response", dataDTO);
     });
   }
 

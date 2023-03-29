@@ -15,6 +15,7 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.StorageDTO;
 import ru.skillbox.zerone.backend.model.entity.Comment;
+import ru.skillbox.zerone.backend.model.entity.NotificationSetting;
 import ru.skillbox.zerone.backend.model.entity.Post;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.CommentType;
@@ -46,6 +47,7 @@ public class CommentService {
 
     return getPostResponse(offset, itemPerPage, pageableCommentList, user);
   }
+
   public CommonListResponseDTO<CommentDTO> getComments(int offset, int itemPerPage, long id) {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow();
@@ -67,7 +69,14 @@ public class CommentService {
     Post post = postRepository.findById(id).orElseThrow();
 
     User author = post.getAuthor();
-    if (!notificationSettingRepository.findByUser(author).get().getPostEnabled()) {
+    User finalAuthor = author;
+    NotificationSetting setting = notificationSettingRepository.findByUser(author)
+        .orElseGet(() -> {
+          return notificationSettingRepository.save(NotificationSetting.builder()
+              .user(finalAuthor)
+              .build());
+        });
+    if (!setting.getPostCommentEnabled()) {
       throw new NotificationPermissionException(String.format(
           "Пользователь %s запретил комментировать свои публикации", author.getLastName()
       ));
@@ -75,7 +84,6 @@ public class CommentService {
 
     Comment comment = new Comment();
     comment.setCommentText(commentRequest.getCommentText());
-    comment.setPost(post);
     comment.setCommentText(commentRequest.getCommentText());
     comment.setPost(post);
     comment.setTime(LocalDateTime.now());
@@ -85,7 +93,7 @@ public class CommentService {
     if (commentRequest.getParentId() != null) {
       parentComment = commentRepository
           .findById(commentRequest.getParentId()).orElseThrow();
-      author = comment.getAuthor();
+      author = parentComment.getAuthor();
       if (!notificationSettingRepository.findByUser(author).get().getCommentCommentEnabled()) {
         throw new NotificationPermissionException(String.format(
             "Пользователь %s запретил комментировать свои комментарии", author.getLastName()

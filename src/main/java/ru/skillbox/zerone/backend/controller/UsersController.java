@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
-import ru.skillbox.zerone.backend.service.SearchService;
 import ru.skillbox.zerone.backend.service.UserService;
 
 @RestController
@@ -16,7 +15,6 @@ import ru.skillbox.zerone.backend.service.UserService;
 @RequiredArgsConstructor
 public class UsersController {
   private final UserService userService;
-  private final SearchService searchService;
 
   @GetMapping("/me")
   public CommonResponseDTO<UserDTO> getCurrentUser() {
@@ -43,6 +41,6 @@ public class UsersController {
                                                 @RequestParam(name = "offset", defaultValue = "0") int offset,
                                                 @RequestParam(name = "itemPerPage", defaultValue = "10") int itemPerPage) {
 
-    return searchService.searchUsers(name, lastName, country, city, ageFrom, ageTo, offset, itemPerPage);
+    return null;
   }
 }
