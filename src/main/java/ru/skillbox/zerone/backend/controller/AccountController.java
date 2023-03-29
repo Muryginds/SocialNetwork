@@ -18,6 +18,8 @@ public class AccountController {
 
   @PostMapping("/register")
   public CommonResponseDTO<MessageResponseDTO> register(@Valid @RequestBody RegisterRequestDTO request) {
+    String test ;
+    test = "fasdf";
     return userService.registerAccount(request);
   }
 

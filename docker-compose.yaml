@@ -41,16 +41,20 @@ services:
 
   zeronekafka:
     image: zeronekafka
-    container_name: zeronekafka
+    container_name: grif8585yandex/zeronekafka
     working_dir: /opt
     networks:
       - postgres
+      - kafka-net
     deploy:
       restart_policy:
         condition: on-failure
         delay: 3s
         max_attempts: 5
         window: 60s
+    environment:
+      SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:29092
+      KAFKA_BROKERCONNECT: "kafka:29092"
     depends_on:
       - kafka
       - zookeeper
