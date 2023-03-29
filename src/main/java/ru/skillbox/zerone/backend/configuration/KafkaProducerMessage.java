@@ -6,7 +6,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import ru.skillbox.zerone.backend.model.dto.request.MessageDTO;
 
-@Component // this annotation inform Spring Boot that this class can be manage with the framework
+@Component
 public class KafkaProducerMessage {
 
   @Autowired
@@ -16,7 +16,6 @@ public class KafkaProducerMessage {
 
   public void sendMessage(MessageDTO messageDTO){
 
-    System.out.println("sendMessageProducer");
     kafkaTemplate.send(KAFKA_TOPIC, messageDTO);
   }
 
