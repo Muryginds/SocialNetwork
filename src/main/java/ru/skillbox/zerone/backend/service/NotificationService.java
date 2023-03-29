@@ -222,12 +222,16 @@ public class NotificationService {
       Notification notification, Comment comment) {
     Long parentId = comment.getType().equals(CommentType.POST) ?
         comment.getId() : comment.getParent().getId();
+    User author = comment.getAuthor();
     return SocketNotificationDataDTO.builder()
         .id(notification.getId())
         .eventType(notification.getType())
         .sentTime(notification.getSentTime().atZone(ZoneId.systemDefault()).toInstant())
         .entityId(comment.getPost().getId())
-        .entityAuthor(socketUserMapper.userToSocketUserDTO(comment.getAuthor()))
+        .entityAuthor(socketUserMapper.userToSocketUserDTO(author,
+            author.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant(),
+            author.getRegDate().atZone(ZoneId.systemDefault()).toInstant(),
+            author.getLastOnlineTime().atZone(ZoneId.systemDefault()).toInstant()))
         .parentId(parentId)
         .currentEntityId(notification.getEntityId())
         .build();
