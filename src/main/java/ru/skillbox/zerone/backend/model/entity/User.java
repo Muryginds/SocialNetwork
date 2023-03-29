@@ -122,7 +122,7 @@ public class User implements UserDetails {
 
   @Override
   public boolean isAccountNonExpired() {
-    return true;
+    return !isDeleted;
   }
 
   @Override

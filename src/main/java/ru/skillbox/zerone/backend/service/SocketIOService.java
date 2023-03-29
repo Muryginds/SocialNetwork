@@ -17,6 +17,7 @@ import ru.skillbox.zerone.backend.model.dto.socket.request.ReadMessagesDataDTO;
 import ru.skillbox.zerone.backend.model.dto.socket.request.TypingDataDTO;
 import ru.skillbox.zerone.backend.model.dto.socket.response.SocketListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.socket.response.StartTypingResponseDTO;
+import ru.skillbox.zerone.backend.model.entity.Dialog;
 import ru.skillbox.zerone.backend.model.entity.Message;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.entity.WebSocketConnection;
@@ -27,6 +28,7 @@ import ru.skillbox.zerone.backend.security.JwtTokenProvider;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -76,19 +78,35 @@ public class SocketIOService {
   }
 
   public void typingEvent(TypingDataDTO data, String type) {
-    var dialog = dialogRepository.findById(data.getDialogId())
-        .orElseThrow(() -> new DialogException(String.format(DIALOG_NOT_FOUND_WITH_ID_MESSAGE_PATTERN, data.getDialogId())));
-    var curUser = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getRecipient() : dialog.getSender();
-    var companion = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getSender() : dialog.getRecipient();
-
-    var sessionIdList = webSocketConnectionRepository.findAllByUserId(companion.getId().toString());
-    sessionIdList.forEach(s -> {
-      switch (type.toLowerCase()) {
-        case "start" -> startTyping(s.getSessionId(), curUser, dialog.getId());
-        case "stop" -> stopTyping(s.getSessionId(), curUser, dialog.getId());
-        default -> throw new NoSuchElementException(String.format("Неверный тип события: %s", type));
+    validateAndFindDialogById(data.getDialogId()).ifPresent(dialog -> {
+      if (isSelfVaultMessage(dialog)) {
+        return;
       }
+      var curUser = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getRecipient() : dialog.getSender();
+      var companion = dialog.getRecipient().getId().equals(data.getAuthorId()) ? dialog.getSender() : dialog.getRecipient();
+
+      var sessionIdList = webSocketConnectionRepository.findAllByUserId(companion.getId().toString());
+      sessionIdList.forEach(s -> {
+        switch (type.toLowerCase()) {
+          case "start" -> startTyping(s.getSessionId(), curUser, dialog.getId());
+          case "stop" -> stopTyping(s.getSessionId(), curUser, dialog.getId());
+          default -> throw new NoSuchElementException(String.format("Неверный тип события: %s", type));
+        }
+      });
     });
+  }
+
+  private Optional<Dialog> validateAndFindDialogById(long dialogId) {
+    if (dialogId < 1) {
+      return Optional.empty();
+    }
+    var dialog = dialogRepository.findById(dialogId)
+        .orElseThrow(() -> new DialogException(String.format(DIALOG_NOT_FOUND_WITH_ID_MESSAGE_PATTERN, dialogId)));
+    return Optional.of(dialog);
+  }
+
+  private boolean isSelfVaultMessage(Dialog dialog) {
+    return dialog.getRecipient().getId().equals(dialog.getSender().getId());
   }
 
   public void startTyping(UUID sessionId, User curUser, Long dialogId) {
@@ -116,13 +134,16 @@ public class SocketIOService {
 
   @Transactional
   public void readMessages(SocketIOClient client, ReadMessagesDataDTO data) {
-    var dialog = dialogRepository.findById(data.getDialogId())
-        .orElseThrow(() -> new DialogException(String.format(DIALOG_NOT_FOUND_WITH_ID_MESSAGE_PATTERN, data.getDialogId())));
-    var optionalCurUserId = webSocketConnectionRepository.findById(client.getSessionId());
-    optionalCurUserId.ifPresent(connection -> {
-      var user = userRepository.findById(Long.valueOf(connection.getUserId())).orElseThrow(() -> new UserNotFoundException(connection.getUserId()));
-      var unreadMessagesCount = messageRepository.countByDialogAndAuthorAndReadStatus(dialog, user, ReadStatus.SENT);
-      client.sendEvent("unread-response", unreadMessagesCount);
+    validateAndFindDialogById(data.getDialogId()).ifPresent(dialog -> {
+      if (isSelfVaultMessage(dialog)) {
+        return;
+      }
+      var optionalCurUserId = webSocketConnectionRepository.findById(client.getSessionId());
+      optionalCurUserId.ifPresent(connection -> {
+        var user = userRepository.findById(Long.valueOf(connection.getUserId())).orElseThrow(() -> new UserNotFoundException(connection.getUserId()));
+        var unreadMessagesCount = messageRepository.countByDialogAndAuthorAndReadStatus(dialog, user, ReadStatus.SENT);
+        client.sendEvent("unread-response", unreadMessagesCount);
+      });
     });
   }
 
@@ -141,6 +162,10 @@ public class SocketIOService {
 
   public void sendMessageEvent(Message message) throws ZeroneSocketException {
     try {
+      if (isSelfVaultMessage(message.getDialog())) {
+        return;
+      }
+
       var user = message.getDialog().getRecipient().getId().equals(message.getAuthor().getId()) ?
           message.getDialog().getSender() :
           message.getDialog().getRecipient();
