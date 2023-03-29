@@ -11,7 +11,9 @@ import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.*;
-import ru.skillbox.zerone.backend.model.dto.response.*;
+import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.entity.ChangeEmailHistory;
 import ru.skillbox.zerone.backend.model.entity.NotificationSetting;
 import ru.skillbox.zerone.backend.model.entity.User;
@@ -23,12 +25,8 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import static ru.skillbox.zerone.backend.model.enumerated.NotificationType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -86,9 +84,9 @@ public class UserService {
   public CommonResponseDTO<MessageResponseDTO> changeEmailConfirm(String emailOld, String confirmationCode) {
 
     User user = CurrentUserUtils.getCurrentUser();
-    String token = user.getConfirmationCode();
+    String confirmationToken = user.getConfirmationCode();
 
-    if (token.equals(confirmationCode)) {
+    if (confirmationToken.equals(confirmationCode)) {
       throw new ChangeEmailException(confirmationCode, emailOld);
     }
 
@@ -113,15 +111,14 @@ public class UserService {
       throw new UserAlreadyExistException(request.getEmail());
     }
 
-    User user = userMapper.registerRequestDTOToUser(request);
-    var verificationUuid = UUID.randomUUID();
-    user.setConfirmationCode(verificationUuid.toString());
+    var confirmationCode = UUID.randomUUID().toString();
+    User user = userMapper.registerRequestDTOToUser(request, confirmationCode);
 
     userRepository.save(user);
 
     mailService.sendVerificationEmail(
         user.getEmail(),
-        verificationUuid.toString(),
+        confirmationCode,
         "/registration/complete",
         mailServiceConfig.getFrontAddress());
 
@@ -175,10 +172,18 @@ public class UserService {
   }
 
   @Transactional
-  public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationSettingDTO typeDTO) {
-    var setting = getNotificationSetting();
-    boolean enabled = typeDTO.getEnable();
+  public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationTypeDTO typeDTO) {
+    User user = CurrentUserUtils.getCurrentUser();
     NotificationType notificationType = NotificationType.valueOf(typeDTO.getType());
+    boolean enabled = typeDTO.getEnable();
+    Optional<NotificationSetting> optionalSetting = notificationSettingRepository.findByUser(user);
+    NotificationSetting setting;
+    if (optionalSetting.isPresent()) {
+      setting = optionalSetting.get();
+    } else {
+      setting = new NotificationSetting();
+      setting.setUser(user);
+    }
     switch (notificationType) {
       case POST -> setting.setPostEnabled(enabled);
       case POST_COMMENT -> setting.setPostCommentEnabled(enabled);
@@ -189,31 +194,5 @@ public class UserService {
     }
     notificationSettingRepository.save(setting);
     return ResponseUtils.commonResponseDataOk();
-  }
-
-  public CommonListResponseDTO<NotificationSettingDTO> getNotificationSettingList() {
-    var setting = getNotificationSetting();
-    List<NotificationSettingDTO> data = new ArrayList<>();
-    addSetting(data, POST, setting.getPostEnabled());
-    addSetting(data, POST_COMMENT, setting.getPostCommentEnabled());
-    addSetting(data, COMMENT_COMMENT, setting.getCommentCommentEnabled());
-    addSetting(data, FRIEND_REQUEST, setting.getFriendRequestEnabled());
-    addSetting(data, MESSAGE, setting.getMessagesEnabled());
-    addSetting(data, FRIEND_BIRTHDAY, setting.getFriendBirthdayEnabled());
-
-    var result = CommonListResponseDTO.<NotificationSettingDTO>builder()
-        .data(data).build();
-    return result;
-  }
-
-  private NotificationSetting getNotificationSetting() {
-    User user = CurrentUserUtils.getCurrentUser();
-    return notificationSettingRepository.findByUser(user)
-        .orElseGet(() -> NotificationSetting.builder().user(user).build());
-  }
-
-  private void addSetting(List<NotificationSettingDTO> data, NotificationType type, boolean enabled) {
-    var setting = new NotificationSettingDTO(type.name(), enabled);
-    data.add(setting);
   }
 }

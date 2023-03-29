@@ -2,7 +2,6 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -16,8 +15,11 @@ import ru.skillbox.zerone.backend.model.dto.request.MessageRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.*;
 import ru.skillbox.zerone.backend.model.entity.Dialog;
 import ru.skillbox.zerone.backend.model.entity.Message;
+import ru.skillbox.zerone.backend.model.entity.User;
+import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
 import ru.skillbox.zerone.backend.model.enumerated.ReadStatus;
 import ru.skillbox.zerone.backend.repository.DialogRepository;
+import ru.skillbox.zerone.backend.repository.FriendshipRepository;
 import ru.skillbox.zerone.backend.repository.MessageRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
@@ -25,7 +27,6 @@ import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 import java.util.Objects;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class DialogService {
@@ -36,10 +37,9 @@ public class DialogService {
   private final MessageMapper messageMapper;
   private final DialogMapper dialogMapper;
   private final SocketIOService socketIOService;
-  private final NotificationService notificationService;
+  private final FriendshipRepository friendshipRepository;
 
   @Transactional
-  @SuppressWarnings("SimplifyStreamApiCallChains")
   public CommonListResponseDTO<MessageDataDTO> getMessages(long id, int offset, int itemPerPage) {
     var dialog = dialogRepository.findById(id)
         .orElseThrow(() -> new DialogException(String.format("Диалог с id: \"%s\" не найден", id)));
@@ -48,12 +48,9 @@ public class DialogService {
 
     var messagesPage = messageRepository.findByDialog(dialog, pageRequest);
 
-    var unreadedMessages = messagesPage.getContent().stream()
+    var unreadedMessages = messagesPage.stream()
         .filter(m -> ReadStatus.SENT.equals(m.getReadStatus()))
-        .map(u -> {
-          u.setReadStatus(ReadStatus.READ);
-          return u;
-        })
+        .map(u -> u.setReadStatus(ReadStatus.READ))
         .toList();
     messageRepository.saveAll(unreadedMessages);
 
@@ -69,6 +66,11 @@ public class DialogService {
   public CommonResponseDTO<MessageDataDTO> postMessages(long id, MessageRequestDTO messageRequestDTO) {
     var dialog = dialogRepository.findById(id)
         .orElseThrow(() -> new DialogException(String.format("Диалог с id: \"%s\" не найден", id)));
+    var user = CurrentUserUtils.getCurrentUser();
+    var companion = user.getId().equals(dialog.getRecipient().getId()) ? dialog.getSender() : dialog.getRecipient();
+
+    checkUserCanSendMessagesToCompanion(user, companion);
+
     var message = messageMapper.messageRequestDTOToMessage(messageRequestDTO, dialog);
     messageRepository.save(message);
 
@@ -79,6 +81,24 @@ public class DialogService {
     var responseData = messageMapper.messageToMessageDataDTO(message);
 
     return ResponseUtils.commonResponseWithData(responseData);
+  }
+
+  private void checkUserCanSendMessagesToCompanion(User user, User companion) {
+    if (Boolean.TRUE.equals(companion.getIsBlocked())) {
+      throw new DialogException("Вы не можете отправлять сообщения заблокированному пользователю");
+    }
+
+    if (Boolean.TRUE.equals(companion.getIsDeleted())) {
+      throw new DialogException("Вы не можете отправлять сообщения удаленному пользователю");
+    }
+
+    var optionalCompanionToUserFriendship = friendshipRepository.findBySrcPersonAndDstPerson(companion, user);
+    optionalCompanionToUserFriendship.ifPresent(f -> {
+      var status = f.getStatus();
+      if (FriendshipStatus.DEADLOCK.equals(status) || FriendshipStatus.BLOCKED.equals(status)) {
+        throw new DialogException("Пользователь вас заблокировал, вы не можете отправлять ему сообщения");
+      }
+    });
   }
 
   public CommonResponseDTO<CountDTO> getUnreaded() {
@@ -96,6 +116,9 @@ public class DialogService {
     }
     var user = CurrentUserUtils.getCurrentUser();
     var companion = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+    checkUserCanSendMessagesToCompanion(user, companion);
+
     var optionalDialog = dialogRepository.findByUserDuet(user, companion);
 
     if (optionalDialog.isEmpty()) {

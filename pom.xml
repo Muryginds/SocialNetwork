@@ -180,10 +180,10 @@
 			<version>0.8.8</version>
 			<scope>test</scope>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.springframework.boot</groupId>-->
-<!--			<artifactId>spring-boot-starter-jooq</artifactId>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jooq</artifactId>
+		</dependency>
 
 	</dependencies>
 
@@ -246,65 +246,58 @@
 					</execution>
 				</executions>
 			</plugin>
-<!--			<plugin>-->
-<!--				<groupId>org.jooq</groupId>-->
-<!--				<artifactId>jooq-codegen-maven</artifactId>-->
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<id>jooq-codegen</id>-->
-<!--						<phase>generate-sources</phase>-->
-<!--						<goals>-->
-<!--							<goal>generate</goal>-->
-<!--						</goals>-->
-<!--						<configuration>-->
-<!--							<jdbc>-->
-<!--								<driver>org.postgresql.Driver</driver>-->
-<!--								<url>jdbc:postgresql://zerone-network.ru:5432/skillbox?stringtype=unspecified</url>-->
-<!--								<user>skillbox</user>-->
-<!--								<password>password</password>-->
-<!--							</jdbc>-->
-<!--							<generator>-->
-<!--								<database>-->
-<!--									<name>org.jooq.meta.postgres.PostgresDatabase</name>-->
-<!--									<includes>USER|POST|POST_TO_TAG|TAG</includes>-->
-<!--									<excludes></excludes>-->
-<!--									<inputSchema>public</inputSchema>-->
-<!--									<forcedTypes>-->
-<!--										<forcedType>-->
-<!--											<userType>ru.skillbox.zerone.backend.model.enumerated.MessagePermissions-->
-<!--											</userType>-->
-<!--											<enumConverter>true</enumConverter>-->
-<!--											<includeExpression>.*\.MESSAGE_PERMISSION</includeExpression>-->
-<!--										</forcedType>-->
-<!--										<forcedType>-->
-<!--											<userType>ru.skillbox.zerone.backend.model.enumerated.UserStatus</userType>-->
-<!--											<enumConverter>true</enumConverter>-->
-<!--											<includeExpression>.*\.STATUS</includeExpression>-->
-<!--										</forcedType>-->
-<!--									</forcedTypes>-->
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+				<executions>
+					<execution>
+						<id>jooq-codegen</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<jdbc>
+								<driver>org.postgresql.Driver</driver>
+								<url>jdbc:postgresql://zerone-network.ru:5432/skillbox?stringtype=unspecified</url>
+								<user>skillbox</user>
+								<password>password</password>
+							</jdbc>
+							<generator>
+								<database>
+									<name>org.jooq.meta.postgres.PostgresDatabase</name>
+									<includes>USER|POST|POST_TO_TAG|TAG</includes>
+									<inputSchema>public</inputSchema>
+									<forcedTypes>
+										<forcedType>
+											<userType>ru.skillbox.zerone.backend.model.enumerated.UserStatus</userType>
+											<enumConverter>true</enumConverter>
+											<includeExpression>.*\.STATUS</includeExpression>
+										</forcedType>
+									</forcedTypes>
 
-<!--								</database>-->
-<!--								<generate>-->
-<!--									<pojos>true</pojos>-->
-<!--									<pojosEqualsAndHashCode>-->
-<!--										true-->
-<!--									</pojosEqualsAndHashCode>-->
-<!--									<javaTimeTypes>true</javaTimeTypes>-->
-<!--									<fluentSetters>true</fluentSetters>-->
-<!--								</generate>-->
-<!--								<target>-->
-<!--									<packageName>-->
-<!--										com.tej.JooQDemo.jooq.sample.model-->
-<!--									</packageName>-->
-<!--									<directory>-->
-<!--										target/generated-sources/jooq-->
-<!--									</directory>-->
-<!--								</target>-->
-<!--							</generator>-->
-<!--						</configuration>-->
-<!--					</execution>-->
-<!--				</executions>-->
-<!--			</plugin>-->
+								</database>
+								<generate>
+									<pojos>true</pojos>
+									<pojosEqualsAndHashCode>
+										true
+									</pojosEqualsAndHashCode>
+									<javaTimeTypes>true</javaTimeTypes>
+									<fluentSetters>true</fluentSetters>
+								</generate>
+								<target>
+									<packageName>
+										com.tej.JooQDemo.jooq.sample.model
+									</packageName>
+									<directory>
+										target/generated-sources/jooq
+									</directory>
+								</target>
+							</generator>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

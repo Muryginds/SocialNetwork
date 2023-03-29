@@ -47,7 +47,6 @@ public class SocketIOHandler {
     socketIOService.newListener(client);
   }
 
-  @SuppressWarnings("unused")
   @OnDisconnect
   public void disconnect(SocketIOClient client) {
     socketIOService.disconnect(client);
