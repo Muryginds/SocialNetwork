@@ -14,7 +14,7 @@ import ru.skillbox.zerone.backend.util.ValidationUtils;
 @NoArgsConstructor
 public class AuthRequestDTO {
   @Pattern(regexp = ValidationUtils.EMAIL_PATTERN, message = ValidationUtils.EMAIL_PATTERN_DESCRIPTION)
-  @Schema(description = "user_email", example = "Dimatch86@mail.ru")
+  @Schema(description = "Пользовательский email", example = "Dimatch86@mail.ru")
   private String email;
   private String password;
 }

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "data model of user")
+@Schema(description = "Модель данных для объекта \"user\"")
 public class UserDTO {
   private Long id;
   @JsonProperty("first_name")

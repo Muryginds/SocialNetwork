@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-@Schema(description = "data model of message_response")
+@Schema(description = "Модель данных для объекта \"message_response\"")
 public class MessageResponseDTO {
   private String message;
 }

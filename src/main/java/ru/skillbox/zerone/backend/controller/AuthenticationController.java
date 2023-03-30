@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -18,22 +19,23 @@ import ru.skillbox.zerone.backend.service.LoginService;
 @RestController
 @RequestMapping(value = "/api/v1/auth")
 @RequiredArgsConstructor
+@Tag(name = "Контроллер для авторизации пользователя")
 public class AuthenticationController {
   private final LoginService loginService;
 
-  @Operation(summary = "login by email and password")
+  @Operation(summary = "Вход пользователя по его email и паролю")
   @ApiResponses(value = {
-      @ApiResponse(responseCode = "200", description = "Found user normally"),
-      @ApiResponse(responseCode = "400", description = "User not found",
+      @ApiResponse(responseCode = "200", description = "Пользователь успешно авторизован"),
+      @ApiResponse(responseCode = "400", description = "Пользователь не найден",
           content = @Content),
-      @ApiResponse(responseCode = "401", description = "Bad credentials",
+      @ApiResponse(responseCode = "401", description = "Неправильный email или пароль",
           content = @Content)})
   @PostMapping("/login")
   public CommonResponseDTO<UserDTO> login(@Valid @RequestBody AuthRequestDTO requestDto) {
     return loginService.login(requestDto);
   }
 
-  @Operation(summary = "exit the application")
+  @Operation(summary = "Выход из приложения")
   @GetMapping("/logout")
   public CommonResponseDTO<MessageResponseDTO> logout(
       @RequestHeader(name = "Authorization") String token) {

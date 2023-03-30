@@ -11,7 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @OpenAPIDefinition(info = @Info(
     title = "Zerone Social Network API",
     version = "v1",
-    description = "API documentation"
+    description = "Документация по API"
 ))
 public class ZeroneBackendApplication {
 

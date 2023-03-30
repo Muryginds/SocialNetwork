@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @JsonInclude(Include.NON_NULL)
-@Schema(description = "data model of response")
+@Schema(description = "Модель данных для ответа")
 public class CommonResponseDTO<T> {
   private T data;
   private String message;
