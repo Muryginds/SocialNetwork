@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend.model.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +14,7 @@ import ru.skillbox.zerone.backend.util.ValidationUtils;
 @NoArgsConstructor
 public class AuthRequestDTO {
   @Pattern(regexp = ValidationUtils.EMAIL_PATTERN, message = ValidationUtils.EMAIL_PATTERN_DESCRIPTION)
+  @Schema(description = "user_email", example = "Dimatch86@mail.ru")
   private String email;
   private String password;
 }

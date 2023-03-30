@@ -16,7 +16,6 @@ import com.google.api.services.drive.DriveScopes;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import ru.skillbox.zerone.backend.configuration.properties.GoogleDriveProperties;
 
 import java.io.FileNotFoundException;
@@ -28,7 +27,6 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
-@EnableScheduling
 @RequiredArgsConstructor
 public class GoogleDriveConfig {
 
