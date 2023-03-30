@@ -6,7 +6,6 @@ import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.entity.Role;
 import ru.skillbox.zerone.backend.model.entity.User;
-import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
 import ru.skillbox.zerone.backend.repository.FriendshipRepository;
 import ru.skillbox.zerone.backend.repository.WebSocketConnectionRepository;
 import ru.skillbox.zerone.backend.service.RoleService;
@@ -15,6 +14,8 @@ import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus.BLOCKED;
 
 public abstract class UserMapperDecorator implements UserMapper {
   @Autowired
@@ -41,6 +42,7 @@ public abstract class UserMapperDecorator implements UserMapper {
   @Override
   public UserDTO userToUserDTO(User user) {
     var userDTO = userMapper.userToUserDTO(user);
+    var curUser = CurrentUserUtils.getCurrentUser();
     if (Boolean.TRUE.equals(user.getIsBlocked())) {
       userDTO.setFirstName("Пользователь");
       userDTO.setLastName(" заблокирован администрацией");
@@ -50,8 +52,8 @@ public abstract class UserMapperDecorator implements UserMapper {
       userDTO.setLastName(" удален");
     }
 
-    userDTO.setBlocked(friendshipRepository.existsBySrcPersonAndDstPersonAndStatus(
-        CurrentUserUtils.getCurrentUser(), user, FriendshipStatus.BLOCKED));
+    userDTO.setBlockedByMe(
+        friendshipRepository.existsBySrcPersonAndDstPersonAndStatus(curUser, user, BLOCKED));
 
     if (webSocketConnectionRepository.existsByUserId(user.getId().toString())) {
       userDTO.setLastOnlineTime(LocalDateTime.now());
