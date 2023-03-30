@@ -17,12 +17,12 @@ public class FriendsController {
   private final FriendService friendService;
 
   @PostMapping("/friends/{id}")
-  public CommonResponseDTO<MessageResponseDTO> addFriend(@PathVariable @Min(1) long id) {
+  public CommonResponseDTO<MessageResponseDTO> addFriend(@PathVariable long id) {
     return friendService.addFriend(id);
   }
 
   @DeleteMapping("/friends/{id}")
-  public CommonResponseDTO<MessageResponseDTO> removeFriend(@PathVariable @Min(1) long id) {
+  public CommonResponseDTO<MessageResponseDTO> removeFriend(@PathVariable long id) {
     return friendService.removeFriend(id);
   }
 
