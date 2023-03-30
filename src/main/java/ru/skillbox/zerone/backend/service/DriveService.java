@@ -25,7 +25,6 @@ public class DriveService {
   private final GoogleDriveProperties driveProperties;
   private final DriveManager driveManager;
 
-
   @Scheduled(cron = "${scheduled-tasks.google-drive-scanner}")
   public void transferLogsToGoogleDrive() throws IOException {
 
