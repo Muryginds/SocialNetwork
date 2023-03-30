@@ -34,7 +34,7 @@ public class FriendService {
 
   @Transactional
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
-  public CommonResponseDTO<Object> addFriend(long id) {
+  public CommonResponseDTO<MessageResponseDTO> addFriend(long id) {
     var friend = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
 
@@ -78,9 +78,7 @@ public class FriendService {
 
     friendshipRepository.saveAll(friendshipList);
 
-    return CommonResponseDTO.builder()
-        .message("ok")
-        .build();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   private List<Friendship> updateFriendshipRequest(Friendship friendship, Friendship reversedFriendship) {
@@ -133,7 +131,7 @@ public class FriendService {
 
   @Transactional
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
-  public CommonResponseDTO<Object> removeFriend(long id) {
+  public CommonResponseDTO<MessageResponseDTO> removeFriend(long id) {
     var friend = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
     var user = CurrentUserUtils.getCurrentUser();
@@ -168,9 +166,7 @@ public class FriendService {
       friendshipRepository.saveAll(List.of(friendship, reversedFriendship));
     }
 
-    return CommonResponseDTO.builder()
-        .message("ok")
-        .build();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   private List<Friendship> createNewFriendshipRequest(User user, User friend) {
