@@ -28,7 +28,7 @@ public class AuthenticationController {
       @ApiResponse(responseCode = "200", description = "Пользователь успешно авторизован"),
       @ApiResponse(responseCode = "400", description = "Пользователь не найден",
           content = @Content),
-      @ApiResponse(responseCode = "401", description = "Неправильный email или пароль",
+      @ApiResponse(responseCode = "401", description = "Не верный email или пароль",
           content = @Content)})
   @PostMapping("/login")
   public CommonResponseDTO<UserDTO> login(@Valid @RequestBody AuthRequestDTO requestDto) {

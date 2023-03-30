@@ -9,9 +9,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @SpringBootApplication
 @EnableScheduling
 @OpenAPIDefinition(info = @Info(
-    title = "Zerone Social Network API",
-    version = "v1",
-    description = "Документация по API"
+    title = "API социальной сети Zerone",
+    version = "v1"
 ))
 public class ZeroneBackendApplication {
 
