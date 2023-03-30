@@ -15,11 +15,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @JsonInclude(Include.NON_NULL)
-@Schema(description = "Модель данных для ответа")
+@Schema(description = "Модель данных для одиночного ответа")
 public class CommonResponseDTO<T> {
   private T data;
+
+  @Schema(description = "статус", example = "ok")
   private String message;
+
+  @Schema(description = "Сообщение в случае ошибки")
   private String error;
   @Builder.Default
+  @Schema(description = "Метка времени ответа")
   private LocalDateTime timestamp = LocalDateTime.now();
 }
