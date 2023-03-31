@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,6 +16,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Schema(description = "Модель данных для объекта \"user\"")
 public class UserDTO {
@@ -54,6 +56,8 @@ public class UserDTO {
   private boolean isBlocked;
   @JsonProperty("is_deleted")
   private boolean isDeleted;
+  @JsonProperty("is_blocked_by_me")
+  private boolean isBlockedByMe;
   @JsonProperty("last_online_time")
   @Schema(description = "дата последнего посещения", example = "2023-03-30")
   private LocalDateTime lastOnlineTime;

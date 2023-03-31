@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 public class TypingDataDTO {
   @JsonProperty("author")
-  private long authorId;
+  private Long authorId;
   @JsonProperty("dialog")
-  private long dialogId;
+  private Long dialogId;
 }
