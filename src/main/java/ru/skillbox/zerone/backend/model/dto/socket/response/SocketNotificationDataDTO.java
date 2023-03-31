@@ -7,11 +7,9 @@ import com.fasterxml.jackson.datatype.jsr310.deser.InstantDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
 import lombok.Builder;
 import lombok.Data;
-import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.enumerated.NotificationType;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 @Data
 @Builder

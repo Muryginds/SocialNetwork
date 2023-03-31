@@ -24,7 +24,6 @@ import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static ru.skillbox.zerone.backend.model.enumerated.NotificationType.*;
 
@@ -46,6 +45,7 @@ public class NotificationService {
   private final FriendshipRepository friendshipRepository;
   private final SocketIOService socketIOService;
   private final NotificationSettingRepository notificationSettingRepository;
+  private final NotificationSettingService notificationSettingService;
 
   public CommonListResponseDTO<NotificationDTO> getNotifications(
       int offset, int itemPerPage) {
@@ -58,44 +58,15 @@ public class NotificationService {
     pageableNotifications.stream()
         .forEach(notification -> dtoList.add(notificationToNotificationDTO(notification)));
 
-    var dtos = CommonListResponseDTO.<NotificationDTO>builder()
+    return CommonListResponseDTO.<NotificationDTO>builder()
         .total(pageableNotifications.getTotalElements())
         .perPage(itemPerPage)
         .offset(offset)
         .data(dtoList)
         .build();
-    return dtos;
   }
 
-  public static Long getCurrentEntityId(Notification notification) {
-    switch (notification.getType()) {
-      case POST_COMMENT, COMMENT_COMMENT -> {
-        return notification.getEntityId();
-      }
-    }
-    return null;
-  }
-
-  public Long getParentEntityId(Notification notification) {
-    switch (notification.getType()) {
-      case POST_COMMENT, COMMENT_COMMENT -> {
-        Optional<Comment> commentOpt = commentRepository.findById(notification.getEntityId());
-        if (commentOpt.isPresent()) {
-          var comment = commentOpt.get();
-          if (comment.getParent() != null) {
-            return comment.getParent().getId();
-          }
-          return comment.getId();
-        }
-      }
-      case MESSAGE -> {
-        return notification.getEntityId();
-      }
-    }
-    return null;
-  }
-
-  public CommonListResponseDTO<NotificationDTO> putNotifications(int offset, int itemPerPage, int id, boolean all) {
+  public CommonListResponseDTO<NotificationDTO> putNotifications() {
     return new CommonListResponseDTO<>();
   }
 
@@ -109,11 +80,10 @@ public class NotificationService {
         .entityId(entityId);
     User author;
     switch (notification.getType()) {
-      case POST -> {
-        author = postRepository.findById(entityId).orElseThrow(
-                () -> new PostNotFoundException(String.format(POST_NOT_FOUND, entityId)))
-            .getAuthor();
-      }
+      case POST ->
+          author = postRepository.findById(entityId).orElseThrow(
+                  () -> new PostNotFoundException(String.format(POST_NOT_FOUND, entityId)))
+              .getAuthor();
       case POST_COMMENT -> {
         builder.currentEntityId(entityId);
         author = commentRepository.findById(entityId).orElseThrow(
@@ -162,13 +132,13 @@ public class NotificationService {
     List<Friendship> friendships = friendshipRepository
         .findAllBySrcPersonAndStatus(post.getAuthor(), FriendshipStatus.FRIEND);
     List<Notification> notifications = new ArrayList<>();
-    friendships.forEach(fr -> {
+    friendships.forEach(fr ->
       notifications.add(Notification.builder()
           .type(POST)
           .person(fr.getDstPerson())
           .entityId(fr.getId())
-          .build());
-    });
+          .build())
+    );
     notificationRepository.saveAll(notifications);
   }
 
@@ -202,13 +172,13 @@ public class NotificationService {
       dstPersons.add(parentAuthor);
     }
     List<Notification> notifications = new ArrayList<>();
-    dstPersons.forEach(dstPerson -> {
+    dstPersons.forEach(dstPerson ->
       notifications.add(Notification.builder()
           .type(COMMENT_COMMENT)
           .person(dstPerson)
           .entityId(comment.getId())
-          .build());
-    });
+          .build())
+    );
     notificationRepository.saveAll(notifications);
 
     notifications.forEach(notification -> {
@@ -239,7 +209,6 @@ public class NotificationService {
 
   public void saveFriendship(List<Friendship> friendships) {
     friendships.forEach(friendship -> {
-      User person = friendship.getDstPerson();
       checkFriendshipEnabled(friendship.getDstPerson());
       checkFriendshipEnabled(friendship.getSrcPerson());
       var notification = Notification.builder()
@@ -261,7 +230,8 @@ public class NotificationService {
   }
 
   private void checkFriendshipEnabled(User person) {
-    if (!notificationSettingRepository.findByUser(person).get().getFriendRequestEnabled()) {
+    if (notificationSettingService.getSetting(person)
+        .getFriendRequestEnabled().equals(Boolean.FALSE)) {
       throw new FriendshipException(String.format(
           "Пользователь %s запретил заявки в друзья", person.getLastName()
       ));

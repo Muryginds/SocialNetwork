@@ -28,7 +28,7 @@ public class NotificationController {
       @RequestParam(name = "id") int id,
       @RequestParam(name = "all") boolean all
   ) {
-    return notificationService.putNotifications(offset, itemPerPage, id, all);
+    return notificationService.putNotifications();
   }
 
 }

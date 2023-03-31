@@ -38,6 +38,7 @@ public class CommentService {
   private final UserMapper userMapper;
   private final NotificationService notificationService;
   private final NotificationSettingRepository notificationSettingRepository;
+  private final NotificationSettingService notificationSettingService;
 
   public CommonListResponseDTO<CommentDTO> getPage4Comments(int offset, int itemPerPage, Post post, User user) {
 
@@ -68,47 +69,55 @@ public class CommentService {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow();
 
-    User author = post.getAuthor();
-    User finalAuthor = author;
-    NotificationSetting setting = notificationSettingRepository.findByUser(author)
-        .orElseGet(() -> {
-          return notificationSettingRepository.save(NotificationSetting.builder()
-              .user(finalAuthor)
-              .build());
-        });
-    if (!setting.getPostCommentEnabled()) {
-      throw new NotificationPermissionException(String.format(
-          "Пользователь %s запретил комментировать свои публикации", author.getLastName()
-      ));
-    }
+    checkPostCommentPermission(post);
 
     Comment comment = new Comment();
-    comment.setCommentText(commentRequest.getCommentText());
-    comment.setCommentText(commentRequest.getCommentText());
     comment.setPost(post);
-    comment.setTime(LocalDateTime.now());
     comment.setAuthor(user);
 
-    Comment parentComment = null;
     if (commentRequest.getParentId() != null) {
-      parentComment = commentRepository
-          .findById(commentRequest.getParentId()).orElseThrow();
-      author = parentComment.getAuthor();
-      if (!notificationSettingRepository.findByUser(author).get().getCommentCommentEnabled()) {
-        throw new NotificationPermissionException(String.format(
-            "Пользователь %s запретил комментировать свои комментарии", author.getLastName()
-        ));
-      }
-      comment.setParent(parentComment);
       comment.setType(CommentType.COMMENT);
+      String text = commentRequest.getCommentText().substring(",message:".length());
+      comment.setCommentText(text);
+      Comment parentComment = commentRepository
+          .findById(commentRequest.getParentId())
+          .orElseThrow();
+
+      checkCommentCommentPermission(parentComment);
+
+      comment.setParent(parentComment);
     } else {
       comment.setType(CommentType.POST);
+      comment.setCommentText(commentRequest.getCommentText());
     }
     comment = commentRepository.save(comment);
 
     notificationService.saveComment(comment);
 
     return getCommentResponse(comment, user);
+  }
+
+  private void checkPostCommentPermission(Post post) {
+    User author = post.getAuthor();
+    NotificationSetting setting = notificationSettingService.getSetting(author);
+
+    if (setting.getPostCommentEnabled().equals(Boolean.FALSE)) {
+      throw new NotificationPermissionException(String.format(
+          "Пользователь %s запретил комментировать свои публикации", author.getLastName()
+      ));
+    }
+  }
+
+  private void checkCommentCommentPermission(Comment parentComment) {
+    User author = parentComment.getAuthor();
+
+    NotificationSetting setting = notificationSettingService.getSetting(author);
+
+    if (setting.getCommentCommentEnabled().equals(Boolean.FALSE)) {
+      throw new NotificationPermissionException(String.format(
+          "Пользователь %s запретил комментировать свои комментарии", author
+      ));
+    }
   }
 
   public CommonResponseDTO<CommentDTO> getCommentResponse(Comment comment, User user) {
@@ -179,7 +188,9 @@ public class CommentService {
 
   public CommonResponseDTO<CommentDTO> putComment(long id, long commentId, CommentRequestDTO commentRequest) {
     User user = CurrentUserUtils.getCurrentUser();
-    postRepository.findById(id).orElseThrow();
+    if (postRepository.findById(id).isEmpty()) {
+      throw new CommentNotFoundException("Не найден пост с id = " + id);
+    }
     if (commentRequest.getParentId() != null)
       findComment(commentRequest.getParentId());
     Comment comment = findComment(commentId);
@@ -193,6 +204,4 @@ public class CommentService {
     return commentRepository.findById(id)
         .orElseThrow();
   }
-//      comment.getComments()
-  //          .forEach(pomment -> commentData.getSubComments().add(getCommentDTO(pomment, user)));
 }

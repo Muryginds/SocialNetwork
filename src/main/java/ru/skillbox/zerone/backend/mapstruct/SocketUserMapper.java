@@ -6,7 +6,6 @@ import ru.skillbox.zerone.backend.model.dto.socket.response.SocketUserDTO;
 import ru.skillbox.zerone.backend.model.entity.User;
 
 import java.time.Instant;
-import java.time.ZoneId;
 
 @Mapper
 public interface SocketUserMapper {

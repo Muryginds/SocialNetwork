@@ -10,8 +10,6 @@ import ru.skillbox.zerone.backend.model.enumerated.ReadStatus;
 
 import java.util.Optional;
 
-import java.util.Optional;
-
 public interface DialogRepository extends JpaRepository<Dialog, Long> {
 
   @Query("""
