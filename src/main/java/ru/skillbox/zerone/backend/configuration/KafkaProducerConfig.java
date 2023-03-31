@@ -37,7 +37,7 @@ public class KafkaProducerConfig {
   }
 
   @Bean
-  public KafkaTemplate<String, MessageDTO> userKafkaTemplate(){
-    return new KafkaTemplate<>(userProducerFactory());
+  public KafkaTemplate<String, MessageDTO> userKafkaTemplate(ProducerFactory<String, MessageDTO> userProducerFactory){
+    return new KafkaTemplate<>(userProducerFactory);
   }
 }

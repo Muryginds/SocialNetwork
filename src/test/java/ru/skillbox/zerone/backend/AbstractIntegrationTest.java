@@ -2,8 +2,6 @@ package ru.skillbox.zerone.backend;
 
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
@@ -22,6 +20,4 @@ abstract public class AbstractIntegrationTest {
     System.setProperty("spring.data.redis.port", redis.getFirstMappedPort().toString());
   }
 
-  @MockBean
-  JavaMailSenderImpl javaMailSender;
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.skillbox.zerone.backend.configuration.KafkaProducerMessage;
+import ru.skillbox.zerone.backend.configuration.MailServiceConfig;
 import ru.skillbox.zerone.backend.model.dto.request.MessageDTO;
 
 import java.net.URLEncoder;
@@ -19,27 +20,34 @@ public class MailService {
 
   private static final String ACCOUNT_CONFIRMATION_MESSAGE_THEME = "Подтверждение аккаунта";
   private static final String EMAIL_CONFIRMATION_MESSAGE_THEME = "Подтверждение смены пароля или Email";
-  @Autowired
   private KafkaProducerMessage kafkaProducerMessage;
+  private final MailServiceConfig mailServiceConfig;
 
+  @Autowired
+  public MailService(KafkaProducerMessage kafkaProducerMessage, MailServiceConfig mailServiceConfig) {
+    this.kafkaProducerMessage = kafkaProducerMessage;
+    this.mailServiceConfig = mailServiceConfig;
+  }
 
-  MessageDTO messageDto;
+  public void sendVerificationEmail(String email, String verifyCode, String pathUri) {
 
-  public void sendVerificationEmail(String email, String verifyCode, String pathUri, String hostAddress) {
-
-    messageDto = new MessageDTO().setEmail(email).setTHEME(ACCOUNT_CONFIRMATION_MESSAGE_THEME)
-        .setVerificationLink(MessageFormatter.format("Пожалуйста, подтвердите ваш аккаунт, перейдя по ссылке: {}",
-            createVerificationLink(email, verifyCode, pathUri, hostAddress)).getMessage());
+    MessageDTO messageDto = MessageDTO.builder()
+        .email(email)
+        .theme(ACCOUNT_CONFIRMATION_MESSAGE_THEME)
+        .verificationLink(MessageFormatter.format("Пожалуйста, подтвердите ваш аккаунт, перейдя по ссылке: {}",
+        createVerificationLink(email, verifyCode, pathUri, mailServiceConfig.getFrontAddress())).getMessage()).build();
 
     kafkaProducerMessage.sendMessage(messageDto);
 
   }
 
-  public void sendVerificationChangeEmail(String email, String verifyCode, String pathUri, String hostAddress) {
+  public void sendVerificationChangeEmail(String email, String verifyCode, String pathUri) {
 
-     messageDto = new MessageDTO().setEmail(email).setTHEME(EMAIL_CONFIRMATION_MESSAGE_THEME)
-        .setVerificationLink(MessageFormatter.format("Пожалуйста, подтвердите смену email, перейдя по ссылке: {}",
-            createVerificationLink(email, verifyCode, pathUri, hostAddress)).getMessage());
+    MessageDTO messageDto = MessageDTO.builder()
+        .email(email)
+        .theme(EMAIL_CONFIRMATION_MESSAGE_THEME)
+        .verificationLink(MessageFormatter.format("Пожалуйста, подтвердите смену email, перейдя по ссылке: {}",
+        createVerificationLink(email, verifyCode, pathUri, mailServiceConfig.getServerAddress())).getMessage()).build();
 
     kafkaProducerMessage.sendMessage(messageDto);
 
