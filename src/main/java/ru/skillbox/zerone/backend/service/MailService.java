@@ -2,10 +2,8 @@ package ru.skillbox.zerone.backend.service;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.helpers.MessageFormatter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
-import ru.skillbox.zerone.backend.configuration.KafkaProducerMessage;
 import ru.skillbox.zerone.backend.configuration.MailServiceConfig;
 import ru.skillbox.zerone.backend.model.dto.request.MessageDTO;
 
@@ -20,14 +18,9 @@ public class MailService {
 
   private static final String ACCOUNT_CONFIRMATION_MESSAGE_THEME = "Подтверждение аккаунта";
   private static final String EMAIL_CONFIRMATION_MESSAGE_THEME = "Подтверждение смены пароля или Email";
-  private KafkaProducerMessage kafkaProducerMessage;
+  private final KafkaProducerMessage kafkaProducerMessage;
   private final MailServiceConfig mailServiceConfig;
 
-  @Autowired
-  public MailService(KafkaProducerMessage kafkaProducerMessage, MailServiceConfig mailServiceConfig) {
-    this.kafkaProducerMessage = kafkaProducerMessage;
-    this.mailServiceConfig = mailServiceConfig;
-  }
 
   public void sendVerificationEmail(String email, String verifyCode, String pathUri) {
 
