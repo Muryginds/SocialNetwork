@@ -1,6 +1,5 @@
 package ru.skillbox.zerone.backend.controller;
 
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,7 @@ public class UsersController {
   }
 
   @GetMapping("/{id}")
-  public CommonResponseDTO<UserDTO> getById(@PathVariable @Min(1) Long id) {
+  public CommonResponseDTO<UserDTO> getById(@PathVariable Long id) {
     return userService.getById(id);
   }
 
@@ -49,12 +48,12 @@ public class UsersController {
   }
 
   @PutMapping("/block/{id}")
-  public CommonResponseDTO<MessageResponseDTO> blockUser(@PathVariable @Min(1) Long id) {
+  public CommonResponseDTO<MessageResponseDTO> blockUser(@PathVariable Long id) {
     return friendService.blockUser(id);
   }
 
   @DeleteMapping("/block/{id}")
-  public CommonResponseDTO<MessageResponseDTO> unblockUser(@PathVariable @Min(1) Long id) {
+  public CommonResponseDTO<MessageResponseDTO> unblockUser(@PathVariable Long id) {
     return friendService.unblockUser(id);
   }
 }
