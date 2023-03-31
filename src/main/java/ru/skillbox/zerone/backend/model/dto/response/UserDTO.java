@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Accessors(chain = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Schema(description = "Модель данных для объекта \"user\"")
+@Schema(description = "Модель данных с полной информацией о пользователе")
 public class UserDTO {
   @Schema(description = "id пользователя, генерируется базой данных", example = "1")
   private Long id;
