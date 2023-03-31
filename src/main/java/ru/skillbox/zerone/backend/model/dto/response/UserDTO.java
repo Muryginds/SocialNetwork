@@ -37,6 +37,8 @@ public class UserDTO {
   private boolean isBlocked;
   @JsonProperty("is_deleted")
   private boolean isDeleted;
+  @JsonProperty("is_blocked_by_me")
+  private boolean isBlockedByMe;
   @JsonProperty("last_online_time")
   private LocalDateTime lastOnlineTime;
   private String phone;

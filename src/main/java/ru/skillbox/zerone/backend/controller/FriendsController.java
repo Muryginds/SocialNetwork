@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.model.dto.request.IsFriendsDTO;
-import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
-import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
-import ru.skillbox.zerone.backend.model.dto.response.StatusFriendDTO;
-import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
+import ru.skillbox.zerone.backend.model.dto.response.*;
 import ru.skillbox.zerone.backend.service.FriendService;
 
 @Validated
@@ -20,12 +17,12 @@ public class FriendsController {
   private final FriendService friendService;
 
   @PostMapping("/friends/{id}")
-  public CommonResponseDTO<Object> addFriend(@PathVariable @Min(1) long id) {
+  public CommonResponseDTO<MessageResponseDTO> addFriend(@PathVariable long id) {
     return friendService.addFriend(id);
   }
 
   @DeleteMapping("/friends/{id}")
-  public CommonResponseDTO<Object> removeFriend(@PathVariable @Min(1) long id) {
+  public CommonResponseDTO<MessageResponseDTO> removeFriend(@PathVariable long id) {
     return friendService.removeFriend(id);
   }
 

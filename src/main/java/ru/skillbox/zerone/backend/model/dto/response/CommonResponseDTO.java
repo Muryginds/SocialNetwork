@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @JsonInclude(Include.NON_NULL)
 public class CommonResponseDTO<T> {
   private T data;
-  private String message;
   private String error;
   @Builder.Default
   private LocalDateTime timestamp = LocalDateTime.now();
