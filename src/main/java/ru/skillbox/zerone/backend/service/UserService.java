@@ -151,7 +151,7 @@ public class UserService {
     return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));
   }
 
-  public CommonResponseDTO<UserDTO> getById(Long id) {
+  public CommonResponseDTO<UserDTO> getById(long id) {
     User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
     return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));

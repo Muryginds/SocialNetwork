@@ -26,7 +26,7 @@ public class UsersController {
   }
 
   @GetMapping("/{id}")
-  public CommonResponseDTO<UserDTO> getById(@PathVariable Long id) {
+  public CommonResponseDTO<UserDTO> getById(@PathVariable long id) {
     return userService.getById(id);
   }
 
@@ -48,12 +48,12 @@ public class UsersController {
   }
 
   @PutMapping("/block/{id}")
-  public CommonResponseDTO<MessageResponseDTO> blockUser(@PathVariable Long id) {
+  public CommonResponseDTO<MessageResponseDTO> blockUser(@PathVariable long id) {
     return friendService.blockUser(id);
   }
 
   @DeleteMapping("/block/{id}")
-  public CommonResponseDTO<MessageResponseDTO> unblockUser(@PathVariable Long id) {
+  public CommonResponseDTO<MessageResponseDTO> unblockUser(@PathVariable long id) {
     return friendService.unblockUser(id);
   }
 }
