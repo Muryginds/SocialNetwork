@@ -24,7 +24,7 @@ public class AuthenticationController {
 
   @GetMapping("/logout")
   public CommonResponseDTO<MessageResponseDTO> logout(
-      @RequestHeader(name = "Authorization") String token) {
+      @RequestHeader(name = "Authorization", required = false) String token) {
     return loginService.logout(token);
   }
 }

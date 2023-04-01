@@ -16,6 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ru.skillbox.zerone.backend.security.UserAccessFilter;
 import ru.skillbox.zerone.backend.security.FilterChainExceptionHandler;
 import ru.skillbox.zerone.backend.security.JwtTokenFilter;
 
@@ -26,6 +27,7 @@ public class SecurityConfig {
   private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
   private static final String LOGOUT_ENDPOINT = "/api/v1/auth/logout";
   private final JwtTokenFilter jwtFilter;
+  private final UserAccessFilter userAccessFilter;
 
   @Bean
   public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
@@ -43,7 +45,8 @@ public class SecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http, FilterChainExceptionHandler filterChainExceptionHandler) throws Exception {
+  public SecurityFilterChain filterChain(HttpSecurity http,
+                                         FilterChainExceptionHandler filterChainExceptionHandler) throws Exception {
     http
         .cors(SecurityConfigurerAdapter::and)
         .csrf(AbstractHttpConfigurer::disable)
@@ -64,6 +67,7 @@ public class SecurityConfig {
         )
         .addFilterBefore(filterChainExceptionHandler, UsernamePasswordAuthenticationFilter.class)
         .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterAfter(userAccessFilter, JwtTokenFilter.class)
         .httpBasic(AbstractHttpConfigurer::disable);
     return http.build();
   }
