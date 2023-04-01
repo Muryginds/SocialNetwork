@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -47,7 +48,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http,
                                          FilterChainExceptionHandler filterChainExceptionHandler) throws Exception {
-    http
+    return http
         .cors(SecurityConfigurerAdapter::and)
         .csrf(AbstractHttpConfigurer::disable)
         .formLogin(AbstractAuthenticationFilterConfigurer::disable)
@@ -68,7 +69,8 @@ public class SecurityConfig {
         .addFilterBefore(filterChainExceptionHandler, UsernamePasswordAuthenticationFilter.class)
         .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
         .addFilterAfter(userAccessFilter, JwtTokenFilter.class)
-        .httpBasic(AbstractHttpConfigurer::disable);
-    return http.build();
+        .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .httpBasic(AbstractHttpConfigurer::disable)
+        .build();
   }
 }
