@@ -23,13 +23,13 @@ spring:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
 
-  data:
-    redis:
-      host: 0.0.0.0
-      database: 0
-      port: 6379
-      password: password123
-      timeout: 60000
+#  data:
+#    redis:
+#      host: 0.0.0.0
+#      database: 0
+#      port: 6379
+#      password: password123
+#      timeout: 60000
 
 jwt:
   token:
