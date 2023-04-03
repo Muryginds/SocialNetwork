@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import ru.skillbox.zerone.backend.model.dto.request.AuthRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
@@ -21,7 +20,7 @@ public interface SwaggerAuthenticationController {
       @ApiResponse(responseCode = "401", description = "Не верный email или пароль",
           content = @Content)})
   @Operation(summary = "Вход пользователя по его email и паролю")
-  CommonResponseDTO<UserDTO> login(@Valid AuthRequestDTO requestDto);
+  CommonResponseDTO<UserDTO> login(AuthRequestDTO requestDto);
 
   @Operation(summary = "Выход из приложения")
   CommonResponseDTO<MessageResponseDTO> logout(String token);
