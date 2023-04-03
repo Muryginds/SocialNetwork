@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import ru.skillbox.zerone.backend.model.dto.request.IsFriendsDTO;
 import ru.skillbox.zerone.backend.model.dto.response.*;
 
@@ -27,11 +28,11 @@ public interface SwaggerFriendsController {
 
   @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Список успешно сформирован"))
   @Operation(summary = "Получить список друзей")
-  CommonListResponseDTO<UserDTO> getFriendList(String name, int offset, int itemPerPage);
+  CommonListResponseDTO<UserDTO> getFriendList(String name, @Min(0) int offset, @Min(0) int itemPerPage);
 
   @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Список успешно сформирован"))
   @Operation(summary = "Получить список запросов в друзья")
-  CommonListResponseDTO<UserDTO> getFriendRequestList(String name, int offset, int itemPerPage);
+  CommonListResponseDTO<UserDTO> getFriendRequestList(String name, @Min(0) int offset, @Min(0) int itemPerPage);
 
   @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Список с результатами успешно сформирован"))
   @Operation(summary = "Являются ли пользователи друзьями",
@@ -40,5 +41,5 @@ public interface SwaggerFriendsController {
 
   @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Список успешно сформирован"))
   @Operation(summary = "Получить список рекомендаций", description = "Получить список персональных рекомендация для пользователя")
-  CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage);
+  CommonListResponseDTO<UserDTO> getRecommendations(@Min(0) int offset, @Min(0) int itemPerPage);
 }
