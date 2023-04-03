@@ -2,6 +2,9 @@ server:
   port: 8086
 
 spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    kafka-topic: message-topic
   datasource:
     url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
     password: password
@@ -19,21 +22,7 @@ spring:
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/db.changelog-master.yaml
-  mail:
-    host: smtp.mail.ru
-    port: 465
-    username: zerone34@mail.ru
-    password: UKeakYphbz3NrSvAkq9R
-    test-connection: true
-    properties:
-      mail:
-        debug: false
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-          ssl:
-            enable: true
+
   data:
     redis:
       host: 0.0.0.0

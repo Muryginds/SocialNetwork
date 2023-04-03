@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.skillbox.zerone.backend.configuration.MailServiceConfig;
 import ru.skillbox.zerone.backend.exception.ChangeEmailException;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
@@ -36,7 +35,6 @@ public class UserService {
   private final MailService mailService;
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
-  private final MailServiceConfig mailServiceConfig;
   private final NotificationSettingRepository notificationSettingRepository;
 
 
@@ -74,8 +72,7 @@ public class UserService {
     mailService.sendVerificationChangeEmail(
         emailOld,
         user.getConfirmationCode(),
-        "/changeemail/complete",
-        mailServiceConfig.getServerAddress());
+        "/changeemail/complete");
 
     return ResponseUtils.commonResponseDataOk();
   }
@@ -119,8 +116,7 @@ public class UserService {
     mailService.sendVerificationEmail(
         user.getEmail(),
         confirmationCode,
-        "/registration/complete",
-        mailServiceConfig.getFrontAddress());
+        "/registration/complete");
 
     return ResponseUtils.commonResponseDataOk();
   }
