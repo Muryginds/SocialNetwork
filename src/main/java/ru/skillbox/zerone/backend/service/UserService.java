@@ -124,14 +124,14 @@ public class UserService {
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
     var user = userRepository.findUserByEmail(request.getEmail())
-        .orElseThrow(() -> new RegistrationCompleteException("Wrong email or key"));
+        .orElseThrow(() -> new RegistrationCompleteException("Указан неверный адрес почты или ключ подтверждения"));
 
     if (Boolean.TRUE.equals(user.getIsApproved())) {
-      throw new RegistrationCompleteException("User already confirmed");
+      throw new RegistrationCompleteException("Учетная запись уже подтверждена");
     }
 
     if (!user.getConfirmationCode().equals(request.getConfirmationKey())) {
-      throw new RegistrationCompleteException("Wrong email or key");
+      throw new RegistrationCompleteException("Указан неверный адрес почты или ключ подтверждения");
     }
 
     user.setIsApproved(true);
@@ -147,7 +147,7 @@ public class UserService {
     return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));
   }
 
-  public CommonResponseDTO<UserDTO> getById(Long id) {
+  public CommonResponseDTO<UserDTO> getById(long id) {
     User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
     return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));

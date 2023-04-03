@@ -24,6 +24,7 @@ public class DriveManager {
   private final Drive drive;
   private String query;
 
+  @SuppressWarnings("StringBufferReplaceableByString")
   @PostConstruct
   private void query() {
     query = new StringBuilder().append(" name = '").append(driveProperties.getFolderName())
