@@ -27,6 +27,6 @@ public class CommonListResponseDTO<T> {
   @Schema(description = "Сообщение в случае ошибки")
   private String error;
   @Builder.Default
-  @Schema(description = "Метка времени ответа", example = "2023-03-30T07:55:15.975Z")
+  @Schema(description = "Метка времени ответа")
   private LocalDateTime timestamp = LocalDateTime.now();
 }

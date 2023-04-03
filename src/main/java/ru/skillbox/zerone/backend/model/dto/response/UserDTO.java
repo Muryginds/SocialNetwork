@@ -53,7 +53,7 @@ public class UserDTO {
   @JsonProperty("is_blocked_by_me")
   private boolean isBlockedByMe;
   @JsonProperty("last_online_time")
-  @Schema(description = "дата последнего посещения", example = "2023-03-30T07:55:15.975Z")
+  @Schema(description = "дата последнего посещения")
   private LocalDateTime lastOnlineTime;
   @Schema(description = "телефон", example = "+7(960)459-10-15")
   private String phone;
