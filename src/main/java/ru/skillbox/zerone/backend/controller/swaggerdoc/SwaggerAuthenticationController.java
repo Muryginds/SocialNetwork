@@ -11,7 +11,6 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 
-
 @Tag(name = "Контроллер для авторизации пользователя")
 public interface SwaggerAuthenticationController {
 

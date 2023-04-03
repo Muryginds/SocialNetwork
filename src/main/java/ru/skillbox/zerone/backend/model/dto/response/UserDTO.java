@@ -28,13 +28,10 @@ public class UserDTO {
   @JsonProperty("last_name")
   @Schema(description = "фамилия пользователя", example = "Богданов")
   private String lastName;
-
   @Schema(description = "email пользователя", example = "Dimatch86@mail.ru")
   private String email;
-
   @Schema(description = "страна проживания пользователя", example = "Россия")
   private String country;
-
   @Schema(description = "город пользователя", example = "Волгодонск")
   private String city;
   @JsonProperty("birth_date")
@@ -43,13 +40,10 @@ public class UserDTO {
   @JsonProperty("reg_date")
   @Schema(description = "дата регистрации", example = "2022-01-23")
   private LocalDateTime regDate;
-
   @Schema(description = "ссылка на фото пользователя", example = "https://res.cloudinary.com/zeroneproject/image/upload/v1680170245/pa4sdbs9iydwyfvgchuz.jpg")
   private String photo;
-
   @Schema(description = "о себе")
   private String about;
-
   @Schema(description = "токен авторизации")
   private String token;
   @JsonProperty("is_blocked")
@@ -59,9 +53,8 @@ public class UserDTO {
   @JsonProperty("is_blocked_by_me")
   private boolean isBlockedByMe;
   @JsonProperty("last_online_time")
-  @Schema(description = "дата последнего посещения", example = "2023-03-30")
+  @Schema(description = "дата последнего посещения", example = "2023-03-30T07:55:15.975Z")
   private LocalDateTime lastOnlineTime;
-
   @Schema(description = "телефон", example = "+7(960)459-10-15")
   private String phone;
 }

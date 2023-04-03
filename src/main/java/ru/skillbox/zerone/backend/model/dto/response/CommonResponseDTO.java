@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 @Schema(description = "Обобщенная модель данных для ответа, содержащего единичную сущность")
 public class CommonResponseDTO<T> {
   private T data;
-
   @Schema(description = "Сообщение в случае ошибки")
   private String error;
   @Builder.Default

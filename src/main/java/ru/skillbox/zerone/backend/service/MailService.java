@@ -10,12 +10,9 @@ import ru.skillbox.zerone.backend.model.dto.request.MessageDTO;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-
-
 @Service
 @RequiredArgsConstructor
 public class MailService {
-
   private static final String ACCOUNT_CONFIRMATION_MESSAGE_THEME = "Подтверждение аккаунта";
   private static final String EMAIL_CONFIRMATION_MESSAGE_THEME = "Подтверждение смены пароля или Email";
   private final KafkaProducerMessage kafkaProducerMessage;
@@ -23,7 +20,6 @@ public class MailService {
 
 
   public void sendVerificationEmail(String email, String verifyCode, String pathUri) {
-
     MessageDTO messageDto = MessageDTO.builder()
         .email(email)
         .theme(ACCOUNT_CONFIRMATION_MESSAGE_THEME)
@@ -31,11 +27,9 @@ public class MailService {
         createVerificationLink(email, verifyCode, pathUri, mailServiceConfig.getFrontAddress())).getMessage()).build();
 
     kafkaProducerMessage.sendMessage(messageDto);
-
   }
 
   public void sendVerificationChangeEmail(String email, String verifyCode, String pathUri) {
-
     MessageDTO messageDto = MessageDTO.builder()
         .email(email)
         .theme(EMAIL_CONFIRMATION_MESSAGE_THEME)
@@ -43,7 +37,6 @@ public class MailService {
         createVerificationLink(email, verifyCode, pathUri, mailServiceConfig.getServerAddress())).getMessage()).build();
 
     kafkaProducerMessage.sendMessage(messageDto);
-
   }
 
   private String createVerificationLink(String userId, String token, String path, String siteAddress) {
