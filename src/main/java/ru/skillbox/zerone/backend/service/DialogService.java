@@ -123,39 +123,33 @@ public class DialogService {
 
     var optionalDialog = dialogRepository.findByUserDuet(user, companion);
 
-    if (optionalDialog.isEmpty()) {
-      var dialog = Dialog.builder()
-          .sender(user)
-          .recipient(companion)
-          .build();
-      dialogRepository.save(dialog);
-
-      String firstMessageText;
-      if (user.getId().equals(companion.getId())) {
-        firstMessageText = "Это ваше персональное хранилище сообщений";
-      } else {
-        firstMessageText = String.format("%s начал(а) беседу", user.getFirstName());
-      }
-
-      var message = Message.builder()
-          .messageText(firstMessageText)
-          .dialog(dialog)
-          .author(user)
-          .build();
-      messageRepository.save(message);
-
-      socketIOService.sendMessageEvent(message);
-
-      var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, message, 0, companion);
-
-      return ResponseUtils.commonResponseWithData(dialogDataDTO);
+    if (optionalDialog.isPresent()) {
+      throw new DialogException(String.format("Диалог пользователя (id = %s) с пользователем (id = %s) уже существует", user.getId(), id));
     }
 
-    var dialog = optionalDialog.get();
-    var lastMessage = messageRepository.findFirstByDialogOrderBySentTimeDesc(dialog)
-        .orElseThrow(() -> new DialogException(String.format("Для диалога с id \"%s\" не найдено сообщений", dialog.getId())));
-    int unreadCount = messageRepository.countByDialogAndAuthorAndReadStatus(dialog, companion, SENT);
-    var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, lastMessage, unreadCount, companion);
+    var dialog = Dialog.builder()
+        .sender(user)
+        .recipient(companion)
+        .build();
+    dialogRepository.save(dialog);
+
+    String firstMessageText;
+    if (user.getId().equals(companion.getId())) {
+      firstMessageText = "Это ваше персональное хранилище сообщений";
+    } else {
+      firstMessageText = String.format("%s начал(а) беседу", user.getFirstName());
+    }
+
+    var message = Message.builder()
+        .messageText(firstMessageText)
+        .dialog(dialog)
+        .author(user)
+        .build();
+    messageRepository.save(message);
+
+    socketIOService.sendMessageEvent(message);
+
+    var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, message, 0, companion);
 
     return ResponseUtils.commonResponseWithData(dialogDataDTO);
   }
