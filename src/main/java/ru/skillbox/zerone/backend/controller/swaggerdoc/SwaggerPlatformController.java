@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.controller.swaggerdoc;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -8,7 +9,7 @@ import ru.skillbox.zerone.backend.model.dto.response.BasicEntityDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 
 @Tag(name = "Контроллер для загрузки списка стран, языков и городов")
-@ApiResponse(responseCode = "403", description = "Пользователь не авторизован")
+@ApiResponse(responseCode = "403", description = "Пользователь не авторизован", content = @Content)
 public interface SwaggerPlatformController {
 
   @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Список языков сформирован"))
