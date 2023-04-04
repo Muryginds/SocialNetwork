@@ -62,7 +62,8 @@ public class SecurityConfig {
                 "/api/v1/platform/languages",
                 "/changeemail/complete",
                 "/v3/api-docs/**",
-                "/swagger-ui/**"
+                "/swagger-ui/**",
+                "/swagger"
             ).permitAll()
             .requestMatchers(LOGIN_ENDPOINT).permitAll()
             .requestMatchers(LOGOUT_ENDPOINT).permitAll()
