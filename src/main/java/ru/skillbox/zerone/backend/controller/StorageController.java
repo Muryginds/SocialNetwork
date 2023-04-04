@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import ru.skillbox.zerone.backend.controller.swaggerdoc.SwaggerStorageController;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.StorageDTO;
 import ru.skillbox.zerone.backend.service.StorageService;
@@ -11,7 +12,7 @@ import ru.skillbox.zerone.backend.service.StorageService;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1")
-public class StorageController {
+public class StorageController implements SwaggerStorageController {
   private final StorageService storageService;
 
   @PostMapping("/storage")
