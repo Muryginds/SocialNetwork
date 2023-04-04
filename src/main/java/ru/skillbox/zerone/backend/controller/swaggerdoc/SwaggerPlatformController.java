@@ -8,6 +8,7 @@ import ru.skillbox.zerone.backend.model.dto.response.BasicEntityDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 
 @Tag(name = "Контроллер для загрузки списка стран, языков и городов")
+@ApiResponse(responseCode = "403", description = "Пользователь не авторизован")
 public interface SwaggerPlatformController {
 
   @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Список языков сформирован"))

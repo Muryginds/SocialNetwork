@@ -11,6 +11,7 @@ import ru.skillbox.zerone.backend.model.dto.request.IsFriendsDTO;
 import ru.skillbox.zerone.backend.model.dto.response.*;
 
 @Tag(name = "Контроллер для работы с друзьями")
+@ApiResponse(responseCode = "403", description = "Пользователь не авторизован")
 public interface SwaggerFriendsController {
 
   @ApiResponses(value = {

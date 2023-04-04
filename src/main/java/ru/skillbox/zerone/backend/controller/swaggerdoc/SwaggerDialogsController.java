@@ -12,6 +12,7 @@ import ru.skillbox.zerone.backend.model.dto.request.MessageRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.*;
 
 @Tag(name = "Контроллер для работы с диалогами и сообщениями")
+@ApiResponse(responseCode = "403", description = "Пользователь не авторизован")
 public interface SwaggerDialogsController {
 
   @ApiResponses(value = @ApiResponse(responseCode = "200", description = "Ответ сформирован"))

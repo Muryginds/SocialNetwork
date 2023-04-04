@@ -22,8 +22,6 @@ public class OpenApiConfig {
             .contact(new Contact().name("username")
                 .email("test@gmail.com")))
         .servers(List.of(new Server().url("http://zerone-network.ru")
-                .description("Dev service"),
-            new Server().url("http://localhost:8080")
-                .description("Beta service")));
+                .description("Dev service")));
   }
 }
