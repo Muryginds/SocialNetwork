@@ -4,7 +4,6 @@ server:
 spring:
   kafka:
     bootstrap-servers: localhost:9092
-    kafka-topic: message-topic
   datasource:
     url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
     password: password
@@ -95,3 +94,6 @@ log-settings:
 websocket:
   host: 0.0.0.0
   port: 1111
+
+kafka:
+  kafka-topic: message-topic

@@ -18,7 +18,7 @@ public class MailService {
 
   private static final String ACCOUNT_CONFIRMATION_MESSAGE_THEME = "Подтверждение аккаунта";
   private static final String EMAIL_CONFIRMATION_MESSAGE_THEME = "Подтверждение смены пароля или Email";
-  private final KafkaProducerMessage kafkaProducerMessage;
+  private final KafkaMessageProducer kafkaMessageProducer;
   private final MailServiceConfig mailServiceConfig;
 
 
@@ -30,7 +30,7 @@ public class MailService {
         .verificationLink(MessageFormatter.format("Пожалуйста, подтвердите ваш аккаунт, перейдя по ссылке: {}",
         createVerificationLink(email, verifyCode, pathUri, mailServiceConfig.getFrontAddress())).getMessage()).build();
 
-    kafkaProducerMessage.sendMessage(messageDto);
+    kafkaMessageProducer.sendMessage(messageDto);
 
   }
 
@@ -42,7 +42,7 @@ public class MailService {
         .verificationLink(MessageFormatter.format("Пожалуйста, подтвердите смену email, перейдя по ссылке: {}",
         createVerificationLink(email, verifyCode, pathUri, mailServiceConfig.getServerAddress())).getMessage()).build();
 
-    kafkaProducerMessage.sendMessage(messageDto);
+    kafkaMessageProducer.sendMessage(messageDto);
 
   }
 
