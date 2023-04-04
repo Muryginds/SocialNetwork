@@ -69,8 +69,8 @@ class TagControllerIT extends AbstractIntegrationTest {
   @WithUserDetails("esperanza.padberg@yahoo.com")
   void postTag_tagContainsNameAndIdAndTagNotExistsInDbAndUserIsAuthenticated_responseIsOkAndResponseContainsDataWithIdAndTagAndIdIsNotEqualsSendValue() throws Exception {
     var tag = RandomStringUtils.randomAlphanumeric(1, 15);
-    Random random = new Random();
-    var id = random.ints(1, 1,100);
+
+    var id = new Random().nextInt(100)+1; //random.ints(1, 1,100);
     //var id = Random.nextInt();
     mockMvc.perform(post(API_URL)
             .contentType(MediaType.APPLICATION_JSON)

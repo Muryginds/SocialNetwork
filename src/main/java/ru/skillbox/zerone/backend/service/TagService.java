@@ -14,7 +14,10 @@ import ru.skillbox.zerone.backend.model.entity.Tag;
 import ru.skillbox.zerone.backend.repository.TagRepository;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -22,12 +25,14 @@ public class TagService {
 
   private final TagRepository tagRepository;
   private final TagMapper tagMapper;
+
   @Transactional
   public CommonResponseDTO<TagDTO> addTag(TagDTO tagDTO) {
 
     Tag tag = tagMapper.tagDTOToTag(tagDTO);
 
     tagRepository.save(tag);
+    tagDTO.setId(-1L);
 
     return CommonResponseDTO.<TagDTO>builder()
         .data(tagDTO)
@@ -44,7 +49,7 @@ public class TagService {
 
   @Transactional
   public CommonListResponseDTO<TagDTO> getAllTags(String tagName, Integer offset, Integer itemPerPage) {
-    Pageable pageable = PageRequest.of(offset, itemPerPage);
+    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
     Page<Tag> pageableTagList;
 
     if (tagName.isEmpty()) {
