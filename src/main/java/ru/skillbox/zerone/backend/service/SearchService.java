@@ -91,7 +91,6 @@ public class SearchService {
         .and(POST.IS_DELETED.eq(false))
         .and(POST.IS_BLOCKED.eq(false))
         .and(POST.TIME.lessThan(LocalDateTime.now()));
-
   }
 
   private LocalDateTime getPubDate(long pubDate) {
@@ -114,7 +113,7 @@ public class SearchService {
             .or(USER.LAST_NAME.containsIgnoreCase(author));
   }
 
-  public Post recordToPost(Record postRecord) {
+  private Post recordToPost(Record postRecord) {
     return Post.builder()
         .id(postRecord.get(POST.ID))
         .title(postRecord.get(POST.TITLE))
@@ -125,7 +124,6 @@ public class SearchService {
         .updateTime(postRecord.get(POST.UPDATE_DATE))
         .time(postRecord.get(POST.TIME))
         .build();
-
   }
 
   private User recordToUser(Record userRecord) {
