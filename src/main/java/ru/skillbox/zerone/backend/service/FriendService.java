@@ -31,7 +31,7 @@ import static ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus.*;
 
 @Service
 @RequiredArgsConstructor
-public class FriendsService {
+public class FriendService {
   private final FriendshipRepository friendshipRepository;
   private final RecommendationRepository recommendationRepository;
   private final UserRepository userRepository;

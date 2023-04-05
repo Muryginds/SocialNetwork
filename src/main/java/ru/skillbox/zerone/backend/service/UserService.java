@@ -44,7 +44,7 @@ public class UserService {
   private final UserRepository userRepository;
   private final ChangeEmailHistoryRepository changeEmailHistoryRepository;
   private final MailService mailService;
-  private final FriendsService friendsService;
+  private final FriendService friendService;
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
   private final MailServiceConfig mailServiceConfig;
@@ -162,7 +162,7 @@ public class UserService {
     user.setCity(getClientIpAddress());
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
-    friendsService.createPersonalRecommendations(user);
+    friendService.createPersonalRecommendations(user);
 
 
     return ResponseUtils.commonResponseDataOk();
