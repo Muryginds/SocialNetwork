@@ -3,6 +3,7 @@ package ru.skillbox.zerone.backend.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.skillbox.zerone.backend.controller.swaggerdoc.SwaggerUsersController;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
@@ -15,7 +16,7 @@ import ru.skillbox.zerone.backend.service.UserService;
 @Validated
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-public class UsersController {
+public class UsersController implements SwaggerUsersController {
   private final UserService userService;
   private final SearchService searchService;
   private final FriendService friendService;
