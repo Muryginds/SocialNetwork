@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +19,7 @@ public class AuthenticationController implements SwaggerAuthenticationController
   private final LoginService loginService;
 
   @PostMapping("/login")
-  public CommonResponseDTO<UserDTO> login(@RequestBody AuthRequestDTO requestDto) {
+  public CommonResponseDTO<UserDTO> login(@Valid @RequestBody AuthRequestDTO requestDto) {
     return loginService.login(requestDto);
   }
 

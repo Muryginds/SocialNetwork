@@ -8,7 +8,6 @@ import lombok.Data;
 @AllArgsConstructor
 @Schema(description = "Модель данных для сообщения ответа")
 public class MessageResponseDTO {
-
-  @Schema(description = "сообщение о действии", example = "Logged out")
+  @Schema(description = "сообщение о действии", example = "OK")
   private String message;
 }
