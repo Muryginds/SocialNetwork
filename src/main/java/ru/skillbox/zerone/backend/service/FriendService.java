@@ -1,20 +1,16 @@
 package ru.skillbox.zerone.backend.service;
 
-
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.skillbox.zerone.backend.exception.FriendsAdditionException;
+import ru.skillbox.zerone.backend.exception.FriendshipException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.IsFriendsDTO;
-import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
-import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
-import ru.skillbox.zerone.backend.model.dto.response.StatusFriendDTO;
-import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
+import ru.skillbox.zerone.backend.model.dto.response.*;
 import ru.skillbox.zerone.backend.model.entity.Friendship;
 import ru.skillbox.zerone.backend.model.entity.Recommendation;
 import ru.skillbox.zerone.backend.model.entity.User;
@@ -24,14 +20,18 @@ import ru.skillbox.zerone.backend.repository.RecommendationRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import org.springframework.scheduling.annotation.Scheduled;
+import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 import java.util.*;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus.*;
 
 @Service
 @RequiredArgsConstructor
 public class FriendService {
+  private static final String NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN = "Нет пары к записи с id: %s";
   private final FriendshipRepository friendshipRepository;
   private final RecommendationRepository recommendationRepository;
   private final UserRepository userRepository;
@@ -41,10 +41,27 @@ public class FriendService {
 
   @Transactional
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
-  public CommonResponseDTO<Object> addFriend(Long id) {
-    var user = CurrentUserUtils.getCurrentUser();
+  public CommonResponseDTO<MessageResponseDTO> addFriend(long id) {
     var friend = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
+
+    if (TRUE.equals(friend.getIsBlocked())) {
+      throw new FriendshipException("Вы не можете добавить в друзья заблокированого администрацией пользователя");
+    }
+
+    if (TRUE.equals(friend.getIsDeleted())) {
+      throw new FriendshipException("Вы не можете добавить в друзья удаленного пользователя");
+    }
+
+    if (FALSE.equals(friend.getIsApproved())) {
+      throw new FriendshipException("Вы не можете добавить в друзья пользователя, который не подтвердил учетную запись");
+    }
+
+    var user = CurrentUserUtils.getCurrentUser();
+
+    if (user.getId().equals(friend.getId())) {
+      throw new FriendshipException("Вы не можете добавить в друзья самого(саму) себя");
+    }
 
     var friendshipOptional = friendshipRepository
         .findBySrcPersonAndDstPerson(user, friend);
@@ -53,7 +70,7 @@ public class FriendService {
 
     if (isOneOptionalEmptyAndOneNotEmpty(friendshipOptional, reversedFriendshipOptional)) {
       var identifier = friendshipOptional.orElse(reversedFriendshipOptional.get()).getId();
-      throw new FriendsAdditionException(String.format("Нет пары к записи с id: %s", identifier));
+      throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, identifier));
     }
 
     List<Friendship> friendshipList = new ArrayList<>();
@@ -69,9 +86,7 @@ public class FriendService {
     friendshipRepository.saveAll(friendshipList);
     saveRecommendation(friend.getId());
 
-    return CommonResponseDTO.builder()
-        .message("ok")
-        .build();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   private List<Friendship> updateFriendshipRequest(Friendship friendship, Friendship reversedFriendship) {
@@ -97,37 +112,37 @@ public class FriendService {
       return friendshipList;
     }
 
-    throw new FriendsAdditionException(String.format("Неверная комбинация статусов: %s, %s", friendshipStatus, reversedFriendshipStatus));
+    throw new FriendshipException(String.format("Неверная комбинация статусов: %s, %s", friendshipStatus, reversedFriendshipStatus));
   }
 
   private void checkNotAllowedStatusCombinationsAndThrowExceptionIfMatched(FriendshipStatus friendshipStatus, FriendshipStatus reversedFriendshipStatus) {
     if (friendshipStatus.equals(DEADLOCK) && reversedFriendshipStatus.equals(DEADLOCK)) {
-      throw new FriendsAdditionException("У вас взаимная блокировка с пользователем");
+      throw new FriendshipException("У вас взаимная блокировка с пользователем");
     }
 
     if (friendshipStatus.equals(BLOCKED) && reversedFriendshipStatus.equals(WASBLOCKEDBY)) {
-      throw new FriendsAdditionException("Вы заблокировали пользователя");
+      throw new FriendshipException("Вы заблокировали пользователя");
     }
 
     if (friendshipStatus.equals(WASBLOCKEDBY) && reversedFriendshipStatus.equals(BLOCKED)) {
-      throw new FriendsAdditionException("Вы были заблокированы пользователем");
+      throw new FriendshipException("Вы были заблокированы пользователем");
     }
 
     if (friendshipStatus.equals(FRIEND) && reversedFriendshipStatus.equals(FRIEND)) {
-      throw new FriendsAdditionException("Пользователь уже в друзьях");
+      throw new FriendshipException("Пользователь уже в друзьях");
     }
 
     if (friendshipStatus.equals(SUBSCRIBED) && reversedFriendshipStatus.equals(REQUEST)) {
-      throw new FriendsAdditionException("Вы уже отправили заявку в друзья");
+      throw new FriendshipException("Вы уже отправили заявку в друзья");
     }
   }
 
   @Transactional
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
-  public CommonResponseDTO<Object> removeFriend(Long id) {
-    var user = CurrentUserUtils.getCurrentUser();
+  public CommonResponseDTO<MessageResponseDTO> removeFriend(long id) {
     var friend = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
+    var user = CurrentUserUtils.getCurrentUser();
 
     var friendshipOptional = friendshipRepository
         .findBySrcPersonAndDstPerson(user, friend);
@@ -136,11 +151,11 @@ public class FriendService {
 
     if (isOneOptionalEmptyAndOneNotEmpty(friendshipOptional, reversedFriendshipOptional)) {
       var identifier = friendshipOptional.orElse(reversedFriendshipOptional.get()).getId();
-      throw new FriendsAdditionException(String.format("Нет пары к записи с id: %s", identifier));
+      throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, identifier));
     }
 
     if (isBothOptionalEmpty(friendshipOptional, reversedFriendshipOptional)) {
-      throw new FriendsAdditionException("Пользователи не друзья");
+      throw new FriendshipException("Пользователи не друзья");
     }
 
     if (isBothOptionalPresent(friendshipOptional, reversedFriendshipOptional)) {
@@ -150,7 +165,7 @@ public class FriendService {
       var reversedFriendshipStatus = reversedFriendship.getStatus();
 
       if (!(friendshipStatus.equals(FRIEND) && reversedFriendshipStatus.equals(FRIEND))) {
-        throw new FriendsAdditionException("Пользователи не друзья");
+        throw new FriendshipException("Пользователи не друзья");
       }
 
       friendship.setStatus(DECLINED);
@@ -159,9 +174,7 @@ public class FriendService {
       friendshipRepository.saveAll(List.of(friendship, reversedFriendship));
     }
 
-    return CommonResponseDTO.builder()
-        .message("ok")
-        .build();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   private List<Friendship> createNewFriendshipRequest(User user, User friend) {
@@ -217,13 +230,12 @@ public class FriendService {
 
   private Page<Friendship> getPageOfFriendsByFriendStatus(FriendshipStatus status, String name, int offset, int itemPerPage) {
     var user = CurrentUserUtils.getCurrentUser();
-    var pageable = PageRequest.of(offset, itemPerPage);
+    var pageRequest = PageRequest.of(offset / itemPerPage, itemPerPage);
 
     if (name.isBlank()) {
-      return friendshipRepository.findAllBySrcPersonAndStatus(user, status, pageable);
+      return friendshipRepository.findAllBySrcPersonAndStatus(user, status, pageRequest);
     } else {
-      return friendshipRepository.findAllBySrcPersonAndStatusAndDstPersonNameLike(
-          user, status, name, pageable);
+      return friendshipRepository.findAllBySrcPersonAndStatusAndDstPersonNameLike(user, status, name, pageRequest);
     }
   }
 
@@ -307,5 +319,116 @@ public class FriendService {
         .build();
   }
 
+  @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
+  public CommonResponseDTO<MessageResponseDTO> blockUser(long id) {
+    var target = userRepository.findById(id)
+        .orElseThrow(() -> new UserNotFoundException(id));
+    var user = CurrentUserUtils.getCurrentUser();
 
+    if (user.getId().equals(target.getId())) {
+      throw new FriendshipException("Вы не можете заблокировать самого(саму) себя");
+    }
+
+    var friendshipOptional = friendshipRepository
+        .findBySrcPersonAndDstPerson(user, target);
+    var reversedFriendshipOptional = friendshipRepository
+        .findBySrcPersonAndDstPerson(target, user);
+
+    if (isOneOptionalEmptyAndOneNotEmpty(friendshipOptional, reversedFriendshipOptional)) {
+      var identifier = friendshipOptional.orElse(reversedFriendshipOptional.get()).getId();
+      throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, identifier));
+    }
+
+    List<Friendship> friendshipList = new ArrayList<>();
+
+    if (isBothOptionalEmpty(friendshipOptional, reversedFriendshipOptional)) {
+      friendshipList.addAll(createNewBlockRecord(user, target));
+    }
+
+    if (isBothOptionalPresent(friendshipOptional, reversedFriendshipOptional)) {
+      friendshipList.addAll(updateBlockRecord(friendshipOptional.get(), reversedFriendshipOptional.get()));
+    }
+
+    friendshipRepository.saveAll(friendshipList);
+
+    return ResponseUtils.commonResponseDataOk();
+  }
+
+  private List<Friendship> updateBlockRecord(Friendship friendship, Friendship reversedFriendship) {
+    List<Friendship> friendshipList = new ArrayList<>();
+
+    var friendshipStatus = friendship.getStatus();
+    var reversedFriendshipStatus = reversedFriendship.getStatus();
+
+    if (friendshipStatus.equals(DEADLOCK) && reversedFriendshipStatus.equals(DEADLOCK) ||
+        friendshipStatus.equals(BLOCKED) && reversedFriendshipStatus.equals(WASBLOCKEDBY)) {
+      throw new FriendshipException("Вы уже заблокировали пользователя");
+    }
+
+    if (friendshipStatus.equals(WASBLOCKEDBY) && reversedFriendshipStatus.equals(BLOCKED)) {
+      friendship.setStatus(DEADLOCK);
+      friendshipList.add(friendship);
+      reversedFriendship.setStatus(DEADLOCK);
+      friendshipList.add(reversedFriendship);
+      return friendshipList;
+    }
+
+    friendship.setStatus(BLOCKED);
+    friendshipList.add(friendship);
+    reversedFriendship.setStatus(WASBLOCKEDBY);
+    friendshipList.add(reversedFriendship);
+    return friendshipList;
+  }
+
+  private List<Friendship> createNewBlockRecord(User user, User friend) {
+    var newBlock = Friendship.builder()
+        .srcPerson(user)
+        .dstPerson(friend)
+        .status(BLOCKED)
+        .build();
+    var reversedBlock = Friendship.builder()
+        .srcPerson(friend)
+        .dstPerson(user)
+        .status(WASBLOCKEDBY)
+        .build();
+
+    return List.of(newBlock, reversedBlock);
+  }
+
+  @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
+  public CommonResponseDTO<MessageResponseDTO> unblockUser(long id) {
+    var target = userRepository.findById(id)
+        .orElseThrow(() -> new UserNotFoundException(id));
+    var user = CurrentUserUtils.getCurrentUser();
+    var friendshipOptional = friendshipRepository
+        .findBySrcPersonAndDstPerson(user, target);
+    var reversedFriendshipOptional = friendshipRepository
+        .findBySrcPersonAndDstPerson(target, user);
+
+    if (isOneOptionalEmptyAndOneNotEmpty(friendshipOptional, reversedFriendshipOptional)) {
+      var identifier = friendshipOptional.orElse(reversedFriendshipOptional.get()).getId();
+      throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, identifier));
+    }
+
+    if (isBothOptionalPresent(friendshipOptional, reversedFriendshipOptional)) {
+      var friendship = friendshipOptional.get();
+      var reversedFriendship = reversedFriendshipOptional.get();
+      var friendshipStatus = friendship.getStatus();
+      var reversedFriendshipStatus = reversedFriendship.getStatus();
+
+      if (friendshipStatus.equals(DEADLOCK) && reversedFriendshipStatus.equals(DEADLOCK)) {
+        friendship.setStatus(WASBLOCKEDBY);
+        reversedFriendship.setStatus(BLOCKED);
+        friendshipRepository.saveAll(List.of(friendship, reversedFriendship));
+        return ResponseUtils.commonResponseDataOk();
+      }
+
+      if (friendshipStatus.equals(BLOCKED) && reversedFriendshipStatus.equals(WASBLOCKEDBY)) {
+        friendshipRepository.deleteAll(List.of(friendship, reversedFriendship));
+        return ResponseUtils.commonResponseDataOk();
+      }
+    }
+
+    throw new FriendshipException("Пользователь не заблокирован");
+  }
 }

@@ -13,7 +13,6 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 class WebSocketConnectionRepositoryTest extends AbstractIntegrationTest {
-
   @Autowired
   private WebSocketConnectionRepository repository;
   private final UUID firstUserSessionId = UUID.randomUUID();
@@ -24,16 +23,16 @@ class WebSocketConnectionRepositoryTest extends AbstractIntegrationTest {
   private final WebSocketConnection firstUserConnectionTwo = new WebSocketConnection(UUID.randomUUID(), firstUserId);
   private final WebSocketConnection secondUserConnection = new WebSocketConnection(secondUserSessionId, secondUserId);
 
-
   @BeforeEach
   void setUp() {
       repository.saveAll(List.of(firstUserConnectionOne, firstUserConnectionTwo, secondUserConnection));
   }
 
   @Test
-  void testFindAllByUserId_whenTwoSessionForOneUserExist_thenReturnCorrectResult() {
+  void testFindAllByUserId_whenTwoSessionForOneUserExist_thenReturnCorrectResultForBothSessions() {
     assertFalse(repository.findAllByUserId(firstUserId).isEmpty());
-    assertEquals(List.of(firstUserConnectionOne, firstUserConnectionTwo).size(), repository.findAllByUserId(firstUserId).size());
+    assertTrue(repository.findAllByUserId(firstUserId).contains(firstUserConnectionOne));
+    assertTrue(repository.findAllByUserId(firstUserId).contains(firstUserConnectionTwo));
   }
 
   @Test

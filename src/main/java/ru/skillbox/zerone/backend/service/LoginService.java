@@ -14,7 +14,10 @@ import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.security.JwtTokenProvider;
+import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
+
+import static java.util.Objects.nonNull;
 
 @Service
 @RequiredArgsConstructor
@@ -29,9 +32,7 @@ public class LoginService {
     var email = request.getEmail();
     var user = userRepository.findUserByEmail(email)
         .orElseThrow(() -> new UserNotFoundException(email));
-    if(Boolean.TRUE.equals(user.getIsDeleted())) {
-      throw new BadCredentialsException("Пользователь удалён");
-    }
+    CurrentUserUtils.checkUserIsNotRestricted(user);
 
     try {
       authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, request.getPassword()));
@@ -41,15 +42,13 @@ public class LoginService {
 
     var token = jwtTokenProvider.createToken(email, user.getRoles());
 
-    UserDTO userDTO = userMapper.userToUserDTO(user);
-    userDTO.setToken(token);
-
-    return ResponseUtils.commonResponseWithData(userDTO);
+    return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user, token));
   }
 
   public CommonResponseDTO<MessageResponseDTO> logout(String token) {
-    blackListService.processLogout(token);
-
+    if (nonNull(token)) {
+      blackListService.processLogout(token);
+    }
     return ResponseUtils.commonResponseWithDataMessage("Logged out");
   }
 }

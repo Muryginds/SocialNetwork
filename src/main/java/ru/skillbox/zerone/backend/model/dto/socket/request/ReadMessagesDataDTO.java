@@ -6,5 +6,5 @@ import lombok.Data;
 @Data
 public class ReadMessagesDataDTO {
   @JsonProperty("dialog")
-  private long dialogId;
+  private Long dialogId;
 }

@@ -129,36 +129,37 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  defaultValueBoolean: false
+                  defaultValueBoolean: true
                   name: comment_comment_enabled
                   type: BOOLEAN
               - column:
                   constraints:
                     nullable: false
+                  defaultValueBoolean: true
                   name: friend_birthday_enabled
                   type: BOOLEAN
               - column:
                   constraints:
                     nullable: false
-                  defaultValueBoolean: false
+                  defaultValueBoolean: true
                   name: friend_request_enabled
                   type: BOOLEAN
               - column:
                   constraints:
                     nullable: false
-                  defaultValueBoolean: false
+                  defaultValueBoolean: true
                   name: messages_enabled
                   type: BOOLEAN
               - column:
                   constraints:
                     nullable: false
-                  defaultValueBoolean: false
+                  defaultValueBoolean: true
                   name: post_comment_enabled
                   type: BOOLEAN
               - column:
                   constraints:
                     nullable: false
-                  defaultValueBoolean: false
+                  defaultValueBoolean: true
                   name: post_enabled
                   type: BOOLEAN
               - column:

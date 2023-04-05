@@ -10,8 +10,7 @@ import java.util.UUID;
 
 @RedisHash
 @Builder
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class WebSocketConnection implements Serializable {

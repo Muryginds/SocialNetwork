@@ -12,12 +12,7 @@ import ru.skillbox.zerone.backend.model.enumerated.ReadStatus;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "notification",
-    indexes = {
-        @Index(name = "notification_person_id_idx", columnList = "person_id"),
-        @Index(name = "notification_entity_id_idx", columnList = "entity_id")
-    }
-)
+@Table(name = "notification")
 @Data
 @Builder
 @AllArgsConstructor
@@ -30,19 +25,17 @@ public class Notification {
 
   @NotNull
   @Enumerated(EnumType.STRING)
-  @Column(name = "type", columnDefinition = "notification_type")
+  @Column(name = "type")
   private NotificationType type;
 
   @NotNull
   @Builder.Default
-  @Column(name = "sent_time", columnDefinition = "timestamp without time zone")
+  @Column(name = "sent_time")
   private LocalDateTime sentTime = LocalDateTime.now();
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "person_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "notification_person_fk")
-  )
+  @JoinColumn(name = "person_id", referencedColumnName = "id")
   private User person;
 
   @NotNull
@@ -52,6 +45,6 @@ public class Notification {
   @NotNull
   @Builder.Default
   @Enumerated(EnumType.STRING)
-  @Column(name = "status", columnDefinition = "read_status default 'SENT'")
+  @Column(name = "status")
   private ReadStatus status = ReadStatus.SENT;
 }

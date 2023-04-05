@@ -12,12 +12,7 @@ import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "friendship",
-    indexes = {
-        @Index(name = "friendship_src_person_id_idx", columnList = "src_person_id"),
-        @Index(name = "friendship_dst_person_id_idx", columnList = "dst_person_id")
-    }
-)
+@Table(name = "friendship")
 @Data
 @Builder
 @AllArgsConstructor
@@ -29,27 +24,23 @@ public class Friendship {
   private Long id;
 
   @NotNull
-  @Column(name = "status", columnDefinition = "friendship_status")
+  @Column(name = "status")
   @Enumerated(EnumType.STRING)
   private FriendshipStatus status;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "src_person_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "friendship_src_person_fk")
-  )
+  @JoinColumn(name = "src_person_id", referencedColumnName = "id")
   private User srcPerson;
 
   @NotNull
   @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "dst_person_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "friendship_dst_person_fk")
-  )
+  @JoinColumn(name = "dst_person_id", referencedColumnName = "id")
   private User dstPerson;
 
   @NotNull
   @Builder.Default
   @UpdateTimestamp
-  @Column(name = "time", columnDefinition = "timestamp without time zone")
+  @Column(name = "time")
   private LocalDateTime time = LocalDateTime.now();
 }

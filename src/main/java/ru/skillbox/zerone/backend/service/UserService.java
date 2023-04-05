@@ -37,7 +37,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -90,8 +89,7 @@ public class UserService {
     mailService.sendVerificationChangeEmail(
         emailOld,
         user.getConfirmationCode(),
-        "/changeemail/complete",
-        mailServiceConfig.getServerAddress());
+        "/changeemail/complete");
 
     return ResponseUtils.commonResponseDataOk();
   }
@@ -100,9 +98,9 @@ public class UserService {
   public CommonResponseDTO<MessageResponseDTO> changeEmailConfirm(String emailOld, String confirmationCode) {
 
     User user = CurrentUserUtils.getCurrentUser();
-    String token = user.getConfirmationCode();
+    String confirmationToken = user.getConfirmationCode();
 
-    if (token.equals(confirmationCode)) {
+    if (confirmationToken.equals(confirmationCode)) {
       throw new ChangeEmailException(confirmationCode, emailOld);
     }
 
@@ -127,20 +125,15 @@ public class UserService {
       throw new UserAlreadyExistException(request.getEmail());
     }
 
-    User user = userMapper.registerRequestDTOToUser(request);
-    var verificationUuid = UUID.randomUUID();
-    user.setConfirmationCode(verificationUuid.toString());
+    var confirmationCode = UUID.randomUUID().toString();
+    User user = userMapper.registerRequestDTOToUser(request, confirmationCode);
 
     userRepository.save(user);
 
-
-
     mailService.sendVerificationEmail(
         user.getEmail(),
-        verificationUuid.toString(),
-        "/registration/complete",
-        mailServiceConfig.getFrontAddress());
-
+        confirmationCode,
+        "/registration/complete");
 
     return ResponseUtils.commonResponseDataOk();
   }
@@ -148,14 +141,14 @@ public class UserService {
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
     var user = userRepository.findUserByEmail(request.getEmail())
-        .orElseThrow(() -> new RegistrationCompleteException("Wrong email or key"));
+        .orElseThrow(() -> new RegistrationCompleteException("Указан неверный адрес почты или ключ подтверждения"));
 
     if (Boolean.TRUE.equals(user.getIsApproved())) {
-      throw new RegistrationCompleteException("User already confirmed");
+      throw new RegistrationCompleteException("Учетная запись уже подтверждена");
     }
 
     if (!user.getConfirmationCode().equals(request.getConfirmationKey())) {
-      throw new RegistrationCompleteException("Wrong email or key");
+      throw new RegistrationCompleteException("Указан неверный адрес почты или ключ подтверждения");
     }
 
     user.setIsApproved(true);
@@ -174,7 +167,7 @@ public class UserService {
     return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));
   }
 
-  public CommonResponseDTO<UserDTO> getById(Long id) {
+  public CommonResponseDTO<UserDTO> getById(long id) {
     User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
     return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));
@@ -194,20 +187,20 @@ public class UserService {
     return userMapper.userToUserDTO(user);
   }
 
- @Transactional
+  @Transactional
   public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationTypeDTO typeDTO) {
     User user = CurrentUserUtils.getCurrentUser();
     NotificationType notificationType = NotificationType.valueOf(typeDTO.getType());
     boolean enabled = typeDTO.getEnable();
-   Optional<NotificationSetting> optionalSetting = notificationSettingRepository.findByUser(user);
-   NotificationSetting setting;
-   if (optionalSetting.isPresent()) {
-     setting = optionalSetting.get();
-   } else {
-     setting = new NotificationSetting();
-     setting.setUser(user);
-   }
-   switch (notificationType) {
+    Optional<NotificationSetting> optionalSetting = notificationSettingRepository.findByUser(user);
+    NotificationSetting setting;
+    if (optionalSetting.isPresent()) {
+      setting = optionalSetting.get();
+    } else {
+      setting = new NotificationSetting();
+      setting.setUser(user);
+    }
+    switch (notificationType) {
       case POST -> setting.setPostEnabled(enabled);
       case POST_COMMENT -> setting.setPostCommentEnabled(enabled);
       case COMMENT_COMMENT -> setting.setCommentCommentEnabled(enabled);
