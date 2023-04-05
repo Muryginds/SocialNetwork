@@ -10,11 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.List;
 
 @Entity
-@Table(name = "recommendation",
-    indexes = {
-        @Index(name = "recommendation_user_id_idx", columnList = "user_id")
-    }
-)
+@Table(name = "recommendation")
 @Data
 @Builder
 @AllArgsConstructor
@@ -22,14 +18,13 @@ import java.util.List;
 public class Recommendation {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
   @NotNull
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id", referencedColumnName = "id",
-      foreignKey = @ForeignKey(name = "recommendation_user_fk"))
+  @OneToOne
+  @MapsId
   private User user;
   @Column(name = "recommended_friends")
   private List<Long> recommendedFriends;

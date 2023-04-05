@@ -113,8 +113,8 @@ services:
       - sonarqube_extensions:/opt/sonarqube/extensions
     networks:
       - postgres
-    depends_on:
-      - postgres
+#    depends_on:
+#      - postgres
     restart: on-failure:5
 
 networks:
@@ -124,3 +124,6 @@ networks:
 volumes:
   postgres:
   redis:
+  sonarqube_data:
+  sonarqube_conf:
+  sonarqube_extensions:

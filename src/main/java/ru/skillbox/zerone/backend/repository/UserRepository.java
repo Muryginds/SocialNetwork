@@ -39,7 +39,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
       AND u.isApproved = true
 
       """)
-  List<Long> findAllUsersId();
+  Page<Long> findAllUsersId(Pageable pageable);
   @Query(value = """
       SELECT u FROM User u
       WHERE u.isBlocked = false

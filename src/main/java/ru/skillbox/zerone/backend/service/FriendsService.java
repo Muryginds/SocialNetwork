@@ -36,6 +36,7 @@ public class FriendsService {
   private final RecommendationRepository recommendationRepository;
   private final UserRepository userRepository;
   private final UserMapper userMapper;
+   private static final int recommendationCount = 8;
 
 
   @Transactional
@@ -66,6 +67,7 @@ public class FriendsService {
     }
 
     friendshipRepository.saveAll(friendshipList);
+    saveRecommendation(friend.getId());
 
     return CommonResponseDTO.builder()
         .message("ok")
@@ -239,7 +241,9 @@ public class FriendsService {
         .build();
   }
 
+  @Transactional
   public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage){
+    createRecommendations();
 
 
     var user = CurrentUserUtils.getCurrentUser();
@@ -253,32 +257,42 @@ public class FriendsService {
   }
 
 
-  @Scheduled(cron = "0 0 2 * * ?")
+  @Scheduled(cron = "${scheduled-tasks.recommendation-creator}")
   public void createRecommendations() {
-    recommendationRepository.deleteAll();
 
     var allUsers = userRepository.findAllUsers();
     for (User user : allUsers) {
-      recommendationRepository.save(findRecommendations(user, 0, 20));
+      recommendationRepository.save(findRecommendations(user, 0, 100));
     }
   }
   public void createPersonalRecommendations(User user) {
-    recommendationRepository.save(findRecommendations(user, 0, 20));
+    recommendationRepository.save(findRecommendations(user, 0, 100));
+  }
+  public Recommendation updateRecommendations(Long id) {
+    var user = CurrentUserUtils.getCurrentUser();
+    var currentRecommendations = recommendationRepository.findByUser(user).getRecommendedFriends();
+    currentRecommendations.remove(id);
+    return Recommendation.builder()
+        .user(user)
+        .recommendedFriends(currentRecommendations)
+        .build();
+  }
+  public void saveRecommendation(Long id) {
+    recommendationRepository.save(updateRecommendations( id));
   }
 
   public Recommendation findRecommendations(User user, int offset, int itemPerPage) {
 
-    Pageable pageable = PageRequest.of(offset, itemPerPage);
-    var currentFriends = recommendationRepository.findCurrentUserFriends(user.getId(), pageable).getContent();
+    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
+    var currentFriends = recommendationRepository.findCurrentUserFriends(user.getId()).stream().toList();
     var recommendedUsersByCity = userRepository.findUsersByCity(user.getCity(), pageable).getContent();
     List<Long> recommendedUsersId = new ArrayList<>(recommendedUsersByCity);
 
     recommendedUsersId.removeAll(currentFriends);
     recommendedUsersId.remove(user.getId());
 
-    int recommendationCount = 8;
     if (recommendedUsersId.size() < recommendationCount) {
-      var allUsers = new ArrayList<>(userRepository.findAllUsersId());
+      var allUsers = new ArrayList<>(userRepository.findAllUsersId(pageable).stream().toList());
       allUsers.removeAll(recommendedUsersByCity);
       allUsers.removeAll(currentFriends);
       Collections.shuffle(allUsers);

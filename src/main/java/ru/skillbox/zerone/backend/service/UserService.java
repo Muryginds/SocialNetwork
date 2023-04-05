@@ -1,13 +1,15 @@
 package ru.skillbox.zerone.backend.service;
 
+import ch.qos.logback.classic.Logger;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.model.CityResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import ru.skillbox.zerone.backend.configuration.MailServiceConfig;
 import ru.skillbox.zerone.backend.exception.ChangeEmailException;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
@@ -31,8 +33,10 @@ import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 import java.io.File;
 import java.net.InetAddress;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
+
 
 @Service
 @RequiredArgsConstructor
@@ -45,8 +49,11 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
   private final MailServiceConfig mailServiceConfig;
   private final NotificationSettingRepository notificationSettingRepository;
-  @Autowired
-  private HttpServletRequest request;
+
+
+
+  HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder
+      .getRequestAttributes())).getRequest();
 
 
   public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordDTO request) {
@@ -212,26 +219,30 @@ public class UserService {
     return ResponseUtils.commonResponseDataOk();
   }
 
-  public CommonResponseDTO<UserDTO> deleteUser() {
+  public CommonResponseDTO<Object> deleteUser() {
     var user = CurrentUserUtils.getCurrentUser();
     user.setIsDeleted(true);
     userRepository.save(user);
-    return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));
+    return CommonResponseDTO.builder()
+        .message("Ok")
+        .build();
   }
   private String getClientIpAddress()  {
     try {
+      File database = new File("src/main/resources/GeoIP/GeoLite2-City.mmdb");
+      DatabaseReader dbReader = new DatabaseReader.Builder(database).build();
+
       String ipAddress = request.getHeader("X-FORWARDED-FOR");
       if (ipAddress == null) {
         ipAddress = request.getRemoteAddr();
       }
-      File database = new File("src/main/resources/GeoIP/GeoLite2-City.mmdb");
-      DatabaseReader dbReader = new DatabaseReader.Builder(database).build();
-      CityResponse response = dbReader.city(InetAddress.getByName(ipAddress));
 
+      CityResponse response = dbReader.city(InetAddress.getByName(ipAddress));
       return response.getCity().getName();
 
     } catch (Exception ex) {
-      ex.printStackTrace();
+      Logger log = null;
+      log.error("Exception occurred when try to detect user city: ", ex);
       return null;
     }
   }

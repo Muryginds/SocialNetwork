@@ -1,6 +1,5 @@
 package ru.skillbox.zerone.backend.controller;
 
-import com.maxmind.geoip2.exception.GeoIp2Exception;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +12,6 @@ import ru.skillbox.zerone.backend.model.dto.response.StatusFriendDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.service.FriendsService;
 
-import java.io.IOException;
 
 @Validated
 @RestController
@@ -53,7 +51,7 @@ public class FriendsController {
 
   @GetMapping("/friends/recommendations")
   public CommonListResponseDTO<UserDTO> getRecommendations(@RequestParam(name = "offset", defaultValue = "20") int offset,
-                                                           @RequestParam(name = "itemPerPage", defaultValue = "100") int itemPerPage) throws IOException, GeoIp2Exception {
+                                                           @RequestParam(name = "itemPerPage", defaultValue = "100") int itemPerPage) {
     return friendsService.getRecommendations(offset, itemPerPage);
   }
 }
