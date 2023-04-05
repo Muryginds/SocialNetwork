@@ -9,5 +9,7 @@ import ru.skillbox.zerone.backend.model.entity.Tag;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-  Page<Tag> findByName(String tagName, Pageable pageable);
+  Page<Tag> findByNameContains(String tagName, Pageable pageable);
+  Tag findByName(String tagName);
+
 }

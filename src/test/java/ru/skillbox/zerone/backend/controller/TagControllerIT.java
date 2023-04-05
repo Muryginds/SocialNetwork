@@ -182,7 +182,7 @@ class TagControllerIT extends AbstractIntegrationTest {
   @WithUserDetails("esperanza.padberg@yahoo.com")
   void deleteTag_tagNotExistsInDbAndUserIsAuthenticated_responseIsOk() throws Exception {
     Random random = new Random();
-    var tagId = random.longs(1, 1_000_000,100_000_000);
+    long tagId = random.nextLong(1_000_000,100_000_000);
     //long tagId = random.nextLong(1_000_000, 100_000_000);
     mockMvc.perform(delete(API_URL).param("id", String.valueOf(tagId)))
         .andExpect(status().isOk())

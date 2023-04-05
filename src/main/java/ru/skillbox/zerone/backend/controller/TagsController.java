@@ -24,9 +24,7 @@ public class TagsController {
   }
 
   @DeleteMapping
-  public CommonResponseDTO<MessageResponseDTO> deleteTag(@RequestParam Long id) {
-    return tagService.deleteTag(id);
-  }
+  public CommonResponseDTO<MessageResponseDTO> deleteTag(@RequestParam @Min(0) Long id) {    return tagService.deleteTag(id);  }
 
   @GetMapping
   public CommonListResponseDTO<TagDTO> getAllTags(@RequestParam(value = "tag", defaultValue = "") String tag,
