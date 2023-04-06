@@ -1279,11 +1279,4 @@ databaseChangeLog:
                   name: expired
             indexName: blacklist_token_expired_idx
             tableName: blacklist_token
-  - changeSet:
-      id: 104
-      author: bvg (generated)
-      changes:
-        - addUniqueConstraint:
-            columnNames: tag
-            constraintName: tag_tag_uk
-            tableName: tag
+

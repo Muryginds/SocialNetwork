@@ -15,6 +15,7 @@ import ru.skillbox.zerone.backend.model.entity.Tag;
 import ru.skillbox.zerone.backend.repository.TagRepository;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,14 +27,26 @@ public class TagService {
   @Transactional
   public CommonResponseDTO<TagDTO> addTag(TagDTO tagDTO) {
 
-    if (tagDTO.getId()==null) {
-      String tagName = tagDTO.getTag();
-      Tag tag = tagRepository.findByName(tagName);
-      tagDTO.setId(tag.getId());
+    if (tagDTO.getTag()==null) {
+      throw new TagNotFoundException("Тэг не может быть пустым");
     }
 
-    Tag tag = tagMapper.tagDTOToTag(tagDTO);
-    tagRepository.save(tag);
+    //if (tagDTO.getId()==null) {
+      String tagName = tagDTO.getTag();
+      Optional<Tag> optTag = tagRepository.findByName(tagName);
+       if (optTag.ifPresent()) {
+            Long idFromRepo =optTag.get().getId();
+          }
+      Long idFromDto = tagDTO.getId();
+      if (!(idFromRepo.equals(idFromDto))) {
+
+        optTag.map(Tag::getId).ifPresent(tagDTO::setId);
+        //}
+        Tag tag = tagMapper.tagDTOToTag(tagDTO);
+        tagRepository.save(tag);
+        tagDTO.setId(0L);
+      }
+
 
     return CommonResponseDTO.<TagDTO>builder()
         .data(tagDTO)
@@ -44,7 +57,7 @@ public class TagService {
   public CommonResponseDTO<MessageResponseDTO> deleteTag (Long id) {
 
     if (id==null) {
-        throw new TagNotFoundException(id);
+        throw new TagNotFoundException("id не найден в параметре запроса");
     }
 
     tagRepository.deleteById(id);
