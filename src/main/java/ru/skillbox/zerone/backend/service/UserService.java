@@ -24,7 +24,6 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -173,18 +172,13 @@ public class UserService {
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationSettingDTO typeDTO) {
-    User user = CurrentUserUtils.getCurrentUser();
-    NotificationType notificationType = NotificationType.valueOf(typeDTO.getType());
-    boolean enabled = typeDTO.getEnable();
-    Optional<NotificationSetting> optionalSetting = notificationSettingRepository.findByUser(user);
-    NotificationSetting setting;
-    if (optionalSetting.isPresent()) {
-      setting = optionalSetting.get();
-    } else {
-      setting = new NotificationSetting();
-      setting.setUser(user);
-    }
-    notificationSettingService.saveNotificationTypeByUser(user, notificationType, enabled);
+    var user = CurrentUserUtils.getCurrentUser();
+    var notificationType = NotificationType.valueOf(typeDTO.getType());
+    var setting = notificationSettingRepository.findByUser(user)
+        .orElseGet(NotificationSetting::new);
+    setting.setUser(user);
+    notificationSettingService.saveNotificationTypeByUser(
+        user, notificationType, typeDTO.getEnable());
     return ResponseUtils.commonResponseDataOk();
   }
 }

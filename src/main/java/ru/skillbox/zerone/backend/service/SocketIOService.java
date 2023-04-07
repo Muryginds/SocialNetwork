@@ -28,8 +28,6 @@ import ru.skillbox.zerone.backend.security.JwtTokenProvider;
 import java.time.LocalDateTime;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.Objects.isNull;

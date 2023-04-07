@@ -79,7 +79,6 @@ public class FriendService {
 
     friendshipRepository.saveAll(friendshipList);
 
-    return ResponseUtils.commonResponseDataOk();
     notificationService.saveFriendship(friendshipList);
 
     return ResponseUtils.commonResponseDataOk();

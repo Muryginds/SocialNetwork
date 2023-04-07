@@ -38,6 +38,7 @@ public class PostService {
   private final CommentService commentService;
   private final UserMapper userMapper;
   private final PostMapper postMapper;
+  private final SearchService searchService;
 
   private static final Pattern pattern = Pattern.compile("<img\\s+[^>]*src=\"([^\"]*)\"[^>]*>");
   private static final String NO_PEOPLE = "Людей вообще нет!";
@@ -139,10 +140,12 @@ public class PostService {
   }
 
   public CommonListResponseDTO<PostDTO> getPosts(String text, String author, String tag, Long dateFrom, int offset, int itemPerPage) {
-
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
 
-    return null;
+    Page<Post> pageablePostList = searchService.searchPosts(text, author, tag, dateFrom, pageable);
+
+    return getPostResponse(offset, itemPerPage, pageablePostList);
+
   }
 
   public CommonResponseDTO<PostDTO> deletePostById(long id) {
