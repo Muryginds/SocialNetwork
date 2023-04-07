@@ -31,25 +31,21 @@ public class TagService {
       throw new TagNotFoundException("Тэг не может быть пустым");
     }
 
-    //if (tagDTO.getId()==null) {
       String tagName = tagDTO.getTag();
       Optional<Tag> optTag = tagRepository.findByName(tagName);
-       if (optTag.ifPresent()) {
-            Long idFromRepo =optTag.get().getId();
+        TagDTO rezultTagDTO;
+
+       if (optTag.isEmpty()) {
+         Tag tag = tagMapper.tagDTOToTag(tagDTO);
+         tagRepository.save(tag);
+         rezultTagDTO = tagMapper.tagToTagDTO(tag);
           }
-      Long idFromDto = tagDTO.getId();
-      if (!(idFromRepo.equals(idFromDto))) {
-
-        optTag.map(Tag::getId).ifPresent(tagDTO::setId);
-        //}
-        Tag tag = tagMapper.tagDTOToTag(tagDTO);
-        tagRepository.save(tag);
-        tagDTO.setId(0L);
-      }
-
+       else {
+         rezultTagDTO = tagMapper.tagToTagDTO(optTag.get());
+       }
 
     return CommonResponseDTO.<TagDTO>builder()
-        .data(tagDTO)
+        .data(rezultTagDTO)
         .build();
   }
 
