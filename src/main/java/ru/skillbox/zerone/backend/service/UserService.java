@@ -38,6 +38,8 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
   private final MailServiceConfig mailServiceConfig;
   private final NotificationSettingRepository notificationSettingRepository;
+  private final StorageService storageService;
+  private final NotificationSettingService notificationSettingService;
 
 
   public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordDTO request) {
@@ -114,6 +116,8 @@ public class UserService {
     var confirmationCode = UUID.randomUUID().toString();
     User user = userMapper.registerRequestDTOToUser(request, confirmationCode);
 
+    user.setPhoto(storageService.generateStartAvatar());
+
     userRepository.save(user);
 
     mailService.sendVerificationEmail(
@@ -184,15 +188,7 @@ public class UserService {
       setting = new NotificationSetting();
       setting.setUser(user);
     }
-    switch (notificationType) {
-      case POST -> setting.setPostEnabled(enabled);
-      case POST_COMMENT -> setting.setPostCommentEnabled(enabled);
-      case COMMENT_COMMENT -> setting.setCommentCommentEnabled(enabled);
-      case FRIEND_REQUEST -> setting.setFriendRequestEnabled(enabled);
-      case MESSAGE -> setting.setMessagesEnabled(enabled);
-      case FRIEND_BIRTHDAY -> setting.setFriendBirthdayEnabled(enabled);
-    }
-    notificationSettingRepository.save(setting);
+    notificationSettingService.saveNotificationTypeByUser(user, notificationType, enabled);
     return ResponseUtils.commonResponseDataOk();
   }
 }
