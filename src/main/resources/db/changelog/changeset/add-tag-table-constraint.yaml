@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: bvg (generated)
+      changes:
+        - addUniqueConstraint:
+            columnNames: tag
+            constraintName: tag_tag_uk
+            tableName: tag
