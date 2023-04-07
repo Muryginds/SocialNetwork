@@ -20,6 +20,8 @@ import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 import java.util.*;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus.*;
 
 @Service
@@ -33,10 +35,27 @@ public class FriendService {
 
   @Transactional
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
-  public CommonResponseDTO<Object> addFriend(long id) {
+  public CommonResponseDTO<MessageResponseDTO> addFriend(long id) {
     var friend = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
+
+    if (TRUE.equals(friend.getIsBlocked())) {
+      throw new FriendshipException("Вы не можете добавить в друзья заблокированого администрацией пользователя");
+    }
+
+    if (TRUE.equals(friend.getIsDeleted())) {
+      throw new FriendshipException("Вы не можете добавить в друзья удаленного пользователя");
+    }
+
+    if (FALSE.equals(friend.getIsApproved())) {
+      throw new FriendshipException("Вы не можете добавить в друзья пользователя, который не подтвердил учетную запись");
+    }
+
     var user = CurrentUserUtils.getCurrentUser();
+
+    if (user.getId().equals(friend.getId())) {
+      throw new FriendshipException("Вы не можете добавить в друзья самого(саму) себя");
+    }
 
     var friendshipOptional = friendshipRepository
         .findBySrcPersonAndDstPerson(user, friend);
@@ -60,11 +79,10 @@ public class FriendService {
 
     friendshipRepository.saveAll(friendshipList);
 
+    return ResponseUtils.commonResponseDataOk();
     notificationService.saveFriendship(friendshipList);
 
-    return CommonResponseDTO.builder()
-        .message("ok")
-        .build();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   private List<Friendship> updateFriendshipRequest(Friendship friendship, Friendship reversedFriendship) {
@@ -117,7 +135,7 @@ public class FriendService {
 
   @Transactional
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
-  public CommonResponseDTO<Object> removeFriend(long id) {
+  public CommonResponseDTO<MessageResponseDTO> removeFriend(long id) {
     var friend = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
     var user = CurrentUserUtils.getCurrentUser();
@@ -152,9 +170,7 @@ public class FriendService {
       friendshipRepository.saveAll(List.of(friendship, reversedFriendship));
     }
 
-    return CommonResponseDTO.builder()
-        .message("ok")
-        .build();
+    return ResponseUtils.commonResponseDataOk();
   }
 
   private List<Friendship> createNewFriendshipRequest(User user, User friend) {
@@ -243,10 +259,15 @@ public class FriendService {
   }
 
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
-  public CommonResponseDTO<MessageResponseDTO> blockUser(Long id) {
+  public CommonResponseDTO<MessageResponseDTO> blockUser(long id) {
     var target = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
     var user = CurrentUserUtils.getCurrentUser();
+
+    if (user.getId().equals(target.getId())) {
+      throw new FriendshipException("Вы не можете заблокировать самого(саму) себя");
+    }
+
     var friendshipOptional = friendshipRepository
         .findBySrcPersonAndDstPerson(user, target);
     var reversedFriendshipOptional = friendshipRepository
@@ -314,7 +335,7 @@ public class FriendService {
   }
 
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
-  public CommonResponseDTO<MessageResponseDTO> unblockUser(Long id) {
+  public CommonResponseDTO<MessageResponseDTO> unblockUser(long id) {
     var target = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
     var user = CurrentUserUtils.getCurrentUser();

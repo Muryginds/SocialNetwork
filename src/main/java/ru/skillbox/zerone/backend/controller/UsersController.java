@@ -1,9 +1,9 @@
 package ru.skillbox.zerone.backend.controller;
 
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.skillbox.zerone.backend.controller.swaggerdoc.SwaggerUsersController;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
@@ -16,7 +16,7 @@ import ru.skillbox.zerone.backend.service.UserService;
 @Validated
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-public class UsersController {
+public class UsersController implements SwaggerUsersController {
   private final UserService userService;
   private final SearchService searchService;
   private final FriendService friendService;
@@ -27,7 +27,7 @@ public class UsersController {
   }
 
   @GetMapping("/{id}")
-  public CommonResponseDTO<UserDTO> getById(@PathVariable @Min(1) Long id) {
+  public CommonResponseDTO<UserDTO> getById(@PathVariable long id) {
     return userService.getById(id);
   }
 
@@ -49,12 +49,12 @@ public class UsersController {
   }
 
   @PutMapping("/block/{id}")
-  public CommonResponseDTO<MessageResponseDTO> blockUser(@PathVariable @Min(1) Long id) {
+  public CommonResponseDTO<MessageResponseDTO> blockUser(@PathVariable long id) {
     return friendService.blockUser(id);
   }
 
   @DeleteMapping("/block/{id}")
-  public CommonResponseDTO<MessageResponseDTO> unblockUser(@PathVariable @Min(1) Long id) {
+  public CommonResponseDTO<MessageResponseDTO> unblockUser(@PathVariable long id) {
     return friendService.unblockUser(id);
   }
 }

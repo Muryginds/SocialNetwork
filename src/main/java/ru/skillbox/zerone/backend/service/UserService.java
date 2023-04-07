@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import ru.skillbox.zerone.backend.configuration.MailServiceConfig;
 import ru.skillbox.zerone.backend.exception.ChangeEmailException;
 import ru.skillbox.zerone.backend.exception.RegistrationCompleteException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
@@ -36,7 +35,6 @@ public class UserService {
   private final MailService mailService;
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
-  private final MailServiceConfig mailServiceConfig;
   private final NotificationSettingRepository notificationSettingRepository;
   private final StorageService storageService;
   private final NotificationSettingService notificationSettingService;
@@ -76,8 +74,7 @@ public class UserService {
     mailService.sendVerificationChangeEmail(
         emailOld,
         user.getConfirmationCode(),
-        "/changeemail/complete",
-        mailServiceConfig.getServerAddress());
+        "/changeemail/complete");
 
     return ResponseUtils.commonResponseDataOk();
   }
@@ -123,8 +120,7 @@ public class UserService {
     mailService.sendVerificationEmail(
         user.getEmail(),
         confirmationCode,
-        "/registration/complete",
-        mailServiceConfig.getFrontAddress());
+        "/registration/complete");
 
     return ResponseUtils.commonResponseDataOk();
   }
@@ -132,14 +128,14 @@ public class UserService {
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> registrationConfirm(RegisterConfirmRequestDTO request) {
     var user = userRepository.findUserByEmail(request.getEmail())
-        .orElseThrow(() -> new RegistrationCompleteException("Wrong email or key"));
+        .orElseThrow(() -> new RegistrationCompleteException("Указан неверный адрес почты или ключ подтверждения"));
 
     if (Boolean.TRUE.equals(user.getIsApproved())) {
-      throw new RegistrationCompleteException("User already confirmed");
+      throw new RegistrationCompleteException("Учетная запись уже подтверждена");
     }
 
     if (!user.getConfirmationCode().equals(request.getConfirmationKey())) {
-      throw new RegistrationCompleteException("Wrong email or key");
+      throw new RegistrationCompleteException("Указан неверный адрес почты или ключ подтверждения");
     }
 
     user.setIsApproved(true);
@@ -155,7 +151,7 @@ public class UserService {
     return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));
   }
 
-  public CommonResponseDTO<UserDTO> getById(Long id) {
+  public CommonResponseDTO<UserDTO> getById(long id) {
     User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
     return ResponseUtils.commonResponseWithData(userMapper.userToUserDTO(user));

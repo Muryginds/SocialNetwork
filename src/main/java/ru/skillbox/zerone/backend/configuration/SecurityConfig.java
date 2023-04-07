@@ -12,10 +12,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ru.skillbox.zerone.backend.security.UserAccessFilter;
 import ru.skillbox.zerone.backend.security.FilterChainExceptionHandler;
 import ru.skillbox.zerone.backend.security.JwtTokenFilter;
 
@@ -26,6 +28,7 @@ public class SecurityConfig {
   private static final String LOGIN_ENDPOINT = "/api/v1/auth/login";
   private static final String LOGOUT_ENDPOINT = "/api/v1/auth/logout";
   private final JwtTokenFilter jwtFilter;
+  private final UserAccessFilter userAccessFilter;
 
   @Bean
   public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
@@ -43,8 +46,9 @@ public class SecurityConfig {
   }
 
   @Bean
-  public SecurityFilterChain filterChain(HttpSecurity http, FilterChainExceptionHandler filterChainExceptionHandler) throws Exception {
-    http
+  public SecurityFilterChain filterChain(HttpSecurity http,
+                                         FilterChainExceptionHandler filterChainExceptionHandler) throws Exception {
+    return http
         .cors(SecurityConfigurerAdapter::and)
         .csrf(AbstractHttpConfigurer::disable)
         .formLogin(AbstractAuthenticationFilterConfigurer::disable)
@@ -56,7 +60,10 @@ public class SecurityConfig {
                 "/api/v1/support",
                 "/actuator/prometheus",
                 "/api/v1/platform/languages",
-                "/changeemail/complete"
+                "/changeemail/complete",
+                "/v3/api-docs/**",
+                "/swagger-ui/**",
+                "/swagger"
             ).permitAll()
             .requestMatchers(LOGIN_ENDPOINT).permitAll()
             .requestMatchers(LOGOUT_ENDPOINT).permitAll()
@@ -64,7 +71,9 @@ public class SecurityConfig {
         )
         .addFilterBefore(filterChainExceptionHandler, UsernamePasswordAuthenticationFilter.class)
         .addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-        .httpBasic(AbstractHttpConfigurer::disable);
-    return http.build();
+        .addFilterAfter(userAccessFilter, JwtTokenFilter.class)
+        .sessionManagement(c -> c.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .httpBasic(AbstractHttpConfigurer::disable)
+        .build();
   }
 }
