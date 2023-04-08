@@ -67,6 +67,8 @@ class SearchServiceTest extends AbstractIntegrationTest {
     var response = searchService.searchUsers(firstName, lastName, null, city, null, null, defaultPageable);
     var responseUser = response.getContent().get(0);
 
+    assertNotNull(response);
+    assertFalse(response.getContent().isEmpty());
     assertEquals(expectedUsersCount, response.getTotalElements());
     assertEquals(firstName, responseUser.getFirstName());
     assertEquals(lastName, responseUser.getLastName());
@@ -101,6 +103,24 @@ class SearchServiceTest extends AbstractIntegrationTest {
     assertNotNull(result);
     assertEquals(expectedPages, result.getTotalPages());
     assertEquals(expectedPostsCount, result.getTotalElements());
+  }
+
+  @Test
+  void testSearchPosts_whenTextAndName_thenReturnExpectedPost() {
+    var text = "Test3 post";
+    var name = "Jenya";
+    var expectedPages = 1;
+    var expectedPostsCount = 1;
+
+    var result = searchService.searchPosts(text, name, null, null, defaultPageable);
+    var post = result.getContent().get(0);
+
+    assertNotNull(result);
+    assertEquals(expectedPages, result.getTotalPages());
+    assertFalse(result.getContent().isEmpty());
+    assertEquals(expectedPostsCount, result.getTotalElements());
+    assertTrue(post.getPostText().toLowerCase().contains(text.toLowerCase()));
+    assertTrue(post.getAuthor().getFirstName().toLowerCase().contains(name.toLowerCase()));
   }
 
   @Test
