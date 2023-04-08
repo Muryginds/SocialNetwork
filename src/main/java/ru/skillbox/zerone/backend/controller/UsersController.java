@@ -9,7 +9,6 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.service.FriendService;
-import ru.skillbox.zerone.backend.service.SearchService;
 import ru.skillbox.zerone.backend.service.UserService;
 
 @RestController
@@ -18,7 +17,6 @@ import ru.skillbox.zerone.backend.service.UserService;
 @RequiredArgsConstructor
 public class UsersController implements SwaggerUsersController {
   private final UserService userService;
-  private final SearchService searchService;
   private final FriendService friendService;
 
   @GetMapping("/me")
@@ -45,7 +43,7 @@ public class UsersController implements SwaggerUsersController {
                                                 @RequestParam(name = "age_to", required = false) Integer ageTo,
                                                 @RequestParam(name = "offset", defaultValue = "0") int offset,
                                                 @RequestParam(name = "itemPerPage", defaultValue = "10") int itemPerPage) {
-    return searchService.searchUsers(name, lastName, country, city, ageFrom, ageTo, offset, itemPerPage);
+    return userService.searchUsers(name, lastName, country, city, ageFrom, ageTo, offset, itemPerPage);
   }
 
   @PutMapping("/block/{id}")

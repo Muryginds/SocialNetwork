@@ -28,6 +28,7 @@ public interface SwaggerUsersController {
 
   @Operation(summary = "Поиск пользователей по заданным параметрам")
   @ApiResponse(responseCode = "200", description = "Успешный поиск пользователей")
+  @SuppressWarnings("java:S107")
   CommonListResponseDTO<UserDTO> getUser(@RequestParam(name = "first_name", required = false) String name,
                                          @RequestParam(name = "last_name", required = false) String lastName,
                                          @RequestParam(name = "country", required = false) String country,
