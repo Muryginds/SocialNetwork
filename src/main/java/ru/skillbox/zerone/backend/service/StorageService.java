@@ -79,6 +79,7 @@ public class StorageService {
     }
   }
 
+  @SuppressWarnings("java:S2245")
   public String generateStartAvatar() {
     List<File> avatars = fileRepository.findAllByIsStartAvatar(true);
     int index;
