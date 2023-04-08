@@ -81,7 +81,10 @@ public class StorageService {
 
   public String generateStartAvatar() {
     List<File> avatars = fileRepository.findAllByIsStartAvatar(true);
-    int index = ThreadLocalRandom.current().nextInt(0, avatars.size());
+    int index;
+    synchronized (cloudinary) {
+      index = ThreadLocalRandom.current().nextInt(0, avatars.size());
+    }
     return avatars.get(index).getUrl();
   }
 }
