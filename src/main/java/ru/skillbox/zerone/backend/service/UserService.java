@@ -80,7 +80,6 @@ public class UserService {
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> changeEmailConfirm(String emailOld, String confirmationCode) {
 
-    //User user = CurrentUserUtils.getCurrentUser();
     var user = userRepository.findUserByEmail(emailOld)
         .orElseThrow(() -> new UserNotFoundException(emailOld));
     String confirmationToken = user.getConfirmationCode();
