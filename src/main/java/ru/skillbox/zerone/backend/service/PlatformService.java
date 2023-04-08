@@ -34,7 +34,7 @@ public class PlatformService {
 
   public CommonListResponseDTO<BasicEntityDTO> getCountries(String country, int offset, int itemPerPage) {
     var countriesPage = countryRepository.findAllByNameContains(country, PageRequest.of(offset, itemPerPage));
-    var countriesDTO = countriesPage.map(c -> new BasicEntityDTO(c.getId().longValue(), c.getName())).getContent();
+    var countriesDTO = countriesPage.map(c -> new BasicEntityDTO(c.getId().longValue(), c.getName())).toList();
 
     return CommonListResponseDTO.<BasicEntityDTO>builder()
         .total(countriesPage.getTotalElements())

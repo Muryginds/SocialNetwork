@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import ru.skillbox.zerone.backend.controller.swaggerdoc.SwaggerPlatformController;
 import ru.skillbox.zerone.backend.model.dto.response.BasicEntityDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.service.PlatformService;
@@ -12,14 +13,16 @@ import ru.skillbox.zerone.backend.service.PlatformService;
 @RestController
 @RequestMapping("/api/v1/platform")
 @RequiredArgsConstructor
-public class PlatformController {
+public class PlatformController implements SwaggerPlatformController {
   private final PlatformService platformService;
 
+  @Override
   @GetMapping("/languages")
   public CommonListResponseDTO<BasicEntityDTO> getLanguages() {
     return platformService.getLanguages();
   }
 
+  @Override
   @GetMapping("/cities")
   public CommonListResponseDTO<BasicEntityDTO> getCities(@RequestParam("countryId") int countryId,
                                                          @RequestParam(name = "city", defaultValue = "") String city,
@@ -28,6 +31,7 @@ public class PlatformController {
     return platformService.getCities(countryId, city, offset, itemPerPage);
   }
 
+  @Override
   @GetMapping("/countries")
   public CommonListResponseDTO<BasicEntityDTO> getCountries(@RequestParam(name = "country", defaultValue = "") String country,
                                                             @RequestParam(name = "offset", defaultValue = "0") int offset,

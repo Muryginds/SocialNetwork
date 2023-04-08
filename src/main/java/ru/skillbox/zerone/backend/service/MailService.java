@@ -10,12 +10,9 @@ import ru.skillbox.zerone.backend.model.dto.request.MessageDTO;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-
-
 @Service
 @RequiredArgsConstructor
 public class MailService {
-
   private static final String ACCOUNT_CONFIRMATION_MESSAGE_THEME = "Подтверждение аккаунта";
   private static final String EMAIL_CONFIRMATION_MESSAGE_THEME = "Подтверждение смены пароля или Email";
   private final KafkaMessageProducer kafkaMessageProducer;

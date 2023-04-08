@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,6 +37,11 @@ public class ControllerAdvisor {
   @ExceptionHandler(BadCredentialsException.class)
   public ResponseEntity<Object> handleBadCredentialsException(Exception e) {
     return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(getResponse(e));
+  }
+
+  @ExceptionHandler(LockedException.class)
+  public ResponseEntity<Object> handleLockedException(Exception e) {
+    return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(getResponse(e));
   }
 
   private CommonResponseDTO<Object> getResponse(Exception e) {

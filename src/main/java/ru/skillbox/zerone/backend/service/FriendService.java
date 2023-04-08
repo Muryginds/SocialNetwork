@@ -255,7 +255,7 @@ public class FriendService {
   }
 
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
-  public CommonResponseDTO<MessageResponseDTO> blockUser(Long id) {
+  public CommonResponseDTO<MessageResponseDTO> blockUser(long id) {
     var target = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
     var user = CurrentUserUtils.getCurrentUser();
@@ -331,7 +331,7 @@ public class FriendService {
   }
 
   @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
-  public CommonResponseDTO<MessageResponseDTO> unblockUser(Long id) {
+  public CommonResponseDTO<MessageResponseDTO> unblockUser(long id) {
     var target = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
     var user = CurrentUserUtils.getCurrentUser();
