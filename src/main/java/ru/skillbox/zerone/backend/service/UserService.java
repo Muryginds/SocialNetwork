@@ -27,7 +27,6 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -40,6 +39,8 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
   private final NotificationSettingRepository notificationSettingRepository;
   private final SearchService searchService;
+  private final StorageService storageService;
+  private final NotificationSettingService notificationSettingService;
 
 
   public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordDTO request) {
@@ -115,6 +116,8 @@ public class UserService {
     var confirmationCode = UUID.randomUUID().toString();
     User user = userMapper.registerRequestDTOToUser(request, confirmationCode);
 
+    user.setPhoto(storageService.generateStartAvatar());
+
     userRepository.save(user);
 
     mailService.sendVerificationEmail(
@@ -172,27 +175,14 @@ public class UserService {
   }
 
   @Transactional
-  public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationTypeDTO typeDTO) {
-    User user = CurrentUserUtils.getCurrentUser();
-    NotificationType notificationType = NotificationType.valueOf(typeDTO.getType());
-    boolean enabled = typeDTO.getEnable();
-    Optional<NotificationSetting> optionalSetting = notificationSettingRepository.findByUser(user);
-    NotificationSetting setting;
-    if (optionalSetting.isPresent()) {
-      setting = optionalSetting.get();
-    } else {
-      setting = new NotificationSetting();
-      setting.setUser(user);
-    }
-    switch (notificationType) {
-      case POST -> setting.setPostEnabled(enabled);
-      case POST_COMMENT -> setting.setPostCommentEnabled(enabled);
-      case COMMENT_COMMENT -> setting.setCommentCommentEnabled(enabled);
-      case FRIEND_REQUEST -> setting.setFriendRequestEnabled(enabled);
-      case MESSAGE -> setting.setMessagesEnabled(enabled);
-      case FRIEND_BIRTHDAY -> setting.setFriendBirthdayEnabled(enabled);
-    }
-    notificationSettingRepository.save(setting);
+  public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationSettingDTO typeDTO) {
+    var user = CurrentUserUtils.getCurrentUser();
+    var notificationType = NotificationType.valueOf(typeDTO.getType());
+    var setting = notificationSettingRepository.findByUser(user)
+        .orElseGet(NotificationSetting::new);
+    setting.setUser(user);
+    notificationSettingService.saveNotificationTypeByUser(
+        user, notificationType, typeDTO.getEnable());
     return ResponseUtils.commonResponseDataOk();
   }
 

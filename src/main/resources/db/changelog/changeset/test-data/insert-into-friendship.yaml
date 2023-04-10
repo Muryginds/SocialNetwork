@@ -1,0 +1,65 @@
+databaseChangeLog:
+  - changeSet:
+      id: friendships
+      author: pvr
+      changes:
+        - insert:
+            columns:
+              - column:
+                  name: time
+                  valueDate: 2022-09-08T02:53:26.008
+              - column:
+                  name: src_person_id
+                  valueNumeric: "21"
+              - column:
+                  name: dst_person_id
+                  valueNumeric: "31"
+              - column:
+                  name: status
+                  value: FRIEND
+            tableName: friendship
+        - insert:
+            columns:
+              - column:
+                  name: time
+                  valueDate: 2022-09-09T02:53:26.008
+              - column:
+                  name: src_person_id
+                  valueNumeric: "21"
+              - column:
+                  name: dst_person_id
+                  valueNumeric: "32"
+              - column:
+                  name: status
+                  value: FRIEND
+            tableName: friendship
+        - insert:
+            columns:
+              - column:
+                  name: time
+                  valueDate: 2022-09-08T02:53:26.008
+              - column:
+                  name: src_person_id
+                  valueNumeric: "21"
+              - column:
+                  name: dst_person_id
+                  valueNumeric: "33"
+              - column:
+                  name: status
+                  value: FRIEND
+            tableName: friendship
+        - insert:
+            columns:
+              - column:
+                  name: time
+                  valueDate: 2022-09-10T02:53:26.008
+              - column:
+                  name: src_person_id
+                  valueNumeric: "21"
+              - column:
+                  name: dst_person_id
+                  valueNumeric: "41"
+              - column:
+                  name: status
+                  value: REQUEST
+            tableName: friendship

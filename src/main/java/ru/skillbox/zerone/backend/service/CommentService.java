@@ -33,6 +33,7 @@ public class CommentService {
   private final PostRepository postRepository;
   private final CommentRepository commentRepository;
   private final UserMapper userMapper;
+  private final NotificationService notificationService;
 
   public CommonListResponseDTO<CommentDTO> getPage4Comments(int offset, int itemPerPage, Post post, User user) {
 
@@ -42,6 +43,7 @@ public class CommentService {
 
     return getPostResponse(offset, itemPerPage, pageableCommentList, user);
   }
+
   public CommonListResponseDTO<CommentDTO> getComments(int offset, int itemPerPage, long id) {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow();
@@ -61,24 +63,27 @@ public class CommentService {
   public CommonResponseDTO<CommentDTO> addComment(long id, CommentRequestDTO commentRequest) {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow();
+
     Comment comment = new Comment();
-    comment.setCommentText(commentRequest.getCommentText());
     comment.setPost(post);
+    comment.setAuthor(user);
 
     if (commentRequest.getParentId() != null) {
-      Comment parentComment = commentRepository
-          .findById(commentRequest.getParentId()).orElseThrow();
-      comment.setParent(parentComment);
-      comment.setCommentText(commentRequest.getCommentText());
       comment.setType(CommentType.COMMENT);
+      String text = commentRequest.getCommentText().substring(",message:".length());
+      comment.setCommentText(text);
+      Comment parentComment = commentRepository
+          .findById(commentRequest.getParentId())
+          .orElseThrow();
+
+      comment.setParent(parentComment);
     } else {
-      comment.setCommentText(commentRequest.getCommentText());
       comment.setType(CommentType.POST);
+      comment.setCommentText(commentRequest.getCommentText());
     }
-    comment.setPost(post);
-    comment.setTime(LocalDateTime.now());
-    comment.setAuthor(user);
     comment = commentRepository.save(comment);
+
+    notificationService.saveComment(comment);
 
     return getCommentResponse(comment, user);
   }
@@ -151,7 +156,9 @@ public class CommentService {
 
   public CommonResponseDTO<CommentDTO> putComment(long id, long commentId, CommentRequestDTO commentRequest) {
     User user = CurrentUserUtils.getCurrentUser();
-    postRepository.findById(id).orElseThrow();
+    if (postRepository.findById(id).isEmpty()) {
+      throw new CommentNotFoundException("Не найден пост с id = " + id);
+    }
     if (commentRequest.getParentId() != null)
       findComment(commentRequest.getParentId());
     Comment comment = findComment(commentId);
@@ -165,6 +172,4 @@ public class CommentService {
     return commentRepository.findById(id)
         .orElseThrow();
   }
-//      comment.getComments()
-  //          .forEach(pomment -> commentData.getSubComments().add(getCommentDTO(pomment, user)));
 }

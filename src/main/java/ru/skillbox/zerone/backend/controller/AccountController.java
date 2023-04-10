@@ -35,7 +35,7 @@ public class AccountController {
   public CommonResponseDTO<MessageResponseDTO> sendMessageForChangeEmail(@RequestBody ChangeEmailDTO requestDto) {    return userService.sendMessageForChangeEmail(requestDto);  }
 
   @PutMapping("/notifications")
-  public CommonResponseDTO<MessageResponseDTO> setNotificationType(@RequestBody NotificationTypeDTO typeDTO) {
+  public CommonResponseDTO<MessageResponseDTO> setNotificationType(@RequestBody NotificationSettingDTO typeDTO) {
     return userService.setNotificationType(typeDTO);
   }
 }

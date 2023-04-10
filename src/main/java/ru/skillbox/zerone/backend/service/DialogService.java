@@ -42,6 +42,7 @@ public class DialogService {
   private final DialogMapper dialogMapper;
   private final SocketIOService socketIOService;
   private final FriendshipRepository friendshipRepository;
+  private final NotificationService notificationService;
 
   @Transactional
   public CommonListResponseDTO<MessageDataDTO> getMessages(long id, int offset, int itemPerPage) {
@@ -79,6 +80,8 @@ public class DialogService {
     messageRepository.save(message);
 
     socketIOService.sendMessageEvent(message);
+
+    notificationService.saveMessage(message);
 
     var responseData = messageMapper.messageToMessageDataDTO(message);
 
@@ -145,6 +148,8 @@ public class DialogService {
       messageRepository.save(message);
 
       socketIOService.sendMessageEvent(message);
+
+      notificationService.saveMessage(message);
 
       var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, message, 0, companion);
 

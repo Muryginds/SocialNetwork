@@ -157,6 +157,26 @@ services:
         max_attempts: 5
         window: 60s
 
+  avatars:
+    container_name: avatars
+    image: vladimirpanfilov/avatars
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified
+      SPRING_DATASOURCE_USERNAME: skillbox
+      SPRING_DATASOURCE_PASSWORD: password
+    ports:
+      -  "8084:8084"
+    networks:
+      - postgres
+    depends_on:
+      - backend
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 5
+        window: 60s
+
   grafana:
     container_name: grafana
     image: grafana/grafana
