@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   zookeeper:
-    image: zookeeper:3.7.0
+    image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
     deploy:
       restart_policy:
@@ -14,9 +14,12 @@ services:
       - kafka-net
     ports:
       - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: obsidiandynamics/kafka
+    image: confluentinc/cp-kafka:latest
     container_name: kafka
     deploy:
       restart_policy:
@@ -27,7 +30,7 @@ services:
     networks:
       - kafka-net
     ports:
-      - "9092:9092"
+      - 29092:29092
     environment:
       KAFKA_BROKER_ID: 1
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -52,8 +55,8 @@ services:
         max_attempts: 5
         window: 60s
     environment:
-      SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:29092
-      KAFKA_BROKERCONNECT: "kafka:29092"
+      SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
+      KAFKA_BROKERCONNECT: "kafka:9092"
     depends_on:
       - kafka
       - zookeeper
