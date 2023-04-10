@@ -30,7 +30,6 @@ migration-job:
   image: liquibase/liquibase
   only:
     - master
-    - boldyrev
   tags:
     - students
   script:
