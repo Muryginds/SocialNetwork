@@ -2,6 +2,8 @@ package ru.skillbox.zerone.backend.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.ChangeEmailException;
@@ -10,6 +12,7 @@ import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.*;
+import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
@@ -24,6 +27,7 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -35,6 +39,7 @@ public class UserService {
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
   private final NotificationSettingRepository notificationSettingRepository;
+  private final SearchService searchService;
   private final StorageService storageService;
   private final NotificationSettingService notificationSettingService;
 
@@ -112,8 +117,6 @@ public class UserService {
     var confirmationCode = UUID.randomUUID().toString();
     User user = userMapper.registerRequestDTOToUser(request, confirmationCode);
 
-    user.setPhoto(storageService.generateStartAvatar());
-
     userRepository.save(user);
 
     mailService.sendVerificationEmail(
@@ -180,5 +183,18 @@ public class UserService {
     notificationSettingService.saveNotificationTypeByUser(
         user, notificationType, typeDTO.getEnable());
     return ResponseUtils.commonResponseDataOk();
+  }
+
+  @SuppressWarnings("java:S107")
+  public CommonListResponseDTO<UserDTO> searchUsers(String name, String lastName, String country, String city, Integer ageFrom, Integer ageTo, int offset, int itemPerPage) {
+    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
+    var pageUsers = searchService.searchUsers(name, lastName, country, city, ageFrom, ageTo, pageable);
+
+    return CommonListResponseDTO.<UserDTO>builder()
+        .total(pageUsers.getTotalElements())
+        .offset(offset)
+        .perPage(itemPerPage)
+        .data(userMapper.usersToUserDTO(pageUsers.getContent()))
+        .build();
   }
 }
