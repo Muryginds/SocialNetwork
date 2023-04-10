@@ -7,7 +7,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.CommentNotFoundException;
-import ru.skillbox.zerone.backend.exception.NotificationPermissionException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.CommentRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommentDTO;
@@ -15,12 +14,10 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.StorageDTO;
 import ru.skillbox.zerone.backend.model.entity.Comment;
-import ru.skillbox.zerone.backend.model.entity.NotificationSetting;
 import ru.skillbox.zerone.backend.model.entity.Post;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.CommentType;
 import ru.skillbox.zerone.backend.repository.CommentRepository;
-import ru.skillbox.zerone.backend.repository.NotificationSettingRepository;
 import ru.skillbox.zerone.backend.repository.PostRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
@@ -37,8 +34,6 @@ public class CommentService {
   private final CommentRepository commentRepository;
   private final UserMapper userMapper;
   private final NotificationService notificationService;
-  private final NotificationSettingRepository notificationSettingRepository;
-  private final NotificationSettingService notificationSettingService;
 
   public CommonListResponseDTO<CommentDTO> getPage4Comments(int offset, int itemPerPage, Post post, User user) {
 
@@ -69,8 +64,6 @@ public class CommentService {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow();
 
-    checkPostCommentPermission(post);
-
     Comment comment = new Comment();
     comment.setPost(post);
     comment.setAuthor(user);
@@ -83,8 +76,6 @@ public class CommentService {
           .findById(commentRequest.getParentId())
           .orElseThrow();
 
-      checkCommentCommentPermission(parentComment);
-
       comment.setParent(parentComment);
     } else {
       comment.setType(CommentType.POST);
@@ -95,29 +86,6 @@ public class CommentService {
     notificationService.saveComment(comment);
 
     return getCommentResponse(comment, user);
-  }
-
-  private void checkPostCommentPermission(Post post) {
-    User author = post.getAuthor();
-    NotificationSetting setting = notificationSettingService.getSetting(author);
-
-    if (setting.getPostCommentEnabled().equals(Boolean.FALSE)) {
-      throw new NotificationPermissionException(String.format(
-          "Пользователь %s запретил комментировать свои публикации", author.getLastName()
-      ));
-    }
-  }
-
-  private void checkCommentCommentPermission(Comment parentComment) {
-    User author = parentComment.getAuthor();
-
-    NotificationSetting setting = notificationSettingService.getSetting(author);
-
-    if (setting.getCommentCommentEnabled().equals(Boolean.FALSE)) {
-      throw new NotificationPermissionException(String.format(
-          "Пользователь %s запретил комментировать свои комментарии", author
-      ));
-    }
   }
 
   public CommonResponseDTO<CommentDTO> getCommentResponse(Comment comment, User user) {
