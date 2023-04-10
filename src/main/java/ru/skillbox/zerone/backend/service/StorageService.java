@@ -1,7 +1,7 @@
 package ru.skillbox.zerone.backend.service;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.EagerTransformation;
+import com.cloudinary.Transformation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
@@ -45,12 +44,12 @@ public class StorageService {
   public File uploadImage(byte[] bytes, int widthHeight) {
     try {
       Map<Object, Object> options = Map.of(
-          "eager", Collections.singletonList(
-              new EagerTransformation()
-                  .gravity("auto")
-                  .width(widthHeight).height(widthHeight)
-                  .crop("crop")
-          ));
+          "transformation", new Transformation<>()
+              .gravity("auto")
+              .width(widthHeight)
+              .height(widthHeight)
+              .crop("crop")
+      );
       var uploadResult = cloudinary.uploader().upload(bytes, options);
 
       String publicId = (String) uploadResult.get("public_id");

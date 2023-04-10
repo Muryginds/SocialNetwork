@@ -18,7 +18,10 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -27,7 +30,15 @@ import static ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus.*;
 @Service
 @RequiredArgsConstructor
 public class FriendService {
-  private static final String NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN = "Нет пары к записи с id: %s";
+  public static final String CANNOT_ADD_BLOCKED_USER =
+      "Вы не можете добавить в друзья заблокированного администрацией пользователя";
+  public static final String CANNOT_ADD_DELETED_USER =
+      "Вы не можете добавить в друзья удаленного пользователя";
+  public static final String CANNOT_ADD_NOT_APPROVED_USER =
+      "Вы не можете добавить в друзья пользователя, который не подтвердил учетную запись";
+  public static final String CANNOT_ADD_YOURSELF =
+      "Вы не можете добавить в друзья самого(саму) себя";
+  public static final String NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN = "Нет пары к записи с id: %s";
   private final FriendshipRepository friendshipRepository;
   private final UserRepository userRepository;
   private final UserMapper userMapper;
@@ -40,21 +51,21 @@ public class FriendService {
         .orElseThrow(() -> new UserNotFoundException(id));
 
     if (TRUE.equals(friend.getIsBlocked())) {
-      throw new FriendshipException("Вы не можете добавить в друзья заблокированого администрацией пользователя");
+      throw new FriendshipException(CANNOT_ADD_BLOCKED_USER);
     }
 
     if (TRUE.equals(friend.getIsDeleted())) {
-      throw new FriendshipException("Вы не можете добавить в друзья удаленного пользователя");
+      throw new FriendshipException(CANNOT_ADD_DELETED_USER);
     }
 
     if (FALSE.equals(friend.getIsApproved())) {
-      throw new FriendshipException("Вы не можете добавить в друзья пользователя, который не подтвердил учетную запись");
+      throw new FriendshipException(CANNOT_ADD_NOT_APPROVED_USER);
     }
 
     var user = CurrentUserUtils.getCurrentUser();
 
     if (user.getId().equals(friend.getId())) {
-      throw new FriendshipException("Вы не можете добавить в друзья самого(саму) себя");
+      throw new FriendshipException(CANNOT_ADD_YOURSELF);
     }
 
     var friendshipOptional = friendshipRepository
@@ -63,7 +74,8 @@ public class FriendService {
         .findBySrcPersonAndDstPerson(friend, user);
 
     if (isOneOptionalEmptyAndOneNotEmpty(friendshipOptional, reversedFriendshipOptional)) {
-      var identifier = friendshipOptional.orElse(reversedFriendshipOptional.get()).getId();
+      Long identifier = (friendshipOptional.isPresent() ? friendshipOptional :
+          reversedFriendshipOptional).get().getId();
       throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, identifier));
     }
 
@@ -264,7 +276,7 @@ public class FriendService {
     var user = CurrentUserUtils.getCurrentUser();
 
     if (user.getId().equals(target.getId())) {
-      throw new FriendshipException("Вы не можете заблокировать самого(саму) себя");
+      throw new FriendshipException(CANNOT_ADD_YOURSELF);
     }
 
     var friendshipOptional = friendshipRepository
