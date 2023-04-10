@@ -27,34 +27,31 @@ public class TagService {
   @Transactional
   public CommonResponseDTO<TagDTO> addTag(TagDTO tagDTO) {
 
-    if (tagDTO.getTag()==null) {
+    var getTag = tagDTO.getTag();
+    if ((getTag==null)||(getTag.isBlank())) {
       throw new TagNotFoundException("Тэг не может быть пустым");
     }
 
       String tagName = tagDTO.getTag();
       Optional<Tag> optTag = tagRepository.findByName(tagName);
-        TagDTO rezultTagDTO;
+        TagDTO resultTagDTO;
 
        if (optTag.isEmpty()) {
          Tag tag = tagMapper.tagDTOToTag(tagDTO);
          tagRepository.save(tag);
-         rezultTagDTO = tagMapper.tagToTagDTO(tag);
+         resultTagDTO = tagMapper.tagToTagDTO(tag);
           }
        else {
-         rezultTagDTO = tagMapper.tagToTagDTO(optTag.get());
+         resultTagDTO = tagMapper.tagToTagDTO(optTag.get());
        }
 
     return CommonResponseDTO.<TagDTO>builder()
-        .data(rezultTagDTO)
+        .data(resultTagDTO)
         .build();
   }
 
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> deleteTag (Long id) {
-
-    if (id==null) {
-        throw new TagNotFoundException("id не найден в параметре запроса");
-    }
 
     tagRepository.deleteById(id);
 

@@ -30,6 +30,7 @@ migration-job:
   image: liquibase/liquibase
   only:
     - master
+    - boldyrev
   tags:
     - students
   script:
@@ -74,6 +75,7 @@ package-job:
 
   only:
     - master
+    - boldyrev
 
   script:
     - echo "Maven packaging started"
@@ -95,6 +97,7 @@ deploy_dev_server:
 
   only:
     - master
+    - boldyrev
 
   before_script:
     - which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y ) # which ищет исполняемый файл
