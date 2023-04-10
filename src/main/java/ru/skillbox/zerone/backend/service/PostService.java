@@ -28,7 +28,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +39,6 @@ public class PostService {
   private final PostMapper postMapper;
   private final SearchService searchService;
 
-  private static final Pattern pattern = Pattern.compile("<img\\s+[^>]*src=\"([^\"]*)\"[^>]*>");
   private static final String NO_PEOPLE = "Людей вообще нет!";
 
   public CommonResponseDTO<PostDTO> createPost(int id, long publishDate, PostRequestDTO postRequestDTO) {
