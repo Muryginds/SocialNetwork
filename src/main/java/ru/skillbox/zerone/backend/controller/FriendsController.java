@@ -3,6 +3,7 @@ package ru.skillbox.zerone.backend.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.controller.swaggerdoc.SwaggerFriendsController;
@@ -13,7 +14,7 @@ import ru.skillbox.zerone.backend.service.FriendService;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping(value = "/api/v1", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FriendsController implements SwaggerFriendsController {
   private final FriendService friendService;
 
