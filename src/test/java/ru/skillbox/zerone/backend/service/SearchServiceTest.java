@@ -13,7 +13,6 @@ import java.time.ZoneId;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
-@Sql(scripts = "classpath:search-service-mock-data-insert.sql")
 class SearchServiceTest extends AbstractIntegrationTest {
 
   @Autowired
@@ -21,6 +20,7 @@ class SearchServiceTest extends AbstractIntegrationTest {
   private final PageRequest defaultPageable = PageRequest.of(0, 10);
 
   @Test
+  @Sql(scripts = "classpath:search-service-mock-data-insert.sql")
   void testSearchUsers_whenNoMatchFiltered_thenReturnEmptyPage() {
     var result = searchService.searchUsers(
         "name", "lastName", "country", "city", 18, 25, defaultPageable);
@@ -30,6 +30,7 @@ class SearchServiceTest extends AbstractIntegrationTest {
   }
 
   @Test
+  @Sql(scripts = "classpath:search-service-mock-data-insert.sql")
   void testSearchUsers_whenFirstNameLastNameCountryAndCity_thenReturnExpectedUsers() {
     var firstName = "John";
     var lastName = "Doe";
@@ -48,16 +49,18 @@ class SearchServiceTest extends AbstractIntegrationTest {
   }
 
   @Test
+  @Sql(scripts = {"classpath:truncate-all-users-cascade.sql", "classpath:search-service-mock-data-insert.sql"})
   void testSearchUsers_whenNoParameters_thenReturnAllUsers() {
     var minUsersCount = 3;
 
     var response = searchService.searchUsers(null, null, null, null, null, null, defaultPageable);
 
     assertNotNull(response);
-    assertTrue(minUsersCount <= response.getTotalElements());
+    assertEquals(minUsersCount, response.getTotalElements());
   }
 
   @Test
+  @Sql(scripts = "classpath:search-service-mock-data-insert.sql")
   void testSearchUsers_whenFirstNameAndLastName_thenReturnExpectedUser() {
     var expectedUsersCount = 1;
     var firstName = "Jenya";
@@ -76,6 +79,7 @@ class SearchServiceTest extends AbstractIntegrationTest {
   }
 
   @Test
+  @Sql(scripts = "classpath:search-service-mock-data-insert.sql")
   void testSearchPosts_whenTextAuthorAndTag_thenReturnExpectedPosts() {
     var text = "Some text";
     var author = "John Doe";
@@ -93,6 +97,7 @@ class SearchServiceTest extends AbstractIntegrationTest {
   }
 
   @Test
+  @Sql(scripts = "classpath:search-service-mock-data-insert.sql")
   void testSearchPosts_whenText_thenReturnExpectedPosts() {
     var text = "Some text";
     var expectedPages = 1;
@@ -106,6 +111,7 @@ class SearchServiceTest extends AbstractIntegrationTest {
   }
 
   @Test
+  @Sql(scripts = "classpath:search-service-mock-data-insert.sql")
   void testSearchPosts_whenTextAndName_thenReturnExpectedPost() {
     var text = "Test3 post";
     var name = "Jenya";
@@ -124,16 +130,18 @@ class SearchServiceTest extends AbstractIntegrationTest {
   }
 
   @Test
+  @Sql(scripts = {"classpath:truncate-all-users-cascade.sql", "classpath:search-service-mock-data-insert.sql"})
   void testSearchPosts_whenNoQuery_thenReturnAllPosts() {
-    var minPostsCount = 3;
+    var minPostsCount = 4;
 
     var result = searchService.searchPosts(null, null, null, null, defaultPageable);
 
     assertNotNull(result);
-    assertTrue(minPostsCount <= result.getTotalElements());
+    assertEquals(minPostsCount, result.getTotalElements());
   }
 
   @Test
+  @Sql(scripts = "classpath:search-service-mock-data-insert.sql")
   void searchPosts_whenNoMatches_thenReturnEmptyPage() {
     var result = searchService.searchPosts("WRONG TEXT", "WRONG AUTHOR", "test_java", null, defaultPageable);
 
