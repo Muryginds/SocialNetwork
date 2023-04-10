@@ -13,7 +13,3 @@ spring:
       mode: never
   liquibase:
     enabled: true
-
-socket-server:
-  port: 1111
-  host: localhost

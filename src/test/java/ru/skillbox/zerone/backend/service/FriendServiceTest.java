@@ -267,5 +267,6 @@ class FriendServiceTest {
 
     // When
 
-    underTest.addFriend(friendId);  }
+    underTest.addFriend(friendId);
+  }
 }
