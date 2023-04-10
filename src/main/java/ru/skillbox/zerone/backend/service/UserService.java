@@ -27,7 +27,6 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -116,6 +115,8 @@ public class UserService {
 
     var confirmationCode = UUID.randomUUID().toString();
     User user = userMapper.registerRequestDTOToUser(request, confirmationCode);
+
+    user.setPhoto(storageService.generateStartAvatar());
 
     userRepository.save(user);
 
