@@ -32,4 +32,10 @@ public interface DialogRepository extends JpaRepository<Dialog, Long> {
         AND (d.sender = :user OR d.recipient = :user)
       """)
   long countUnreadMessagesByUser(User user, ReadStatus readStatus);
+
+  @Query("""
+       SELECT d FROM Dialog d, Message m
+       WHERE m.id = :messageId and m.dialog = d
+       """)
+  Optional<Dialog> findByMessageId(Long messageId);
 }

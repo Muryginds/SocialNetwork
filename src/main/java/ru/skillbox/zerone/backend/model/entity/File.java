@@ -21,4 +21,7 @@ public class File {
 
   @Column(name = "format")
   private String format;
+
+  @Column(name = "is_start_avatar")
+  private Boolean isStartAvatar;
 }

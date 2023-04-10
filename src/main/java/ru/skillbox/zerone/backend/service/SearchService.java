@@ -9,8 +9,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
-import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 import ru.skillbox.zerone.backend.model.entity.Post;
 import ru.skillbox.zerone.backend.model.entity.User;
 
@@ -31,20 +29,16 @@ public class SearchService {
   private final DSLContext dslContext;
 
   @Transactional
-  @SuppressWarnings("java:S107")
-  public CommonListResponseDTO<UserDTO> searchUsers(String name, String lastName, String country, String city, Integer ageFrom, Integer ageTo, int offset, int itemPerPage) {
+  public Page<User> searchUsers(String name, String lastName, String country, String city, Integer ageFrom, Integer ageTo, Pageable pageable) {
 
     Condition condition = createConditionForUsers(name, lastName, country, city, ageFrom, ageTo);
 
     int usersCount = dslContext.fetchCount(USER, condition);
 
-    List<UserDTO> users = dslContext.select().from(USER)
-        .where(condition).offset(offset).limit(itemPerPage).fetchInto(UserDTO.class);
+    var users = dslContext.select().from(USER)
+        .where(condition).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch(this::recordToUser);
 
-    return CommonListResponseDTO.<UserDTO>builder()
-        .total(usersCount)
-        .data(users)
-        .build();
+    return new PageImpl<>(users, pageable, usersCount);
   }
 
   private Condition createConditionForUsers(String name, String lastName, String country, String city, Integer ageFrom, Integer ageTo) {
@@ -61,7 +55,7 @@ public class SearchService {
   }
 
   @Transactional
-  public Page<Post> searchPosts(String text, String author, String tag, long pubDate, Pageable pageable) {
+  public Page<Post> searchPosts(String text, String author, String tag, Long pubDate, Pageable pageable) {
 
     Condition condition = createConditionForPosts(text, author, tag, pubDate);
 
@@ -91,7 +85,6 @@ public class SearchService {
         .and(POST.IS_DELETED.eq(false))
         .and(POST.IS_BLOCKED.eq(false))
         .and(POST.TIME.lessThan(LocalDateTime.now()));
-
   }
 
   private LocalDateTime getPubDate(long pubDate) {
@@ -114,7 +107,7 @@ public class SearchService {
             .or(USER.LAST_NAME.containsIgnoreCase(author));
   }
 
-  public Post recordToPost(Record postRecord) {
+  private Post recordToPost(Record postRecord) {
     return Post.builder()
         .id(postRecord.get(POST.ID))
         .title(postRecord.get(POST.TITLE))
@@ -125,7 +118,6 @@ public class SearchService {
         .updateTime(postRecord.get(POST.UPDATE_DATE))
         .time(postRecord.get(POST.TIME))
         .build();
-
   }
 
   private User recordToUser(Record userRecord) {
