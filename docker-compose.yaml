@@ -225,7 +225,7 @@ services:
         max_attempts: 5
         window: 60s
 
-
+networks:
   monitoring:
 
 volumes:
