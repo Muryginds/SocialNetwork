@@ -3,6 +3,8 @@ spring:
     show-sql: false
   liquibase:
     enabled: false
+  kafka:
+    bootstrap-servers: "kafka:29092"
 
 mail-service:
   front-address: http://zerone-network.ru
