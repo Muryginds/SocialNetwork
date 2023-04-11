@@ -77,13 +77,14 @@ public class StorageService {
     }
   }
 
-  public String generateStartAvatar() {
+  public String generateStartAvatarUrl() {
     List<File> avatars = fileRepository.findAllByIsStartAvatar(true);
-    if (avatars.size() < 2) {
+    if (avatars.isEmpty()) {
       return null;
     }
-    int index;
-    index = secureRandom.nextInt(0, avatars.size());
+
+    int index = (avatars.size() > 1) ? secureRandom.nextInt(0, avatars.size()) : 0;
+
     return avatars.get(index).getUrl();
   }
 }
