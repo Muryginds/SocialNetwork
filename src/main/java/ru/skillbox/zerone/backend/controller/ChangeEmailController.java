@@ -13,7 +13,7 @@ import ru.skillbox.zerone.backend.service.UserService;
 public class ChangeEmailController {
   private final UserService userService;
 
-  @GetMapping(value = "/changeemail/complete", params = {"userId", "token"})
+  @GetMapping(value = "/changeemail/complete")
   public CommonResponseDTO<MessageResponseDTO> changeEmailConfirm(@RequestParam String userId, @RequestParam String token) {
     return userService.changeEmailConfirm(userId, token);
   }

@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend.controller;
 
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +20,12 @@ public class TagsController {
   private final TagService tagService;
 
   @PostMapping
-  public CommonResponseDTO<TagDTO> addTag(@RequestBody TagDTO tagDTO) {
+  public CommonResponseDTO<TagDTO> addTag(@Valid @RequestBody TagDTO tagDTO) {
     return tagService.addTag(tagDTO);
   }
 
   @DeleteMapping
-  public CommonResponseDTO<MessageResponseDTO> deleteTag(@RequestParam Long id) {
-    return tagService.deleteTag(id);
-  }
+  public CommonResponseDTO<MessageResponseDTO> deleteTag(@RequestParam Long id) { return tagService.deleteTag(id);  }
 
   @GetMapping
   public CommonListResponseDTO<TagDTO> getAllTags(@RequestParam(value = "tag", defaultValue = "") String tag,
