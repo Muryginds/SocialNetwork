@@ -39,6 +39,11 @@ public class FriendService {
   public static final String CANNOT_ADD_YOURSELF =
       "Вы не можете добавить в друзья самого(саму) себя";
   public static final String NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN = "Нет пары к записи с id: %s";
+  public static final String USERS_ARE_NOT_FRIENDS = "Пользователи не друзья";
+  public static final String WRONG_STATUS_COMBINATION = "Неверная комбинация статусов: %s, %s";
+  public static final String YOU_HAVE_ALREADY_BLOCKED_HEEM = "Вы уже заблокировали пользователя";
+  public static final String USER_NOT_BLOCKED = "Пользователь не заблокирован";
+
   private final FriendshipRepository friendshipRepository;
   private final UserRepository userRepository;
   private final UserMapper userMapper;
@@ -74,7 +79,7 @@ public class FriendService {
         .findBySrcPersonAndDstPerson(friend, user);
 
     if (isOneOptionalEmptyAndOneNotEmpty(friendshipOptional, reversedFriendshipOptional)) {
-      Long identifier = (friendshipOptional.isPresent() ? friendshipOptional :
+      var identifier = (friendshipOptional.isPresent() ? friendshipOptional :
           reversedFriendshipOptional).get().getId();
       throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, identifier));
     }
@@ -119,7 +124,7 @@ public class FriendService {
       return friendshipList;
     }
 
-    throw new FriendshipException(String.format("Неверная комбинация статусов: %s, %s", friendshipStatus, reversedFriendshipStatus));
+    throw new FriendshipException(String.format(WRONG_STATUS_COMBINATION, friendshipStatus, reversedFriendshipStatus));
   }
 
   private void checkNotAllowedStatusCombinationsAndThrowExceptionIfMatched(FriendshipStatus friendshipStatus, FriendshipStatus reversedFriendshipStatus) {
@@ -128,7 +133,7 @@ public class FriendService {
     }
 
     if (friendshipStatus.equals(BLOCKED) && reversedFriendshipStatus.equals(WASBLOCKEDBY)) {
-      throw new FriendshipException("Вы заблокировали пользователя");
+      throw new FriendshipException(YOU_HAVE_ALREADY_BLOCKED_HEEM);
     }
 
     if (friendshipStatus.equals(WASBLOCKEDBY) && reversedFriendshipStatus.equals(BLOCKED)) {
@@ -157,12 +162,13 @@ public class FriendService {
         .findBySrcPersonAndDstPerson(friend, user);
 
     if (isOneOptionalEmptyAndOneNotEmpty(friendshipOptional, reversedFriendshipOptional)) {
-      var identifier = friendshipOptional.orElse(reversedFriendshipOptional.get()).getId();
+      var identifier = (friendshipOptional.isPresent() ? friendshipOptional :
+          reversedFriendshipOptional).get().getId();
       throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, identifier));
     }
 
     if (isBothOptionalEmpty(friendshipOptional, reversedFriendshipOptional)) {
-      throw new FriendshipException("Пользователи не друзья");
+      throw new FriendshipException(USERS_ARE_NOT_FRIENDS);
     }
 
     if (isBothOptionalPresent(friendshipOptional, reversedFriendshipOptional)) {
@@ -172,7 +178,7 @@ public class FriendService {
       var reversedFriendshipStatus = reversedFriendship.getStatus();
 
       if (!(friendshipStatus.equals(FRIEND) && reversedFriendshipStatus.equals(FRIEND))) {
-        throw new FriendshipException("Пользователи не друзья");
+        throw new FriendshipException(USERS_ARE_NOT_FRIENDS);
       }
 
       friendship.setStatus(DECLINED);
@@ -285,7 +291,8 @@ public class FriendService {
         .findBySrcPersonAndDstPerson(target, user);
 
     if (isOneOptionalEmptyAndOneNotEmpty(friendshipOptional, reversedFriendshipOptional)) {
-      var identifier = friendshipOptional.orElse(reversedFriendshipOptional.get()).getId();
+      var identifier = (friendshipOptional.isPresent() ? friendshipOptional :
+          reversedFriendshipOptional).get().getId();
       throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, identifier));
     }
 
@@ -312,7 +319,7 @@ public class FriendService {
 
     if (friendshipStatus.equals(DEADLOCK) && reversedFriendshipStatus.equals(DEADLOCK) ||
         friendshipStatus.equals(BLOCKED) && reversedFriendshipStatus.equals(WASBLOCKEDBY)) {
-      throw new FriendshipException("Вы уже заблокировали пользователя");
+      throw new FriendshipException(YOU_HAVE_ALREADY_BLOCKED_HEEM);
     }
 
     if (friendshipStatus.equals(WASBLOCKEDBY) && reversedFriendshipStatus.equals(BLOCKED)) {
@@ -356,7 +363,8 @@ public class FriendService {
         .findBySrcPersonAndDstPerson(target, user);
 
     if (isOneOptionalEmptyAndOneNotEmpty(friendshipOptional, reversedFriendshipOptional)) {
-      var identifier = friendshipOptional.orElse(reversedFriendshipOptional.get()).getId();
+      var identifier = (friendshipOptional.isPresent() ? friendshipOptional :
+          reversedFriendshipOptional).get().getId();
       throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, identifier));
     }
 
@@ -379,6 +387,6 @@ public class FriendService {
       }
     }
 
-    throw new FriendshipException("Пользователь не заблокирован");
+    throw new FriendshipException(USER_NOT_BLOCKED);
   }
 }
