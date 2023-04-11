@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   zookeeper:
-    image: zookeeper:3.7.0
+    image: confluentinc/cp-zookeeper:latest
     container_name: zookeeper
     deploy:
       restart_policy:
@@ -10,13 +10,14 @@ services:
         delay: 3s
         max_attempts: 5
         window: 60s
-    networks:
-      - kafka-net
     ports:
       - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: obsidiandynamics/kafka
+    image: confluentinc/cp-kafka:latest
     container_name: kafka
     deploy:
       restart_policy:
@@ -24,17 +25,14 @@ services:
         delay: 3s
         max_attempts: 5
         window: 60s
-    networks:
-      - kafka-net
     ports:
-      - "9092:9092"
+      - 29092:29092
     environment:
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: DOCKER_INTERNAL:PLAINTEXT,DOCKER_EXTERNAL:PLAINTEXT
-      KAFKA_LISTENERS: DOCKER_INTERNAL://:29092,DOCKER_EXTERNAL://:9092
-      KAFKA_ADVERTISED_LISTENERS: DOCKER_INTERNAL://kafka:29092,DOCKER_EXTERNAL://${DOCKER_HOST_IP:-127.0.0.1}:9092
-      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER_INTERNAL
-      KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
       KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     depends_on:
       - zookeeper
@@ -43,9 +41,6 @@ services:
     image: grif8585yandex/zeronekafka
     container_name: zeronekafka
     working_dir: /opt
-    networks:
-      - postgres
-      - kafka-net
     deploy:
       restart_policy:
         condition: on-failure
@@ -53,8 +48,8 @@ services:
         max_attempts: 5
         window: 60s
     environment:
-      SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:29092
-      KAFKA_BROKERCONNECT: "kafka:29092"
+      SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
+      KAFKA_BROKERCONNECT: "kafka:9092"
     depends_on:
       - kafka
       - zookeeper
@@ -71,8 +66,6 @@ services:
       - postgres:/data/postgres
     ports:
       - "5432:5432"
-    networks:
-      - postgres
     deploy:
       restart_policy:
         condition: on-failure
@@ -95,8 +88,6 @@ services:
       REDIS_PASSWORD: password123
     volumes:
       - redis:/data/redis
-    networks:
-      - postgres
 
   frontend:
     container_name: frontend
@@ -128,8 +119,6 @@ services:
     command: java -jar backend.jar
     depends_on:
       - postgres
-    networks:
-      - postgres
     deploy:
       restart_policy:
         condition: on-failure
@@ -146,8 +135,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
     ports:
       -  "8083:8083"
-    networks:
-      - postgres
     depends_on:
       - backend
     deploy:
@@ -229,8 +216,6 @@ services:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_conf:/opt/sonarqube/conf
       - sonarqube_extensions:/opt/sonarqube/extensions
-    networks:
-      - postgres
     depends_on:
       - postgres
     deploy:
@@ -240,11 +225,7 @@ services:
         max_attempts: 5
         window: 60s
 
-networks:
-  kafka-net:
-    name: kafka-net
-    driver: bridge
-  postgres:
+
   monitoring:
 
 volumes:

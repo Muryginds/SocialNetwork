@@ -85,14 +85,15 @@ public class UserService {
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> changeEmailConfirm(String emailOld, String confirmationCode) {
 
-    User user = CurrentUserUtils.getCurrentUser();
+    var user = userRepository.findUserByEmail(emailOld)
+        .orElseThrow(() -> new UserNotFoundException(emailOld));
     String confirmationToken = user.getConfirmationCode();
 
-    if (confirmationToken.equals(confirmationCode)) {
+    if (!(confirmationToken.equals(confirmationCode))) {
       throw new ChangeEmailException(confirmationCode, emailOld);
     }
 
-    if (user.getEmail().equals(emailOld)) {
+    if (!(user.getEmail().equals(emailOld))) {
       throw new ChangeEmailException(confirmationCode, emailOld);
     }
 
