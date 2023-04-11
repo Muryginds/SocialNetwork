@@ -10,8 +10,6 @@ services:
         delay: 3s
         max_attempts: 5
         window: 60s
-    networks:
-      - kafka-net
     ports:
       - "2181:2181"
     environment:
@@ -27,8 +25,6 @@ services:
         delay: 3s
         max_attempts: 5
         window: 60s
-    networks:
-      - kafka-net
     ports:
       - 29092:29092
     environment:
@@ -45,9 +41,6 @@ services:
     image: grif8585yandex/zeronekafka
     container_name: zeronekafka
     working_dir: /opt
-    networks:
-      - postgres
-      - kafka-net
     deploy:
       restart_policy:
         condition: on-failure
@@ -73,8 +66,6 @@ services:
       - postgres:/data/postgres
     ports:
       - "5432:5432"
-    networks:
-      - postgres
     deploy:
       restart_policy:
         condition: on-failure
@@ -97,8 +88,6 @@ services:
       REDIS_PASSWORD: password123
     volumes:
       - redis:/data/redis
-    networks:
-      - postgres
 
   frontend:
     container_name: frontend
@@ -130,8 +119,6 @@ services:
     command: java -jar backend.jar
     depends_on:
       - postgres
-    networks:
-      - postgres
     deploy:
       restart_policy:
         condition: on-failure
@@ -148,8 +135,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
     ports:
       -  "8083:8083"
-    networks:
-      - postgres
     depends_on:
       - backend
     deploy:
@@ -211,8 +196,6 @@ services:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_conf:/opt/sonarqube/conf
       - sonarqube_extensions:/opt/sonarqube/extensions
-    networks:
-      - postgres
     depends_on:
       - postgres
     deploy:
