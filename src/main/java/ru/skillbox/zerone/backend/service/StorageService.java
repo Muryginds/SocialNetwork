@@ -81,6 +81,9 @@ public class StorageService {
   @SuppressWarnings("java:S2245")
   public String generateStartAvatar() {
     List<File> avatars = fileRepository.findAllByIsStartAvatar(true);
+    if (avatars.size() < 2) {
+      return null;
+    }
     int index;
     synchronized (cloudinary) {
       index = ThreadLocalRandom.current().nextInt(0, avatars.size());
