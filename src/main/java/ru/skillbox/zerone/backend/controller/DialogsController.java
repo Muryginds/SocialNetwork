@@ -3,6 +3,7 @@ package ru.skillbox.zerone.backend.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.controller.swaggerdoc.SwaggerDialogsController;
@@ -14,7 +15,7 @@ import ru.skillbox.zerone.backend.service.DialogService;
 @Validated
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/dialogs")
+@RequestMapping(value = "/api/v1/dialogs", produces = MediaType.APPLICATION_JSON_VALUE)
 public class DialogsController implements SwaggerDialogsController {
   private final DialogService dialogService;
 

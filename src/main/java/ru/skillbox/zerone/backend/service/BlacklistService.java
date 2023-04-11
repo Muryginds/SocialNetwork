@@ -30,6 +30,7 @@ public class BlacklistService {
   }
 
   @Transactional
+  @SuppressWarnings("java:S1874")
   public void processLogout(String token) {
     var expiration = Jwts.parser().setSigningKey(secret).parseClaimsJws(token)
         .getBody().getExpiration();
@@ -37,6 +38,9 @@ public class BlacklistService {
         .token(token)
         .expired(expiration)
         .build();
+    if (blacklistRepository.existsByToken(token)) {
+      return;
+    }
     blacklistRepository.save(blacklistToken);
     long newCount = COUNT.incrementAndGet();
     if  (newCount % interval == 0) {

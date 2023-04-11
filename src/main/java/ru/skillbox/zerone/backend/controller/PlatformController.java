@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +12,7 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.service.PlatformService;
 
 @RestController
-@RequestMapping("/api/v1/platform")
+@RequestMapping(value = "/api/v1/platform", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class PlatformController implements SwaggerPlatformController {
   private final PlatformService platformService;

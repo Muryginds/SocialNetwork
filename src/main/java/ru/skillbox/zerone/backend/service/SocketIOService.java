@@ -202,6 +202,16 @@ public class SocketIOService {
   }
 
   @Transactional
+  public <T> void sendEventToPerson(User person, String event, T dto) {
+    webSocketConnectionRepository.findAllByUserId(person.getId().toString())
+        .forEach(socket -> {
+          SocketIOClient client = server.getClient(socket.getSessionId());
+          if (client != null) {
+            client.sendEvent(event, dto);
+          }
+        });
+  }
+
   public void disconnect(SocketIOClient client) {
     var optionalSession = webSocketConnectionRepository.findById(client.getSessionId());
     optionalSession.ifPresentOrElse(s -> {
