@@ -15,15 +15,16 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 @RequiredArgsConstructor
 @Service
 public class StorageService {
   private final Cloudinary cloudinary;
   private final FileRepository fileRepository;
+  private final SecureRandom secureRandom = new SecureRandom();
 
   public CommonResponseDTO<StorageDTO> uploadImage(MultipartFile file) {
     File storage;
@@ -68,9 +69,7 @@ public class StorageService {
   @Transactional
   public CommonResponseDTO<String> deleteImage(String publicId) {
     try {
-      // Удаляем изображение из Cloudinary
       cloudinary.uploader().destroy(publicId, null);
-      // Удаляем изображение из БД
       fileRepository.deleteByPublicId(publicId);
       return CommonResponseDTO.<String>builder().data("Image deleted successfully").build();
     } catch (IOException e) {
@@ -78,13 +77,13 @@ public class StorageService {
     }
   }
 
-  @SuppressWarnings("java:S2245")
   public String generateStartAvatar() {
     List<File> avatars = fileRepository.findAllByIsStartAvatar(true);
-    int index;
-    synchronized (cloudinary) {
-      index = ThreadLocalRandom.current().nextInt(0, avatars.size());
+    if (avatars.size() < 2) {
+      return null;
     }
+    int index;
+    index = secureRandom.nextInt(0, avatars.size());
     return avatars.get(index).getUrl();
   }
 }
