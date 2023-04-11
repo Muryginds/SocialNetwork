@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class TagService {
+public class TagService  {
 
   private final TagRepository tagRepository;
   private final TagMapper tagMapper;
