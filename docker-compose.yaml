@@ -205,11 +205,7 @@ services:
         max_attempts: 5
         window: 60s
 
-networks:
-  kafka-net:
-    name: kafka-net
-    driver: bridge
-  postgres:
+
   monitoring:
 
 volumes:
