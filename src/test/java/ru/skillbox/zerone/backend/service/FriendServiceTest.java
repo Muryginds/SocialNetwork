@@ -3,10 +3,7 @@ package ru.skillbox.zerone.backend.service;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import ru.skillbox.zerone.backend.exception.FriendshipException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
@@ -43,6 +40,9 @@ class FriendServiceTest {
   private NotificationService notificationService;
 
   private FriendService underTest;
+  @Captor
+  ArgumentCaptor<List<Friendship>> friendshipListCaptor;
+
 
   @BeforeEach
   void setUp() {
@@ -78,9 +78,8 @@ class FriendServiceTest {
     var responseDTO = underTest.addFriend(friendId);
 
     // Then
-    ArgumentCaptor<List<Friendship>> friendshipArgumentCaptor = ArgumentCaptor.forClass(List.class);
-    then(friendshipRepository).should().saveAll(friendshipArgumentCaptor.capture());
-    List<Friendship> capture = friendshipArgumentCaptor.getValue();
+    then(friendshipRepository).should().saveAll(friendshipListCaptor.capture());
+    List<Friendship> capture = friendshipListCaptor.getValue();
 
     assertThat(capture.size()).isEqualTo(2);
     assertThat(capture.get(0).getStatus()).isEqualTo(FriendshipStatus.SUBSCRIBED);
@@ -296,9 +295,8 @@ class FriendServiceTest {
     var responseDTO = underTest.removeFriend(friendId);
 
     // Then
-    ArgumentCaptor<List<Friendship>> friendshipArgumentCaptor = ArgumentCaptor.forClass(List.class);
-    then(friendshipRepository).should().saveAll(friendshipArgumentCaptor.capture());
-    List<Friendship> capture = friendshipArgumentCaptor.getValue();
+    then(friendshipRepository).should().saveAll(friendshipListCaptor.capture());
+    List<Friendship> capture = friendshipListCaptor.getValue();
 
     assertThat(capture.size()).isEqualTo(2);
     assertThat(capture.get(0).getStatus()).isEqualTo(FriendshipStatus.DECLINED);
@@ -451,9 +449,8 @@ class FriendServiceTest {
     var responseDTO = underTest.blockUser(targetId);
 
     // Then
-    ArgumentCaptor<List<Friendship>> friendshipArgumentCaptor = ArgumentCaptor.forClass(List.class);
-    then(friendshipRepository).should().saveAll(friendshipArgumentCaptor.capture());
-    List<Friendship> capture = friendshipArgumentCaptor.getValue();
+    then(friendshipRepository).should().saveAll(friendshipListCaptor.capture());
+    List<Friendship> capture = friendshipListCaptor.getValue();
 
     assertThat(capture.size()).isEqualTo(2);
     assertThat(capture.get(0).getStatus()).isEqualTo(BLOCKED);
@@ -633,9 +630,8 @@ class FriendServiceTest {
     var responseDTO = underTest.unblockUser(targetId);
 
     // Then
-    ArgumentCaptor<List<Friendship>> friendshipArgumentCaptor = ArgumentCaptor.forClass(List.class);
-    then(friendshipRepository).should().deleteAll(friendshipArgumentCaptor.capture());
-    List<Friendship> capture = friendshipArgumentCaptor.getValue();
+    then(friendshipRepository).should().deleteAll(friendshipListCaptor.capture());
+    List<Friendship> capture = friendshipListCaptor.getValue();
 
     assertThat(capture.size()).isEqualTo(2);
     assertThat(capture.get(0).getStatus()).isEqualTo(BLOCKED);
