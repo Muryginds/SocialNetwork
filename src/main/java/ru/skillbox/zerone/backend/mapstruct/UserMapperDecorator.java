@@ -30,8 +30,8 @@ public abstract class UserMapperDecorator implements UserMapper {
   private FriendshipRepository friendshipRepository;
 
   @Override
-  public User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO, String confirmationCode) {
-    var user = userMapper.registerRequestDTOToUser(registerRequestDTO, confirmationCode);
+  public User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO, String confirmationCode, String photo) {
+    var user = userMapper.registerRequestDTOToUser(registerRequestDTO, confirmationCode, photo);
     user.setPassword(passwordEncoder.encode(user.getPassword()));
     List<Role> roles = new ArrayList<>();
     roles.add(roleService.getBasicUserRole());

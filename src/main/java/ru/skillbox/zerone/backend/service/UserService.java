@@ -114,9 +114,8 @@ public class UserService {
     }
 
     var confirmationCode = UUID.randomUUID().toString();
-    User user = userMapper.registerRequestDTOToUser(request, confirmationCode);
-
-    user.setPhoto(storageService.generateStartAvatar());
+    var photoUrl = storageService.generateStartAvatarUrl();
+    var user = userMapper.registerRequestDTOToUser(request, confirmationCode, photoUrl);
 
     userRepository.save(user);
 
