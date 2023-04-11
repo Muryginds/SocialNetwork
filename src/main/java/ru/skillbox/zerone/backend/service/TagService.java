@@ -25,7 +25,7 @@ public class TagService {
   private final TagMapper tagMapper;
 
   @Transactional
-  public CommonResponseDTO<TagDTO> addTag(TagDTO tagDTO) {
+  public CommonResponseDTO<TagDTO> addTag(TagDTO tagDTO)  {
 
     var getTag = tagDTO.getTag();
     if ((getTag==null)||(getTag.isBlank())) {
