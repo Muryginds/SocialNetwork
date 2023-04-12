@@ -4,10 +4,13 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import ru.skillbox.zerone.backend.exception.FriendshipException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
-import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
-import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.request.IsFriendsDTO;
+import ru.skillbox.zerone.backend.model.dto.response.*;
 import ru.skillbox.zerone.backend.model.entity.Friendship;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
@@ -15,7 +18,9 @@ import ru.skillbox.zerone.backend.repository.FriendshipRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +64,6 @@ class FriendServiceTest {
   }
 
   @Test
-  @SuppressWarnings("java:S5838")
   void testAddFriend_whenAllCorrect_thenCorrect() {
     // Given
     long userId = 1L;
@@ -81,7 +85,7 @@ class FriendServiceTest {
     then(friendshipRepository).should().saveAll(friendshipListCaptor.capture());
     List<Friendship> capture = friendshipListCaptor.getValue();
 
-    assertThat(capture.size()).isEqualTo(2);
+    assertThat(capture).hasSize(2);
     assertThat(capture.get(0).getStatus()).isEqualTo(FriendshipStatus.SUBSCRIBED);
     assertThat(capture.get(0).getSrcPerson().getId()).isEqualTo(userId);
     assertThat(capture.get(0).getDstPerson().getId()).isEqualTo(friendId);
@@ -269,7 +273,6 @@ class FriendServiceTest {
   }
 
   @Test
-  @SuppressWarnings("java:S5838")
   void testRemoveFriend_whenAllCorrect_thenCorrect() {
     // Given
     long userId = 1L;
@@ -298,7 +301,7 @@ class FriendServiceTest {
     then(friendshipRepository).should().saveAll(friendshipListCaptor.capture());
     List<Friendship> capture = friendshipListCaptor.getValue();
 
-    assertThat(capture.size()).isEqualTo(2);
+    assertThat(capture).hasSize(2);
     assertThat(capture.get(0).getStatus()).isEqualTo(FriendshipStatus.DECLINED);
     assertThat(capture.get(0).getSrcPerson().getId()).isEqualTo(userId);
     assertThat(capture.get(0).getDstPerson().getId()).isEqualTo(friendId);
@@ -423,7 +426,6 @@ class FriendServiceTest {
   }
 
   @Test
-  @SuppressWarnings("java:S5838")
   void testBlockFriend_whenAllCorrect_thenCorrect() {
     // Given
     long userId = 1L;
@@ -452,7 +454,7 @@ class FriendServiceTest {
     then(friendshipRepository).should().saveAll(friendshipListCaptor.capture());
     List<Friendship> capture = friendshipListCaptor.getValue();
 
-    assertThat(capture.size()).isEqualTo(2);
+    assertThat(capture).hasSize(2);
     assertThat(capture.get(0).getStatus()).isEqualTo(BLOCKED);
     assertThat(capture.get(0).getSrcPerson().getId()).isEqualTo(userId);
     assertThat(capture.get(0).getDstPerson().getId()).isEqualTo(targetId);
@@ -603,7 +605,6 @@ class FriendServiceTest {
   }
 
   @Test
-  @SuppressWarnings("java:S5838")
   void testUnblockUser_whenBothOptionalPresent_thenCorrect() {
     // Given
     long userId = 1L;
@@ -633,7 +634,7 @@ class FriendServiceTest {
     then(friendshipRepository).should().deleteAll(friendshipListCaptor.capture());
     List<Friendship> capture = friendshipListCaptor.getValue();
 
-    assertThat(capture.size()).isEqualTo(2);
+    assertThat(capture).hasSize(2);
     assertThat(capture.get(0).getStatus()).isEqualTo(BLOCKED);
     assertThat(capture.get(0).getSrcPerson().getId()).isEqualTo(userId);
     assertThat(capture.get(0).getDstPerson().getId()).isEqualTo(targetId);
@@ -734,5 +735,191 @@ class FriendServiceTest {
     assertThatThrownBy(() -> underTest.unblockUser(targetId))
         .isInstanceOf(FriendshipException.class)
         .hasMessageContaining(USER_NOT_BLOCKED);
+  }
+
+
+  @Test
+  void testCheckIsFriends_whenAllCorrect_thenCorrect() {
+    // Given
+    IsFriendsDTO isFriendsDTO = new IsFriendsDTO();
+    isFriendsDTO.setUserIds(List.of(5L, 7L, 9L, 11L));
+
+    User user = User.builder().id(1L).build();
+    User user2 = User.builder().id(2L).build();
+
+    User dest1 = User.builder().id(5L).build();
+    User dest2 = User.builder().id(7L).build();
+    User dest3 = User.builder().id(9L).build();
+    User dest4 = User.builder().id(11L).build();
+    User dest5 = User.builder().id(13L).build();
+
+    List<Friendship> friends = List.of(
+        Friendship.builder().id(1L).srcPerson(user).dstPerson(dest1).status(FRIEND).build(),
+        Friendship.builder().id(2L).srcPerson(user).dstPerson(dest2).status(FRIEND).build(),
+        Friendship.builder().id(3L).srcPerson(user).dstPerson(dest3).status(BLOCKED).build(),
+        Friendship.builder().id(4L).srcPerson(user2).dstPerson(dest4).status(FRIEND).build(),
+        Friendship.builder().id(5L).srcPerson(user).dstPerson(dest5).status(FRIEND).build()
+    );
+
+    given(CurrentUserUtils.getCurrentUser()).willReturn(user);
+    given(friendshipRepository.findAllBySrcPersonAndDstPersonIdIn(user, isFriendsDTO.getUserIds()))
+        .willReturn(friends.stream()
+            .filter(fr -> fr.getSrcPerson().equals(user))
+            .filter(fr -> isFriendsDTO.getUserIds().contains(fr.getDstPerson().getId()))
+            .toList());
+
+    // When
+    var statusFriendDTO = underTest.checkIsFriends(isFriendsDTO);
+
+    // Then
+    List<StatusFriendDTO> data = statusFriendDTO.getData();
+    List<Long> ids = data.stream().map(StatusFriendDTO::getUserId).toList();
+
+    assertThat(data).hasSize(3);
+    assertThat(ids).isEqualTo(List.of(5L, 7L, 9L));
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  void testGetPageOfFriendsByFriendStatus() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    // Given
+    String keyName = "Andrew";
+    User user = User.builder().id(1L).build();
+    User user2 = User.builder().id(2L).build();
+    User person1 = User.builder().id(11L).firstName(keyName).build();
+    User person2 = User.builder().id(11L).firstName("Paul").build();
+    User person3 = User.builder().id(11L).firstName("Ivan").build();
+    User person4 = User.builder().id(11L).firstName(keyName).build();
+    User person5 = User.builder().id(11L).firstName("Stephen").build();
+
+
+    List<Friendship> friendships = List.of(
+        Friendship.builder().id(1L).status(FRIEND).srcPerson(user).dstPerson(person1).build(),
+        Friendship.builder().id(2L).status(FRIEND).srcPerson(user).dstPerson(person2).build(),
+        Friendship.builder().id(3L).status(FRIEND).srcPerson(user).dstPerson(person3).build(),
+        Friendship.builder().id(4L).status(FRIEND).srcPerson(user).dstPerson(person4).build(),
+        Friendship.builder().id(5L).status(FRIEND).srcPerson(user2).dstPerson(person3).build(),
+        Friendship.builder().id(6L).status(BLOCKED).srcPerson(user).dstPerson(person5).build()
+    );
+
+    PageRequest pageRequest = PageRequest.of(0, 5);
+
+    Method method = FriendService.class.getDeclaredMethod(
+        "getPageOfFriendsByFriendStatus",
+        FriendshipStatus.class, String.class, int.class, int.class);
+    method.setAccessible(true);
+
+    given(CurrentUserUtils.getCurrentUser()).willReturn(user);
+
+    Page<Friendship> pageToReturn = new PageImpl<>(
+        friendships.stream()
+            .filter(fr -> fr.getSrcPerson().equals(user))
+            .filter(fr ->  fr.getStatus().equals(FRIEND))
+            .toList()
+    );
+    given(friendshipRepository.findAllBySrcPersonAndStatus(user, FRIEND, pageRequest))
+        .willReturn(pageToReturn);
+
+    // When
+    var page = (Page<Friendship>) method.invoke(
+        underTest, FRIEND, "",
+        (int) pageRequest.getOffset(), pageRequest.getPageSize());
+
+    // Then
+    assertThat(page.getTotalElements()).isEqualTo(4);
+
+    // Giver
+    pageToReturn = new PageImpl<>(
+        friendships.stream()
+            .filter(fr -> fr.getSrcPerson().equals(user))
+            .filter(fr ->  fr.getStatus().equals(FRIEND))
+            .filter(fr -> fr.getDstPerson().getFirstName().equals(keyName))
+            .toList()
+    );
+    given(friendshipRepository.findAllBySrcPersonAndStatusAndDstPersonNameLike(user, FRIEND, keyName, pageRequest))
+        .willReturn(pageToReturn);
+
+    // When
+    page = (Page<Friendship>) method.invoke(
+        underTest, FRIEND, keyName,
+        (int) pageRequest.getOffset(), pageRequest.getPageSize());
+
+    // Then
+    assertThat(page.getTotalElements()).isEqualTo(2);
+  }
+
+  @Test
+  void testGetFriendList_whenAllCorrect_thenCorrect() {
+    CommonListResponseDTO<UserDTO> friendList = getFriendListAndGetFriendRequestList(FRIEND);
+    assertThat(friendList.getTotal()).isEqualTo(3);
+  }
+
+  @Test
+  void testGetFriendRequestList_whenAllCorrect_thenCorrect() {
+    CommonListResponseDTO<UserDTO> friendList = getFriendListAndGetFriendRequestList(REQUEST);
+    assertThat(friendList.getTotal()).isEqualTo(1);
+  }
+
+  private CommonListResponseDTO<UserDTO> getFriendListAndGetFriendRequestList(FriendshipStatus status) {
+    // Given
+    User user = User.builder().id(1L).build();
+    User user2 = User.builder().id(2L).build();
+    User person1 = User.builder().id(11L).firstName("Andrew").build();
+    User person2 = User.builder().id(12L).firstName("Paul").build();
+    User person3 = User.builder().id(13L).firstName("Ivan").build();
+    User person4 = User.builder().id(14L).firstName("Andrew").build();
+    User person5 = User.builder().id(15L).firstName("Stephen").build();
+
+
+    List<Friendship> friendships = List.of(
+        Friendship.builder().id(1L).status(FRIEND).srcPerson(user).dstPerson(person1).build(),
+        Friendship.builder().id(2L).status(REQUEST).srcPerson(user).dstPerson(person2).build(),
+        Friendship.builder().id(3L).status(FRIEND).srcPerson(user).dstPerson(person3).build(),
+        Friendship.builder().id(4L).status(FRIEND).srcPerson(user).dstPerson(person4).build(),
+        Friendship.builder().id(5L).status(FRIEND).srcPerson(user2).dstPerson(person3).build(),
+        Friendship.builder().id(6L).status(BLOCKED).srcPerson(user).dstPerson(person5).build()
+    );
+
+    PageRequest pageRequest = PageRequest.of(0, 5);
+
+    given(CurrentUserUtils.getCurrentUser()).willReturn(user);
+
+    Page<Friendship> pageToReturn = new PageImpl<>(
+        friendships.stream()
+            .filter(fr -> fr.getSrcPerson().equals(user))
+            .filter(fr ->  fr.getStatus().equals(status))
+            .toList()
+    );
+    List<User> friends = pageToReturn.map(Friendship::getDstPerson).toList();
+    List<UserDTO> dtos = new ArrayList<>();
+    friends.forEach(person -> {
+      UserDTO dto = UserDTO.builder()
+          .id(person.getId())
+          .firstName(person.getFirstName()).build();
+      dtos.add(dto);
+    });
+
+    given(friendshipRepository.findAllBySrcPersonAndStatus(user, status, pageRequest))
+        .willReturn(pageToReturn);
+    given(userMapper.usersToUserDTO(friends))
+        .willReturn(dtos);
+
+
+    // When
+    CommonListResponseDTO<UserDTO> friendList;
+    if (status == FRIEND) {
+      friendList = underTest.getFriendList("", (int) pageRequest.getOffset(), pageRequest.getPageSize());
+    } else {
+      friendList = underTest.getFriendRequestList("", (int) pageRequest.getOffset(), pageRequest.getPageSize());
+    }
+
+    // Then
+    return friendList;
+  }
+
+  @Test
+  void testGetRecommendations_whenAllCorrect_thenCorrect() {
+    CommonListResponseDTO<UserDTO> recommendations = underTest.getRecommendations(0, 0);
+    assertThat(recommendations.getData()).isEmpty();
   }
 }
