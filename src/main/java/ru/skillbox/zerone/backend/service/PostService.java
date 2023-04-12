@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -9,16 +10,12 @@ import ru.skillbox.zerone.backend.exception.PostCreationException;
 import ru.skillbox.zerone.backend.exception.PostNotFoundException;
 import ru.skillbox.zerone.backend.exception.UserAndAuthorEqualsException;
 import ru.skillbox.zerone.backend.mapstruct.PostMapper;
-import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.PostRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.PostDTO;
-import ru.skillbox.zerone.backend.model.entity.Like;
 import ru.skillbox.zerone.backend.model.entity.Post;
 import ru.skillbox.zerone.backend.model.entity.User;
-import ru.skillbox.zerone.backend.model.enumerated.PostType;
-import ru.skillbox.zerone.backend.repository.LikeRepository;
 import ru.skillbox.zerone.backend.repository.PostRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
@@ -27,59 +24,129 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
   private final PostRepository postRepository;
-  private final LikeRepository likeRepository;
-  private final CommentService commentService;
-  private final UserMapper userMapper;
-  private final PostMapper postMapper;
   private final SearchService searchService;
+  private final PostMapper postMapper;
 
-  private static final String NO_PEOPLE = "Людей вообще нет!";
 
+  @Transactional
   public CommonResponseDTO<PostDTO> createPost(int id, long publishDate, PostRequestDTO postRequestDTO) {
 
     User user = CurrentUserUtils.getCurrentUser();
-    if (user.getId() != id) throw new PostCreationException("Создан прекрасный мир.");
 
-    Post post = new Post();
-    post.setPostText(postRequestDTO.getPostText());
-    post.setTitle(postRequestDTO.getTitle());
-    post.setAuthor(user);
-    if (publishDate == 0) {
-      post.setTime(LocalDateTime.now());
-    } else {
-      post.setTime(Instant.ofEpochMilli(publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime());
+    if (user.getId() != id) {
+      throw new PostCreationException("Попытка публикации неизвестным пользователем");
     }
+
+    Post post = Post.builder()
+        .postText(postRequestDTO.getPostText())
+        .title(postRequestDTO.getTitle())
+        .author(user)
+        .time(publishDate == 0 ? LocalDateTime.now()
+            : Instant.ofEpochMilli(publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime())
+        .build();
+
     postRepository.save(post);
-    CommonResponseDTO<PostDTO> result = new CommonResponseDTO<>();
-    result.setTimestamp(LocalDateTime.now());
-    result.setData(getPostsDTO(post, user));
-    return result;
+
+    return commonResponseDTO(post);
   }
 
-  private PostDTO getPostsDTO(Post post, User user) {
+  private PostDTO getPostsDTO(Post post) {
 
-    PostDTO postDTO = postMapper.postToPostsDTO(post);
-
-    postDTO.setAuthor(userMapper.userToUserDTO(post.getAuthor()));
-    postDTO.setComments(commentService.getPage4Comments(0, 5, post, user));
-    Set<Like> likes = likeRepository.findLikesByPost(post);
-    postDTO.setLikes(likes.size());
-
-    postDTO.setTags(new ArrayList<>());
-
-    if (LocalDateTime.now().isBefore(post.getTime())) {
-      postDTO.setType(PostType.QUEUED);
-    } else postDTO.setType(PostType.POSTED);
-    return postDTO;
+    return postMapper.postToPostsDTO(post);
   }
 
-  public CommonListResponseDTO<PostDTO> getPostResponse(int offset, int itemPerPage, Page<Post> pageablePostList) {
+  private List<PostDTO> getPost4Response(List<Post> posts) {
+
+    List<PostDTO> postDataList = new ArrayList<>();
+    posts.forEach(post -> postDataList.add(getPostsDTO(post)));
+
+    return postDataList;
+  }
+
+  public CommonListResponseDTO<PostDTO> getFeeds(int offset, int itemPerPage) {
+
+    long myId = CurrentUserUtils.getCurrentUser().getId();
+    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
+    Page<Post> pageablePostList = postRepository.getPostsForFeeds(myId, pageable);
+
+    return commonListResponseDTO(offset, itemPerPage, pageablePostList);
+  }
+
+  public CommonResponseDTO<PostDTO> getPostById(long id) {
+
+    return commonResponseDTO(getPostFromRepo(id));
+  }
+
+
+  public CommonListResponseDTO<PostDTO> getAuthorWall(long id, int offset, int itemPerPage) {
+
+    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
+    Page<Post> pageablePostList = postRepository.getPostsForUsersWall(id, pageable);
+
+    return commonListResponseDTO(offset, itemPerPage, pageablePostList);
+  }
+
+  public CommonListResponseDTO<PostDTO> getPosts(String text, String author, String tag, Long dateFrom, int offset, int itemPerPage) {
+
+    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
+    Page<Post> pageablePostList = searchService.searchPosts(text, author, tag, dateFrom, pageable);
+
+    return commonListResponseDTO(offset, itemPerPage, pageablePostList);
+  }
+
+  @Transactional
+  public CommonResponseDTO<PostDTO> deletePostById(long id) {
+
+    Post post = getPostFromRepo(id);
+
+    throwExceptionIfAuthorNotEqualsUser(post);
+
+    post.setIsDeleted(true);
+    postRepository.saveAndFlush(post);
+    return commonResponseDTO(post);
+  }
+
+  @Transactional
+  public CommonResponseDTO<PostDTO> putPostIdRecover(long id) {
+
+    Post post = getPostFromRepo(id);
+
+    throwExceptionIfAuthorNotEqualsUser(post);
+
+    post.setIsDeleted(false);
+    postRepository.saveAndFlush(post);
+    return commonResponseDTO(post);
+  }
+
+  @Transactional
+  public CommonResponseDTO<PostDTO> putPostById(long id, Long publishDate, PostRequestDTO requestBody) {
+
+    Post post = getPostFromRepo(id);
+
+    throwExceptionIfAuthorNotEqualsUser(post);
+
+    post.setTitle(requestBody.getTitle());
+    post.setPostText(requestBody.getPostText());
+    //List<String> tags = requestBody.getTags();
+    post.setTime(Instant.ofEpochMilli(publishDate == 0 ? System.currentTimeMillis() : publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime());
+    postRepository.saveAndFlush(post);
+    return commonResponseDTO(post);
+  }
+
+  private CommonResponseDTO<PostDTO> commonResponseDTO(Post post) {
+
+    return CommonResponseDTO.<PostDTO>builder()
+        .timestamp(LocalDateTime.now())
+        .data(getPostsDTO(post))
+        .build();
+  }
+
+  private CommonListResponseDTO<PostDTO> commonListResponseDTO(int offset, int itemPerPage, Page<Post> pageablePostList) {
 
     return CommonListResponseDTO.<PostDTO>builder()
         .total(pageablePostList.getTotalElements())
@@ -87,91 +154,18 @@ public class PostService {
         .offset(offset)
         .data(getPost4Response(pageablePostList.toList()))
         .build();
-
   }
 
-  public List<PostDTO> getPost4Response(List<Post> posts) {
-    List<PostDTO> postDataList = new ArrayList<>();
-    posts.forEach(post -> {
-      PostDTO postData = getPostsDTO(post, post.getAuthor());
-      postDataList.add(postData);
-    });
-    return postDataList;
+  private Post getPostFromRepo(long id) {
+    return postRepository.findById(id)
+        .orElseThrow(() -> new PostNotFoundException("Пост с указанным id не найден"));
   }
 
-  public CommonListResponseDTO<PostDTO> getFeeds(String text, int offset, int itemPerPage) {
+  private void throwExceptionIfAuthorNotEqualsUser(Post post) {
 
-    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
-    Page<Post> pageablePostList = postRepository.findPostsByPostTextContains(text, pageable);
-    return getPostResponse(offset, itemPerPage, pageablePostList);
-
-  }
-
-  public CommonResponseDTO<PostDTO> getPostById(long id) {
-
-    Post post = postRepository.findById(id).orElseThrow();
     User user = CurrentUserUtils.getCurrentUser();
-    CommonResponseDTO<PostDTO> dataResponse = new CommonResponseDTO<>();
-    dataResponse.setTimestamp(LocalDateTime.now());
-    dataResponse.setData(getPostsDTO(post, user));
-    return dataResponse;
-  }
-
-  private Post findPost(long id) throws PostNotFoundException {
-    return postRepository.findById(id).orElseThrow();
-  }
-
-  private CommonResponseDTO<PostDTO> getPostDTOResponse(Post post, User user) {
-    CommonResponseDTO<PostDTO> postDataResponse = new CommonResponseDTO<>();
-    postDataResponse.setTimestamp(LocalDateTime.now());
-    postDataResponse.setData(getPostsDTO(post, user));
-
-    return postDataResponse;
-  }
-
-  public CommonListResponseDTO<PostDTO> getAuthorWall(int id, int offset, int itemPerPage) {
-
-    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
-    Page<Post> pageablePostList = postRepository.findPostsByAuthorId(id, pageable);
-
-    return getPostResponse(offset, itemPerPage, pageablePostList);
-  }
-
-  public CommonListResponseDTO<PostDTO> getPosts(String text, String author, String tag, Long dateFrom, int offset, int itemPerPage) {
-    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
-
-    Page<Post> pageablePostList = searchService.searchPosts(text, author, tag, dateFrom, pageable);
-
-    return getPostResponse(offset, itemPerPage, pageablePostList);
-
-  }
-
-  public CommonResponseDTO<PostDTO> deletePostById(long id) {
-    User user = CurrentUserUtils.getCurrentUser();
-    Post post = postRepository.findById(id).orElseThrow();
-    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException(NO_PEOPLE);
-    post.setIsDeleted(true);
-    postRepository.saveAndFlush(post);
-    return getPostDTOResponse(post, user);
-  }
-
-  public CommonResponseDTO<PostDTO> putPostIdRecover(long id) {
-    User user = CurrentUserUtils.getCurrentUser();
-    Post post = postRepository.findById(id).orElseThrow();
-    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException(NO_PEOPLE);
-    post.setIsDeleted(false);
-    postRepository.saveAndFlush(post);
-    return getPostDTOResponse(post, user);
-  }
-
-  public CommonResponseDTO<PostDTO> putPostById(int id, Long publishDate, PostRequestDTO requestBody) {
-    User user = CurrentUserUtils.getCurrentUser();
-    Post post = findPost(id);
-    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException(NO_PEOPLE);
-    post.setTitle(requestBody.getTitle());
-    post.setPostText(requestBody.getPostText());
-    post.setTime(Instant.ofEpochMilli(publishDate == 0 ? System.currentTimeMillis() : publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime());
-    post = postRepository.saveAndFlush(post);
-    return getPostDTOResponse(post, user);
+    if (!user.getId().equals(post.getAuthor().getId())) {
+      throw new UserAndAuthorEqualsException("Попытка редактирования неизвестным пользователем");
+    }
   }
 }

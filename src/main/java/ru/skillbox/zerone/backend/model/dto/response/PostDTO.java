@@ -2,15 +2,20 @@ package ru.skillbox.zerone.backend.model.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.skillbox.zerone.backend.model.enumerated.PostType;
-
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
+@Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostDTO {
   private long id;
   private String title;
@@ -25,5 +30,5 @@ public class PostDTO {
   private List<String> tags;
   private PostType type;
   private UserDTO author;
-  private LocalDateTime timestamp = LocalDateTime.now();
+  private LocalDateTime time;
 }
