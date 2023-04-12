@@ -31,10 +31,9 @@ public class PostController {
   }
 
   @GetMapping("/feeds")
-  public CommonListResponseDTO<PostDTO> getFeeds(@RequestParam(name = "text", defaultValue = "") String text,
-                                                 @RequestParam(name = "offset", defaultValue = "0") int offset,
+  public CommonListResponseDTO<PostDTO> getFeeds(@RequestParam(name = "offset", defaultValue = "0") int offset,
                                                  @RequestParam(name = "itemPerPage", defaultValue = "20") int itemPerPage) {
-    return postService.getFeeds(text, offset, itemPerPage);
+    return postService.getFeeds(offset, itemPerPage);
   }
 
   @GetMapping("/post")
