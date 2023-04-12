@@ -10,13 +10,19 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.skillbox.zerone.backend.exception.ChangeEmailException;
 import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
+import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.ChangeEmailDTO;
 import ru.skillbox.zerone.backend.model.dto.request.NotificationSettingDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterConfirmRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.request.RegisterRequestDTO;
+import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
@@ -30,10 +36,12 @@ import ru.skillbox.zerone.backend.repository.NotificationSettingRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.testData.UserMockUtils;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
-import ru.skillbox.zerone.backend.model.enumerated.NotificationType;
+import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,11 +62,14 @@ class UserServiceTest implements UserMockUtils {
   @Mock
   private User user;
   @Mock
+  private SearchService searchService;
+  @Mock
   private NotificationSettingRepository notificationSettingRepository;
+  @Mock
+  private NotificationSettingService notificationSettingService;
   private final MockedStatic<CurrentUserUtils> utilsMockedStatic = Mockito.mockStatic(CurrentUserUtils.class);
   @InjectMocks
   private UserService userService;
-  //private User currentUser;
   @BeforeAll
   static void setStatic() {
   }
@@ -142,20 +153,50 @@ class UserServiceTest implements UserMockUtils {
     verify(userRepository).save(any(User.class));
   }
   @Test
-  void testChangeEmailConfirm_whenValidInput_thenReturnSuccessResponse() {
-    String emailOld = "newEmail@example.com";
+  void confirmEmailChange_Succeeds_ChangesEmailAndSavesToDatabase() {
+    String oldEmail = "old_email@example.com";
+    String newEmail = "new_email@example.com";
     String confirmationCode = "123456";
     User user = new User();
-    user.setEmail("oldEmail@example.com");
-    user.setConfirmationCode("123456789zerone#");
+    user.setEmail(oldEmail);
+    user.setConfirmationCode(confirmationCode);
     ChangeEmailHistory changeEmailHistory = new ChangeEmailHistory();
-    changeEmailHistory.setEmailOld("oldEmail@example.com");
-    changeEmailHistory.setEmailNew("newEmail@example.com");
-    utilsMockedStatic.when(CurrentUserUtils::getCurrentUser).thenReturn(user);
-    when(CurrentUserUtils.getCurrentUser()).thenReturn(user);
-    when(changeEmailHistoryRepository.findFirstByEmailOldOrderByTimeDesc(emailOld)).thenReturn(Optional.of(changeEmailHistory));
-    CommonResponseDTO<MessageResponseDTO> response = userService.changeEmailConfirm(emailOld, confirmationCode);
-    verify(userRepository).save(user);
+    changeEmailHistory.setEmailOld(oldEmail);
+    changeEmailHistory.setEmailNew(newEmail);
+    Mockito.when(userRepository.findUserByEmail(oldEmail)).thenReturn(Optional.of(user));
+    Mockito.when(changeEmailHistoryRepository.findFirstByEmailOldOrderByTimeDesc(oldEmail)).thenReturn(Optional.of(changeEmailHistory));
+    CommonResponseDTO<MessageResponseDTO> response = userService.changeEmailConfirm(oldEmail, confirmationCode);
+    assertEquals(ResponseUtils.commonResponseDataOk(), response);
+    assertEquals(newEmail, user.getEmail());
+    Mockito.verify(userRepository, Mockito.times(1)).save(user);
+  }
+  @Test
+  void confirmEmailChange_ThrowsUserNotFoundExceptionWhenUserNotFound() {
+    String oldEmail = "old_email@example.com";
+    String confirmationCode = "123456";
+    Mockito.when(userRepository.findUserByEmail(oldEmail)).thenReturn(Optional.empty());
+    assertThrows(UserNotFoundException.class, () -> userService.changeEmailConfirm(oldEmail, confirmationCode));
+  }
+  @Test
+  void confirmEmailChange_ThrowsChangeEmailExceptionWhenConfirmationCodeIsWrong() {
+    String oldEmail = "old_email@example.com";
+    String confirmationCode = "123456";
+    User user = new User();
+    user.setEmail(oldEmail);
+    user.setConfirmationCode("654321");
+    Mockito.when(userRepository.findUserByEmail(oldEmail)).thenReturn(Optional.of(user));
+    assertThrows(ChangeEmailException.class, () -> userService.changeEmailConfirm(oldEmail, confirmationCode));
+  }
+  @Test
+  void verifyChangeEmailRequest_ThrowsUserNotFoundException() {
+    // Arrange
+    String oldEmail = "old_email@example.com";
+    String confirmationCode = "123456";
+    User user = new User();
+    user.setEmail("another_email@example.com");
+    user.setConfirmationCode(confirmationCode);
+    Mockito.when(userRepository.findUserByEmail(oldEmail)).thenReturn(Optional.of(user));
+    assertThrows(ChangeEmailException.class, () -> userService.changeEmailConfirm(oldEmail, confirmationCode));
   }
   @Test
   void testSendMessageForChangeEmail_WhenUserExists_ThenThrowUserAlreadyExistException() {
@@ -238,13 +279,36 @@ void testRegisterAccount_whenValidInput_thenReturnSuccessResponseAndSaveUserToDa
     setting.setUser(currentUser);
     utilsMockedStatic.when(CurrentUserUtils::getCurrentUser).thenReturn(currentUser);
     when(notificationSettingRepository.findByUser(currentUser)).thenReturn(Optional.of(setting));
-    when(notificationSettingRepository.save(any(NotificationSetting.class))).thenReturn(setting);
     CommonResponseDTO<MessageResponseDTO> response = userService.setNotificationType(typeDTO);
     assertNotNull(response);
     assertNotNull(response.getData());
     verify(notificationSettingRepository).findByUser(currentUser);
-    verify(notificationSettingRepository).save(setting);
+  }
+  @Test
+  void searchUsers_shouldReturnListOfUserDTOs() {
+    String name = "John";
+    String lastName = "Doe";
+    String country = "USA";
+    String city = "New York";
+    Integer ageFrom = 20;
+    Integer ageTo = 30;
+    int offset = 0;
+    int itemPerPage = 10;
+    List<User> users = new ArrayList<>();
+    User user = new User();
+    user.setId(1L);
+    users.add(user);
+    Page<User> pageUsers = new PageImpl<>(users);
+    when(searchService.searchUsers(name, lastName, country, city, ageFrom, ageTo, PageRequest.of(offset / itemPerPage, itemPerPage))).thenReturn(pageUsers);
+    when(userMapper.usersToUserDTO(users)).thenReturn(new ArrayList<>());
+    CommonListResponseDTO<UserDTO> result = userService.searchUsers(name, lastName, country, city, ageFrom, ageTo, offset, itemPerPage);
+    verify(searchService).searchUsers(name, lastName, country, city, ageFrom, ageTo, PageRequest.of(offset / itemPerPage, itemPerPage));
+    verify(userMapper).usersToUserDTO(users);
+    assertEquals(users.size(), result.getTotal());
+    assertEquals(offset, result.getOffset());
+    assertEquals(itemPerPage, result.getPerPage());
   }
 }
+
 
 
