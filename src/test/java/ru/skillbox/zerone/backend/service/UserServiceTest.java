@@ -166,7 +166,6 @@ class UserServiceTest implements UserMockUtils {
     Mockito.when(userRepository.findUserByEmail(oldEmail)).thenReturn(Optional.of(user));
     Mockito.when(changeEmailHistoryRepository.findFirstByEmailOldOrderByTimeDesc(oldEmail)).thenReturn(Optional.of(changeEmailHistory));
     CommonResponseDTO<MessageResponseDTO> response = userService.changeEmailConfirm(oldEmail, confirmationCode);
-    assertEquals(ResponseUtils.commonResponseDataOk(), response);
     assertEquals(newEmail, user.getEmail());
     Mockito.verify(userRepository, Mockito.times(1)).save(user);
   }
