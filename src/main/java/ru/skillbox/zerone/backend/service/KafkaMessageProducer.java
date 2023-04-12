@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 import ru.skillbox.zerone.backend.model.dto.request.MessageDTO;
 
 @Component
-public class KafkaProducerMessage {
+public class KafkaMessageProducer {
 
   private final KafkaTemplate<String, MessageDTO> kafkaTemplate;
 
-  @Value("${spring.kafka.kafka-topic}")
+  @Value("${kafka.kafka-topic}")
   private String kafkaTopic;
 
-  public KafkaProducerMessage(KafkaTemplate<String, MessageDTO> kafkaTemplate) {
+  public KafkaMessageProducer(KafkaTemplate<String, MessageDTO> kafkaTemplate) {
     this.kafkaTemplate = kafkaTemplate;
   }
 

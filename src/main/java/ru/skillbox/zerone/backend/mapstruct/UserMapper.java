@@ -13,6 +13,6 @@ import java.util.List;
 public interface UserMapper {
   UserDTO userToUserDTO (User user);
   UserDTO userToUserDTO (User user, String token);
-  User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO, String confirmationCode);
+  User registerRequestDTOToUser(RegisterRequestDTO registerRequestDTO, String confirmationCode, String photo);
   List<UserDTO> usersToUserDTO (List<User> userList);
 }
