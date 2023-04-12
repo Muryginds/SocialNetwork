@@ -60,6 +60,15 @@ cloudinary:
   cloud_name: "zeroneproject"
   api_key: "551572451498292"
   api_secret: "bmOA13-uV_37Hm9Vfu4E_heObw4"
+  max_file_size: 10485760 # 10MB
+  max_image_width: 5000
+  max_image_height: 5000
+  allowed_formats: ["jpg", "jpeg", "png", "gif"]
+  unique_filename: true
+  overwrite: false
+  invalidate: true
+
+
 
 vk-api:
   access-token: a37d0c0ca37d0c0ca37d0c0c4aa06fe252aa37da37d0c0cc7793a5be33eac3846e483d9
