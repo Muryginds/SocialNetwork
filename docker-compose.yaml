@@ -153,8 +153,6 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
     ports:
       -  "8084:8084"
-    networks:
-      - postgres
     depends_on:
       - backend
     deploy:
