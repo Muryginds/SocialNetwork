@@ -43,6 +43,9 @@ public abstract class PostMapperDecorator implements PostMapper {
     }
 
     if (likes != null) {
+
+      postDTO.setLikes(likes.size());
+
       likes.forEach(like -> {
         if (like.getUser().getId().equals(CurrentUserUtils.getCurrentUser().getId())) {
           postDTO.setMyLike(Boolean.TRUE);
@@ -50,7 +53,6 @@ public abstract class PostMapperDecorator implements PostMapper {
       });
     }
 
-    postDTO.setLikes(likeRepository.findLikesByPost(post).size());
     postDTO.setBlocked(post.getIsBlocked());
     postDTO.setTime(post.getTime());
     postDTO.setComments(commentService.getPage4Comments(0, 5, post));

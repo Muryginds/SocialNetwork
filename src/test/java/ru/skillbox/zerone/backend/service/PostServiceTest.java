@@ -1,7 +1,6 @@
 package ru.skillbox.zerone.backend.service;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -63,11 +62,6 @@ class PostServiceTest implements PostMockUtils {
   private Post post;
   private User currentTestUser;
 
-  @BeforeAll
-  static void setStatic() {
-
-  }
-
   @BeforeEach
   void setUp() {
     post = getTestPost();
@@ -119,7 +113,6 @@ class PostServiceTest implements PostMockUtils {
     when(postMapper.postToPostsDTO(any(Post.class))).thenReturn(postDTO);
 
     CommonResponseDTO<PostDTO> responseDTO = postService.deletePostById(post.getId());
-    System.out.println(responseDTO);
 
     assertTrue(post.getIsDeleted());
     assertEquals(currentTestUser.getId(), responseDTO.getData().getAuthor().getId());
