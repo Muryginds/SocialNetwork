@@ -1,6 +1,5 @@
 package ru.skillbox.zerone.backend.service;
 
-import ch.qos.logback.classic.Logger;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.model.CityResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -37,8 +36,6 @@ import ru.skillbox.zerone.backend.util.ResponseUtils;
 
 import java.io.File;
 import java.net.InetAddress;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -216,7 +213,7 @@ public class UserService {
         .data(userMapper.usersToUserDTO(pageUsers.getContent()))
         .build();
   }
-}
+
 
   public CommonResponseDTO<Object> deleteUser() {
     var user = CurrentUserUtils.getCurrentUser();

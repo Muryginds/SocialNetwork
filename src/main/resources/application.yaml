@@ -3,9 +3,9 @@ server:
 
 spring:
   kafka:
-    bootstrap-servers: "0.0.0.0:29092"
+    bootstrap-servers: "0.0.0.0:9092"
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres?stringtype=unspecified
+    url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
     password: password
     username: skillbox
   jpa:
