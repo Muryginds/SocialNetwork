@@ -6,6 +6,7 @@ import com.maxmind.geoip2.model.CityResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -38,6 +39,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserService {
   private final UserRepository userRepository;
@@ -51,8 +53,7 @@ public class UserService {
 
 
 
-  HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder
-      .getRequestAttributes())).getRequest();
+
 
 
   public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordDTO request) {
@@ -217,11 +218,17 @@ public class UserService {
     user.setIsDeleted(true);
     userRepository.save(user);
     return CommonResponseDTO.builder()
-        .message("Ok")
         .build();
   }
+
   private String getClientIpAddress()  {
     try {
+      HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder
+          .getRequestAttributes()).getRequest();
+      if( request == null) {
+        log.info("Exception occurred when try to detect ip");
+        return null;
+      }
       File database = new File("src/main/resources/GeoIP/GeoLite2-City.mmdb");
       DatabaseReader dbReader = new DatabaseReader.Builder(database).build();
 
@@ -234,8 +241,8 @@ public class UserService {
       return response.getCity().getName();
 
     } catch (Exception ex) {
-      Logger log = null;
-      log.error("Exception occurred when try to detect user city: ", ex);
+
+      log.info("Exception occurred when try to detect user city: ", ex);
       return null;
     }
   }

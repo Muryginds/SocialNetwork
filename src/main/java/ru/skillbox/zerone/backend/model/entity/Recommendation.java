@@ -19,11 +19,10 @@ public class Recommendation {
 
   @Id
   @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
   @NotNull
-  @OneToOne
+  @ManyToOne(cascade = CascadeType.MERGE)
   @MapsId
   private User user;
   @Column(name = "recommended_friends")

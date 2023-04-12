@@ -84,7 +84,7 @@ public class FriendService {
     }
 
     friendshipRepository.saveAll(friendshipList);
-    saveRecommendation(friend.getId());
+    createPersonalRecommendations(user);
 
     return ResponseUtils.commonResponseDataOk();
   }
@@ -255,7 +255,6 @@ public class FriendService {
 
   @Transactional
   public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage){
-    createRecommendations();
 
 
     var user = CurrentUserUtils.getCurrentUser();
@@ -280,18 +279,19 @@ public class FriendService {
   public void createPersonalRecommendations(User user) {
     recommendationRepository.save(findRecommendations(user, 0, 100));
   }
-  public Recommendation updateRecommendations(Long id) {
-    var user = CurrentUserUtils.getCurrentUser();
-    var currentRecommendations = recommendationRepository.findByUser(user).getRecommendedFriends();
-    currentRecommendations.remove(id);
-    return Recommendation.builder()
-        .user(user)
-        .recommendedFriends(currentRecommendations)
-        .build();
-  }
-  public void saveRecommendation(Long id) {
-    recommendationRepository.save(updateRecommendations( id));
-  }
+//  public Recommendation updateRecommendations(User user, Long id) {
+//    List<Long> currentRecommendations = recommendationRepository.findById(user.getId()).orElseThrow().getRecommendedFriends();
+//    currentRecommendations.remove(id);
+//    recommendationRepository.deleteById(user.getId());
+//
+//    return Recommendation.builder()
+//        .user(user)
+//        .recommendedFriends(currentRecommendations)
+//        .build();
+//  }
+//  public void saveRecommendation(User user, Long id) {
+//    recommendationRepository.save(updateRecommendations(user, id));
+//  }
 
   public Recommendation findRecommendations(User user, int offset, int itemPerPage) {
 
