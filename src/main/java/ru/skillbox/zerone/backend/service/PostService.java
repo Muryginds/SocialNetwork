@@ -28,8 +28,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -37,11 +35,11 @@ public class PostService {
   private final PostRepository postRepository;
   private final LikeRepository likeRepository;
   private final CommentService commentService;
-  private final SearchService searchService;
   private final UserMapper userMapper;
   private final PostMapper postMapper;
+  private final SearchService searchService;
 
-  private static final Pattern pattern = Pattern.compile("<img\\s+[^>]*src=\"([^\"]*)\"[^>]*>");
+  private static final String NO_PEOPLE = "Людей вообще нет!";
 
   public CommonResponseDTO<PostDTO> createPost(int id, long publishDate, PostRequestDTO postRequestDTO) {
 
@@ -58,7 +56,6 @@ public class PostService {
       post.setTime(Instant.ofEpochMilli(publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime());
     }
     postRepository.save(post);
-//    Matcher images = pattern.matcher(postRequestDTO.getPostText());
     CommonResponseDTO<PostDTO> result = new CommonResponseDTO<>();
     result.setTimestamp(LocalDateTime.now());
     result.setData(getPostsDTO(post, user));
@@ -141,20 +138,19 @@ public class PostService {
   }
 
   public CommonListResponseDTO<PostDTO> getPosts(String text, String author, String tag, Long dateFrom, int offset, int itemPerPage) {
-
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
 
     Page<Post> pageablePostList = searchService.searchPosts(text, author, tag, dateFrom, pageable);
 
     return getPostResponse(offset, itemPerPage, pageablePostList);
+
   }
 
   public CommonResponseDTO<PostDTO> deletePostById(long id) {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow();
-    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException("Людей вообще нет!");
+    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException(NO_PEOPLE);
     post.setIsDeleted(true);
-//      post.setIsDeletedTime(LocalDateTime.now());
     postRepository.saveAndFlush(post);
     return getPostDTOResponse(post, user);
   }
@@ -162,7 +158,7 @@ public class PostService {
   public CommonResponseDTO<PostDTO> putPostIdRecover(long id) {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = postRepository.findById(id).orElseThrow();
-    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException("Людей вообще нет!");
+    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException(NO_PEOPLE);
     post.setIsDeleted(false);
     postRepository.saveAndFlush(post);
     return getPostDTOResponse(post, user);
@@ -171,13 +167,11 @@ public class PostService {
   public CommonResponseDTO<PostDTO> putPostById(int id, Long publishDate, PostRequestDTO requestBody) {
     User user = CurrentUserUtils.getCurrentUser();
     Post post = findPost(id);
-    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException("Людей вообще нет!");
+    if (!user.getId().equals(post.getAuthor().getId())) throw new UserAndAuthorEqualsException(NO_PEOPLE);
     post.setTitle(requestBody.getTitle());
     post.setPostText(requestBody.getPostText());
-    //List<String> tags = requestBody.getTags();
     post.setTime(Instant.ofEpochMilli(publishDate == 0 ? System.currentTimeMillis() : publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime());
     post = postRepository.saveAndFlush(post);
-    //Matcher images = pattern.matcher(requestBody.getPostText());
     return getPostDTOResponse(post, user);
   }
 }

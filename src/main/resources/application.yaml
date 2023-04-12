@@ -3,8 +3,7 @@ server:
 
 spring:
   kafka:
-    bootstrap-servers: localhost:9092
-    kafka-topic: message-topic
+    bootstrap-servers: "0.0.0.0:29092"
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres?stringtype=unspecified
     password: password
@@ -96,6 +95,9 @@ log-settings:
 websocket:
   host: 0.0.0.0
   port: 1111
+
+kafka:
+  kafka-topic: message-topic
 
 springdoc:
   swagger-ui:

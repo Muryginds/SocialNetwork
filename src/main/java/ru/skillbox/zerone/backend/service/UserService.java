@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -18,6 +20,7 @@ import ru.skillbox.zerone.backend.exception.UserAlreadyExistException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.*;
+import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
@@ -50,10 +53,9 @@ public class UserService {
   private final PasswordEncoder passwordEncoder;
   private final MailServiceConfig mailServiceConfig;
   private final NotificationSettingRepository notificationSettingRepository;
-
-
-
-
+  private final SearchService searchService;
+  private final StorageService storageService;
+  private final NotificationSettingService notificationSettingService;
 
 
   public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordDTO request) {
@@ -98,14 +100,15 @@ public class UserService {
   @Transactional
   public CommonResponseDTO<MessageResponseDTO> changeEmailConfirm(String emailOld, String confirmationCode) {
 
-    User user = CurrentUserUtils.getCurrentUser();
+    var user = userRepository.findUserByEmail(emailOld)
+        .orElseThrow(() -> new UserNotFoundException(emailOld));
     String confirmationToken = user.getConfirmationCode();
 
-    if (confirmationToken.equals(confirmationCode)) {
+    if (!(confirmationToken.equals(confirmationCode))) {
       throw new ChangeEmailException(confirmationCode, emailOld);
     }
 
-    if (user.getEmail().equals(emailOld)) {
+    if (!(user.getEmail().equals(emailOld))) {
       throw new ChangeEmailException(confirmationCode, emailOld);
     }
 
@@ -127,7 +130,8 @@ public class UserService {
     }
 
     var confirmationCode = UUID.randomUUID().toString();
-    User user = userMapper.registerRequestDTOToUser(request, confirmationCode);
+    var photoUrl = storageService.generateStartAvatarUrl();
+    var user = userMapper.registerRequestDTOToUser(request, confirmationCode, photoUrl);
 
     userRepository.save(user);
 
@@ -189,29 +193,30 @@ public class UserService {
   }
 
   @Transactional
-  public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationTypeDTO typeDTO) {
-    User user = CurrentUserUtils.getCurrentUser();
-    NotificationType notificationType = NotificationType.valueOf(typeDTO.getType());
-    boolean enabled = typeDTO.getEnable();
-    Optional<NotificationSetting> optionalSetting = notificationSettingRepository.findByUser(user);
-    NotificationSetting setting;
-    if (optionalSetting.isPresent()) {
-      setting = optionalSetting.get();
-    } else {
-      setting = new NotificationSetting();
-      setting.setUser(user);
-    }
-    switch (notificationType) {
-      case POST -> setting.setPostEnabled(enabled);
-      case POST_COMMENT -> setting.setPostCommentEnabled(enabled);
-      case COMMENT_COMMENT -> setting.setCommentCommentEnabled(enabled);
-      case FRIEND_REQUEST -> setting.setFriendRequestEnabled(enabled);
-      case MESSAGE -> setting.setMessagesEnabled(enabled);
-      case FRIEND_BIRTHDAY -> setting.setFriendBirthdayEnabled(enabled);
-    }
-    notificationSettingRepository.save(setting);
+  public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationSettingDTO typeDTO) {
+    var user = CurrentUserUtils.getCurrentUser();
+    var notificationType = NotificationType.valueOf(typeDTO.getType());
+    var setting = notificationSettingRepository.findByUser(user)
+        .orElseGet(NotificationSetting::new);
+    setting.setUser(user);
+    notificationSettingService.saveNotificationTypeByUser(
+        user, notificationType, typeDTO.getEnable());
     return ResponseUtils.commonResponseDataOk();
   }
+
+  @SuppressWarnings("java:S107")
+  public CommonListResponseDTO<UserDTO> searchUsers(String name, String lastName, String country, String city, Integer ageFrom, Integer ageTo, int offset, int itemPerPage) {
+    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
+    var pageUsers = searchService.searchUsers(name, lastName, country, city, ageFrom, ageTo, pageable);
+
+    return CommonListResponseDTO.<UserDTO>builder()
+        .total(pageUsers.getTotalElements())
+        .offset(offset)
+        .perPage(itemPerPage)
+        .data(userMapper.usersToUserDTO(pageUsers.getContent()))
+        .build();
+  }
+}
 
   public CommonResponseDTO<Object> deleteUser() {
     var user = CurrentUserUtils.getCurrentUser();

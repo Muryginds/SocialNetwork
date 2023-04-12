@@ -9,7 +9,10 @@ import ru.skillbox.zerone.backend.model.entity.Tag;
 @Mapper
 public interface TagMapper {
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "name", source = "tag")
   Tag tagDTOToTag (TagDTO tagDTO);
+
+  @Mapping(target = "tag", source = "name")
   TagDTO tagToTagDTO (Tag tag);
 
 
