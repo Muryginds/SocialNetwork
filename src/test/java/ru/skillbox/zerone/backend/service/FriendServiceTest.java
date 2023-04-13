@@ -32,6 +32,7 @@ import static ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus.*;
 import static ru.skillbox.zerone.backend.service.FriendService.*;
 
 class FriendServiceTest {
+  private static final String OK = "OK";
 
   private AutoCloseable openMocks;
   private AutoCloseable utilsMockedStatic;
@@ -93,7 +94,7 @@ class FriendServiceTest {
     assertThat(capture.get(1).getSrcPerson().getId()).isEqualTo(friendId);
     assertThat(capture.get(1).getDstPerson().getId()).isEqualTo(userId);
 
-    assertThat(responseDTO.getData().getMessage()).isEqualTo("OK");
+    assertThat(responseDTO.getData().getMessage()).isEqualTo(OK);
   }
 
   @Test
@@ -253,17 +254,17 @@ class FriendServiceTest {
     CommonResponseDTO<MessageResponseDTO> responseDTO = underTest.addFriend(friendId);
 
     // Then
-    assertThat(responseDTO.getData().getMessage()).isEqualTo("OK");
+    assertThat(responseDTO.getData().getMessage()).isEqualTo(OK);
 
     friendship.setStatus(DECLINED);
     friendshipReversed.setStatus(SUBSCRIBED);
     responseDTO = underTest.addFriend(friendId);
-    assertThat(responseDTO.getData().getMessage()).isEqualTo("OK");
+    assertThat(responseDTO.getData().getMessage()).isEqualTo(OK);
 
     friendship.setStatus(SUBSCRIBED);
     friendshipReversed.setStatus(DECLINED);
     responseDTO = underTest.addFriend(friendId);
-    assertThat(responseDTO.getData().getMessage()).isEqualTo("OK");
+    assertThat(responseDTO.getData().getMessage()).isEqualTo(OK);
 
     friendship.setStatus(DECLINED);
     friendshipReversed.setStatus(DECLINED);
@@ -309,7 +310,7 @@ class FriendServiceTest {
     assertThat(capture.get(1).getSrcPerson().getId()).isEqualTo(userId);
     assertThat(capture.get(1).getDstPerson().getId()).isEqualTo(friendId);
 
-    assertThat(responseDTO.getData().getMessage()).isEqualTo("OK");
+    assertThat(responseDTO.getData().getMessage()).isEqualTo(OK);
   }
 
   @Test
@@ -462,7 +463,7 @@ class FriendServiceTest {
     assertThat(capture.get(1).getSrcPerson().getId()).isEqualTo(targetId);
     assertThat(capture.get(1).getDstPerson().getId()).isEqualTo(userId);
 
-    assertThat(responseDTO.getData().getMessage()).isEqualTo("OK");
+    assertThat(responseDTO.getData().getMessage()).isEqualTo(OK);
 
   }
 
@@ -537,7 +538,7 @@ class FriendServiceTest {
     var responseDTO = underTest.blockUser(targetId);
 
     // Then
-    assertThat(responseDTO.getData().getMessage()).isEqualTo("OK");
+    assertThat(responseDTO.getData().getMessage()).isEqualTo(OK);
   }
 
   @Test
@@ -564,7 +565,7 @@ class FriendServiceTest {
     // When, Then
     assertThatThrownBy(() -> underTest.blockUser(targetId))
         .isInstanceOf(FriendshipException.class)
-        .hasMessageContaining(YOU_HAVE_ALREADY_BLOCKED_HEEM);
+        .hasMessageContaining(YOU_HAVE_ALREADY_BLOCKED_HIM);
 
     // Given
     friendship.setStatus(BLOCKED);
@@ -573,7 +574,7 @@ class FriendServiceTest {
     // When, Then
     assertThatThrownBy(() -> underTest.blockUser(targetId))
         .isInstanceOf(FriendshipException.class)
-        .hasMessageContaining(YOU_HAVE_ALREADY_BLOCKED_HEEM);
+        .hasMessageContaining(YOU_HAVE_ALREADY_BLOCKED_HIM);
   }
 
   @Test
@@ -601,7 +602,7 @@ class FriendServiceTest {
     var responseDTO = underTest.blockUser(targetId);
 
     // Then
-    assertThat(responseDTO.getData().getMessage()).isEqualTo("OK");
+    assertThat(responseDTO.getData().getMessage()).isEqualTo(OK);
   }
 
   @Test
@@ -642,7 +643,7 @@ class FriendServiceTest {
     assertThat(capture.get(1).getSrcPerson().getId()).isEqualTo(targetId);
     assertThat(capture.get(1).getDstPerson().getId()).isEqualTo(userId);
 
-    assertThat(responseDTO.getData().getMessage()).isEqualTo("OK");
+    assertThat(responseDTO.getData().getMessage()).isEqualTo(OK);
   }
 
   @Test
@@ -708,7 +709,7 @@ class FriendServiceTest {
     var responseDTO = underTest.unblockUser(targetId);
 
     // Then
-    assertThat(responseDTO.getData().getMessage()).isEqualTo("OK");
+    assertThat(responseDTO.getData().getMessage()).isEqualTo(OK);
   }
 
   @Test

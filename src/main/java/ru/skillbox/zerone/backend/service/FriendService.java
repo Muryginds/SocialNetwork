@@ -41,7 +41,11 @@ public class FriendService {
   public static final String NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN = "Нет пары к записи с id: %s";
   public static final String USERS_ARE_NOT_FRIENDS = "Пользователи не друзья";
   public static final String WRONG_STATUS_COMBINATION = "Неверная комбинация статусов: %s, %s";
-  public static final String YOU_HAVE_ALREADY_BLOCKED_HEEM = "Вы уже заблокировали пользователя";
+  public static final String DEADLOCK_BLOCK = "У вас взаимная блокировка с пользователем";
+  public static final String YOU_HAVE_ALREADY_BLOCKED_HIM = "Вы уже заблокировали пользователя";
+  public static final String USER_IS_IN_FRIENDS_ALREADY = "Пользователь уже в друзьях";
+  public static final String YOU_HAVE_SENT_REQUEST_ALREADY = "Вы уже отправили заявку в друзья";
+  public static final String YOU_WAS_BLOCKED_BY_USER = "Вы были заблокированы пользователем";
   public static final String USER_NOT_BLOCKED = "Пользователь не заблокирован";
 
   private final FriendshipRepository friendshipRepository;
@@ -50,7 +54,7 @@ public class FriendService {
   private final NotificationService notificationService;
 
   @Transactional
-  @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
+  @SuppressWarnings({"OptionalGetWithoutIsPresent", "java:S3655"})
   public CommonResponseDTO<MessageResponseDTO> addFriend(long id) {
     var friend = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
@@ -129,28 +133,28 @@ public class FriendService {
 
   private void checkNotAllowedStatusCombinationsAndThrowExceptionIfMatched(FriendshipStatus friendshipStatus, FriendshipStatus reversedFriendshipStatus) {
     if (friendshipStatus.equals(DEADLOCK) && reversedFriendshipStatus.equals(DEADLOCK)) {
-      throw new FriendshipException("У вас взаимная блокировка с пользователем");
+      throw new FriendshipException(DEADLOCK_BLOCK);
     }
 
     if (friendshipStatus.equals(BLOCKED) && reversedFriendshipStatus.equals(WASBLOCKEDBY)) {
-      throw new FriendshipException(YOU_HAVE_ALREADY_BLOCKED_HEEM);
+      throw new FriendshipException(YOU_HAVE_ALREADY_BLOCKED_HIM);
     }
 
     if (friendshipStatus.equals(WASBLOCKEDBY) && reversedFriendshipStatus.equals(BLOCKED)) {
-      throw new FriendshipException("Вы были заблокированы пользователем");
+      throw new FriendshipException(YOU_WAS_BLOCKED_BY_USER);
     }
 
     if (friendshipStatus.equals(FRIEND) && reversedFriendshipStatus.equals(FRIEND)) {
-      throw new FriendshipException("Пользователь уже в друзьях");
+      throw new FriendshipException(USER_IS_IN_FRIENDS_ALREADY);
     }
 
     if (friendshipStatus.equals(SUBSCRIBED) && reversedFriendshipStatus.equals(REQUEST)) {
-      throw new FriendshipException("Вы уже отправили заявку в друзья");
+      throw new FriendshipException(YOU_HAVE_SENT_REQUEST_ALREADY);
     }
   }
 
   @Transactional
-  @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
+  @SuppressWarnings({"OptionalGetWithoutIsPresent", "java:S3655"})
   public CommonResponseDTO<MessageResponseDTO> removeFriend(long id) {
     var friend = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
@@ -275,7 +279,7 @@ public class FriendService {
         .build();
   }
 
-  @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
+  @SuppressWarnings({"OptionalGetWithoutIsPresent", "java:S3655"})
   public CommonResponseDTO<MessageResponseDTO> blockUser(long id) {
     var target = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
@@ -319,7 +323,7 @@ public class FriendService {
 
     if (friendshipStatus.equals(DEADLOCK) && reversedFriendshipStatus.equals(DEADLOCK) ||
         friendshipStatus.equals(BLOCKED) && reversedFriendshipStatus.equals(WASBLOCKEDBY)) {
-      throw new FriendshipException(YOU_HAVE_ALREADY_BLOCKED_HEEM);
+      throw new FriendshipException(YOU_HAVE_ALREADY_BLOCKED_HIM);
     }
 
     if (friendshipStatus.equals(WASBLOCKEDBY) && reversedFriendshipStatus.equals(BLOCKED)) {
@@ -352,7 +356,7 @@ public class FriendService {
     return List.of(newBlock, reversedBlock);
   }
 
-  @SuppressWarnings({"Duplicates", "OptionalGetWithoutIsPresent", "java:S3655"})
+  @SuppressWarnings({"OptionalGetWithoutIsPresent", "java:S3655"})
   public CommonResponseDTO<MessageResponseDTO> unblockUser(long id) {
     var target = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
