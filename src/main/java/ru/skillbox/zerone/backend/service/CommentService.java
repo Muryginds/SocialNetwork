@@ -35,26 +35,26 @@ public class CommentService {
   private final UserMapper userMapper;
   private final NotificationService notificationService;
 
-  public CommonListResponseDTO<CommentDTO> getPage4Comments(int offset, int itemPerPage, Post post, User user) {
+  public CommonListResponseDTO<CommentDTO> getPage4Comments(int offset, int itemPerPage, Post post) {
 
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
     Page<Comment> pageableCommentList = commentRepository
         .findCommentsByPostIdAndParentNull(post.getId(), pageable);
 
-    return getPostResponse(offset, itemPerPage, pageableCommentList, user);
+    return getPostResponse(offset, itemPerPage, pageableCommentList);
   }
 
   public CommonListResponseDTO<CommentDTO> getComments(int offset, int itemPerPage, long id) {
-    User user = CurrentUserUtils.getCurrentUser();
+
     Post post = postRepository.findById(id).orElseThrow();
-    return getPage4Comments(offset, itemPerPage, post, user);
+    return getPage4Comments(offset, itemPerPage, post);
   }
 
-  public List<CommentDTO> getCommentDTO4Response(Set<Comment> comments, User user) {
+  public List<CommentDTO> getCommentDTO4Response(Set<Comment> comments) {
     List<CommentDTO> commentDTOList = new ArrayList<>();
     comments.forEach(comment -> {
-      CommentDTO commentData = getCommentDTO(comment, user);
-      commentData.getSubComments().add(getCommentDTO(comment, user));
+      CommentDTO commentData = getCommentDTO(comment);
+      commentData.getSubComments().add(getCommentDTO(comment));
       commentDTOList.add(commentData);
     });
     return new ArrayList<>(commentDTOList);
@@ -85,33 +85,33 @@ public class CommentService {
 
     notificationService.saveComment(comment);
 
-    return getCommentResponse(comment, user);
+    return getCommentResponse(comment);
   }
 
-  public CommonResponseDTO<CommentDTO> getCommentResponse(Comment comment, User user) {
+  public CommonResponseDTO<CommentDTO> getCommentResponse(Comment comment) {
     CommonResponseDTO<CommentDTO> commentResponse = new CommonResponseDTO<>();
     commentResponse.setTimestamp(LocalDateTime.now());
-    commentResponse.setData(getCommentDTO(comment, user));
+    commentResponse.setData(getCommentDTO(comment));
     return commentResponse;
   }
 
-  private CommonListResponseDTO<CommentDTO> getPostResponse(int offset, int itemPerPage, Page<Comment> pageableCommentList, User user) {
+  private CommonListResponseDTO<CommentDTO> getPostResponse(int offset, int itemPerPage, Page<Comment> pageableCommentList) {
 
     return CommonListResponseDTO.<CommentDTO>builder()
         .total(pageableCommentList.getTotalElements())
         .perPage(itemPerPage)
         .offset(offset)
-        .data(getCommentDTO4Response(pageableCommentList.toSet(), user))
+        .data(getCommentDTO4Response(pageableCommentList.toSet()))
         .build();
 
   }
 
-  public CommentDTO getCommentDTO(Comment comment, User user) {
+  public CommentDTO getCommentDTO(Comment comment) {
 
     CommentDTO commentDTO = new CommentDTO();
     commentDTO.setCommentText(comment.getCommentText());
     commentDTO.setBlocked(comment.getIsBlocked());
-    commentDTO.setAuthor(userMapper.userToUserDTO(user));
+    commentDTO.setAuthor(userMapper.userToUserDTO(comment.getAuthor()));
 
     commentDTO.setId(comment.getId());
     commentDTO.setTime(comment.getTime());
@@ -141,7 +141,7 @@ public class CommentService {
       comment.setIsDeleted(true);
     }
     commentRepository.saveAndFlush(comment);
-    return getCommentResponse(comment, user);
+    return getCommentResponse(comment);
   }
 
 
@@ -150,12 +150,12 @@ public class CommentService {
     Comment comment = findComment(id);
     comment.setIsDeleted(!Objects.equals(comment.getAuthor().getId(), user.getId()) && comment.getIsDeleted());
     commentRepository.saveAndFlush(comment);
-    return getCommentResponse(comment, user);
+    return getCommentResponse(comment);
   }
 
 
   public CommonResponseDTO<CommentDTO> putComment(long id, long commentId, CommentRequestDTO commentRequest) {
-    User user = CurrentUserUtils.getCurrentUser();
+
     if (postRepository.findById(id).isEmpty()) {
       throw new CommentNotFoundException("Не найден пост с id = " + id);
     }
@@ -165,7 +165,7 @@ public class CommentService {
     comment.setCommentText(commentRequest.getCommentText());
     commentRepository.save(comment);
 
-    return getCommentResponse(comment, user);
+    return getCommentResponse(comment);
   }
 
   private Comment findComment(long id) throws CommentNotFoundException {
