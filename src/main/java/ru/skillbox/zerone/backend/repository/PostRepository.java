@@ -18,7 +18,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
   @Query("""
       SELECT p FROM Post p where p.author.id <> :id
-      and p.updateTime > p.time
+      and (p.updateTime > p.time or p.updateTime = p.time)
       and p.isDeleted = false ORDER BY p.updateTime DESC
       """)
   Page<Post> getPostsForFeeds(long id, Pageable pageable);

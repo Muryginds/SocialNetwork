@@ -4,11 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ru.skillbox.zerone.backend.model.dto.response.PostDTO;
 import ru.skillbox.zerone.backend.model.entity.Like;
 import ru.skillbox.zerone.backend.model.entity.Post;
+import ru.skillbox.zerone.backend.model.entity.Tag;
 import ru.skillbox.zerone.backend.model.enumerated.PostType;
 import ru.skillbox.zerone.backend.repository.LikeRepository;
 import ru.skillbox.zerone.backend.service.CommentService;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -28,6 +30,7 @@ public abstract class PostMapperDecorator implements PostMapper {
 
     PostDTO postDTO = new PostDTO();
     Set<Like> likes = likeRepository.findLikesByPost(post);
+    List<Tag> tagsOfPost = post.getTags();
 
     postDTO.setId(post.getId());
     postDTO.setPostText(post.getPostText());
@@ -57,7 +60,8 @@ public abstract class PostMapperDecorator implements PostMapper {
     postDTO.setTime(post.getTime());
     postDTO.setComments(commentService.getPage4Comments(0, 5, post));
 
-    postDTO.setTags(List.of("sport", "music"));
+    postDTO.setTags(tagsOfPost == null ? Collections.emptyList()
+        : tagsOfPost.stream().map(Tag::getName).toList());
 
     return postDTO;
   }

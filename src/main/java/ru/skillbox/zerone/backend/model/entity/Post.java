@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity
 @Table(name = "post")
 @Data
@@ -57,4 +59,11 @@ public class Post {
   @Builder.Default
   @Column(name = "is_deleted")
   private Boolean isDeleted = false;
+
+
+  @ManyToMany(fetch = FetchType.LAZY)
+  @JoinTable(name = "post_to_tag",
+      joinColumns = {@JoinColumn(name = "post_id", referencedColumnName = "id")},
+      inverseJoinColumns = {@JoinColumn(name = "tag_id", referencedColumnName = "id")})
+  private List<Tag> tags;
 }
