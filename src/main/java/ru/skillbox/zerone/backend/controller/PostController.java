@@ -16,7 +16,7 @@ public class PostController {
   private final PostService postService;
 
   @PostMapping("/users/{id}/wall")
-  public CommonResponseDTO<PostDTO> getUserWall(@PathVariable int id,
+  public CommonResponseDTO<PostDTO> getUserWall(@PathVariable long id,
                                                 @RequestParam(name = "publish_date", defaultValue = "0") long publishDate,
                                                 @RequestBody PostRequestDTO postRequestDTO) {
     return postService.createPost(id, publishDate, postRequestDTO);

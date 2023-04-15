@@ -38,7 +38,7 @@ public class PostService {
 
 
   @Transactional
-  public CommonResponseDTO<PostDTO> createPost(int id, long publishDate, PostRequestDTO postRequestDTO) {
+  public CommonResponseDTO<PostDTO> createPost(long id, long publishDate, PostRequestDTO postRequestDTO) {
 
     User user = CurrentUserUtils.getCurrentUser();
 

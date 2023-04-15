@@ -88,7 +88,7 @@ class PostServiceTest implements PostMockUtils {
     postDTO.setAuthor(userMapper.userToUserDTO(currentTestUser));
     postDTO.setPostText("TestText");
 
-    int id = Math.toIntExact(currentTestUser.getId());
+    long id = currentTestUser.getId();
     CommonResponseDTO<PostDTO> response = postService.createPost(id, System.currentTimeMillis(), getPostRequest());
 
     assertNotNull(response);

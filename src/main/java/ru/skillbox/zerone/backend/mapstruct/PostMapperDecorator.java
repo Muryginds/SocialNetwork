@@ -57,7 +57,7 @@ public abstract class PostMapperDecorator implements PostMapper {
     }
 
     postDTO.setBlocked(post.getIsBlocked());
-    postDTO.setTime(post.getTime());
+    postDTO.setTime(convertLocalDateTimeToLong(post.getTime()));
     postDTO.setComments(commentService.getPage4Comments(0, 5, post));
 
     postDTO.setTags(tagsOfPost == null ? Collections.emptyList()
