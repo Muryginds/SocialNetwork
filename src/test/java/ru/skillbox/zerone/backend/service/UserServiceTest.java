@@ -83,23 +83,25 @@ class UserServiceTest implements UserMockUtils {
   }
   @Test
   void testGetCurrentUser_whenUserExists_thenReturnUserDTO() {
-    User user = new User();
-    user.setId(1L);
-    user.setEmail("test@example.com");
-    user.setFirstName("John");
-    user.setLastName("Doe");
-    user.setPhone("+1234567899");
-    user.setCountry("Canada");
-    user.setCity("Toronto");
-    user.setBirthDate(LocalDate.of(1990, 1, 1));
-    user.setPhoto("https://example.com/profile.png");
-    user.setAbout("Hello Zerone Project");
+    User user = User.builder()
+        .id(1L)
+        .email("test@example.com")
+        .firstName("John")
+        .lastName("Doe")
+        .phone("+1234567899")
+        .country("Canada")
+        .city("Toronto")
+        .birthDate(LocalDate.of(1990, 1, 1))
+        .photo("https://example.com/profile.png")
+        .about("Hello Zerone Project")
+        .build();
     when(CurrentUserUtils.getCurrentUser()).thenReturn(user);
-    UserDTO expectedDTO = new UserDTO();
-    expectedDTO.setId(user.getId());
-    expectedDTO.setEmail(user.getEmail());
-    expectedDTO.setFirstName(user.getFirstName());
-    expectedDTO.setLastName(user.getLastName());
+    UserDTO expectedDTO = UserDTO.builder()
+        .id(user.getId())
+        .email(user.getEmail())
+        .firstName(user.getFirstName())
+        .lastName(user.getLastName())
+        .build();
     CommonResponseDTO<UserDTO> response = userService.getCurrentUser();
     verify(userMapper, times(1)).userToUserDTO(user);
   }
@@ -123,30 +125,32 @@ class UserServiceTest implements UserMockUtils {
   void testEditUserSettings_whenValidInput_thenReturnSuccessResponseAndSaveUserToDatabase() {
     User currentUser = new User();
     currentUser.setId(1L);
-    UserDTO editUser = new UserDTO();
-    editUser.setFirstName("John");
-    editUser.setLastName("Doe");
-    editUser.setPhone("+1234567890");
-    editUser.setCountry("USA");
-    editUser.setCity("New York");
-    editUser.setLastOnlineTime(LocalDateTime.now());
-    editUser.setBirthDate(LocalDate.of(1990, 1, 1));
-    editUser.setPhoto("https://example.com/profile.png");
-    editUser.setAbout("Hello, World!");
-    editUser.setBlocked(false);
-    editUser.setDeleted(false);
+    UserDTO editUser = UserDTO.builder()
+        .firstName("John")
+        .lastName("Doe")
+        .phone("+1234567890")
+        .country("USA")
+        .city("New York")
+        .lastOnlineTime(LocalDateTime.now())
+        .birthDate(LocalDate.of(1990, 1, 1))
+        .photo("https://example.com/profile.png")
+        .about("Hello, World!")
+        .isBlocked(false)
+        .isDeleted(false)
+        .build();
     utilsMockedStatic.when(CurrentUserUtils::getCurrentUser).thenReturn(currentUser);
-    UserDTO updatedUser = new UserDTO();
-    updatedUser.setFirstName(editUser.getFirstName());
-    updatedUser.setLastName(editUser.getLastName());
-    updatedUser.setPhone(editUser.getPhone());
-    updatedUser.setCountry(editUser.getCountry());
-    updatedUser.setCity(editUser.getCity());
-    updatedUser.setLastOnlineTime(editUser.getLastOnlineTime());
-    updatedUser.setLastOnlineTime(editUser.getLastOnlineTime());
-    updatedUser.setBirthDate(editUser.getBirthDate());
-    updatedUser.setPhoto(editUser.getPhoto());
-    updatedUser.setAbout(editUser.getAbout());
+    UserDTO updatedUser = UserDTO.builder()
+        .firstName(editUser.getFirstName())
+        .lastName(editUser.getLastName())
+        .phone(editUser.getPhone())
+        .country(editUser.getCountry())
+        .city(editUser.getCity())
+        .lastOnlineTime(editUser.getLastOnlineTime())
+        .lastOnlineTime(editUser.getLastOnlineTime())
+        .birthDate(editUser.getBirthDate())
+        .photo(editUser.getPhoto())
+        .about(editUser.getAbout())
+        .build();
     when(userRepository.save(any(User.class))).thenReturn(user);
     UserDTO user = userService.editUserSettings(editUser);
     assertEquals(editUser, updatedUser);
@@ -188,7 +192,6 @@ class UserServiceTest implements UserMockUtils {
   }
   @Test
   void verifyChangeEmailRequest_ThrowsUserNotFoundException() {
-    // Arrange
     String oldEmail = "old_email@example.com";
     String confirmationCode = "123456";
     User user = new User();

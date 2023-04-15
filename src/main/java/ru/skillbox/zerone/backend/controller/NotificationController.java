@@ -2,6 +2,7 @@ package ru.skillbox.zerone.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.skillbox.zerone.backend.controller.swaggerdoc.SwaggerNotificationController;
 import ru.skillbox.zerone.backend.model.dto.request.NotificationDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.service.NotificationService;
@@ -9,7 +10,7 @@ import ru.skillbox.zerone.backend.service.NotificationService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/notifications")
-public class NotificationController {
+public class NotificationController implements SwaggerNotificationController {
 
   private final NotificationService notificationService;
 

@@ -2,6 +2,7 @@ package ru.skillbox.zerone.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.skillbox.zerone.backend.controller.swaggerdoc.SwaggerCommentController;
 import ru.skillbox.zerone.backend.model.dto.request.CommentRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommentDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
@@ -12,7 +13,7 @@ import ru.skillbox.zerone.backend.service.CommentService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
-public class CommentController {
+public class CommentController implements SwaggerCommentController {
   private final CommentService commentService;
 
   @GetMapping("/post/{id}/comments")

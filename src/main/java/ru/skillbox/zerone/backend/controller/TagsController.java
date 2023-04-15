@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.skillbox.zerone.backend.controller.swaggerdoc.SwaggerTagsController;
 import ru.skillbox.zerone.backend.model.dto.request.TagDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
@@ -16,7 +17,7 @@ import ru.skillbox.zerone.backend.service.TagService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/tags")
-public class TagsController {
+public class TagsController implements SwaggerTagsController {
   private final TagService tagService;
 
   @PostMapping

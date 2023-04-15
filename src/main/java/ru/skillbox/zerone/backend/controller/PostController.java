@@ -2,6 +2,7 @@ package ru.skillbox.zerone.backend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.skillbox.zerone.backend.controller.swaggerdoc.SwaggerPostController;
 import ru.skillbox.zerone.backend.model.dto.request.PostRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
@@ -12,7 +13,7 @@ import ru.skillbox.zerone.backend.service.PostService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
-public class PostController {
+public class PostController implements SwaggerPostController {
   private final PostService postService;
 
   @PostMapping("/users/{id}/wall")
