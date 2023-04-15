@@ -18,10 +18,7 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -54,22 +51,12 @@ public class FriendService {
   private final NotificationService notificationService;
 
   @Transactional
-  @SuppressWarnings({"OptionalGetWithoutIsPresent", "java:S3655"})
+  @SuppressWarnings({"OptionalGetWithoutIsPresent", "java:S3655", "DuplicatedCode"})
   public CommonResponseDTO<MessageResponseDTO> addFriend(long id) {
     var friend = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
 
-    if (TRUE.equals(friend.getIsBlocked())) {
-      throw new FriendshipException(CANNOT_ADD_BLOCKED_USER);
-    }
-
-    if (TRUE.equals(friend.getIsDeleted())) {
-      throw new FriendshipException(CANNOT_ADD_DELETED_USER);
-    }
-
-    if (FALSE.equals(friend.getIsApproved())) {
-      throw new FriendshipException(CANNOT_ADD_NOT_APPROVED_USER);
-    }
+    checkUserNotAllowedToAddFriendsAndThrowExceptionIfMatched(friend);
 
     var user = CurrentUserUtils.getCurrentUser();
 
@@ -82,11 +69,7 @@ public class FriendService {
     var reversedFriendshipOptional = friendshipRepository
         .findBySrcPersonAndDstPerson(friend, user);
 
-    if (isOneOptionalEmptyAndOneNotEmpty(friendshipOptional, reversedFriendshipOptional)) {
-      var identifier = (friendshipOptional.isPresent() ? friendshipOptional :
-          reversedFriendshipOptional).get().getId();
-      throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, identifier));
-    }
+    checkIfOneOptionalEmptyAndOneNotEmptyAndThrowExceptionIfMatched(friendshipOptional, reversedFriendshipOptional);
 
     List<Friendship> friendshipList = new ArrayList<>();
 
@@ -103,6 +86,34 @@ public class FriendService {
     notificationService.saveFriendship(friendshipList);
 
     return ResponseUtils.commonResponseDataOk();
+  }
+
+  private void checkIfOneOptionalEmptyAndOneNotEmptyAndThrowExceptionIfMatched(Optional<Friendship> optionalOne,
+                                                                               Optional<Friendship> optionalTwo) {
+    Long id = null;
+    if (optionalOne.isPresent() && optionalTwo.isEmpty()) {
+      id = optionalOne.get().getId();
+    }
+    if (optionalOne.isEmpty() && optionalTwo.isPresent()) {
+      id = optionalTwo.get().getId();
+    }
+    if (Objects.nonNull(id)) {
+      throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, id));
+    }
+  }
+
+  private void checkUserNotAllowedToAddFriendsAndThrowExceptionIfMatched(User user) {
+    if (TRUE.equals(user.getIsBlocked())) {
+      throw new FriendshipException(CANNOT_ADD_BLOCKED_USER);
+    }
+
+    if (TRUE.equals(user.getIsDeleted())) {
+      throw new FriendshipException(CANNOT_ADD_DELETED_USER);
+    }
+
+    if (FALSE.equals(user.getIsApproved())) {
+      throw new FriendshipException(CANNOT_ADD_NOT_APPROVED_USER);
+    }
   }
 
   private List<Friendship> updateFriendshipRequest(Friendship friendship, Friendship reversedFriendship) {
@@ -165,11 +176,7 @@ public class FriendService {
     var reversedFriendshipOptional = friendshipRepository
         .findBySrcPersonAndDstPerson(friend, user);
 
-    if (isOneOptionalEmptyAndOneNotEmpty(friendshipOptional, reversedFriendshipOptional)) {
-      var identifier = (friendshipOptional.isPresent() ? friendshipOptional :
-          reversedFriendshipOptional).get().getId();
-      throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, identifier));
-    }
+    checkIfOneOptionalEmptyAndOneNotEmptyAndThrowExceptionIfMatched(friendshipOptional, reversedFriendshipOptional);
 
     if (isBothOptionalEmpty(friendshipOptional, reversedFriendshipOptional)) {
       throw new FriendshipException(USERS_ARE_NOT_FRIENDS);
@@ -211,10 +218,6 @@ public class FriendService {
 
   private boolean isBothOptionalPresent(Optional<Friendship> optionalOne, Optional<Friendship> optionalTwo) {
     return optionalOne.isPresent() && optionalTwo.isPresent();
-  }
-
-  private boolean isOneOptionalEmptyAndOneNotEmpty(Optional<Friendship> optionalOne, Optional<Friendship> optionalTwo) {
-    return optionalOne.isEmpty() && optionalTwo.isPresent() || optionalOne.isPresent() && optionalTwo.isEmpty();
   }
 
   private boolean isBothOptionalEmpty(Optional<Friendship> optionalOne, Optional<Friendship> optionalTwo) {
@@ -279,7 +282,8 @@ public class FriendService {
         .build();
   }
 
-  @SuppressWarnings({"OptionalGetWithoutIsPresent", "java:S3655"})
+  @Transactional
+  @SuppressWarnings({"OptionalGetWithoutIsPresent", "java:S3655", "DuplicatedCode"})
   public CommonResponseDTO<MessageResponseDTO> blockUser(long id) {
     var target = userRepository.findById(id)
         .orElseThrow(() -> new UserNotFoundException(id));
@@ -294,11 +298,7 @@ public class FriendService {
     var reversedFriendshipOptional = friendshipRepository
         .findBySrcPersonAndDstPerson(target, user);
 
-    if (isOneOptionalEmptyAndOneNotEmpty(friendshipOptional, reversedFriendshipOptional)) {
-      var identifier = (friendshipOptional.isPresent() ? friendshipOptional :
-          reversedFriendshipOptional).get().getId();
-      throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, identifier));
-    }
+    checkIfOneOptionalEmptyAndOneNotEmptyAndThrowExceptionIfMatched(friendshipOptional, reversedFriendshipOptional);
 
     List<Friendship> friendshipList = new ArrayList<>();
 
@@ -356,6 +356,7 @@ public class FriendService {
     return List.of(newBlock, reversedBlock);
   }
 
+  @Transactional
   @SuppressWarnings({"OptionalGetWithoutIsPresent", "java:S3655"})
   public CommonResponseDTO<MessageResponseDTO> unblockUser(long id) {
     var target = userRepository.findById(id)
@@ -366,11 +367,7 @@ public class FriendService {
     var reversedFriendshipOptional = friendshipRepository
         .findBySrcPersonAndDstPerson(target, user);
 
-    if (isOneOptionalEmptyAndOneNotEmpty(friendshipOptional, reversedFriendshipOptional)) {
-      var identifier = (friendshipOptional.isPresent() ? friendshipOptional :
-          reversedFriendshipOptional).get().getId();
-      throw new FriendshipException(String.format(NO_PAIR_FOUND_FOR_RECORD_WITH_ID_PATTERN, identifier));
-    }
+    checkIfOneOptionalEmptyAndOneNotEmptyAndThrowExceptionIfMatched(friendshipOptional, reversedFriendshipOptional);
 
     if (isBothOptionalPresent(friendshipOptional, reversedFriendshipOptional)) {
       var friendship = friendshipOptional.get();
