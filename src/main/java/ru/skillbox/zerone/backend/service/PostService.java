@@ -31,6 +31,7 @@ public class PostService {
   private final PostRepository postRepository;
   private final SearchService searchService;
   private final PostMapper postMapper;
+  private final NotificationService notificationService;
 
 
   @Transactional
@@ -51,6 +52,7 @@ public class PostService {
         .build();
 
     postRepository.save(post);
+    notificationService.savePost(post);
 
     return commonResponseDTO(post);
   }
@@ -132,7 +134,6 @@ public class PostService {
 
     post.setTitle(requestBody.getTitle());
     post.setPostText(requestBody.getPostText());
-    //List<String> tags = requestBody.getTags();
     post.setTime(Instant.ofEpochMilli(publishDate == 0 ? System.currentTimeMillis() : publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime());
     postRepository.saveAndFlush(post);
     return commonResponseDTO(post);

@@ -23,12 +23,12 @@ public class NotificationController {
 
    @PutMapping
   public CommonListResponseDTO<NotificationDTO> putNotifications(
-      @RequestParam(name = "offset") int offset,
-      @RequestParam(name = "itemPerPage") int itemPerPage,
-      @RequestParam(name = "id") int id,
-      @RequestParam(name = "all") boolean all
+      @RequestParam(name = "offset", defaultValue = "0") int offset,
+      @RequestParam(name = "itemPerPage", defaultValue = "20") int itemPerPage,
+      @RequestParam(name = "id", defaultValue = "0") int id,
+      @RequestParam(name = "all", defaultValue = "false") boolean all
   ) {
-    return notificationService.putNotifications();
+     return notificationService.putNotifications(offset, itemPerPage, id, all);
   }
 
 }
