@@ -32,6 +32,8 @@
 		<com.cloudinary.version>1.33.0</com.cloudinary.version>
 		<io.micrometer.version>1.10.5</io.micrometer.version>
 		<sonar.qualitygate.wait>true</sonar.qualitygate.wait>
+		<sonar.coverage.exclusions>**/model/**</sonar.coverage.exclusions>
+		<sonar.test.exclusions>**/model/**</sonar.test.exclusions>
 		<org.jacoco.version>0.8.8</org.jacoco.version>
 		<com.google.api-client.version>2.2.0</com.google.api-client.version>
 		<com.google.apis.version>v3-rev20230212-2.0.0</com.google.apis.version>

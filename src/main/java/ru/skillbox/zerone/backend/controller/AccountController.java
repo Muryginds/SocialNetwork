@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ru.skillbox.zerone.backend.controller.swaggerdoc.SwaggerAccountController;
 import ru.skillbox.zerone.backend.model.dto.request.*;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.service.UserService;
@@ -13,7 +14,7 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/account")
-public class AccountController {
+public class AccountController implements SwaggerAccountController {
   private final UserService userService;
 
   @PostMapping("/register")
