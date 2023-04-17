@@ -12,6 +12,7 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.StorageDTO;
 
 @Tag(name = "Контроллер для хранения файлов")
+@ApiResponse(responseCode = "403", description = "Пользователь не авторизован", content = @Content)
 public interface SwaggerStorageController {
 
   @ApiResponses(value = {

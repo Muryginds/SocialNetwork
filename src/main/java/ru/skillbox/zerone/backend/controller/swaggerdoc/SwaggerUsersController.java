@@ -1,6 +1,7 @@
 package ru.skillbox.zerone.backend.controller.swaggerdoc;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.UserDTO;
 
 @Tag(name = "Контроллер для управления пользователями")
+@ApiResponse(responseCode = "403", description = "Пользователь не авторизован", content = @Content)
 public interface SwaggerUsersController {
 
   @Operation(summary = "Получить информацию о текущем пользователе")
