@@ -34,6 +34,7 @@ public class PostService {
   private final PostRepository postRepository;
   private final SearchService searchService;
   private final PostMapper postMapper;
+  private final TagRepository tagRepository;
   private final NotificationService notificationService;
 
 
