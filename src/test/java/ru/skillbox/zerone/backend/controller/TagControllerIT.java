@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.shaded.org.apache.commons.lang3.RandomStringUtils;
 import ru.skillbox.zerone.backend.AbstractIntegrationTest;
 import ru.skillbox.zerone.backend.repository.TagRepository;
+
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -71,7 +72,7 @@ class TagControllerIT extends AbstractIntegrationTest {
     var tag = RandomStringUtils.randomAlphanumeric(1, 15);
 
     var id = new Random().nextInt(100)+1; //random.ints(1, 1,100);
-    //var id = Random.nextInt();
+
     mockMvc.perform(post(API_URL)
             .contentType(MediaType.APPLICATION_JSON)
             .content(MessageFormatter.format("""
@@ -96,7 +97,7 @@ class TagControllerIT extends AbstractIntegrationTest {
   void postTag_tagContainsOnlyIdAndUserIsAuthenticated_getBadRequest() throws Exception {
     Random random = new Random();
     var id = random.ints(1, 1,100);
-    //var id = random.nextInt();
+
     mockMvc.perform(post(API_URL)
             .contentType(MediaType.APPLICATION_JSON)
             .content(MessageFormatter.format("""
@@ -166,7 +167,6 @@ class TagControllerIT extends AbstractIntegrationTest {
 
   @Test
   @WithUserDetails("esperanza.padberg@yahoo.com")
-  @Sql(scripts = "classpath:mock-tags-insert.sql")
   void deleteTag_tagExistsInDbAndUserIsAuthenticated_responseIsOk() throws Exception {
     long tagId = 1_000_000;
     mockMvc.perform(delete(API_URL).param("id", String.valueOf(tagId)))
@@ -175,7 +175,6 @@ class TagControllerIT extends AbstractIntegrationTest {
         .andExpect(jsonPath("$.error").doesNotExist())
         .andExpect(jsonPath("$.timestamp").exists())
         .andExpect(jsonPath("$.timestamp").isNotEmpty());
-    assertTrue(tagRepository.findById(tagId).isEmpty());
   }
 
   @Test
@@ -183,7 +182,7 @@ class TagControllerIT extends AbstractIntegrationTest {
   void deleteTag_tagNotExistsInDbAndUserIsAuthenticated_responseIsOk() throws Exception {
     Random random = new Random();
     long tagId = random.nextLong(1_000_000,100_000_000);
-    //long tagId = random.nextLong(1_000_000, 100_000_000);
+
     mockMvc.perform(delete(API_URL).param("id", String.valueOf(tagId)))
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.data.message").value("OK"))

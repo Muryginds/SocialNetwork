@@ -8,7 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.zerone.backend.model.enumerated.PostType;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -30,5 +29,5 @@ public class PostDTO {
   private List<String> tags;
   private PostType type;
   private UserDTO author;
-  private LocalDateTime time;
+  private long time;
 }

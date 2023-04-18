@@ -8,15 +8,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.PostCreationException;
 import ru.skillbox.zerone.backend.exception.PostNotFoundException;
-import ru.skillbox.zerone.backend.exception.UserAndAuthorEqualsException;
+import ru.skillbox.zerone.backend.exception.TagNotFoundException;
+import ru.skillbox.zerone.backend.exception.UserAndAuthorNotEqualsException;
 import ru.skillbox.zerone.backend.mapstruct.PostMapper;
 import ru.skillbox.zerone.backend.model.dto.request.PostRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.PostDTO;
 import ru.skillbox.zerone.backend.model.entity.Post;
+import ru.skillbox.zerone.backend.model.entity.Tag;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.repository.PostRepository;
+import ru.skillbox.zerone.backend.repository.TagRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
 import java.time.Instant;
@@ -35,7 +38,7 @@ public class PostService {
 
 
   @Transactional
-  public CommonResponseDTO<PostDTO> createPost(int id, long publishDate, PostRequestDTO postRequestDTO) {
+  public CommonResponseDTO<PostDTO> createPost(long id, long publishDate, PostRequestDTO postRequestDTO) {
 
     User user = CurrentUserUtils.getCurrentUser();
 
@@ -47,6 +50,7 @@ public class PostService {
         .postText(postRequestDTO.getPostText())
         .title(postRequestDTO.getTitle())
         .author(user)
+        .tags(getTagsByPost(postRequestDTO.getTags()))
         .time(publishDate == 0 ? LocalDateTime.now()
             : Instant.ofEpochMilli(publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime())
         .build();
@@ -55,6 +59,18 @@ public class PostService {
     notificationService.savePost(post);
 
     return commonResponseDTO(post);
+  }
+
+  private List<Tag> getTagsByPost(List<String> tagsFromRequest) {
+
+    List<Tag> tags = new ArrayList<>();
+    if (!tagsFromRequest.isEmpty()) {
+      tagsFromRequest.forEach(tag -> {
+        Tag tagFromRepo = tagRepository.findByName(tag).orElseThrow(() -> new TagNotFoundException("Тега не существует!"));
+        tags.add(tagFromRepo);
+      });
+    }
+    return tags;
   }
 
   private PostDTO getPostsDTO(Post post) {
@@ -134,6 +150,7 @@ public class PostService {
 
     post.setTitle(requestBody.getTitle());
     post.setPostText(requestBody.getPostText());
+    post.setTags(getTagsByPost(requestBody.getTags()));
     post.setTime(Instant.ofEpochMilli(publishDate == 0 ? System.currentTimeMillis() : publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime());
     postRepository.saveAndFlush(post);
     return commonResponseDTO(post);
@@ -166,7 +183,7 @@ public class PostService {
 
     User user = CurrentUserUtils.getCurrentUser();
     if (!user.getId().equals(post.getAuthor().getId())) {
-      throw new UserAndAuthorEqualsException("Попытка редактирования неизвестным пользователем");
+      throw new UserAndAuthorNotEqualsException("Попытка редактирования неизвестным пользователем");
     }
   }
 }

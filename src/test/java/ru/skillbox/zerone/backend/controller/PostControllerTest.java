@@ -31,7 +31,7 @@ class PostControllerTest extends AbstractIntegrationTest {
 
 
   @Test
-  @Sql(scripts = {"classpath:truncate-all-users-cascade.sql", "classpath:mock-current-user-insert.sql"})
+  @Sql(scripts = {"classpath:mock-my-tags-insert.sql", "classpath:truncate-all-users-cascade.sql", "classpath:mock-current-user-insert.sql"})
   @WithUserDetails("testAccount@hotmail.com")
   void testPostPublication_whenValidInput_thenReturnSuccessResponse() throws Exception {
     mockMvc.perform(post("/api/v1/users/1/wall")
@@ -181,7 +181,7 @@ class PostControllerTest extends AbstractIntegrationTest {
   }
 
   @Test
-  @Sql(scripts = {"classpath:truncate-all-users-cascade.sql", "classpath:mock-current-user-insert.sql",
+  @Sql(scripts = {"classpath:mock-my-tags-insert.sql", "classpath:truncate-all-users-cascade.sql", "classpath:mock-current-user-insert.sql",
       "classpath:mock-posts-insert.sql"})
   @WithUserDetails("testAccount@hotmail.com")
   void testPostEdition_whenValidInput_thenReturnsEditedPost() throws Exception {

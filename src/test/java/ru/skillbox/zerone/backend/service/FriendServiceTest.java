@@ -3,7 +3,9 @@ package ru.skillbox.zerone.backend.service;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -31,10 +33,10 @@ import static org.mockito.BDDMockito.then;
 import static ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus.*;
 import static ru.skillbox.zerone.backend.service.FriendService.*;
 
+@ExtendWith(MockitoExtension.class)
 class FriendServiceTest {
   private static final String OK = "OK";
 
-  private AutoCloseable openMocks;
   private AutoCloseable utilsMockedStatic;
   @Mock
   private FriendshipRepository friendshipRepository;
@@ -45,22 +47,18 @@ class FriendServiceTest {
   @Mock
   private NotificationService notificationService;
 
+  @InjectMocks
   private FriendService underTest;
   @Captor
   ArgumentCaptor<List<Friendship>> friendshipListCaptor;
 
-
   @BeforeEach
   void setUp() {
-    openMocks = MockitoAnnotations.openMocks(this);
     utilsMockedStatic = Mockito.mockStatic(CurrentUserUtils.class);
-    underTest = new FriendService(friendshipRepository, userRepository,
-        userMapper, notificationService);
   }
 
   @AfterEach
   void tearDown() throws Exception {
-    openMocks.close();
     utilsMockedStatic.close();
   }
 
@@ -658,6 +656,7 @@ class FriendServiceTest {
     given(CurrentUserUtils.getCurrentUser()).willReturn(user);
 
     var friendship = Friendship.builder()
+        .id(1_000L)
         .srcPerson(user).dstPerson(target)
         .status(FRIEND).build();
     given(friendshipRepository.findBySrcPersonAndDstPerson(user, target))

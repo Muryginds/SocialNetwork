@@ -1,5 +1,3 @@
-delete
-from "post";
 
 INSERT INTO "user" (id, about, birth_date, city, confirmation_code, country, email, first_name, is_approved, is_blocked,
                     is_deleted, last_name, last_online_time, password, phone, photo, reg_date, status)
