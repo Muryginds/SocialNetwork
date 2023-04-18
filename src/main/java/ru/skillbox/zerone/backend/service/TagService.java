@@ -51,10 +51,7 @@ public class TagService {
         .build();
   }
 
-  @Transactional
-  public CommonResponseDTO<MessageResponseDTO> deleteTag(Long id) {
-
-    tagRepository.deleteById(id);
+  public CommonResponseDTO<MessageResponseDTO> deleteTag() {
 
     return ResponseUtils.commonResponseDataOk();
   }

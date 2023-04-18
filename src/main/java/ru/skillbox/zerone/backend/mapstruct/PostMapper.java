@@ -7,7 +7,7 @@ import ru.skillbox.zerone.backend.model.entity.Post;
 import ru.skillbox.zerone.backend.model.entity.Tag;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 
 
 @Mapper
@@ -18,6 +18,7 @@ public interface PostMapper {
   String tagToStringTag(Tag tag);
 
   default Long convertLocalDateTimeToLong(LocalDateTime time) {
-    return time.toInstant(ZoneOffset.of("+03:00")).getEpochSecond();
+
+    return time.atZone(ZoneId.systemDefault()).toInstant().getEpochSecond();
   }
 }
