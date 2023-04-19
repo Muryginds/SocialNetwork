@@ -35,6 +35,7 @@ public class PostService {
   private final SearchService searchService;
   private final PostMapper postMapper;
   private final TagRepository tagRepository;
+  private final NotificationService notificationService;
 
 
   @Transactional
@@ -56,6 +57,7 @@ public class PostService {
         .build();
 
     postRepository.save(post);
+    notificationService.savePost(post);
 
     return commonResponseDTO(post);
   }

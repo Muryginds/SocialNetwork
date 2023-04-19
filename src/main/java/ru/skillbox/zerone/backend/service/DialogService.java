@@ -79,9 +79,9 @@ public class DialogService {
     var message = messageMapper.messageRequestDTOToMessage(messageRequestDTO, dialog);
     messageRepository.save(message);
 
-    socketIOService.sendMessageEvent(message);
-
     notificationService.saveMessage(message);
+
+    socketIOService.sendMessageEvent(message);
 
     var responseData = messageMapper.messageToMessageDataDTO(message);
 

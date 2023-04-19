@@ -5,10 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.skillbox.zerone.backend.exception.CommentNotFoundException;
-import ru.skillbox.zerone.backend.exception.DialogException;
-import ru.skillbox.zerone.backend.exception.FriendshipException;
-import ru.skillbox.zerone.backend.exception.PostNotFoundException;
+import ru.skillbox.zerone.backend.exception.*;
 import ru.skillbox.zerone.backend.mapstruct.SocketUserMapper;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.NotificationDTO;
@@ -40,11 +37,9 @@ public class NotificationService {
   private final NotificationRepository notificationRepository;
   private final CommentRepository commentRepository;
   private final PostRepository postRepository;
-  private final MessageRepository messageRepository;
   private final DialogRepository dialogRepository;
   private final FriendshipRepository friendshipRepository;
   private final SocketIOService socketIOService;
-  private final NotificationSettingRepository notificationSettingRepository;
   private final NotificationSettingService notificationSettingService;
 
   public CommonListResponseDTO<NotificationDTO> getNotifications(
@@ -66,8 +61,36 @@ public class NotificationService {
         .build();
   }
 
-  public CommonListResponseDTO<NotificationDTO> putNotifications() {
-    return new CommonListResponseDTO<>();
+  public CommonListResponseDTO<NotificationDTO> putNotifications(int offset, int itemPerPage, long id, boolean all) {
+    User user = CurrentUserUtils.getCurrentUser();
+    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
+    List<Notification> notifications = new ArrayList<>();
+    long totalElements;
+    if (id > 0) {
+      Notification byId = notificationRepository.findById(id)
+          .orElseThrow(() -> new NotificationException("Нет уведомления с id = " + id));
+      notifications.add(byId);
+      totalElements = 1L;
+    } else if (all) {
+      Page<Notification> pages =
+          notificationRepository.findAllByPersonAndStatus(user, ReadStatus.SENT, pageable);
+      notifications.addAll(pages.getContent());
+      totalElements = pages.getTotalElements();
+    } else {
+      throw new NotificationException("Неверные параметры");
+    }
+    notifications.forEach(n -> n.setStatus(ReadStatus.READ));
+    notificationRepository.saveAll(notifications);
+
+    List<NotificationDTO> dtoList = new ArrayList<>();
+    notifications.forEach(notification -> dtoList.add(notificationToNotificationDTO(notification)));
+
+    return CommonListResponseDTO.<NotificationDTO>builder()
+        .total(totalElements)
+        .perPage(itemPerPage)
+        .offset(offset)
+        .data(dtoList)
+        .build();
   }
 
   private NotificationDTO notificationToNotificationDTO(Notification notification) {
@@ -80,10 +103,9 @@ public class NotificationService {
         .entityId(entityId);
     User author;
     switch (notification.getType()) {
-      case POST ->
-          author = postRepository.findById(entityId).orElseThrow(
-                  () -> new PostNotFoundException(String.format(POST_NOT_FOUND, entityId)))
-              .getAuthor();
+      case POST -> author = postRepository.findById(entityId).orElseThrow(
+              () -> new PostNotFoundException(String.format(POST_NOT_FOUND, entityId)))
+          .getAuthor();
       case POST_COMMENT -> {
         builder.currentEntityId(entityId);
         author = commentRepository.findById(entityId).orElseThrow(
@@ -133,11 +155,11 @@ public class NotificationService {
         .findAllBySrcPersonAndStatus(post.getAuthor(), FriendshipStatus.FRIEND);
     List<Notification> notifications = new ArrayList<>();
     friendships.forEach(fr ->
-      notifications.add(Notification.builder()
-          .type(POST)
-          .person(fr.getDstPerson())
-          .entityId(fr.getId())
-          .build())
+        notifications.add(Notification.builder()
+            .type(POST)
+            .person(fr.getDstPerson())
+            .entityId(fr.getId())
+            .build())
     );
     notificationRepository.saveAll(notifications);
   }
@@ -154,45 +176,41 @@ public class NotificationService {
     Notification notification = notificationRepository.save(Notification.builder()
         .type(POST_COMMENT)
         .person(comment.getPost().getAuthor())
-        .entityId(comment.getId())
+        .entityId(comment.getPost().getId())
         .build());
     notificationRepository.save(notification);
 
-    var dataDTO = prepareSocketNotificationDataDTO(notification, comment);
+    var dataDTO = prepareSocketNotificationDataDTOForComments(notification, comment);
 
     socketIOService.sendEventToPerson(notification.getPerson(),
         "comment-notification-response", dataDTO);
   }
 
   private void saveCommentComment(Comment comment) {
-    List<User> dstPersons = new ArrayList<>();
-    dstPersons.add(comment.getPost().getAuthor());
-    User parentAuthor = comment.getParent().getAuthor();
-    if (!parentAuthor.equals(dstPersons.get(0))) {
-      dstPersons.add(parentAuthor);
-    }
-    List<Notification> notifications = new ArrayList<>();
-    dstPersons.forEach(dstPerson ->
-      notifications.add(Notification.builder()
-          .type(COMMENT_COMMENT)
-          .person(dstPerson)
-          .entityId(comment.getId())
-          .build())
-    );
-    notificationRepository.saveAll(notifications);
-
-    notifications.forEach(notification -> {
-      var dataDTO = prepareSocketNotificationDataDTO(notification, comment);
-      socketIOService.sendEventToPerson(
-          notification.getPerson(), "comment-notification-response", dataDTO);
-    });
+    Notification notification = Notification.builder()
+        .type(COMMENT_COMMENT)
+        .person(comment.getParent().getAuthor())
+        .entityId(comment.getId())
+        .build();
+    notificationRepository.save(notification);
+    var dataDTO = prepareSocketNotificationDataDTOForComments(notification, comment);
+    socketIOService.sendEventToPerson(
+        notification.getPerson(), "comment-notification-response", dataDTO);
   }
 
-  private SocketNotificationDataDTO prepareSocketNotificationDataDTO(
+  private SocketNotificationDataDTO prepareSocketNotificationDataDTOForComments(
       Notification notification, Comment comment) {
-    Long parentId = comment.getType().equals(CommentType.POST) ?
-        comment.getId() : comment.getParent().getId();
+    Long parentId;
+    Long currentEntityId;
+    if (comment.getType().equals(CommentType.POST)) {
+      parentId = comment.getPost().getId();
+      currentEntityId = parentId;
+    } else {
+      parentId = comment.getParent().getId();
+      currentEntityId = comment.getId();
+    }
     User author = comment.getAuthor();
+
     return SocketNotificationDataDTO.builder()
         .id(notification.getId())
         .eventType(notification.getType())
@@ -203,30 +221,8 @@ public class NotificationService {
             author.getRegDate().atZone(ZoneId.systemDefault()).toInstant(),
             author.getLastOnlineTime().atZone(ZoneId.systemDefault()).toInstant()))
         .parentId(parentId)
-        .currentEntityId(notification.getEntityId())
+        .currentEntityId(currentEntityId)
         .build();
-  }
-
-  public void saveFriendship(List<Friendship> friendships) {
-    friendships.forEach(friendship -> {
-      checkFriendshipEnabled(friendship.getDstPerson());
-      checkFriendshipEnabled(friendship.getSrcPerson());
-      var notification = Notification.builder()
-          .type(FRIEND_REQUEST)
-          .person(friendship.getDstPerson())
-          .entityId(friendship.getId())
-          .build();
-      notificationRepository.save(notification);
-
-      var dataDTO = SocketNotificationDataDTO.builder()
-          .id(notification.getId())
-          .eventType(notification.getType())
-          .sentTime(notification.getSentTime().atZone(ZoneId.systemDefault()).toInstant())
-          .entityId(CurrentUserUtils.getCurrentUser().getId())
-          .build();
-      socketIOService.sendEventToPerson(notification.getPerson(),
-          "friend-notification-response", dataDTO);
-    });
   }
 
   private void checkFriendshipEnabled(User person) {
@@ -250,4 +246,34 @@ public class NotificationService {
     notificationRepository.save(notification);
   }
 
+
+  public void saveFriendship(List<Friendship> friendships) {
+    User user = CurrentUserUtils.getCurrentUser();
+    Friendship friendship = friendships.get(0);
+
+    checkFriendshipEnabled(friendship.getSrcPerson());
+    checkFriendshipEnabled(friendship.getDstPerson());
+
+    User dstPerson = friendships.get(0).getDstPerson().getId().equals(user.getId()) ?
+        friendship.getSrcPerson() : friendship.getDstPerson();
+    var notification = Notification.builder()
+        .type(FRIEND_REQUEST)
+        .person(dstPerson)
+        .entityId(friendship.getId())
+        .build();
+    notificationRepository.save(notification);
+
+    var dataDTO = SocketNotificationDataDTO.builder()
+        .id(notification.getId())
+        .eventType(notification.getType())
+        .sentTime(notification.getSentTime().atZone(ZoneId.systemDefault()).toInstant())
+        .entityId(user.getId())
+        .entityAuthor(socketUserMapper.userToSocketUserDTO(user,
+            user.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant(),
+            user.getRegDate().atZone(ZoneId.systemDefault()).toInstant(),
+            user.getLastOnlineTime().atZone(ZoneId.systemDefault()).toInstant()))
+        .build();
+    socketIOService.sendEventToPerson(notification.getPerson(),
+        "friend-notification-response", dataDTO);
+  }
 }

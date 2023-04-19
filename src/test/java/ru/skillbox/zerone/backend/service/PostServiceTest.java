@@ -54,6 +54,9 @@ class PostServiceTest implements PostMockUtils {
   @Mock
   private LikeRepository likeRepository;
 
+  @Mock
+  private NotificationService notificationService;
+
   private final MockedStatic<CurrentUserUtils> utilsMockedStatic = Mockito.mockStatic(CurrentUserUtils.class);
 
   @InjectMocks
