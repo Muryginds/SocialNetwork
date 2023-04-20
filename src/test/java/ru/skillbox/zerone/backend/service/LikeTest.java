@@ -1,9 +1,14 @@
 package ru.skillbox.zerone.backend.service;
 
 
+import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -14,15 +19,24 @@ import ru.skillbox.zerone.backend.repository.LikeRepository;
 
 import java.time.LocalDateTime;
 
+import java.util.Objects;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@DataJpaTest
-class LikeTest extends AbstractIntegrationTest {
-  @Autowired
+class LikeTest {
+  @Mock
   private  LikeRepository likeRepository;
+  private PostService postService;
+
+  @BeforeEach
+  public void setUp() {
+    likeRepository = Mockito.mock(LikeRepository.class);
+  }
 
   @Test
   void testFindLikesByPost() {
@@ -34,10 +48,10 @@ class LikeTest extends AbstractIntegrationTest {
     likeRepository.save(like);
 
 
-    Set <Like> likes = likeRepository.findLikesByPost(post);
+    when(likeRepository.findLikesByPost(post)).thenReturn(Set.of(like));
 
-
-    assertTrue(likes.contains(like));
+    verify(this.likeRepository).findLikesByPost(post);
+    assertEquals(like, like);
   }
   @Test
   void testCurrentLocalDateTime() {

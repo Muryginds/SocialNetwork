@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import ru.skillbox.zerone.backend.model.entity.Recommendation;
 import ru.skillbox.zerone.backend.model.entity.User;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -13,7 +14,8 @@ public interface RecommendationRepository extends JpaRepository<Recommendation, 
       SELECT r.dstPerson.id FROM Friendship r
       WHERE r.srcPerson.id = :id
       """)
-  Optional<Long> findCurrentUserFriends(Long id);
+  Optional<Long> findFriendships(Long id);
 
-  Recommendation findByUser(User user);
+  Recommendation findByUser(User user)
+      ;
 }

@@ -157,7 +157,7 @@ public class UserService {
     user.setCity(getClientIpAddress());
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
-    friendService.createPersonalRecommendations(user);
+    friendService.createPersonalRecommendations();
 
 
     return ResponseUtils.commonResponseDataOk();

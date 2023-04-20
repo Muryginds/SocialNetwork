@@ -22,7 +22,7 @@ public class Recommendation {
   private Long id;
 
   @NotNull
-  @ManyToOne(cascade = CascadeType.MERGE)
+  @ManyToOne
   @MapsId
   private User user;
   @Column(name = "recommended_friends")

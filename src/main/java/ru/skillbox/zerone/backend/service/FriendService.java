@@ -97,7 +97,8 @@ public class FriendService {
     }
 
     friendshipRepository.saveAll(friendshipList);
-    createPersonalRecommendations(user);
+    createPersonalRecommendations();
+//    createPersonalRecommendations(friend);
 
     notificationService.saveFriendship(friendshipList);
 
@@ -291,7 +292,13 @@ public class FriendService {
       recommendationRepository.save(findRecommendations(user, 0, 100));
     }
   }
-  public void createPersonalRecommendations(User user) {
+  public void createPersonalRecommendations() {
+    var user = CurrentUserUtils.getCurrentUser();
+    recommendationRepository.deleteAll();
+    recommendationRepository.save(findRecommendations(user, 0, 100));
+  }
+  public void createPersonalRecommendations1() {
+    var user = CurrentUserUtils.getCurrentUser();
     recommendationRepository.save(findRecommendations(user, 0, 100));
   }
 //  public Recommendation updateRecommendations(User user, Long id) {
@@ -311,7 +318,8 @@ public class FriendService {
   public Recommendation findRecommendations(User user, int offset, int itemPerPage) {
 
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
-    var currentFriends = recommendationRepository.findCurrentUserFriends(user.getId()).stream().toList();
+    var currentFriends = recommendationRepository.findFriendships(user.getId()).stream().toList();
+    System.out.println("currentFriends$)(Q@*$@*$*@)$@*)($@)*($@*)($*)(@$*()@*()$@*()$@*()$@*()$@*()$*)@(*$()@()$@)*$)(@()$*@)$)*@)$*)@($");
     var recommendedUsersByCity = userRepository.findUsersByCity(user.getCity(), pageable).getContent();
     List<Long> recommendedUsersId = new ArrayList<>(recommendedUsersByCity);
 

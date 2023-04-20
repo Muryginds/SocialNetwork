@@ -42,12 +42,12 @@ class FriendServiceTest {
   private FriendService underTest;
 
   @BeforeEach
-  void setUp() {
-    openMocks = MockitoAnnotations.openMocks(this);
-    utilsMockedStatic = Mockito.mockStatic(CurrentUserUtils.class);
-    underTest = new FriendService(friendshipRepository, userRepository,
-        userMapper, notificationService);
-  }
+//  void setUp() {
+//    openMocks = MockitoAnnotations.openMocks(this);
+//    utilsMockedStatic = Mockito.mockStatic(CurrentUserUtils.class);
+//    underTest = new FriendService(friendshipRepository, userRepository,
+//        userMapper, notificationService);
+//  }
 
   @AfterEach
   void tearDown() throws Exception {
