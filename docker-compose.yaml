@@ -91,7 +91,7 @@ services:
 
   frontend:
     container_name: frontend
-    image: dimok82/zeone
+    image: dimatch86/zerone_front_prod
     ports:
       - "80:80"
     deploy:
@@ -110,6 +110,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATA_REDIS_HOST: redis
+      TZ: "Europe/Moscow"
     ports:
       -  "8086:8086"
       -  "1111:1111"
