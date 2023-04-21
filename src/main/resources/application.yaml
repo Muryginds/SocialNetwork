@@ -94,7 +94,7 @@ google-drive:
   folder_name: logs
 
 scheduled-tasks:
-  google-drive-scanner: '0 0 3 15 * ?'
+  google-drive-scanner: '0 0 0 * * ?'
   vk-countries-uploader: '0 5 8 * * SUN'
 
 log-settings:
