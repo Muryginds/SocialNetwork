@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+
+<head th:insert="~{fragments/common-head :: head('Zeone Admin Все службы')}">
+</head>
+
+<body>
+<div class="wrapper">
+    <div th:replace="~{fragments/common-sidebar :: sidebar}"></div>
+    <div class="main-panel">
+        <nav th:insert="fragments/common-navbar :: navbar('Все службы')"></nav>
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card ">
+                            <div class="card-header ">
+                                <h4 class="card-title">Служба поддержки</h4>
+                            </div>
+                            <div class="card-body ">
+                                <a href="/api/v1/admin/support/choice">Отвечает на вопросы клиентов</a>
+                                <br><br><br>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card ">
+                            <div class="card-header ">
+                                <h4 class="card-title">Стартовые аватарки</h4>
+                            </div>
+                            <div class="card-body ">
+                                <a href="/api/v1/admin/avatars">Подготавливает стартовые аватарки, назначаемые новым участникам</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card ">
+                            <div class="card-header ">
+                                <h4 class="card-title">Модерация комментариев</h4>
+                            </div>
+                            <div class="card-body ">
+                                <a href="/api/v1/admin/comments">Модерация комментариев (редактирование, удаление)</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+
+<script src="/assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<script src="/assets/js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
+
+</html>

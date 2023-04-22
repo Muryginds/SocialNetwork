@@ -1,0 +1,53 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: zerone-admin
+  datasource:
+    url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
+    password: password
+    username: skillbox
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+    show-sql: true
+  sql:
+    init:
+      mode: never
+
+  mail:
+    host: smtp.mail.ru
+    port: 465
+    username: zerone34@mail.ru
+    password: UKeakYphbz3NrSvAkq9R
+    test-connection: true
+    properties:
+      mail:
+        debug: false
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            enable: true
+
+cloudinary:
+  cloud_name: "zeroneproject"
+  api_key: "551572451498292"
+  api_secret: "bmOA13-uV_37Hm9Vfu4E_heObw4"
+
+avatar:
+  url: C:\fff\zerone\avatars
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+
+microservices:
+  host: localhost

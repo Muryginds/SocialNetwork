@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+
+<head th:replace="~{fragments/common-head :: head('Стартовые аватарки')}"></head>
+
+<body>
+<div class="wrapper">
+    <div th:insert="~{fragments/common-sidebar :: sidebar}"></div>
+    <div class="main-panel">
+        <nav th:insert="fragments/common-navbar :: navbar('Стартовые аватарки')"></nav>
+
+        <div class="container text-center">
+            <br/>
+            <div class="card mx-auto" style="width: 24rem; background-color: #e8e8e8;">
+                <div class="card-body">
+                    <h2 class="card-title">Выгрузка аватарок</h2>
+                    <h6 class="text-success">[[${success}]]</h6>
+                    <div class="mb-3">
+                        <form th:action="@{/api/v1/admin/avatars}" method="post" enctype="multipart/form-data">
+                            <input style="background-color: #e8e8e8; border: rgb(0, 0, 0, 0);"
+                                   class="form-control" name="file" type="file" id="formFile" multiple><br/>
+                            <input type="submit" value="Выгрузить" class="btn btn-lg btn-primary btn-block">
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container pt-3 pb-2 mt-3" style="width: 24rem; background-color: #e8e8e8; border-radius: 0.25rem;">
+            <h6 class="text-success">[[${filled}]]</h6>
+            <h6 class="text-success">[[${startDeleted}]]</h6>
+            <h6 class="text-success">[[${allDeleted}]]</h6>
+            <ul>
+                <li><a href="/api/v1/admin/avatars/fill">Стартовые аватарки - пользователям</a></li>
+                <li><a href="/api/v1/admin/avatars/deleteStart">Удалить стартовые аватарки</a></li>
+                <li><a href="/api/v1/admin/avatars/deleteAll">Удалить все аватарки</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+
+<script src="/assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<script src="/assets/js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
+
+</html>

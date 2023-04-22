@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+
+<body>
+<div class="wrapper">
+    <div class="main-panel">
+        <nav th:fragment="navbar(caption)" class="navbar navbar-expand-lg " style="background: #20a55d; color: white">
+            <div class="container-fluid">
+                <a class="navbar-brand" th:utext="${caption}"></a>
+                <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                        aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"><i class="fa fa-navicon"></i></span>
+                    <style>.fa.fa-navicon {
+                        color: #c0e0c0;
+                    }</style>
+                </button>
+            </div>
+        </nav>
+    </div>
+</div>
+</body>
+
+</html>

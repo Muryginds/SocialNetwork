@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+
+<body>
+<div class="wrapper">
+<div class="sidebar" th:fragment="sidebar" data-color="black">
+    <div class="sidebar-wrapper">
+        <div class="logo">
+            <a href="http://www.creative-tim.com" class="simple-text">
+                Zerone Admin
+            </a>
+        </div>
+        <ul class="nav">
+            <li>
+                <a class="nav-link" href="/api/v1/admin/all-services">
+                    <p>Все службы</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="/api/v1/admin/support/choice">
+                    <p>Служба поддержки</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="/api/v1/admin/avatars">
+                    <p>Стартовые аватарки</p>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="/api/v1/admin/comments">
+                    <p>Модерация комментариев</p>
+                </a>
+            </li>
+            <li class="nav-item active active-pro">
+                <a class="nav-link active" href="/api/v1/admin/logout">
+                    <i class="nc-icon nc-alien-33"></i>
+                    <p>Logout</p>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+</div>
+</body>
+</html>
