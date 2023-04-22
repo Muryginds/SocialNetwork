@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://zerone-network.ru:5432/skillbox?stringtype=unspecified
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+
+microservices:
+  host: 0.0.0.0

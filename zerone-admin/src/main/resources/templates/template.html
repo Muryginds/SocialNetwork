@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+
+<head th:replace="~{fragments/common-head :: head('test')}"></head>
+
+<body>
+<div class="wrapper">
+
+    <div th:insert="~{fragments/common-sidebar :: sidebar}"></div>
+
+    <div class="main-panel">
+        <nav th:insert="fragments/common-navbar :: navbar('Это тест')"></nav>
+
+<!--        Здесь контент-->
+
+    </div>
+</div>
+
+<script src="/assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<script src="/assets/js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
+
+</body>
+</html>

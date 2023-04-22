@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+
+<head th:insert="~{fragments/common-head :: head('Zeone Admin Служба поддержки')}" >
+</head>
+
+<body>
+<div class="wrapper">
+    <div th:insert="~{fragments/common-sidebar :: sidebar}"></div>
+    <div class="main-panel">
+        <nav th:insert="fragments/common-navbar :: navbar('Служба поддержки')"></nav>
+
+        <form class="col card p-3 mb-5" method="post" th:action="@{/api/v1/admin/support/choice}"
+              th:object="${requests}">
+            <table class="table table-striped table-bordered">
+                <tr>
+                    <th>E-mail</th>
+                    <th>Полное имя</th>
+                    <th>Сообщение</th>
+                    <th>Создано</th>
+                    <th>Выбрать</th>
+                </tr>
+                <tr th:if="${#lists.isEmpty(requests)}">
+                    <td colspan="5">Не найдено ни одной записи.</td>
+                </tr>
+                <tr th:each="request : ${requests.getChoiceDtos()}">
+                    <td th:text="${request.email}"></td>
+                    <td th:text="${request.fullName}"></td>
+                    <td th:text="${request.message}"></td>
+                    <td th:text="${request.createdAt}"></td>
+                    <td>
+                        <a class="btn btn-primary" type="button"
+                           th:href="@{'/api/v1/admin/support/answer/' + ${request.id}}">Ответить</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+</div>
+</body>
+
+<script src="/assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<script src="/assets/js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
+
+</html>
