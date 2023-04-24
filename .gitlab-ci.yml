@@ -34,7 +34,7 @@ migration-job:
     - students
   script:
     - echo "Liquibase migrations started"
-    - "cd src/main/resources/"
+    - "cd zerone-backend/src/main/resources/"
     - "liquibase update --url=$DATABASE_URL --username=$DATABASE_USERNAME --password=$DATABASE_PASSWORD --changeLogFile=$CHANGELOG_PATH"
 
 test-job:
