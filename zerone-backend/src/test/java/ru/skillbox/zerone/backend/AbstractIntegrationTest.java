@@ -22,6 +22,6 @@ abstract public class AbstractIntegrationTest {
     System.setProperty("spring.data.redis.port", redis.getFirstMappedPort().toString());
   }
 
-//  @Autowired
-//  public Drive mockDrive;
+  @Autowired
+  public Drive mockDrive;
 }
