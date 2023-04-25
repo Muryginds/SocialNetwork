@@ -13,9 +13,9 @@ import ru.skillbox.zerone.admin.repository.UserRepository;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 @RequiredArgsConstructor
@@ -54,8 +54,9 @@ public class AvatarService {
       return;
     }
     List<User> users = userRepository.findAllByPhotoNull();
+    SecureRandom rand = new SecureRandom();
     users.forEach(user -> {
-      int index = ThreadLocalRandom.current().nextInt(0, startAvatars.size());
+      int index = startAvatars.size() == 1 ? 0 : rand.nextInt(0, startAvatars.size());
       user.setPhoto(startAvatars.get(index).getUrl());
     });
     userRepository.saveAll(users);
