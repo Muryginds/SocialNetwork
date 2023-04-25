@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend;
 
+import com.google.api.services.drive.Drive;
 import org.mockito.Mock;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,4 +28,6 @@ abstract public class AbstractIntegrationTest {
   private DriveService driveService;
   @Mock
   private DriveManager driveManager;
+  @Mock
+  private Drive drive;
 }
