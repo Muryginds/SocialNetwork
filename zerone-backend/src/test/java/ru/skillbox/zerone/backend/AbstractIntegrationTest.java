@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
+import ru.skillbox.zerone.backend.service.DriveManager;
 import ru.skillbox.zerone.backend.service.DriveService;
 
 @SuppressWarnings("resource")
@@ -24,5 +25,6 @@ abstract public class AbstractIntegrationTest {
 
   @Mock
   private DriveService driveService;
-
+  @Mock
+  private DriveManager driveManager;
 }
