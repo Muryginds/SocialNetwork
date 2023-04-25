@@ -135,6 +135,7 @@ public class FriendService {
 
     if (friendshipStatus.equals(SUBSCRIBED) && reversedFriendshipStatus.equals(DECLINED)) {
       reversedFriendship.setStatus(REQUEST);
+      friendshipList.add(friendship);
       friendshipList.add(reversedFriendship);
       return friendshipList;
     }
