@@ -66,7 +66,6 @@ public class CommentsController {
     TotalCommentDto totalCommentDto = (TotalCommentDto) req.getSession()
         .getAttribute(TOTAL_COMMENT_DTO);
     model.addAttribute("totalDto", totalCommentDto);
-    req.getSession().removeAttribute(TOTAL_COMMENT_DTO);
     return "comment-list";
   }
 
