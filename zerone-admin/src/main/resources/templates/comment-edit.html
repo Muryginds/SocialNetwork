@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+
+<head th:replace="~{fragments/common-head :: head('Модерация комментариев')}"></head>
+
+<body>
+<div class="wrapper">
+    <div th:insert="~{fragments/common-sidebar :: sidebar}"></div>
+
+    <div class="main-panel">
+        <nav th:insert="fragments/common-navbar :: navbar('Модерация комментариев: обработка')"></nav>
+
+        <div class="card">
+            <div class="card-body">
+                <form class="col card p-3 mb-5" method="post" th:action="@{/api/v1/admin/comments/comment}"
+                      th:object="${commentDto}">
+                    <input class="form-control d-none" th:field="*{id}" type="text">
+                    <label for="comment_area">Текст комментария</label>
+                    <textarea class="form-control" id="comment_area" rows="5" th:field="*{commentText}"></textarea>
+                    <div class="form-check">
+                        <input class="form-check-input d-block" id="isBlocked" th:field="*{blocked}" type="checkbox">
+                        <label class="form-check-label" for="isBlocked">блокировка</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" id="inlineCheckbox2" type="checkbox" value="option2">
+                        <label class="form-check-label" for="inlineCheckbox2">2</label>
+                    </div>
+                    <button class="btn btn-primary btn-fill pull-right" type="submit">OK</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="/assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<script src="/assets/js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
+</html>
