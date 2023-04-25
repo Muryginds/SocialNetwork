@@ -10,7 +10,7 @@
     <div th:insert="~{fragments/common-sidebar :: sidebar}"></div>
 
     <div class="main-panel">
-        <nav th:insert="fragments/common-navbar :: navbar('Выбор комментариев')"></nav>
+        <nav th:insert="fragments/common-navbar :: navbar('Модерация комментариев: выбор')"></nav>
 
         <form class="col card p-3 mb-5" method="post" th:action="@{/api/v1/admin/support/choice}"
               th:object="${requests}">

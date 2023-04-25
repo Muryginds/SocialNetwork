@@ -18,15 +18,20 @@
                     <input class="form-control d-none" th:field="*{id}" type="text">
                     <label for="comment_area">Текст комментария</label>
                     <textarea class="form-control" id="comment_area" rows="5" th:field="*{commentText}"></textarea>
-                    <div class="form-check">
-                        <input class="form-check-input d-block" id="isBlocked" th:field="*{blocked}" type="checkbox">
-                        <label class="form-check-label" for="isBlocked">блокировка</label>
+                    <div class="form-group text-center">
+                        <br>
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                            <input class="custom-control-input" id="isBlocked" th:field="*{blocked}" type="checkbox">
+                            <label class="custom-control-label" for="isBlocked">заблокировать</label>
+                        </div>
+                        <div class="custom-control custom-checkbox custom-control-inline">
+                            <input class="custom-control-input" id="isDeleted" th:field="*{deleted}" type="checkbox">
+                            <label class="custom-control-label" for="isDeleted">удалить</label>
+                        </div>
+                        <br>
+                        <br>
+                        <button class="btn btn-primary" style="width: 12rem;" type="submit">OK</button>
                     </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" id="inlineCheckbox2" type="checkbox" value="option2">
-                        <label class="form-check-label" for="inlineCheckbox2">2</label>
-                    </div>
-                    <button class="btn btn-primary btn-fill pull-right" type="submit">OK</button>
                 </form>
             </div>
         </div>
