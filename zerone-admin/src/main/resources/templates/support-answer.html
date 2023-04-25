@@ -17,7 +17,10 @@
                       th:text="${request.message}"></textarea>
             <label for="answer_area">Ответ</label>
             <textarea class="form-control" form="answer" id="answer_area" rows="5" th:field="*{answer}"></textarea>
-            <input class="btn btn-primary pull-right" type="submit" value="Ответить">
+            <div class="form-group">
+                <br>
+                <button class="btn btn-primary pull-right" style="width: 12rem;" type="submit">Ответить</button>
+            </div>
         </form>
     </div>
 
