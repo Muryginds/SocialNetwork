@@ -1,14 +1,12 @@
 package ru.skillbox.zerone.backend;
 
 import com.google.api.services.drive.Drive;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.utility.DockerImageName;
-import ru.skillbox.zerone.backend.service.DriveManager;
-import ru.skillbox.zerone.backend.service.DriveService;
 
 @SuppressWarnings("resource")
 @SpringBootTest
@@ -24,10 +22,6 @@ abstract public class AbstractIntegrationTest {
     System.setProperty("spring.data.redis.port", redis.getFirstMappedPort().toString());
   }
 
-  @Mock
-  private DriveService driveService;
-  @Mock
-  private DriveManager driveManager;
-  @Mock
-  private Drive drive;
+//  @Autowired
+//  public Drive mockDrive;
 }
