@@ -6,16 +6,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 
-import java.util.List;
-
 @Data
 @Builder
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChoiceListDto {
-  private Integer offset;
-  private Integer limit;
-  private Integer total;
-  private List<ChoiceDto> choiceDtos;
+public class CommentDescriptionDto {
+  private String postAuthor;
+  private String postTitle;
+  private String commentAuthor;
+  private String commentFragment;
+  private String paramError;
 }

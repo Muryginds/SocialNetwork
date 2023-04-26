@@ -259,7 +259,7 @@ public class NotificationService {
     var notification = Notification.builder()
         .type(FRIEND_REQUEST)
         .person(dstPerson)
-        .entityId(friendship.getId())
+        .entityId(friendships.get(1).getId())
         .build();
     notificationRepository.save(notification);
 

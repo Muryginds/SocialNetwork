@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+
+<html lang="ru" xmlns:th="https://www.thymeleaf.org">
+
+<head th:replace="~{fragments/common-head :: head('Модерация комментариев')}"></head>
+
+<body>
+<div class="wrapper">
+
+    <div th:insert="~{fragments/common-sidebar :: sidebar}"></div>
+
+    <div class="main-panel">
+        <nav th:insert="fragments/common-navbar :: navbar('Модерация комментариев: выбор')"></nav>
+
+        <form class="col card p-3 mb-5" method="post" th:action="@{/api/v1/admin/support/choice}"
+              th:object="${requests}">
+        </form>
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <form class="col card p-3 mb-5" method="post" th:action="@{/api/v1/admin/comments}"
+                              th:object="${requests}">
+                            <div class="card strpied-tabled-with-hover">
+                                <div class="card-body table-full-width table-responsive">
+                                    <table class="table table-hover table-striped">
+                                        <thead>
+                                        <th>Автор</th>
+                                        <th>Комментарий</th>
+                                        <th>Действие</th>
+                                        </thead>
+                                        <tbody>
+                                        <tr th:each="comment : ${totalDto.getCommentList()}">
+                                            <td th:text="${comment.authorFullname}"></td>
+                                            <td th:text="${comment.commentText}"></td>
+                                            <td>
+                                                <a class="btn btn-primary"
+                                                   th:href="@{'/api/v1/admin/comments/' + ${comment.id}}"
+                                                   type="button">Выбрать</a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+
+<script src="/assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<script src="/assets/js/light-bootstrap-dashboard.js?v=2.0.0 " type="text/javascript"></script>
+
+</html>

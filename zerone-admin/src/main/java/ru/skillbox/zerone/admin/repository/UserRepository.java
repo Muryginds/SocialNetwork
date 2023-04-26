@@ -15,14 +15,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   @Modifying
   @Query("""
-    UPDATE User u set u.photo = null 
-    where u in (select u from File f, User u where f.isStartAvatar and u.photo like f.url)
-""")
+      UPDATE User u set u.photo = null
+            where u in (select u from File f, User u where f.isStartAvatar and u.photo like f.url)
+        """)
   void clearPhotosWithStartAvatars();
 
   @Modifying
   @Query("""
-    UPDATE User u set u.photo = null 
-""")
+          UPDATE User u set u.photo = null
+      """)
   void clearAllPhotos();
+
+  List<User> findAllByFirstNameAndLastName(String firstName, String lastName);
 }

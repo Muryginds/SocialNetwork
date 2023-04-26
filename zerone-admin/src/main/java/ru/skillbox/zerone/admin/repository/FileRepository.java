@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public interface FileRepository extends JpaRepository<File, Long> {
-  void deleteByPublicId(String publicId);
   void deleteAllByIsStartAvatar(boolean isStartAvatar);
+
   List<File> findAllByIsStartAvatar(boolean isStartAvatar);
 }

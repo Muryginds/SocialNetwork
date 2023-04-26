@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.admin.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,9 +14,11 @@ import java.util.List;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChoiceListDto {
-  private Integer offset;
-  private Integer limit;
-  private Integer total;
-  private List<ChoiceDto> choiceDtos;
+public class TotalCommentDto {
+  private long total;
+  @JsonProperty("per_page")
+  private int perPage;
+  private int offset;
+  @JsonProperty("comment_list")
+  private List<CommentDto> commentList;
 }
