@@ -38,4 +38,9 @@ public interface DialogRepository extends JpaRepository<Dialog, Long> {
        WHERE m.id = :messageId and m.dialog = d
        """)
   Optional<Dialog> findByMessageId(Long messageId);
+
+  @Query("""
+      SELECT max(d.id) as ma_id FROM Dialog d
+       """)
+  Long findMaxId();
 }
