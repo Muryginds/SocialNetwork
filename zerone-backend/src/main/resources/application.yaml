@@ -70,8 +70,6 @@ cloudinary:
   overwrite: false
   invalidate: true
 
-
-
 vk-api:
   access-token: a37d0c0ca37d0c0ca37d0c0c4aa06fe252aa37da37d0c0cc7793a5be33eac3846e483d9
   root-url: https://api.vk.com/method
