@@ -50,6 +50,13 @@ test-job:
     paths:
       - .m2/repository
       - target
+  artifacts:
+    when: always
+    reports:
+      junit:
+        - '*/target/surefire-reports/TEST-*.xml'
+        - '*/target/failsafe-reports/TEST-*.xml'
+
 
 sonarqube-check:
   stage:
