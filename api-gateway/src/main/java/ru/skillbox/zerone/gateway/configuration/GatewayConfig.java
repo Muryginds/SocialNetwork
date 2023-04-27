@@ -16,7 +16,7 @@ public class GatewayConfig {
   @Bean
   public RouteLocator myRoutes(RouteLocatorBuilder builder) {
     return builder.routes()
-        .route(r -> r.path("/api/v1/admin/**", "/assets/**")
+        .route(r -> r.path("/api/v1/admin/**", "/assets/**", "/favicon.ico")
             .filters(f -> f.dedupeResponseHeader("Access-Control-Allow-Origin", "RETAIN_FIRST"))
             .uri("lb://zerone-admin"))
         .route(r -> r.path("/**")

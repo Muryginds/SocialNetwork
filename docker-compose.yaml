@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   zookeeper:
-    image: confluentinc/cp-zookeeper:latest
+    image: confluentinc/cp-zookeeper:7.0.9
     container_name: zookeeper
     deploy:
       restart_policy:
@@ -17,7 +17,7 @@ services:
       ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
-    image: confluentinc/cp-kafka:latest
+    image: confluentinc/cp-kafka:7.0.9
     container_name: kafka
     deploy:
       restart_policy:
@@ -56,7 +56,7 @@ services:
 
   postgres:
     container_name: postgres
-    image: postgres
+    image: postgres:15.2
     environment:
       POSTGRES_DB: skillbox
       POSTGRES_USER: skillbox
@@ -110,14 +110,61 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATA_REDIS_HOST: redis
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: eureka:8761/eureka
       TZ: "Europe/Moscow"
     ports:
-      -  "8086:8086"
+      -  "8088:8088"
       -  "1111:1111"
     volumes:
       - ./jars:/app
     working_dir: /app
     command: java -jar backend.jar
+    depends_on:
+      - api-gateway
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 5
+        window: 60s
+
+  admin:
+    container_name: admin
+    image: eclipse-temurin:19-jdk-jammy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified
+      SPRING_DATASOURCE_USERNAME: skillbox
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_PROFILES_ACTIVE: prod
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: eureka:8761/eureka
+      TZ: "Europe/Moscow"
+    ports:
+      - "8083:8083"
+    volumes:
+      - ./jars:/app
+    working_dir: /app
+    command: java -jar admin.jar
+    depends_on:
+      - api-gateway
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+        max_attempts: 5
+        window: 60s
+
+  eureka-server:
+    container_name: eureka-server
+    image: eclipse-temurin:19-jdk-jammy
+    environment:
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: host.docker.internal:8761/eureka
+      TZ: "Europe/Moscow"
+    ports:
+      - "8761:8761"
+    volumes:
+      - ./jars:/app
+    working_dir: /app
+    command: java -jar eureka-server.jar
     depends_on:
       - postgres
     deploy:
@@ -127,35 +174,20 @@ services:
         max_attempts: 5
         window: 60s
 
-  support:
-    container_name: support
-    image: vladimirpanfilov/support
+  api-gateway:
+    container_name: api-gateway
+    image: eclipse-temurin:19-jdk-jammy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified
-      SPRING_DATASOURCE_USERNAME: skillbox
-      SPRING_DATASOURCE_PASSWORD: password
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: eureka:8761/eureka
+      TZ: "Europe/Moscow"
     ports:
-      -  "8083:8083"
+      - "8086:8086"
+    volumes:
+      - ./jars:/app
+    working_dir: /app
+    command: java -jar api-gateway.jar
     depends_on:
-      - backend
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 3s
-        max_attempts: 5
-        window: 60s
-
-  avatars:
-    container_name: avatars
-    image: vladimirpanfilov/avatars
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified
-      SPRING_DATASOURCE_USERNAME: skillbox
-      SPRING_DATASOURCE_PASSWORD: password
-    ports:
-      -  "8084:8084"
-    depends_on:
-      - backend
+      - eureka-server
     deploy:
       restart_policy:
         condition: on-failure
@@ -165,7 +197,7 @@ services:
 
   grafana:
     container_name: grafana
-    image: grafana/grafana
+    image: grafana/grafana:9.5.1
     build: './config/grafana'
     ports:
       - "3000:3000"
@@ -189,7 +221,7 @@ services:
 
   prometheus:
     container_name: prometheus
-    image: prom/prometheus
+    image: prom/prometheus:v2.43.0
     ports:
       - "9090:9090"
     volumes:

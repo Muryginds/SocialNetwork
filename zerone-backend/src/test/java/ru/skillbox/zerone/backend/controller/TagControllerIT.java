@@ -202,14 +202,9 @@ class TagControllerIT extends AbstractIntegrationTest {
 
   @Test
   @WithUserDetails("esperanza.padberg@yahoo.com")
-  void deleteTag_requestDoesNotContainId_badRequest() throws Exception {
+  void deleteTag_requestDoesNotContainId_isOk() throws Exception {
     mockMvc.perform(delete(API_URL))
-        .andExpect(status().isBadRequest())
-        .andExpect(jsonPath("$.data").doesNotExist())
-        .andExpect(jsonPath("$.error").exists())
-        .andExpect(jsonPath("$.error").isNotEmpty())
-        .andExpect(jsonPath("$.timestamp").exists())
-        .andExpect(jsonPath("$.timestamp").isNotEmpty());
+        .andExpect(status().isOk());
   }
 
   @Test

@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+  private static final String LOGIN_ADDRESS = "/api/v1/admin/login";
   private final PasswordEncoder passwordEncoder;
   private final UserDetailsService userDetailsService;
   private final LoadBalancerClient loadBalancerClient;
@@ -29,19 +30,19 @@ public class SecurityConfig {
       String apiGatewayHost,
       SimpleUrlAuthenticationFailureHandler simpleUrlAuthenticationFailureHandler,
       AuthenticationEntryPoint authenticationEntryPoint) throws Exception {
+
     http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authz -> authz
-            .requestMatchers(
-                "/v3/api-docs/**",
-                "/swagger-ui/**",
-                "/api/v1/admin/swagger"
-            ).permitAll()
-            .anyRequest().hasRole("ADMIN")
+                .anyRequest().hasRole("ADMIN")
         )
         .authenticationProvider(daoAuthenticationProvider)
+        .logout(c -> c
+            .logoutUrl("/api/v1/admin/logout").permitAll()
+            .logoutSuccessUrl(apiGatewayHost + LOGIN_ADDRESS)
+        )
         .formLogin(configurer -> configurer
-            .loginPage("/api/v1/admin/login").permitAll()
+            .loginPage(LOGIN_ADDRESS).permitAll()
             .successHandler((request, response, authentication) ->
                 response.sendRedirect(apiGatewayHost + "/api/v1/admin/all-services"))
             .failureHandler(simpleUrlAuthenticationFailureHandler)
@@ -58,8 +59,9 @@ public class SecurityConfig {
 
   @Bean
   public SimpleUrlAuthenticationFailureHandler simpleUrlAuthenticationFailureHandler(String apiGatewayHost) {
-    return new SimpleUrlAuthenticationFailureHandler(apiGatewayHost + "/api/v1/admin/login");
+    return new SimpleUrlAuthenticationFailureHandler(apiGatewayHost + LOGIN_ADDRESS);
   }
+
 
   @Bean
   public DaoAuthenticationProvider daoAuthenticationProvider() {
