@@ -54,6 +54,7 @@ class UserServiceTest implements UserMockUtils {
   private ChangeEmailHistoryRepository changeEmailHistoryRepository;
   @Mock
   private MailService mailService;
+  @Mock FriendService friendService;
   @Mock
   private UserMapper userMapper;
   @Mock

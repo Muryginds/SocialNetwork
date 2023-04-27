@@ -268,7 +268,7 @@ public class NotificationService {
         .sentTime(notification.getSentTime().atZone(ZoneId.systemDefault()).toInstant())
         .entityId(user.getId())
         .entityAuthor(socketUserMapper.userToSocketUserDTO(user,
-            user.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant(),
+            user.getBirthDate() == null ? null : user.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant(),
             user.getRegDate().atZone(ZoneId.systemDefault()).toInstant(),
             user.getLastOnlineTime().atZone(ZoneId.systemDefault()).toInstant()))
         .build();

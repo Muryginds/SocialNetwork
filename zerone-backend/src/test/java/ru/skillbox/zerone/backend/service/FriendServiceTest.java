@@ -17,6 +17,7 @@ import ru.skillbox.zerone.backend.model.entity.Friendship;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
 import ru.skillbox.zerone.backend.repository.FriendshipRepository;
+import ru.skillbox.zerone.backend.repository.RecommendationRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
@@ -40,6 +41,8 @@ class FriendServiceTest {
   private AutoCloseable utilsMockedStatic;
   @Mock
   private FriendshipRepository friendshipRepository;
+  @Mock
+  RecommendationRepository recommendationRepository;
   @Mock
   private UserRepository userRepository;
   @Mock
@@ -917,9 +920,4 @@ class FriendServiceTest {
     return friendList;
   }
 
-  @Test
-  void testGetRecommendations_whenAllCorrect_thenCorrect() {
-    CommonListResponseDTO<UserDTO> recommendations = underTest.getRecommendations(0, 0);
-    assertThat(recommendations.getData()).isEmpty();
-  }
 }

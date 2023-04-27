@@ -1,5 +1,6 @@
 package ru.skillbox.zerone.backend.controller;
 
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -55,4 +56,6 @@ public class UsersController implements SwaggerUsersController {
   public CommonResponseDTO<MessageResponseDTO> unblockUser(@PathVariable long id) {
     return friendService.unblockUser(id);
   }
+  @DeleteMapping("/me")
+  public CommonResponseDTO<Object> deleteUser() {return userService.deleteUser();}
 }

@@ -158,6 +158,11 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 			<version>${org.springframework.cloud.eureka-client.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.github.kuliginstepan</groupId>
+			<artifactId>dadata-client</artifactId>
+			<version>4.0.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
