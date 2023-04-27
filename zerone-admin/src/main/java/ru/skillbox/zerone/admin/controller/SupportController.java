@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.skillbox.zerone.admin.controller.swaggerdoc.SwaggerSupportController;
 import ru.skillbox.zerone.admin.model.dto.ChoiceDto;
 import ru.skillbox.zerone.admin.model.dto.ChoiceListDto;
 import ru.skillbox.zerone.admin.service.SupportService;
@@ -15,7 +16,7 @@ import ru.skillbox.zerone.admin.service.SupportService;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/admin/support")
-public class SupportController {
+public class SupportController implements SwaggerSupportController {
   private final SupportService supportService;
   private final String apiGatewayHost;
 

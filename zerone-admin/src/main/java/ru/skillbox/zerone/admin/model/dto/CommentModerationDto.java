@@ -12,7 +12,7 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentDto {
+public class CommentModerationDto {
   private long id;
   @JsonProperty("post_title")
   private String postTitle;
