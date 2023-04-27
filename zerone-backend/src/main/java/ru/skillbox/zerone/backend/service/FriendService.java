@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.FriendshipException;
-import ru.skillbox.zerone.backend.exception.RecommendationNotFoundException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.IsFriendsDTO;
@@ -391,20 +390,23 @@ public class FriendService {
 
     throw new FriendshipException(USER_NOT_BLOCKED);
   }
+
   @Transactional
   public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage) {
 
-
     var user = CurrentUserUtils.getCurrentUser();
-    if( user == null) {
+    if (user == null) {
       return null;
     }
-    Recommendation recommendations = recommendationRepository.findById(user.getId()).orElseThrow(() -> new RecommendationNotFoundException((user.getId())));
-    if (recommendations == null) {
+
+    Optional<Recommendation> recommendationsOptional = recommendationRepository.findById(user.getId());
+    if (recommendationsOptional.isEmpty()) {
       createPersonalRecommendations(user);
       return null;
     }
+    Recommendation recommendations = recommendationsOptional.get();
     List<User> recommendedFriends = userRepository.findUsersByIdIn(recommendations.getRecommendedFriends());
+
 
     return CommonListResponseDTO.<UserDTO>builder()
         .total(recommendedFriends.size())
@@ -413,6 +415,8 @@ public class FriendService {
 
         .data(userMapper.usersToUserDTO(recommendedFriends))
         .build();
+
+
   }
 
 
@@ -428,12 +432,16 @@ public class FriendService {
   public void createPersonalRecommendations(User user) {
     if (recommendationRepository.findById(user.getId()).isPresent()) {
       recommendationRepository.deleteById(user.getId());
-      recommendationRepository.save(findRecommendations(user.getId(), 0, 100));
     }
+    recommendationRepository.save(findRecommendations(user.getId(), 0, 100));
   }
 
   public Recommendation findRecommendations(Long id, int offset, int itemPerPage) {
-    var user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    var userOptional = userRepository.findById(id);
+    if ( userOptional.isEmpty()) {
+      return null;
+    }
+    var user = userOptional.get();
 
 
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
