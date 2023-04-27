@@ -437,7 +437,11 @@ public class FriendService {
   }
 
   public Recommendation findRecommendations(Long id, int offset, int itemPerPage) {
-    var user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    var userOptional = userRepository.findById(id);
+    if ( userOptional.isEmpty()) {
+      return null;
+    }
+    var user = userOptional.get();
 
 
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
