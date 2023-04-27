@@ -400,7 +400,7 @@ public class FriendService {
     }
 
     Optional<Recommendation> recommendationsOptional = recommendationRepository.findById(user.getId());
-    if( recommendationsOptional.isEmpty()) {
+    if (recommendationsOptional.isEmpty()) {
       createPersonalRecommendations(user);
       return null;
     }
