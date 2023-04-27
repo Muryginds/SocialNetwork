@@ -185,53 +185,53 @@
                     <artifactId>netty-resolver-dns-native-macos</artifactId>
                     <classifier>osx-aarch_64</classifier>
                 </dependency>
+                <dependency>
+                    <groupId>com.google.api-client</groupId>
+                    <artifactId>google-api-client</artifactId>
+                    <version>${com.google.api-client.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.google.apis</groupId>
+                    <artifactId>google-api-services-drive</artifactId>
+                    <version>${com.google.apis.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.google.oauth-client</groupId>
+                    <artifactId>google-oauth-client-jetty</artifactId>
+                    <version>${com.google.oauth-client.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.corundumstudio.socketio</groupId>
+                    <artifactId>netty-socketio</artifactId>
+                    <version>${com.corundumstudio.socketio.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>org.jacoco.agent</artifactId>
+                    <version>${org.jacoco.version}</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.springdoc</groupId>
+                    <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                    <version>${org.springdoc.version}</version>
+                </dependency>
+                <dependency>
+                    <groupId>com.maxmind.geoip2</groupId>
+                    <artifactId>geoip2</artifactId>
+                    <version>4.0.1</version>
+                </dependency>
+
+
+                <dependency>
+                    <groupId>org.mockito</groupId>
+                    <artifactId>mockito-inline</artifactId>
+                    <scope>test</scope>
+                </dependency>
             </dependencies>
         </profile>
     </profiles>
-		<dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client</artifactId>
-			<version>${com.google.api-client.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.apis</groupId>
-			<artifactId>google-api-services-drive</artifactId>
-			<version>${com.google.apis.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.oauth-client</groupId>
-			<artifactId>google-oauth-client-jetty</artifactId>
-			<version>${com.google.oauth-client.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.corundumstudio.socketio</groupId>
-			<artifactId>netty-socketio</artifactId>
-			<version>${com.corundumstudio.socketio.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jacoco</groupId>
-			<artifactId>org.jacoco.agent</artifactId>
-			<version>${org.jacoco.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>${org.springdoc.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.maxmind.geoip2</groupId>
-			<artifactId>geoip2</artifactId>
-			<version>4.0.1</version>
-		</dependency>
 
-
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-inline</artifactId>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 
 	<build>
 		<plugins>

@@ -4,24 +4,26 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.FriendshipException;
+import ru.skillbox.zerone.backend.exception.RecommendationNotFoundException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.IsFriendsDTO;
 import ru.skillbox.zerone.backend.model.dto.response.*;
 import ru.skillbox.zerone.backend.model.entity.Friendship;
+import ru.skillbox.zerone.backend.model.entity.Recommendation;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
 import ru.skillbox.zerone.backend.repository.FriendshipRepository;
+import ru.skillbox.zerone.backend.repository.RecommendationRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -89,6 +91,7 @@ public class FriendService {
     friendshipRepository.saveAll(friendshipList);
 
     notificationService.saveFriendship(friendshipList);
+    createPersonalRecommendations(user);
 
     return ResponseUtils.commonResponseDataOk();
   }

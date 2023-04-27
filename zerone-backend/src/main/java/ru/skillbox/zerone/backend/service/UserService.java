@@ -1,5 +1,8 @@
 package ru.skillbox.zerone.backend.service;
 
+import com.kuliginstepan.dadata.client.DadataClient;
+import com.kuliginstepan.dadata.client.domain.Suggestion;
+import com.kuliginstepan.dadata.client.domain.address.Address;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -151,8 +154,16 @@ public class UserService {
     }
 
     user.setIsApproved(true);
+    try {
+      user.setCity(getCity(getClientIpAddress()));
+      user.setCountry(getCountry(getClientIpAddress()));
+    } catch (IOException e) {
+      user.setCity("");
+      user.setCountry("");
+    }
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
+    friendService.createPersonalRecommendations(user);
 
     return ResponseUtils.commonResponseDataOk();
   }
@@ -207,6 +218,14 @@ public class UserService {
         .data(userMapper.usersToUserDTO(pageUsers.getContent()))
         .build();
   }
+  public CommonResponseDTO<Object> deleteUser() {
+    var user = CurrentUserUtils.getCurrentUser();
+    user.setIsDeleted(true);
+    userRepository.save(user);
+    return CommonResponseDTO.builder()
+        .build();
+  }
+
   private String getClientIpAddress() throws IOException {
 
     URL url = new URL(urlString);
