@@ -7,4 +7,4 @@ spring:
       ddl-auto: none
 
 microservices:
-  host: 0.0.0.0
+  host: zerone-network
