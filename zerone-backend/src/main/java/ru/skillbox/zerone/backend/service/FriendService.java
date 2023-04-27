@@ -4,16 +4,21 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.FriendshipException;
+import ru.skillbox.zerone.backend.exception.RecommendationNotFoundException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.IsFriendsDTO;
 import ru.skillbox.zerone.backend.model.dto.response.*;
 import ru.skillbox.zerone.backend.model.entity.Friendship;
+import ru.skillbox.zerone.backend.model.entity.Recommendation;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.enumerated.FriendshipStatus;
 import ru.skillbox.zerone.backend.repository.FriendshipRepository;
+import ru.skillbox.zerone.backend.repository.RecommendationRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
@@ -47,6 +52,8 @@ public class FriendService {
 
   private final FriendshipRepository friendshipRepository;
   private final UserRepository userRepository;
+  private final RecommendationRepository recommendationRepository;
+  private static final int RECOMMENDATION_COUNT = 8;
   private final UserMapper userMapper;
   private final NotificationService notificationService;
 
@@ -274,14 +281,6 @@ public class FriendService {
         .build();
   }
 
-  public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage) {
-    return CommonListResponseDTO.<UserDTO>builder()
-        .total(0)
-        .offset(offset)
-        .perPage(itemPerPage)
-        .data(Collections.emptyList())
-        .build();
-  }
 
   @Transactional
   @SuppressWarnings({"OptionalGetWithoutIsPresent", "java:S3655", "DuplicatedCode"})
@@ -390,5 +389,68 @@ public class FriendService {
     }
 
     throw new FriendshipException(USER_NOT_BLOCKED);
+  }
+  @Transactional
+  public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage) {
+
+
+    var user = CurrentUserUtils.getCurrentUser();
+    Recommendation recommendations = recommendationRepository.findById(user.getId()).orElseThrow(() -> new RecommendationNotFoundException((user.getId())));
+    if (recommendations == null) {
+      createPersonalRecommendations(user);
+      return null;
+    }
+    List<User> recommendedFriends = userRepository.findUsersByIdIn(recommendations.getRecommendedFriends());
+
+    return CommonListResponseDTO.<UserDTO>builder()
+        .total(recommendedFriends.size())
+        .offset(offset)
+        .perPage(itemPerPage)
+
+        .data(userMapper.usersToUserDTO(recommendedFriends))
+        .build();
+  }
+
+
+  @Scheduled(cron = "${scheduled-tasks.recommendation-creator}")
+  public void createRecommendations() {
+
+    var allUsers = userRepository.findAllUsers();
+    for (User user : allUsers) {
+      recommendationRepository.save(findRecommendations(user.getId(), 0, 100));
+    }
+  }
+
+  public void createPersonalRecommendations(User user) {
+    recommendationRepository.deleteById(user.getId());
+    recommendationRepository.save(findRecommendations(user.getId(), 0, 100));
+  }
+
+  public Recommendation findRecommendations(Long id, int offset, int itemPerPage) {
+    var user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+
+
+    Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
+    var currentFriends = recommendationRepository.findFriendships(user.getId()).stream().toList();
+    var recommendedUsersByCity = userRepository.findUsersByCity(user.getCity(), pageable).getContent();
+    List<Long> recommendedUsersId = new ArrayList<>(recommendedUsersByCity);
+
+    recommendedUsersId.removeAll(currentFriends);
+    recommendedUsersId.remove(user.getId());
+
+    if (recommendedUsersId.size() < RECOMMENDATION_COUNT) {
+      var allUsers = new ArrayList<>(userRepository.findAllUsersId(pageable).stream().toList());
+      allUsers.removeAll(recommendedUsersByCity);
+      allUsers.removeAll(currentFriends);
+      Collections.shuffle(allUsers);
+      recommendedUsersId.addAll(allUsers);
+    }
+
+    var recommendations = recommendedUsersId.stream().distinct().limit(RECOMMENDATION_COUNT).toList();
+
+    return Recommendation.builder()
+        .id(user.getId())
+        .recommendedFriends((recommendations))
+        .build();
   }
 }

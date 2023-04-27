@@ -1,7 +1,11 @@
 package ru.skillbox.zerone.backend.service;
 
+import com.kuliginstepan.dadata.client.DadataClient;
+import com.kuliginstepan.dadata.client.domain.Suggestion;
+import com.kuliginstepan.dadata.client.domain.address.Address;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -27,6 +31,10 @@ import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 import ru.skillbox.zerone.backend.util.ResponseUtils;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.UUID;
 
 @Service
@@ -40,7 +48,11 @@ public class UserService {
   private final NotificationSettingRepository notificationSettingRepository;
   private final SearchService searchService;
   private final StorageService storageService;
+  private final FriendService friendService;
   private final NotificationSettingService notificationSettingService;
+  private final DadataClient client;
+  @Value("${ip-check.url}")
+  String urlString;
 
 
   public CommonResponseDTO<MessageResponseDTO> changePassword(ChangePasswordDTO request) {
@@ -142,8 +154,16 @@ public class UserService {
     }
 
     user.setIsApproved(true);
+    try {
+      user.setCity(getCity(getClientIpAddress()));
+      user.setCountry(getCountry(getClientIpAddress()));
+    } catch (IOException e) {
+      user.setCity("");
+      user.setCountry("");
+    }
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
+    friendService.createPersonalRecommendations(user);
 
     return ResponseUtils.commonResponseDataOk();
   }
@@ -197,5 +217,34 @@ public class UserService {
         .perPage(itemPerPage)
         .data(userMapper.usersToUserDTO(pageUsers.getContent()))
         .build();
+  }
+  private String getClientIpAddress() throws IOException {
+
+    URL url = new URL(urlString);
+    try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()))) {
+      return br.readLine();
+    }
+
+  }
+
+
+
+  private String getCity(String ip) {
+    Suggestion<Address> address = client.iplocate(ip).block();
+    if (address == null) {
+      return "";
+    }
+
+    return address.getData().getCity();
+  }
+
+  private String getCountry (String ip) {
+    Suggestion<Address> address = client.iplocate(ip).block();
+    if (address == null) {
+      return "";
+    }
+
+    return address.getData().getCountry();
+
   }
 }

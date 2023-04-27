@@ -5,7 +5,7 @@ spring:
   application:
     name: zerone-backend
   kafka:
-    bootstrap-servers: "0.0.0.0:29092"
+    bootstrap-servers: "0.0.0.0:9092"
   datasource:
     url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
     password: password
@@ -96,6 +96,7 @@ google-drive:
 scheduled-tasks:
   google-drive-scanner: '0 0 0 * * ?'
   vk-countries-uploader: '0 5 8 * * SUN'
+  recommendation-creator: '0 0 2 * * ?'
 
 log-settings:
   output-path: logs
@@ -115,3 +116,10 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
+
+dadata:
+  client:
+    token: 0046c3e4e5392d96172a2915269374edc3a67d9d
+
+ip-check:
+  url: "http://checkip.amazonaws.com/"
