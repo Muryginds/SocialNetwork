@@ -8,6 +8,7 @@ import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.jdbc.Sql;
 import ru.skillbox.zerone.backend.AbstractIntegrationTest;
 import ru.skillbox.zerone.backend.model.dto.request.MessageRequestDTO;
@@ -24,8 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @Transactional
-class DialogServiceTest extends AbstractIntegrationTest
-{
+class DialogServiceTest extends AbstractIntegrationTest {
 
   @Autowired
   private DialogRepository dialogRepository;
@@ -34,7 +34,8 @@ class DialogServiceTest extends AbstractIntegrationTest
 
   User currentTestUser;
   private final MockedStatic<CurrentUserUtils> utilsMockedStatic = Mockito.mockStatic(CurrentUserUtils.class);
-
+  @Autowired
+  private JdbcTemplate jdbcTemplate;
 
   @BeforeEach
   public void init() {
@@ -52,7 +53,8 @@ class DialogServiceTest extends AbstractIntegrationTest
   @Sql(scripts = "classpath:mock-dialog-insert.sql")
   void testDialogService_when_ReadAllMessage_thenReturnCorrectDto() {
 
-    var result = dialogService.getMessages(dialogRepository.findMaxId(), 0, 10); //  searchUsers(firstName, lastName, country, city, ageFrom, ageTo, defaultPageable);
+    int MaxId = jdbcTemplate.queryForObject("SELECT coalesce (max(d.id),0) as ma_id FROM Dialog d", Integer.class);
+    var result = dialogService.getMessages(MaxId, 0, 10);
 
     List<MessageDataDTO> messageDataDTOList = new ArrayList<>();
     var MessageDate = LocalDateTime.of(2023, 1, 27, 17, 58,18,480000000);
