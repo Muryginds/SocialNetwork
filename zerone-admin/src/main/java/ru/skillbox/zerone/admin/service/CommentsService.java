@@ -10,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.skillbox.zerone.admin.model.dto.CommentDescriptionDto;
-import ru.skillbox.zerone.admin.model.dto.CommentDto;
+import ru.skillbox.zerone.admin.model.dto.CommentModerationDto;
 import ru.skillbox.zerone.admin.model.dto.ErrorDto;
 import ru.skillbox.zerone.admin.model.dto.TotalCommentDto;
 import ru.skillbox.zerone.admin.model.entity.Comment;
@@ -95,9 +95,9 @@ public class CommentsService {
       return null;
     }
 
-    List<CommentDto> dtos = new ArrayList<>();
+    List<CommentModerationDto> dtos = new ArrayList<>();
     comments.forEach(comment -> {
-      CommentDto dto = new CommentDto()
+      CommentModerationDto dto = new CommentModerationDto()
           .setId(comment.getId())
           .setPostTitle(comment.getPost().getTitle())
           .setAuthorFullname(comment.getAuthor().getFirstName() + " " +
@@ -134,12 +134,12 @@ public class CommentsService {
         .setCommentAuthorLastName(getToken(descriptionDto.getCommentAuthor(), 1));
   }
 
-  public CommentDto getCommentEdit(Long id) {
+  public CommentModerationDto getCommentEdit(Long id) {
     Comment comment = commentRepository.findById(id).orElse(null);
     if (comment == null) {
       return null;
     }
-    return new CommentDto()
+    return new CommentModerationDto()
         .setId(comment.getId())
         .setAuthorFullname(comment.getAuthor().getFirstName() + " " + comment.getAuthor().getLastName())
         .setCommentText(comment.getCommentText())
@@ -148,7 +148,7 @@ public class CommentsService {
   }
 
   @Transactional
-  public void postCommentEdit(CommentDto commentDto) {
+  public void postCommentEdit(CommentModerationDto commentDto) {
     Comment comment = commentRepository.findById(commentDto.getId()).orElse(null);
     if (comment == null) {
       return;

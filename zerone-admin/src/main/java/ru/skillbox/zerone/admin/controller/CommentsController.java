@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.skillbox.zerone.admin.model.dto.CommentDescriptionDto;
-import ru.skillbox.zerone.admin.model.dto.CommentDto;
+import ru.skillbox.zerone.admin.model.dto.CommentModerationDto;
 import ru.skillbox.zerone.admin.model.dto.ErrorDto;
 import ru.skillbox.zerone.admin.model.dto.TotalCommentDto;
 import ru.skillbox.zerone.admin.service.CommentsService;
@@ -71,13 +71,13 @@ public class CommentsController {
 
   @GetMapping("/{id}")
   public String getCommentEdit(@PathVariable Long id, Model model) {
-    CommentDto commentDto = commentsService.getCommentEdit(id);
+    CommentModerationDto commentDto = commentsService.getCommentEdit(id);
     model.addAttribute("commentDto", commentDto);
     return "comment-edit";
   }
 
   @PostMapping("/comment")
-  public String postCommentEdit(CommentDto commentDto) {
+  public String postCommentEdit(CommentModerationDto commentDto) {
     commentsService.postCommentEdit(commentDto);
     return MessageFormatter.format(COMMENTS_REDIRECT, apiGatewayHost).getMessage();
   }

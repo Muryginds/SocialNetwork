@@ -20,5 +20,5 @@ public class TotalCommentDto {
   private int perPage;
   private int offset;
   @JsonProperty("comment_list")
-  private List<CommentDto> commentList;
+  private List<CommentModerationDto> commentList;
 }

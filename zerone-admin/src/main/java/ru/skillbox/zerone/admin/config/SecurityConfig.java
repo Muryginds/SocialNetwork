@@ -32,8 +32,12 @@ public class SecurityConfig {
     http
         .csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authz -> authz
-                .requestMatchers("/assets/**").permitAll()
-                .anyRequest().hasRole("ADMIN")
+            .requestMatchers(
+                "/v3/api-docs/**",
+                "/swagger-ui/**",
+                "/api/v1/admin/swagger"
+            ).permitAll()
+            .anyRequest().hasRole("ADMIN")
         )
         .authenticationProvider(daoAuthenticationProvider)
         .formLogin(configurer -> configurer
@@ -56,7 +60,6 @@ public class SecurityConfig {
   public SimpleUrlAuthenticationFailureHandler simpleUrlAuthenticationFailureHandler(String apiGatewayHost) {
     return new SimpleUrlAuthenticationFailureHandler(apiGatewayHost + "/api/v1/admin/login");
   }
-
 
   @Bean
   public DaoAuthenticationProvider daoAuthenticationProvider() {
