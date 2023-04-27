@@ -218,6 +218,7 @@ public class UserService {
         .data(userMapper.usersToUserDTO(pageUsers.getContent()))
         .build();
   }
+
   public CommonResponseDTO<Object> deleteUser() {
     var user = CurrentUserUtils.getCurrentUser();
     user.setIsDeleted(true);
@@ -236,7 +237,6 @@ public class UserService {
   }
 
 
-
   private String getCity(String ip) {
     Suggestion<Address> address = client.iplocate(ip).block();
     if (address == null) {
@@ -246,7 +246,7 @@ public class UserService {
     return address.getData().getCity();
   }
 
-  private String getCountry (String ip) {
+  private String getCountry(String ip) {
     Suggestion<Address> address = client.iplocate(ip).block();
     if (address == null) {
       return "";

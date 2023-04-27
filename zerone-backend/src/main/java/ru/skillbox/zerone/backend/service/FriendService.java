@@ -391,20 +391,22 @@ public class FriendService {
 
     throw new FriendshipException(USER_NOT_BLOCKED);
   }
+
   @Transactional
   public CommonListResponseDTO<UserDTO> getRecommendations(int offset, int itemPerPage) {
 
-
     var user = CurrentUserUtils.getCurrentUser();
-    if( user == null) {
+    if (user == null) {
       return null;
     }
-    Recommendation recommendations = recommendationRepository.findById(user.getId()).orElseThrow(() -> new RecommendationNotFoundException((user.getId())));
+
+    Recommendation recommendations = recommendationRepository.findById(user.getId()).orElseThrow(RecommendationNotFoundException::new);
     if (recommendations == null) {
       createPersonalRecommendations(user);
       return null;
     }
     List<User> recommendedFriends = userRepository.findUsersByIdIn(recommendations.getRecommendedFriends());
+
 
     return CommonListResponseDTO.<UserDTO>builder()
         .total(recommendedFriends.size())
@@ -413,6 +415,8 @@ public class FriendService {
 
         .data(userMapper.usersToUserDTO(recommendedFriends))
         .build();
+
+
   }
 
 
@@ -428,8 +432,8 @@ public class FriendService {
   public void createPersonalRecommendations(User user) {
     if (recommendationRepository.findById(user.getId()).isPresent()) {
       recommendationRepository.deleteById(user.getId());
-      recommendationRepository.save(findRecommendations(user.getId(), 0, 100));
     }
+    recommendationRepository.save(findRecommendations(user.getId(), 0, 100));
   }
 
   public Recommendation findRecommendations(Long id, int offset, int itemPerPage) {
