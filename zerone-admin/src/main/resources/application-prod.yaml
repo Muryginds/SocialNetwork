@@ -7,4 +7,4 @@ spring:
       ddl-auto: none
 
 microservices:
-  host: zerone-network
+  host: zerone-network.ru
