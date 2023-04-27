@@ -396,6 +396,9 @@ public class FriendService {
 
 
     var user = CurrentUserUtils.getCurrentUser();
+    if( user == null) {
+      return null;
+    }
     Recommendation recommendations = recommendationRepository.findById(user.getId()).orElseThrow(() -> new RecommendationNotFoundException((user.getId())));
     if (recommendations == null) {
       createPersonalRecommendations(user);
@@ -423,8 +426,10 @@ public class FriendService {
   }
 
   public void createPersonalRecommendations(User user) {
-    recommendationRepository.deleteById(user.getId());
-    recommendationRepository.save(findRecommendations(user.getId(), 0, 100));
+    if (recommendationRepository.findById(user.getId()).isPresent()) {
+      recommendationRepository.deleteById(user.getId());
+      recommendationRepository.save(findRecommendations(user.getId(), 0, 100));
+    }
   }
 
   public Recommendation findRecommendations(Long id, int offset, int itemPerPage) {

@@ -15,3 +15,5 @@ databaseChangeLog:
       file: db/changelog/changeset/remove-message-permission-type.yaml
   - include:
       file: db/changelog/changeset/add-tag-table-constraint.yaml
+  - include:
+      file: db/changelog/changeset/recommendation-entity.yaml
