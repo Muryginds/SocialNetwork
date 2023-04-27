@@ -53,8 +53,8 @@ class DialogServiceTest extends AbstractIntegrationTest {
   @Sql(scripts = "classpath:mock-dialog-insert.sql")
   void testDialogService_when_ReadAllMessage_thenReturnCorrectDto() {
 
-    int MaxId = jdbcTemplate.queryForObject("SELECT coalesce (max(d.id),0) as ma_id FROM Dialog d", Integer.class);
-    var result = dialogService.getMessages(MaxId, 0, 10);
+    Long maxId = jdbcTemplate.queryForObject("SELECT coalesce (max(d.id),0) as ma_id FROM Dialog d", Long.class);
+    var result = dialogService.getMessages(maxId, 0, 10);
 
     List<MessageDataDTO> messageDataDTOList = new ArrayList<>();
     var MessageDate = LocalDateTime.of(2023, 1, 27, 17, 58,18,480000000);
