@@ -29,7 +29,7 @@ WITH rows AS (
                 'johndoe2@example.com', 'test', null, '2020-01-27 17:58:18.048000', 'ACTIVE') RETURNING id)
 
 INSERT INTO "post" (is_blocked, is_deleted, post_text, "time", title, update_date, author_id)
-SELECT false, false, 'test2 post some text post text text text', '2023-03-27 07:58:18.048000', 'test title',
+SELECT false, false, 'test2 post some text post text text text', '2023-03-26 07:58:18.048000', 'test title',
        '2023-03-27', id FROM "rows";
 
 WITH rows AS (

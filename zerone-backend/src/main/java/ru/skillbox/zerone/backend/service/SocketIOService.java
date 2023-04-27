@@ -21,7 +21,6 @@ import ru.skillbox.zerone.backend.model.entity.Dialog;
 import ru.skillbox.zerone.backend.model.entity.Message;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.model.entity.WebSocketConnection;
-import ru.skillbox.zerone.backend.model.enumerated.ReadStatus;
 import ru.skillbox.zerone.backend.repository.*;
 import ru.skillbox.zerone.backend.security.JwtTokenProvider;
 
@@ -189,9 +188,6 @@ public class SocketIOService {
           var listResponse = SocketListResponseDTO.builder()
               .data(response)
               .build();
-
-          message.setReadStatus(ReadStatus.READ);
-          messageRepository.save(message);
 
           userClient.sendEvent("message", listResponse);
         }
