@@ -110,6 +110,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATA_REDIS_HOST: redis
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: eureka:8761/eureka
       TZ: "Europe/Moscow"
     ports:
       -  "8088:8088"
@@ -127,7 +128,7 @@ services:
         max_attempts: 5
         window: 60s
 
-  support:
+  admin:
     container_name: admin
     image: eclipse-temurin:19-jdk-jammy
     environment:
@@ -135,6 +136,7 @@ services:
       SPRING_DATASOURCE_USERNAME: skillbox
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_PROFILES_ACTIVE: prod
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: eureka:8761/eureka
       TZ: "Europe/Moscow"
     ports:
       - "8083:8083"
@@ -155,6 +157,7 @@ services:
     container_name: eureka-server
     image: eclipse-temurin:19-jdk-jammy
     environment:
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: host.docker.internal:8761/eureka
       TZ: "Europe/Moscow"
     ports:
       - "8761:8761"
@@ -175,6 +178,7 @@ services:
     container_name: api-gateway
     image: eclipse-temurin:19-jdk-jammy
     environment:
+      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: eureka:8761/eureka
       TZ: "Europe/Moscow"
     ports:
       - "8086:8086"
