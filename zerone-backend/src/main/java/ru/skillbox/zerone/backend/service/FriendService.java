@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.FriendshipException;
-import ru.skillbox.zerone.backend.exception.RecommendationNotFoundException;
 import ru.skillbox.zerone.backend.exception.UserNotFoundException;
 import ru.skillbox.zerone.backend.mapstruct.UserMapper;
 import ru.skillbox.zerone.backend.model.dto.request.IsFriendsDTO;
@@ -400,11 +399,12 @@ public class FriendService {
       return null;
     }
 
-    Recommendation recommendations = recommendationRepository.findById(user.getId()).orElseThrow(RecommendationNotFoundException::new);
-    if (recommendations == null) {
+    Optional<Recommendation> recommendationsOptional = recommendationRepository.findById(user.getId());
+    if( recommendationsOptional.isEmpty()) {
       createPersonalRecommendations(user);
       return null;
     }
+    Recommendation recommendations = recommendationsOptional.get();
     List<User> recommendedFriends = userRepository.findUsersByIdIn(recommendations.getRecommendedFriends());
 
 
