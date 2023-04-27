@@ -79,7 +79,6 @@ public class NotificationService {
     } else {
       throw new NotificationException("Неверные параметры");
     }
-    notifications.forEach(n -> n.setStatus(ReadStatus.READ));
     notificationRepository.saveAll(notifications);
 
     List<NotificationDTO> dtoList = new ArrayList<>();

@@ -84,7 +84,7 @@ public class SearchService {
             .where(TAG.TAG_.containsIgnoreCase(tag))) : noCondition())
         .and(POST.IS_DELETED.eq(false))
         .and(POST.IS_BLOCKED.eq(false))
-        .and(POST.TIME.lessThan(LocalDateTime.now()));
+        .and((POST.TIME.lessThan(POST.UPDATE_DATE).or(POST.TIME.eq(POST.UPDATE_DATE))));
   }
 
   private LocalDateTime getPubDate(long pubDate) {

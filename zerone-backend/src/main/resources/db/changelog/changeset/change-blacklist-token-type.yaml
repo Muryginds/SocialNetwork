@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: modifyDataType-token
+      author: liquibase-docs
+      changes:
+        - modifyDataType:
+            columnName: token
+            newDataType: text
+            tableName: blacklist_token

@@ -52,9 +52,11 @@ public class DialogService {
     var pageRequest = PageRequest.of(offset / itemPerPage, itemPerPage).withSort(Sort.by("id").descending());
 
     var messagesPage = messageRepository.findByDialog(dialog, pageRequest);
+    var user = CurrentUserUtils.getCurrentUser();
 
     var unreadedMessages = messagesPage.stream()
         .filter(m -> SENT.equals(m.getReadStatus()))
+        .filter(m -> !Objects.equals(m.getAuthor().getId(), user.getId()))
         .map(u -> u.setReadStatus(READ))
         .toList();
     messageRepository.saveAll(unreadedMessages);
