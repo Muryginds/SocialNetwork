@@ -16,8 +16,10 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.PostDTO;
 import ru.skillbox.zerone.backend.model.entity.Post;
+import ru.skillbox.zerone.backend.model.entity.PostFile;
 import ru.skillbox.zerone.backend.model.entity.Tag;
 import ru.skillbox.zerone.backend.model.entity.User;
+import ru.skillbox.zerone.backend.repository.PostFileRepository;
 import ru.skillbox.zerone.backend.repository.PostRepository;
 import ru.skillbox.zerone.backend.repository.TagRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
@@ -27,6 +29,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +40,9 @@ public class PostService {
   private final PostMapper postMapper;
   private final TagRepository tagRepository;
   private final NotificationService notificationService;
-
+  @SuppressWarnings("all")
+  private static final Pattern pattern = Pattern.compile("<img\\s+[^>]*src=\"([^\"]*)\"[^>]*>");
+  private final PostFileRepository postFileRepository;
 
   @Transactional
   public CommonResponseDTO<PostDTO> createPost(long id, long publishDate, PostRequestDTO postRequestDTO) {
@@ -55,6 +61,11 @@ public class PostService {
         .time(publishDate == 0 ? LocalDateTime.now()
             : Instant.ofEpochMilli(publishDate).atZone(ZoneId.systemDefault()).toLocalDateTime())
         .build();
+    Matcher images = pattern.matcher(postRequestDTO.getPostText());
+    while (images.find()) {
+      PostFile file = postFileRepository.findByPath(images.group(1));
+      postFileRepository.save(file);
+    }
 
     postRepository.save(post);
     notificationService.savePost(post);
