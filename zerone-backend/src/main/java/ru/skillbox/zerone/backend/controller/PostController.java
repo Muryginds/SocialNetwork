@@ -1,7 +1,9 @@
 package ru.skillbox.zerone.backend.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.skillbox.zerone.backend.controller.swaggerdoc.SwaggerPostController;
 import ru.skillbox.zerone.backend.model.dto.request.PostRequestDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
@@ -9,10 +11,11 @@ import ru.skillbox.zerone.backend.model.dto.response.PostDTO;
 import ru.skillbox.zerone.backend.service.PostService;
 
 
+@Tag(name = "Контроллер для работы с постами")
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
-public class PostController {
+class PostController implements SwaggerPostController {
   private final PostService postService;
 
   @PostMapping("/users/{id}/wall")
@@ -23,7 +26,7 @@ public class PostController {
   }
 
   @GetMapping("/users/{id}/wall")
-  public CommonListResponseDTO<PostDTO> getUserWall(@PathVariable int id,
+  public CommonListResponseDTO<PostDTO> getUserWall(@PathVariable long id,
                                                     @RequestParam(name = "offset", defaultValue = "0") int offset,
                                                     @RequestParam(name = "itemPerPage", defaultValue = "10") int itemPerPage) {
     return postService.getAuthorWall(id, offset, itemPerPage);
@@ -47,19 +50,19 @@ public class PostController {
   }
 
   @GetMapping("/post/{id}")
-  public CommonResponseDTO<PostDTO> getPostById(@PathVariable int id) {
+  public CommonResponseDTO<PostDTO> getPostById(@PathVariable long id) {
     return postService.getPostById(id);
   }
 
   @PutMapping("/post/{id}")
-  public CommonResponseDTO<PostDTO> putPostById(@PathVariable int id,
+  public CommonResponseDTO<PostDTO> putPostById(@PathVariable long id,
                                                 @RequestParam(name = "publish_date", required = false, defaultValue = "0") Long publishDate,
                                                 @RequestBody PostRequestDTO requestBody) {
     return postService.putPostById(id, publishDate, requestBody);
   }
 
   @DeleteMapping("/post/{id}")
-  public CommonResponseDTO<PostDTO> deletePostById(@PathVariable int id) {
+  public CommonResponseDTO<PostDTO> deletePostById(@PathVariable long id) {
     return postService.deletePostById(id);
   }
 
