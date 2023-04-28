@@ -35,7 +35,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+
+import static ru.skillbox.zerone.backend.model.enumerated.NotificationType.*;
 
 @Service
 @RequiredArgsConstructor
@@ -49,7 +54,6 @@ public class UserService {
   private final SearchService searchService;
   private final StorageService storageService;
   private final FriendService friendService;
-  private final NotificationSettingService notificationSettingService;
   private final DadataClient client;
   @Value("${ip-check.url}")
   String urlString;
@@ -194,18 +198,6 @@ public class UserService {
     return userMapper.userToUserDTO(user);
   }
 
-  @Transactional
-  public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationSettingDTO typeDTO) {
-    var user = CurrentUserUtils.getCurrentUser();
-    var notificationType = NotificationType.valueOf(typeDTO.getType());
-    var setting = notificationSettingRepository.findByUser(user)
-        .orElseGet(NotificationSetting::new);
-    setting.setUser(user);
-    notificationSettingService.saveNotificationTypeByUser(
-        user, notificationType, typeDTO.getEnable());
-    return ResponseUtils.commonResponseDataOk();
-  }
-
   @SuppressWarnings("java:S107")
   public CommonListResponseDTO<UserDTO> searchUsers(String name, String lastName, String country, String city, Integer ageFrom, Integer ageTo, int offset, int itemPerPage) {
     Pageable pageable = PageRequest.of(offset / itemPerPage, itemPerPage);
@@ -217,6 +209,55 @@ public class UserService {
         .perPage(itemPerPage)
         .data(userMapper.usersToUserDTO(pageUsers.getContent()))
         .build();
+  }
+
+  @Transactional
+  public CommonResponseDTO<MessageResponseDTO> setNotificationType(NotificationSettingDTO typeDTO) {
+    var setting = getNotificationSetting();
+    boolean enabled = typeDTO.getEnable();
+    NotificationType notificationType = NotificationType.valueOf(typeDTO.getType());
+    switch (notificationType) {
+      case POST -> setting.setPostEnabled(enabled);
+      case POST_COMMENT -> setting.setPostCommentEnabled(enabled);
+      case COMMENT_COMMENT -> setting.setCommentCommentEnabled(enabled);
+      case FRIEND_REQUEST -> setting.setFriendRequestEnabled(enabled);
+      case MESSAGE -> setting.setMessagesEnabled(enabled);
+      case FRIEND_BIRTHDAY -> setting.setFriendBirthdayEnabled(enabled);
+    }
+    notificationSettingRepository.save(setting);
+    return ResponseUtils.commonResponseDataOk();
+  }
+
+  public CommonListResponseDTO<NotificationSettingDTO> getNotificationSettingList() {
+    var setting = getNotificationSetting();
+    List<NotificationSettingDTO> data = new ArrayList<>();
+    addSetting(data, POST, setting.getPostEnabled());
+    addSetting(data, POST_COMMENT, setting.getPostCommentEnabled());
+    addSetting(data, COMMENT_COMMENT, setting.getCommentCommentEnabled());
+    addSetting(data, FRIEND_REQUEST, setting.getFriendRequestEnabled());
+    addSetting(data, MESSAGE, setting.getMessagesEnabled());
+    addSetting(data, FRIEND_BIRTHDAY, setting.getFriendBirthdayEnabled());
+
+    return CommonListResponseDTO.<NotificationSettingDTO>builder()
+        .data(data).build();
+  }
+
+  private NotificationSetting getNotificationSetting() {
+    User user = CurrentUserUtils.getCurrentUser();
+    Optional<NotificationSetting> optionalSetting = notificationSettingRepository.findByUser(user);
+    NotificationSetting setting;
+    if (optionalSetting.isPresent()) {
+      setting = optionalSetting.get();
+    } else {
+      setting = new NotificationSetting();
+      setting.setUser(user);
+    }
+    return setting;
+  }
+
+  private void addSetting(List<NotificationSettingDTO> data, NotificationType type, boolean enabled) {
+    var setting = new NotificationSettingDTO(type.name(), enabled);
+    data.add(setting);
   }
 
   public CommonResponseDTO<Object> deleteUser() {
