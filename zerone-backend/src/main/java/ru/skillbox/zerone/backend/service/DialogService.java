@@ -157,9 +157,10 @@ public class DialogService {
 
       messageRepository.save(message);
 
-      socketIOService.sendMessageEvent(message);
-
-      notificationService.saveMessage(message);
+      if (!user.getId().equals(companion.getId())) {
+        socketIOService.sendMessageEvent(message);
+        notificationService.saveMessage(message);
+      }
 
       var dialogDataDTO = dialogMapper.dialogToDialogDataDTO(dialog, message, 0, companion);
 
