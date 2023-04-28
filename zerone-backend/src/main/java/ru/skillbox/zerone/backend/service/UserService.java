@@ -155,11 +155,11 @@ public class UserService {
 
     user.setIsApproved(true);
     try {
-      user.setCity(getCity(getClientIpAddress()));
       user.setCountry(getCountry(getClientIpAddress()));
+      user.setCity(getCity(getClientIpAddress()));
     } catch (IOException e) {
-      user.setCity("");
       user.setCountry("");
+      user.setCity("");
     }
     user.setStatus(UserStatus.ACTIVE);
     userRepository.save(user);
