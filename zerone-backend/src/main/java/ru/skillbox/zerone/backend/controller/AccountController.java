@@ -7,9 +7,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.zerone.backend.controller.swaggerdoc.SwaggerAccountController;
 import ru.skillbox.zerone.backend.model.dto.request.*;
+import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
+import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 import ru.skillbox.zerone.backend.service.UserService;
-import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 
 @Validated
 @RestController
@@ -39,10 +40,15 @@ public class AccountController implements SwaggerAccountController {
   }
 
   @PutMapping("/email")
-  public CommonResponseDTO<MessageResponseDTO> sendMessageForChangeEmail(@RequestBody ChangeEmailDTO requestDto) {    return userService.sendMessageForChangeEmail(requestDto);  }
+  public CommonResponseDTO<MessageResponseDTO> sendMessageForChangeEmail(@RequestBody ChangeEmailDTO requestDto) {return userService.sendMessageForChangeEmail(requestDto);}
 
   @PutMapping("/notifications")
   public CommonResponseDTO<MessageResponseDTO> setNotificationType(@RequestBody NotificationSettingDTO typeDTO) {
     return userService.setNotificationType(typeDTO);
+  }
+
+  @GetMapping("/notifications")
+  public CommonListResponseDTO<NotificationSettingDTO> getNotificationSettingList() {
+    return userService.getNotificationSettingList();
   }
 }
