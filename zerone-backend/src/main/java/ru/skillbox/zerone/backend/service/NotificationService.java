@@ -217,7 +217,7 @@ public class NotificationService {
         .sentTime(notification.getSentTime().atZone(ZoneId.systemDefault()).toInstant())
         .entityId(comment.getPost().getId())
         .entityAuthor(socketUserMapper.userToSocketUserDTO(author,
-            author.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant(),
+            author.getBirthDate() == null ? null : author.getBirthDate().atStartOfDay(ZoneId.systemDefault()).toInstant(),
             author.getRegDate().atZone(ZoneId.systemDefault()).toInstant(),
             author.getLastOnlineTime().atZone(ZoneId.systemDefault()).toInstant()))
         .parentId(parentId)
