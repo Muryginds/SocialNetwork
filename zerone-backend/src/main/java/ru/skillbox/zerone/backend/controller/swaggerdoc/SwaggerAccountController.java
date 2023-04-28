@@ -21,8 +21,11 @@ public interface SwaggerAccountController {
   @Operation(summary = "Подтвердить регистрацию аккаунта")
   @ApiResponse(responseCode = "200", description = "Регистрация аккаунта успешно подтверждена")
   @ApiResponse(responseCode = "400", description = "Некорректный запрос. Проверьте параметры запроса.", content = @Content)
-  @ApiResponse(responseCode = "403", description = "Пользователь не авторизован", content = @Content)
   CommonResponseDTO<MessageResponseDTO> registrationConfirm(@Valid @RequestBody RegisterConfirmRequestDTO request);
+
+  @Operation(summary = "Регистрация завершена")
+  @ApiResponse(responseCode = "200", description = "Регистрация завершена", content = @Content)
+  CommonResponseDTO<MessageResponseDTO> registrationComplete();
 
   @Operation(summary = "Изменить пароль аккаунта")
   @ApiResponse(responseCode = "200", description = "Пароль успешно изменен")

@@ -28,6 +28,11 @@ public class AccountController implements SwaggerAccountController {
     return userService.registrationConfirm(request);
   }
 
+  @GetMapping("/registration_complete")
+  public CommonResponseDTO<MessageResponseDTO> registrationComplete() {
+    return userService.registrationComplete();
+  }
+
   @PutMapping("/password/set")
   public CommonResponseDTO<MessageResponseDTO> changePassword(@Valid @RequestBody ChangePasswordDTO requestDto) {
     return userService.changePassword(requestDto);

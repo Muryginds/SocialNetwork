@@ -255,4 +255,8 @@ public class UserService {
     return address.getData().getCountry();
 
   }
+
+  public CommonResponseDTO<MessageResponseDTO> registrationComplete() {
+    return ResponseUtils.commonResponseDataOk();
+  }
 }
