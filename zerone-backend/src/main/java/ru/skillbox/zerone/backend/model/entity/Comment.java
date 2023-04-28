@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 import ru.skillbox.zerone.backend.model.enumerated.CommentType;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "comment")
@@ -63,7 +63,7 @@ public class Comment {
   @Column(name = "is_deleted")
   private Boolean isDeleted = false;
 
-  @OneToMany
+  @OneToMany(fetch = FetchType.EAGER)
   @JoinColumn(name = "parent_id")
-  private Set<Comment> comments = new HashSet<>();
+  private List<Comment> comments = new ArrayList<>();
 }
