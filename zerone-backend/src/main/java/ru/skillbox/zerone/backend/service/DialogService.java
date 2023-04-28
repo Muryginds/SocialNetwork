@@ -79,6 +79,9 @@ public class DialogService {
     checkUserCanSendMessagesToCompanion(user, companion);
 
     var message = messageMapper.messageRequestDTOToMessage(messageRequestDTO, dialog);
+    if (user.getId().equals(companion.getId())) {
+      message.setReadStatus(READ);
+    }
     messageRepository.save(message);
 
     notificationService.saveMessage(message);
@@ -147,6 +150,11 @@ public class DialogService {
           .dialog(dialog)
           .author(user)
           .build();
+
+      if (user.getId().equals(companion.getId())) {
+        message.setReadStatus(READ);
+      }
+
       messageRepository.save(message);
 
       socketIOService.sendMessageEvent(message);
