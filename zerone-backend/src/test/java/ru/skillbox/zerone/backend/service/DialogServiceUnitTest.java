@@ -120,6 +120,8 @@ class DialogServiceUnitTest {
     when(dialogRepository.save(any())).thenReturn(dialog);
     when(messageRepository.save(any())).thenReturn(message);
     when(dialogMapper.dialogToDialogDataDTO(any(Dialog.class), any(Message.class), any(int.class), any(User.class))).thenReturn(dialogDataDTO);
+    Mockito.doNothing().when(socketIOService).sendMessageEvent(message);
+    Mockito.doNothing().when(notificationService).saveMessage(message);
 
     var usersIds = new ArrayList<Long>();
     usersIds.add(1_000_000L);
@@ -131,6 +133,8 @@ class DialogServiceUnitTest {
     assertNotNull(result.getData());
     verify(dialogRepository, times(1)).save(any());
     verify(messageRepository, times(1)).save(any());
+    verify(socketIOService, times(1)).sendMessageEvent(any());
+    verify(notificationService, times(1)).saveMessage(any());
   }
 
   @Test
