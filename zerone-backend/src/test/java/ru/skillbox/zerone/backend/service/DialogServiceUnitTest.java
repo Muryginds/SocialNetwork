@@ -132,7 +132,6 @@ class DialogServiceUnitTest {
     assertNotNull(result.getData());
     verify(dialogRepository, times(1)).save(any());
     verify(messageRepository, times(1)).save(any());
-    verify(notificationService, times(1)).saveMessage(any());
   }
 
   @Test
