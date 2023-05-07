@@ -22,7 +22,6 @@ import ru.skillbox.zerone.backend.model.entity.Dialog;
 import ru.skillbox.zerone.backend.model.entity.Message;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.repository.DialogRepository;
-import ru.skillbox.zerone.backend.repository.FriendshipRepository;
 import ru.skillbox.zerone.backend.repository.MessageRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
@@ -35,7 +34,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class DialogServiceUnitTest {
+class DialogServiceUnitTest {
   @Mock
   private DialogRepository dialogRepository;
   @Mock
@@ -49,14 +48,10 @@ public class DialogServiceUnitTest {
   @Mock
   private SocketIOService socketIOService;
   @Mock
-  private FriendshipRepository friendshipRepository;
-  @Mock
   private NotificationService notificationService;
   @InjectMocks
   private DialogService dialogService;
 
-//  @Mock
-//  CurrentUserUtils currentUserUtils;
   private User currentTestUser;
   User companion;
   private final MockedStatic<CurrentUserUtils> utilsMockedStatic = Mockito.mockStatic(CurrentUserUtils.class);
@@ -70,7 +65,7 @@ public class DialogServiceUnitTest {
   public void init() {
     currentTestUser = new User().setId(1L);
     companion = new User().setId(1L);
-    utilsMockedStatic.when(() -> CurrentUserUtils.getCurrentUser()).thenReturn(currentTestUser);
+    utilsMockedStatic.when(CurrentUserUtils::getCurrentUser).thenReturn(currentTestUser);
     MessageRequestDTO messageRequestDTO = new MessageRequestDTO();
     messageRequestDTO.setMessageText("test message");
     dialog = new Dialog();
@@ -94,7 +89,7 @@ public class DialogServiceUnitTest {
 
   @Test
   @Transactional(dontRollbackOn = ZeroneSocketException.class)
-  public void testPostMessage() {
+  void testPostMessage() {
     when(dialogRepository.findById(any(Long.class))).thenReturn(Optional.of(dialog));
     when(messageMapper.messageRequestDTOToMessage(messageRequestDTO, dialog)).thenReturn(message);
     when(messageMapper.messageToMessageDataDTO(message)).thenReturn(messageDataDTO);
@@ -127,7 +122,7 @@ public class DialogServiceUnitTest {
     when(dialogMapper.dialogToDialogDataDTO(any(Dialog.class), any(Message.class), any(int.class), any(User.class))).thenReturn(dialogDataDTO);
 
     var usersIds = new ArrayList<Long>();
-    usersIds.add(1L);
+    usersIds.add(1_000_000L);
     var dialogRequestDTO = new DialogRequestDTO();
     dialogRequestDTO.setUsersIds(usersIds);
     var result = dialogService.postDialogs(dialogRequestDTO);
