@@ -1,6 +1,5 @@
 package ru.skillbox.zerone.backend.service;
 
-import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,7 +8,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.skillbox.zerone.backend.exception.DialogException;
-import ru.skillbox.zerone.backend.exception.ZeroneSocketException;
 import ru.skillbox.zerone.backend.mapstruct.DialogMapper;
 import ru.skillbox.zerone.backend.mapstruct.MessageMapper;
 import ru.skillbox.zerone.backend.model.dto.request.DialogRequestDTO;
@@ -91,11 +89,11 @@ class DialogServiceUnitTest {
   }
 
   @Test
-  @Transactional(dontRollbackOn = ZeroneSocketException.class)
   void testPostMessage() {
     when(dialogRepository.findById(any(Long.class))).thenReturn(Optional.of(dialog));
     when(messageMapper.messageRequestDTOToMessage(messageRequestDTO, dialog)).thenReturn(message);
     when(messageMapper.messageToMessageDataDTO(message)).thenReturn(messageDataDTO);
+    when(friendshipRepository.findBySrcPersonAndDstPerson(any(User.class), any(User.class))).thenReturn(Optional.empty());
     CommonResponseDTO<MessageDataDTO> response = dialogService.postMessages(1L, messageRequestDTO);
     assertEquals("test message",response.getData().getMessageText());
     assertEquals("SEND",response.getData().getReadStatus());
@@ -104,9 +102,8 @@ class DialogServiceUnitTest {
     verify(notificationService).saveMessage(message);
   }
 
-
   @Test
-  void postDialogs_whenValidInput_shouldReturnCommonResponseDTOIsNotNull_And_1TimesInvokeRepository() {
+  void testPostDialogs_whenValidInput_shouldReturnCommonResponseDTOIsNotNull_And_1TimeInvokedRepository() {
     var companion = currentTestUser;
     UserDTO companionDTO = new UserDTO();
     companionDTO.setEmail(companion.getEmail());
@@ -120,6 +117,7 @@ class DialogServiceUnitTest {
     when(CurrentUserUtils.getCurrentUser()).thenReturn(currentTestUser);
     when(userRepository.findById(any(Long.class))).thenReturn(Optional.of(companion));
     when(dialogRepository.findByUserDuet(currentTestUser, companion)).thenReturn(Optional.empty());
+    when(friendshipRepository.findBySrcPersonAndDstPerson(any(User.class), any(User.class))).thenReturn(Optional.empty());
     when(dialogRepository.save(any())).thenReturn(dialog);
     when(messageRepository.save(any())).thenReturn(message);
     when(dialogMapper.dialogToDialogDataDTO(any(Dialog.class), any(Message.class), any(int.class), any(User.class))).thenReturn(dialogDataDTO);
@@ -139,7 +137,7 @@ class DialogServiceUnitTest {
   }
 
   @Test
-  void postDialogs_whenInvalidInput_shouldThrowException() {
+  void testPostDialogs_whenInvalidInput_shouldThrowException() {
     var id = -1L;
     var user = new User();
     user.setId(2L);
@@ -155,6 +153,4 @@ class DialogServiceUnitTest {
 
     assertThrows(DialogException.class, () -> dialogService.postDialogs(dialogRequestDTO));
   }
-
-
 }
