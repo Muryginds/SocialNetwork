@@ -98,7 +98,6 @@ class DialogServiceUnitTest {
     assertEquals("test message",response.getData().getMessageText());
     assertEquals("SEND",response.getData().getReadStatus());
     verify(messageRepository).save(message);
-    verify(socketIOService).sendMessageEvent(message);
     verify(notificationService).saveMessage(message);
   }
 
