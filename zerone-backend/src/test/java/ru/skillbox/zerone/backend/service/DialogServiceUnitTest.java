@@ -22,6 +22,7 @@ import ru.skillbox.zerone.backend.model.entity.Dialog;
 import ru.skillbox.zerone.backend.model.entity.Message;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.repository.DialogRepository;
+import ru.skillbox.zerone.backend.repository.FriendshipRepository;
 import ru.skillbox.zerone.backend.repository.MessageRepository;
 import ru.skillbox.zerone.backend.repository.UserRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
@@ -47,6 +48,8 @@ class DialogServiceUnitTest {
   private DialogMapper dialogMapper;
   @Mock
   private SocketIOService socketIOService;
+  @Mock
+  private FriendshipRepository friendshipRepository;
   @Mock
   private NotificationService notificationService;
   @InjectMocks
