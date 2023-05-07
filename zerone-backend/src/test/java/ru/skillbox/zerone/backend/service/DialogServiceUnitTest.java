@@ -120,6 +120,7 @@ class DialogServiceUnitTest {
     when(dialogRepository.save(any())).thenReturn(dialog);
     when(messageRepository.save(any())).thenReturn(message);
     when(dialogMapper.dialogToDialogDataDTO(any(Dialog.class), any(Message.class), any(int.class), any(User.class))).thenReturn(dialogDataDTO);
+    Mockito.doNothing().when(socketIOService).sendMessageEvent(message);
 
     var usersIds = new ArrayList<Long>();
     usersIds.add(1_000_000L);
