@@ -3,7 +3,7 @@ name: Build job
 on:
   push:
     branches:
-      - "master"
+      - "*"
   pull_request:
     branches:
       - "*"
@@ -25,6 +25,7 @@ jobs:
 
   migration:
     runs-on: ubuntu-latest
+
     if: github.ref_name == 'master'
     steps:
       - name: Creating a project copy
