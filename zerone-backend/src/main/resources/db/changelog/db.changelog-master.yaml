@@ -1,21 +1,21 @@
 databaseChangeLog:
   - include:
-      file: db/changelog/changeset/type.yaml
+      file: zerone-backend/src/main/resources/db/changelog/changeset/type.yaml
   - include:
-      file: db/changelog/changeset/entity.yaml
+      file: zerone-backend/src/main/resources/db/changelog/changeset/entity.yaml
   - include:
-      file: db/changelog/changeset/insert-into-role.yaml
+      file: zerone-backend/src/main/resources/db/changelog/changeset/insert-into-role.yaml
   - include:
-      file: db/changelog/changeset/country-table-added.yaml
+      file: zerone-backend/src/main/resources/db/changelog/changeset/country-table-added.yaml
   - include:
-      file: db/changelog/changeset/change-blacklist-token-type.yaml
+      file: zerone-backend/src/main/resources/db/changelog/changeset/change-blacklist-token-type.yaml
   - include:
-      file: db/changelog/changeset/insert-test-data.yaml
+      file: zerone-backend/src/main/resources/db/changelog/changeset/insert-test-data.yaml
   - include:
-      file: db/changelog/changeset/file-database-added.yaml
+      file: zerone-backend/src/main/resources/db/changelog/changeset/file-database-added.yaml
   - include:
-      file: db/changelog/changeset/remove-message-permission-type.yaml
+      file: zerone-backend/src/main/resources/db/changelog/changeset/remove-message-permission-type.yaml
   - include:
-      file: db/changelog/changeset/add-tag-table-constraint.yaml
+      file: zerone-backend/src/main/resources/db/changelog/changeset/add-tag-table-constraint.yaml
   - include:
-      file: db/changelog/changeset/recommendation-entity.yaml
+      file: zerone-backend/src/main/resources/db/changelog/changeset/recommendation-entity.yaml
