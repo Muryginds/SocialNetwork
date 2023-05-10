@@ -3,7 +3,7 @@ name: Build job
 on:
   push:
     branches:
-      - "master"
+      - "*"
   pull_request:
     branches:
       - "*"
