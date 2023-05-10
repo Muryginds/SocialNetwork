@@ -1,6 +1,6 @@
 databaseChangeLog:
   - include:
-      file: classpath:db/changelog/changeset/type1.yaml
+      file: classpath:db/changelog/changeset/type.yaml
   - include:
       file: classpath:db/changelog/changeset/entity.yaml
   - include:
