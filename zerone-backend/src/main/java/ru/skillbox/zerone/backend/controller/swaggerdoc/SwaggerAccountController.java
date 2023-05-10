@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
 import ru.skillbox.zerone.backend.model.dto.request.*;
+import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.MessageResponseDTO;
 
@@ -44,4 +46,9 @@ public interface SwaggerAccountController {
   @ApiResponse(responseCode = "400", description = "Некорректный запрос. Проверьте параметры запроса.", content = @Content)
   @ApiResponse(responseCode = "403", description = "Пользователь не авторизован", content = @Content)
   CommonResponseDTO<MessageResponseDTO> setNotificationType(@RequestBody NotificationSettingDTO typeDTO);
+
+  @GetMapping("/notifications")
+  @Operation(summary = "Получить список настроек уведомлений")
+  @ApiResponse(responseCode = "200", description = "Список настроек уведомлений получен", content = @Content)
+  CommonListResponseDTO<NotificationSettingDTO> getNotificationSettingList();
 }

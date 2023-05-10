@@ -47,4 +47,8 @@ public interface SwaggerUsersController {
   @Operation(summary = "Разблокировать пользователя")
   @ApiResponse(responseCode = "200", description = "Пользователь успешно разблокирован")
   CommonResponseDTO<MessageResponseDTO> unblockUser(@PathVariable long id);
+
+  @Operation(summary = "Удалить текущего пользователя")
+  @ApiResponse(responseCode = "200", description = "Пользователь успешно удален")
+  CommonResponseDTO<Object> deleteUser();
 }
