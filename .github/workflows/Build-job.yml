@@ -30,6 +30,8 @@ jobs:
     steps:
       - name: Creating a project copy
         uses: actions/checkout@v3
+      - run: cd github/workspace/
+      - run: ls
       - name: Updating database
         uses: liquibase-github-actions/update@v4.21.1
         with:
