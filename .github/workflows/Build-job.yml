@@ -26,12 +26,11 @@ jobs:
   migration:
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref_name == 'master'
+
     steps:
       - name: Creating a project copy
         uses: actions/checkout@v3
-      - run: cd github/workspace/
-      - run: ls
+      - run: cd zerone-backend/src/main/resources/
       - name: Updating database
         uses: liquibase-github-actions/update@v4.21.1
         with:
@@ -39,6 +38,8 @@ jobs:
           url: ${{ secrets.DATABASE_URL }}
           username: ${{ secrets.DATABASE_USERNAME }}
           password: ${{ secrets.DATABASE_PASSWORD }}
+          headless: true
+          logLevel: INFO
 
   test:
     runs-on: ubuntu-latest
