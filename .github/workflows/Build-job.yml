@@ -1,5 +1,8 @@
 name: Build job
 
+env:
+  BACKEND_CLASSPATH: 'zerone-backend/src/main/resources/'
+
 on:
   push:
     branches:
@@ -25,10 +28,6 @@ jobs:
 
   migration:
     runs-on: ubuntu-latest
-
-    defaults:
-     run:
-       working-directory: ./zerone-backend/src/main/resources/
     steps:
       - name: Creating a project copy
         uses: actions/checkout@v3
@@ -36,6 +35,7 @@ jobs:
         uses: liquibase-github-actions/update@v4.21.1
         with:
           changelogFile: ${{ secrets.DATABASE_CHANGELOG_PATH }}
+          classpath: ${{ env.BACKEND_CLASSPATH }}
           url: ${{ secrets.DATABASE_URL }}
           username: ${{ secrets.DATABASE_USERNAME }}
           password: ${{ secrets.DATABASE_PASSWORD }}
