@@ -26,11 +26,13 @@ jobs:
   migration:
     runs-on: ubuntu-latest
 
+    defaults:
+     run:
+       working-directory: ./zerone-backend/src/main/resources/
     steps:
       - name: Creating a project copy
         uses: actions/checkout@v3
       - name: Updating database
-        working-directory: ./zerone-backend/src/main/resources/
         uses: liquibase-github-actions/update@v4.21.1
         with:
           changelogFile: ${{ secrets.DATABASE_CHANGELOG_PATH }}
