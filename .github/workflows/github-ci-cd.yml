@@ -1,4 +1,4 @@
-name: Build job
+name: Github ci-cd
 
 on:
   push:
@@ -7,6 +7,9 @@ on:
   pull_request:
     branches:
       - "*"
+
+env:
+  BACKEND_CLASSPATH: 'zerone-backend/src/main/resources/'
 
 jobs:
   build:
@@ -34,6 +37,7 @@ jobs:
         uses: liquibase-github-actions/update@v4.21.1
         with:
           changelogFile: ${{ secrets.DATABASE_CHANGELOG_PATH }}
+          classpath: ${{ env.BACKEND_CLASSPATH }}
           url: ${{ secrets.DATABASE_URL }}
           username: ${{ secrets.DATABASE_USERNAME }}
           password: ${{ secrets.DATABASE_PASSWORD }}
