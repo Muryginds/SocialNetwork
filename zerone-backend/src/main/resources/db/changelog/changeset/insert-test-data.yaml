@@ -1,13 +1,13 @@
 databaseChangeLog:
   - include:
-      file: zerone-backend/src/main/resources/db/changelog/changeset/test-data/insert-into-user-and-user2role.yaml
+      file: db/changelog/changeset/test-data/insert-into-user-and-user2role.yaml
   - include:
-      file: zerone-backend/src/main/resources/db/changelog/changeset/test-data/insert-into-post.yaml
+      file: db/changelog/changeset/test-data/insert-into-post.yaml
   - include:
-      file: zerone-backend/src/main/resources/db/changelog/changeset/test-data/insert-into-comment.yaml
+      file: db/changelog/changeset/test-data/insert-into-comment.yaml
   - include:
-      file: zerone-backend/src/main/resources/db/changelog/changeset/test-data/insert-into-like.yaml
+      file: db/changelog/changeset/test-data/insert-into-like.yaml
   - include:
-      file: zerone-backend/src/main/resources/db/changelog/changeset/test-data/insert-into-support_request.yaml
+      file: db/changelog/changeset/test-data/insert-into-support_request.yaml
   - include:
-      file: zerone-backend/src/main/resources/db/changelog/changeset/test-data/insert-into-friendship.yaml
+      file: db/changelog/changeset/test-data/insert-into-friendship.yaml
