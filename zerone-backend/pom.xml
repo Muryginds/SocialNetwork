@@ -238,7 +238,7 @@
 						<configuration>
 							<jdbc>
 								<driver>org.postgresql.Driver</driver>
-								<url>jdbc:postgresql://zerone-net.ru:5432/skillbox?stringtype=unspecified</url>
+								<url>jdbc:postgresql://[2001:1bb0:e000:1e::1c9]:5432/skillbox?stringtype=unspecified</url>
 								<user>skillbox</user>
 								<password>password</password>
 							</jdbc>
@@ -269,7 +269,7 @@
 										com.tej.JooQDemo.jooq.sample.model
 									</packageName>
 									<directory>
-										target/generated-sources/jooq
+										zerone-backend/target/generated-sources/jooq
 									</directory>
 								</target>
 							</generator>
