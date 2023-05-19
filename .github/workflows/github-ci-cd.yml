@@ -131,34 +131,48 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: jars
+
       # Configure ssh - connection
       - run: which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
       - run: eval $(ssh-agent -s)
-      - run: echo "$SSH_PRIVATE_KEY" | ssh-add -
+      - run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
       - run: mkdir -p ~/.ssh
       - run: chmod 700 ~/.ssh
-      - run: ssh-keyscan $DEV_HOST >> ~/.ssh/known_hosts
+      - run: ssh-keyscan ${{ secrets.DEV_HOST }} >> ~/.ssh/known_hosts
       - run: echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
       - run: chmod 644 ~/.ssh/known_hosts
+
       # Creating backups
       - run: |
-          ssh $DEV_USER@$DEV_HOST "[ ! -f $DEV_APP_PATH/admin.jar ] \
-          || mv $DEV_APP_PATH/admin.jar $BACKUP/admin-build-$CI_PIPELINE_ID.jar"
+          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }/admin.jar ] \
+          || mv ${{ secrets.DEV_APP_PATH }/admin.jar ${{ secrets.BACKUP }/admin-build-${{ github.run.id }.jar"
       - run: |
-          ssh $DEV_USER@$DEV_HOST "[ ! -f $DEV_APP_PATH/backend.jar ] \
-          || mv $DEV_APP_PATH/backend.jar $BACKUP/backend-build-$CI_PIPELINE_ID.jar"
+          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }/backend.jar ] \
+          || mv ${{ secrets.DEV_APP_PATH }/backend.jar ${{ secrets.BACKUP }/backend-build-${{ github.run.id }.jar"
       - run: |
-          ssh $DEV_USER@$DEV_HOST "[ ! -f $DEV_APP_PATH/api-gateway.jar ] \
-          || mv $DEV_APP_PATH/api-gateway.jar $BACKUP/api-gateway-build-$CI_PIPELINE_ID.jar"
+          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }/api-gateway.jar ] \
+          || mv ${{ secrets.DEV_APP_PATH }/api-gateway.jar ${{ secrets.BACKUP }/api-gateway-build-${{ github.run.id }.jar"
       - run: |
-          ssh $DEV_USER@$DEV_HOST "[ ! -f $DEV_APP_PATH/eureka-server.jar ] \
-          || mv $DEV_APP_PATH/eureka-server.jar $BACKUP/eureka-server-build-$CI_PIPELINE_ID.jar"
-          - scp eureka-server/target/eureka-server-0.0.1-SNAPSHOT.jar $DEV_USER@$DEV_HOST:$DEV_APP_PATH/eureka-server.jar
+          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }/eureka-server.jar ] \
+          || mv ${{ secrets.DEV_APP_PATH }/eureka-server.jar ${{ secrets.BACKUP }/eureka-server-build-${{ github.run.id }.jar"
+
       # Copying files to remote server
-      - run: scp api-gateway/target/api-gateway-0.0.1-SNAPSHOT.jar $DEV_USER@$DEV_HOST:$DEV_APP_PATH/api-gateway.jar
-      - run: scp zerone-admin/target/zerone-admin-0.0.1-SNAPSHOT.jar $DEV_USER@$DEV_HOST:$DEV_APP_PATH/admin.jar
-      - run: scp zerone-backend/target/zerone-backend-0.0.1-SNAPSHOT.jar $DEV_USER@$DEV_HOST:$DEV_APP_PATH/backend.jar
-      - run: scp /builds/javapro_team34/zerone-backend-multimodule/docker-compose.yaml $DEV_USER@$DEV_HOST:$USER_HOME_PATH/
+      - run: |
+          scp eureka-server/target/eureka-server-0.0.1-SNAPSHOT.jar \
+          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }/eureka-server.jar
+      - run: |
+          scp api-gateway/target/api-gateway-0.0.1-SNAPSHOT.jar \
+          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }/api-gateway.jar
+      - run: |
+          scp zerone-admin/target/zerone-admin-0.0.1-SNAPSHOT.jar \
+          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }/admin.jar
+      - run: |
+          scp zerone-backend/target/zerone-backend-0.0.1-SNAPSHOT.jar \
+          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }/backend.jar
+      - run: |
+          scp /builds/javapro_team34/zerone-backend-multimodule/docker-compose.yaml \
+          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }/
+
       # Starting docker compose
-      - run: ssh $DEV_USER@$DEV_HOST "docker compose down"
-      - run: ssh $DEV_USER@$DEV_HOST "docker compose up -d"
+      - run: ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "docker compose down"
+      - run: ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "docker compose up -d"
