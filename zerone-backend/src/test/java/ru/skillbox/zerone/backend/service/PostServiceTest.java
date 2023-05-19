@@ -33,6 +33,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -50,6 +51,9 @@ class PostServiceTest implements PostMockUtils {
 
   @Mock
   private CommentService commentService;
+
+  @Mock
+  private TagService tagService;
 
   @Mock
   private LikeRepository likeRepository;
@@ -92,7 +96,7 @@ class PostServiceTest implements PostMockUtils {
     postDTO.setPostText("TestText");
 
     long id = currentTestUser.getId();
-    CommonResponseDTO<PostDTO> response = postService.createPost(id, System.currentTimeMillis(), getPostRequest());
+    CommonResponseDTO<PostDTO> response = postService.createPost(id, LocalDateTime.now(), getPostRequest());
 
     assertNotNull(response);
     assertEquals(currentTestUser.getId(), response.getData().getAuthor().getId());
@@ -133,16 +137,16 @@ class PostServiceTest implements PostMockUtils {
     List<Post> posts = new ArrayList<>();
     posts.add(testPost1);
     posts.add(testPost2);
+    List<PostDTO> dtoList = List.of(new PostDTO(), new PostDTO());
 
     utilsMockedStatic.when(CurrentUserUtils::getCurrentUser).thenReturn(currentTestUser);
 
-    when(postRepository.getPostsForFeeds(Mockito.eq(currentTestUser.getId()),
-        any(Pageable.class))).thenReturn(new PageImpl<>(posts));
+    when(postRepository.getPostsForFeeds(Mockito.eq(currentTestUser.getId()), any(Pageable.class))).thenReturn(new PageImpl<>(posts));
+    when(postMapper.toDtoList(anyList())).thenReturn(dtoList);
 
     CommonListResponseDTO<PostDTO> responseDTO = postService.getFeeds(0, 10);
     assertEquals(2, responseDTO.getData().size());
-    verify(postRepository, Mockito.times(1))
-        .getPostsForFeeds(Mockito.eq(currentTestUser.getId()), any(Pageable.class));
+    verify(postRepository, Mockito.times(1)).getPostsForFeeds(Mockito.eq(currentTestUser.getId()), any(Pageable.class));
   }
 
   @Test
@@ -154,9 +158,10 @@ class PostServiceTest implements PostMockUtils {
     List<Post> posts = new ArrayList<>();
     posts.add(testPost1);
     posts.add(testPost2);
+    List<PostDTO> dtoList = List.of(new PostDTO(), new PostDTO());
 
-    when(postRepository.getPostsForUsersWall(Mockito.eq(currentTestUser.getId()),
-        any(Pageable.class))).thenReturn(new PageImpl<>(posts));
+    when(postRepository.getPostsForUsersWall(Mockito.eq(currentTestUser.getId()), any(Pageable.class))).thenReturn(new PageImpl<>(posts));
+    when(postMapper.toDtoList(anyList())).thenReturn(dtoList);
 
     CommonListResponseDTO<PostDTO> responseDTO = postService.getAuthorWall(currentTestUser.getId(), 0, 5);
     assertEquals(2, responseDTO.getData().size());
@@ -216,7 +221,7 @@ class PostServiceTest implements PostMockUtils {
     when(postMapper.postToPostsDTO(testPost)).thenReturn(postDTO);
 
     CommonResponseDTO<PostDTO> responseDTO =
-        postService.putPostById(testPost.getId(), System.currentTimeMillis(), new PostRequestDTO("Новый заголовок", "Новый текст", new ArrayList<>()));
+        postService.putPostById(testPost.getId(), LocalDateTime.now(), new PostRequestDTO("Новый заголовок", "Новый текст", new ArrayList<>()));
 
     assertEquals("Новый заголовок", testPost.getTitle());
     assertEquals("Новый текст", testPost.getPostText());

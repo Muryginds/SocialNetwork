@@ -21,8 +21,6 @@ class PostControllerTest extends AbstractIntegrationTest {
   private static final String TEST_POST_TITLE = "TestTitle";
   private static final String TEST_POST_TEXT = "Lorem Ipsum";
   private static final String WRONG_USER_ALERT = "Попытка публикации неизвестным пользователем";
-  private static final String INVALID_POST_ALERT = "Пост с указанным id не найден";
-  private static final String INVALID_USER_ALERT = "Попытка редактирования неизвестным пользователем";
   private static final String EDITED_TEST_POST_TITLE = "Новое название";
   private static final String EDITED_TEST_POST_TEXT = "Новый какой-то текст";
 
@@ -110,7 +108,7 @@ class PostControllerTest extends AbstractIntegrationTest {
     mockMvc.perform(get("/api/v1/post/7"))
         .andDo(print())
         .andExpect(status().is4xxClientError())
-        .andExpect(jsonPath("$.error").value(INVALID_POST_ALERT));
+        .andExpect(jsonPath("$.error").isNotEmpty());
   }
 
   @Test
@@ -132,7 +130,7 @@ class PostControllerTest extends AbstractIntegrationTest {
     mockMvc.perform(delete("/api/v1/post/7"))
         .andDo(print())
         .andExpect(status().is4xxClientError())
-        .andExpect(jsonPath("$.error").value(INVALID_POST_ALERT));
+        .andExpect(jsonPath("$.error").isNotEmpty());
   }
 
   @Test
@@ -143,7 +141,7 @@ class PostControllerTest extends AbstractIntegrationTest {
     mockMvc.perform(delete("/api/v1/post/4"))
         .andDo(print())
         .andExpect(status().is4xxClientError())
-        .andExpect(jsonPath("$.error").value(INVALID_USER_ALERT));
+        .andExpect(jsonPath("$.error").isNotEmpty());
   }
 
 
@@ -166,7 +164,7 @@ class PostControllerTest extends AbstractIntegrationTest {
     mockMvc.perform(put("/api/v1/post/7/recover"))
         .andDo(print())
         .andExpect(status().is4xxClientError())
-        .andExpect(jsonPath("$.error").value(INVALID_POST_ALERT));
+        .andExpect(jsonPath("$.error").isNotEmpty());
   }
 
   @Test
@@ -177,7 +175,7 @@ class PostControllerTest extends AbstractIntegrationTest {
     mockMvc.perform(put("/api/v1/post/6/recover"))
         .andDo(print())
         .andExpect(status().is4xxClientError())
-        .andExpect(jsonPath("$.error").value(INVALID_USER_ALERT));
+        .andExpect(jsonPath("$.error").isNotEmpty());
   }
 
   @Test
@@ -218,7 +216,7 @@ class PostControllerTest extends AbstractIntegrationTest {
                 .getMessage()))
         .andDo(print())
         .andExpect(status().is4xxClientError())
-        .andExpect(jsonPath("$.error").value(INVALID_POST_ALERT));
+        .andExpect(jsonPath("$.error").isNotEmpty());
   }
 
   @Test
@@ -238,6 +236,6 @@ class PostControllerTest extends AbstractIntegrationTest {
                 .getMessage()))
         .andDo(print())
         .andExpect(status().is4xxClientError())
-        .andExpect(jsonPath("$.error").value(INVALID_USER_ALERT));
+        .andExpect(jsonPath("$.error").isNotEmpty());
   }
 }

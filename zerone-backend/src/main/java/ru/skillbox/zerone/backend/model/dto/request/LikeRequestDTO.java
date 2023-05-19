@@ -7,10 +7,6 @@ import ru.skillbox.zerone.backend.model.enumerated.LikeType;
 
 @Data
 public class LikeRequestDTO {
-  @JsonProperty("item_id")
-  private Long id;
-  private LikeType type;
-
   @JsonSetter("type")
   public void setType(String type) {
     this.type = switch (type) {
@@ -19,4 +15,8 @@ public class LikeRequestDTO {
       default -> throw new IllegalArgumentException();
     };
   }
+
+  @JsonProperty("item_id")
+  private Long id;
+  private LikeType type;
 }

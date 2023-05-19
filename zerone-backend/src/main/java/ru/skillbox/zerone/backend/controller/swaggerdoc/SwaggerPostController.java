@@ -8,19 +8,21 @@ import ru.skillbox.zerone.backend.model.dto.response.CommonListResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.CommonResponseDTO;
 import ru.skillbox.zerone.backend.model.dto.response.PostDTO;
 
+import java.time.LocalDateTime;
+
 @RestController
 @Tag(name = "Контроллер для работы с постами")
 @RequestMapping("/api/v1")
 public interface SwaggerPostController {
   @Operation(summary = "Создать пост на стене")
   @PostMapping("/users/{id}/wall")
-  CommonResponseDTO<PostDTO> getUserWall(@PathVariable long id,
-                                         @RequestParam(name = "publish_date", defaultValue = "0") long publishDate,
+  CommonResponseDTO<PostDTO> createPostOnWall(@PathVariable long id,
+                                         @RequestParam(name = "publish_date", defaultValue = "0") LocalDateTime publishDate,
                                          @RequestBody PostRequestDTO postRequestDTO);
 
   @Operation(summary = "Получить посты на стене")
   @GetMapping("/users/{id}/wall")
-  CommonListResponseDTO<PostDTO> getUserWall(@PathVariable long id,
+  CommonListResponseDTO<PostDTO> getUserWall(@PathVariable int id,
                                              @RequestParam(name = "offset", defaultValue = "0") int offset,
                                              @RequestParam(name = "itemPerPage", defaultValue = "10") int itemPerPage);
 
@@ -45,15 +47,16 @@ public interface SwaggerPostController {
 
   @Operation(summary = "Изменить пост")
   @PutMapping("/post/{id}")
-  CommonResponseDTO<PostDTO> putPostById(@PathVariable long id,
-                                         @RequestParam(name = "publish_date", required = false, defaultValue = "0") Long publishDate,
+  CommonResponseDTO<PostDTO> putPostById(@PathVariable int id,
+                                         @RequestParam(name = "publish_date", required = false, defaultValue = "0") LocalDateTime publishDate,
                                          @RequestBody PostRequestDTO requestBody);
 
   @Operation(summary = "Удалить пост")
   @DeleteMapping("/post/{id}")
-  CommonResponseDTO<PostDTO> deletePostById(@PathVariable long id);
+  CommonResponseDTO<PostDTO> deletePostById(@PathVariable int id);
 
   @Operation(summary = "Восстановить пост")
   @PutMapping("/post/{id}/recover")
   CommonResponseDTO<PostDTO> putPostRecover(@PathVariable Long id);
 }
+

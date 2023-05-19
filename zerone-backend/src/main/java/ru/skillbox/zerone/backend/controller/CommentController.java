@@ -19,7 +19,7 @@ public class CommentController implements SwaggerCommentController {
   @GetMapping("/post/{id}/comments")
   public CommonListResponseDTO<CommentDTO> getFeeds(@RequestParam(name = "offset", defaultValue = "0") int offset,
                                                     @RequestParam(name = "itemPerPage", defaultValue = "5") int itemPerPage,
-                                                    @PathVariable int id) {
+                                                    @PathVariable long id) {
     return commentService.getComments(offset, itemPerPage, id);
   }
 
@@ -45,7 +45,7 @@ public class CommentController implements SwaggerCommentController {
   public CommonResponseDTO<CommentDTO> putComment(@PathVariable long id,
                                                   @PathVariable(name = "comment_id") long commentId,
                                                   @RequestBody CommentRequestDTO commentRequest) {
-    return commentService.putComment(id, commentId, commentRequest);
+    return commentService.updateComment(id, commentId, commentRequest);
   }
 }
 

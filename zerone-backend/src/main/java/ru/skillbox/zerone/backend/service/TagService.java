@@ -51,8 +51,16 @@ public class TagService {
         .build();
   }
 
-  public CommonResponseDTO<MessageResponseDTO> deleteTag() {
+  @Transactional
+  public Tag getTag(String name) {
+    return tagRepository.findByName(name).orElseGet(() -> {
+      Tag tag = new Tag();
+      tag.setName(name);
+      return tagRepository.save(tag);
+    });
+  }
 
+  public CommonResponseDTO<MessageResponseDTO> deleteTag() {
     return ResponseUtils.commonResponseDataOk();
   }
 

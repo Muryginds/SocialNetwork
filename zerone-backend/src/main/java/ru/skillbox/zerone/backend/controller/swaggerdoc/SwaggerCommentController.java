@@ -16,7 +16,7 @@ public interface SwaggerCommentController {
   @GetMapping("/post/{id}/comments")
   CommonListResponseDTO<CommentDTO> getFeeds(@RequestParam(name = "offset", defaultValue = "0") int offset,
                                              @RequestParam(name = "itemPerPage", defaultValue = "5") int itemPerPage,
-                                             @PathVariable int id);
+                                             @PathVariable long id);
 
   @Operation(summary = "Написать коментарий")
   @PostMapping("/post/{id}/comments")
@@ -38,5 +38,4 @@ public interface SwaggerCommentController {
   CommonResponseDTO<CommentDTO> putComment(@PathVariable long id,
                                            @PathVariable(name = "comment_id") long commentId,
                                            @RequestBody CommentRequestDTO commentRequest);
-
 }
