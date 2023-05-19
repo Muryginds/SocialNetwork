@@ -144,34 +144,34 @@ jobs:
 
       # Creating backups
       - run: |
-          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }/admin.jar ] \
-          || mv ${{ secrets.DEV_APP_PATH }/admin.jar ${{ secrets.BACKUP }/admin-build-${{ github.run.id }.jar"
+          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }}/admin.jar ] \
+          || mv ${{ secrets.DEV_APP_PATH }}/admin.jar ${{ secrets.BACKUP }}/admin-build-${{ github.run.id }}.jar"
       - run: |
-          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }/backend.jar ] \
-          || mv ${{ secrets.DEV_APP_PATH }/backend.jar ${{ secrets.BACKUP }/backend-build-${{ github.run.id }.jar"
+          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }}/backend.jar ] \
+          || mv ${{ secrets.DEV_APP_PATH }}/backend.jar ${{ secrets.BACKUP }}/backend-build-${{ github.run.id }}.jar"
       - run: |
-          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }/api-gateway.jar ] \
-          || mv ${{ secrets.DEV_APP_PATH }/api-gateway.jar ${{ secrets.BACKUP }/api-gateway-build-${{ github.run.id }.jar"
+          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }}/api-gateway.jar ] \
+          || mv ${{ secrets.DEV_APP_PATH }}/api-gateway.jar ${{ secrets.BACKUP }}/api-gateway-build-${{ github.run.id }}.jar"
       - run: |
-          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }/eureka-server.jar ] \
-          || mv ${{ secrets.DEV_APP_PATH }/eureka-server.jar ${{ secrets.BACKUP }/eureka-server-build-${{ github.run.id }.jar"
+          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }}/eureka-server.jar ] \
+          || mv ${{ secrets.DEV_APP_PATH }}/eureka-server.jar ${{ secrets.BACKUP }}/eureka-server-build-${{ github.run.id }}.jar"
 
       # Copying files to remote server
       - run: |
           scp eureka-server/target/eureka-server-0.0.1-SNAPSHOT.jar \
-          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }/eureka-server.jar
+          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }}/eureka-server.jar
       - run: |
           scp api-gateway/target/api-gateway-0.0.1-SNAPSHOT.jar \
-          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }/api-gateway.jar
+          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }}/api-gateway.jar
       - run: |
           scp zerone-admin/target/zerone-admin-0.0.1-SNAPSHOT.jar \
-          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }/admin.jar
+          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }}/admin.jar
       - run: |
           scp zerone-backend/target/zerone-backend-0.0.1-SNAPSHOT.jar \
-          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }/backend.jar
+          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }}/backend.jar
       - run: |
           scp /builds/javapro_team34/zerone-backend-multimodule/docker-compose.yaml \
-          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }/
+          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }}/
 
       # Starting docker compose
       - run: ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "docker compose down"
