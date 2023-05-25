@@ -137,7 +137,7 @@ jobs:
       # Configure ssh - connection
       - run: which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
       - run: eval $(ssh-agent -s)
-      - run: echo ${{ secrets.SSH_PRIVATE_KEY }} | ssh-add -
+      - run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
       - run: mkdir -p ~/.ssh
       - run: chmod 700 ~/.ssh
       - run: ssh-keyscan ${{ secrets.DEV_HOST }} >> ~/.ssh/known_hosts
