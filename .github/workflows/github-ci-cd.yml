@@ -172,6 +172,7 @@ jobs:
       - run: |
           scp /builds/javapro_team34/zerone-backend-multimodule/docker-compose.yaml \
           ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }}/
+          
 
       # Starting docker compose
       - run: ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "docker compose down"
