@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.skillbox.zerone.backend.exception.PostCreationException;
 import ru.skillbox.zerone.backend.exception.PostNotFoundException;
-import ru.skillbox.zerone.backend.exception.TagNotFoundException;
 import ru.skillbox.zerone.backend.exception.UserAndAuthorNotEqualsException;
 import ru.skillbox.zerone.backend.mapstruct.PostMapper;
 import ru.skillbox.zerone.backend.model.dto.request.PostRequestDTO;
@@ -21,7 +20,6 @@ import ru.skillbox.zerone.backend.model.entity.Tag;
 import ru.skillbox.zerone.backend.model.entity.User;
 import ru.skillbox.zerone.backend.repository.PostFileRepository;
 import ru.skillbox.zerone.backend.repository.PostRepository;
-import ru.skillbox.zerone.backend.repository.TagRepository;
 import ru.skillbox.zerone.backend.util.CurrentUserUtils;
 
 import java.time.Instant;
@@ -31,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,7 +37,7 @@ public class PostService {
   private final PostRepository postRepository;
   private final SearchService searchService;
   private final PostMapper postMapper;
-  private final TagRepository tagRepository;
+  private final TagService tagService;
   private final NotificationService notificationService;
   @SuppressWarnings("all")
   private static final Pattern pattern = Pattern.compile("<img\\s+[^>]*src=\"([^\"]*)\"[^>]*>");
@@ -75,14 +74,13 @@ public class PostService {
 
   private List<Tag> getTagsByPost(List<String> tagsFromRequest) {
 
-    List<Tag> tags = new ArrayList<>();
-    if (!tagsFromRequest.isEmpty()) {
-      tagsFromRequest.forEach(tag -> {
-        Tag tagFromRepo = tagRepository.findByName(tag).orElseThrow(() -> new TagNotFoundException("Тега не существует!"));
-        tags.add(tagFromRepo);
-      });
+    if (tagsFromRequest == null) {
+      return List.of();
     }
-    return tags;
+    return tagsFromRequest
+        .stream()
+        .map(tagService::getTag)
+        .collect(Collectors.toList());
   }
 
   private PostDTO getPostsDTO(Post post) {
