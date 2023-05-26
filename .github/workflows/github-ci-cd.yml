@@ -30,7 +30,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    if: always()
+  #if: always()
     needs: migration
     steps:
     - name: Creating a project copy
@@ -46,7 +46,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    if: always() && needs.build.result == 'success'
+    #if: always() && needs.build.result == 'success'
     needs: build
     steps:
       - name: Creating a project copy
@@ -61,7 +61,7 @@ jobs:
         run: mvn test
 
   sonarcloud:
-    if: always() && needs.test.result == 'success'
+    #if: always() && needs.test.result == 'success'
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -102,7 +102,7 @@ jobs:
   package:
     if: always()
     #if: github.ref_name == 'master'
-    needs: sonarcloud
+    #needs: sonarcloud
     runs-on: ubuntu-latest
     steps:
       - name: Creating a project copy
@@ -113,13 +113,25 @@ jobs:
           distribution: 'temurin'
           java-version: '19'
           cache: 'maven'
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
       - name: Creating packages
         run: mvn package -Dmaven.test.skip
+      - run: mkdir -p ~/artifacts
+      - run: mv */target/eureka-server*.jar ~/artifacts/eureka-server.jar
+      - run: mv */target/api-gateway*.jar ~/artifacts/api-gateway.jar
+      - run: mv */target/zerone-admin*.jar ~/artifacts/admin.jar
+      - run: mv */target/zerone-backend*.jar ~/artifacts/backend.jar
+      - run: mv docker-compose.yaml ~/artifacts/docker-compose.yaml
       - name: Saving artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: jars
-          path: '*/target/*.jar'
+          name: files
+          path: ~/artifacts
 
   deploy:
     if: always()
@@ -129,57 +141,52 @@ jobs:
     steps:
       - name: Creating a project copy
         uses: actions/checkout@v3
-      - name: Downloading artifacts
+      - name: Downloading project files
         uses: actions/download-artifact@v3
         with:
-          name: jars
+          name: files
+          path: artifacts
 
-      # Configure ssh - connection
-      - run: which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
-      - run: mkdir -p ~/.ssh
-      - run: chmod 700 ~/.ssh
-      - run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
-      - run: chmod 700 ~/.ssh/id_rsa
-#      - run: eval "$(ssh-agent -s)"
-#      - run: ssh-add ~/.ssh/id_rsa
-      - uses: webfactory/ssh-agent@v0.7.0
+      - name: creating backups via ssh
+        uses: appleboy/ssh-action@v0.1.10
+        env:
+          DEV_APP_PATH: ${{ secrets.DEV_APP_PATH }}
+          BACKUP_PATH: ${{ secrets.BACKUP_PATH }}
+          GITHUB_RUN_NUMBER: ${{ github.run.number }}
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-      - run: ssh-keyscan ${{ secrets.DEV_HOST }} >> ~/.ssh/known_hosts
-      - run: echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-      - run: chmod 644 ~/.ssh/known_hosts
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.DEV_HOST_SSH_PORT }}
+          envs: DEV_APP_PATH,BACKUP_PATH,GITHUB_RUN_ID
+          script: |
+            [ ! -f $DEV_APP_PATH/api-gateway.jar ] || mv $DEV_APP_PATH/api-gateway.jar $BACKUP_PATH/api-gateway-build-$GITHUB_RUN_NUMBER.jar
+            [ ! -f $DEV_APP_PATH/eureka-server.jar ] || mv $DEV_APP_PATH/eureka-server.jar $BACKUP_PATH/eureka-server-build-$GITHUB_RUN_NUMBER.jar
+            [ ! -f $DEV_APP_PATH/admin.jar ] || mv $DEV_APP_PATH/admin.jar $BACKUP_PATH/admin-build-$GITHUB_RUN_NUMBER.jar
+            [ ! -f $DEV_APP_PATH/backend.jar ] || mv $DEV_APP_PATH/backend.jar $BACKUP_PATH/backend-build-$GITHUB_RUN_NUMBER.jar
 
-      # Creating backups
-      - run: |
-          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }}/admin.jar ] \
-          || mv ${{ secrets.DEV_APP_PATH }}/admin.jar ${{ secrets.BACKUP }}/admin-build-${{ github.run.id }}.jar"
-      - run: |
-          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }}/backend.jar ] \
-          || mv ${{ secrets.DEV_APP_PATH }}/backend.jar ${{ secrets.BACKUP }}/backend-build-${{ github.run.id }}.jar"
-      - run: |
-          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }}/api-gateway.jar ] \
-          || mv ${{ secrets.DEV_APP_PATH }}/api-gateway.jar ${{ secrets.BACKUP }}/api-gateway-build-${{ github.run.id }}.jar"
-      - run: |
-          ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "[ ! -f ${{ secrets.DEV_APP_PATH }}/eureka-server.jar ] \
-          || mv ${{ secrets.DEV_APP_PATH }}/eureka-server.jar ${{ secrets.BACKUP }}/eureka-server-build-${{ github.run.id }}.jar"
+      - name: copy files via ssh
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.DEV_HOST_SSH_PORT }}
+          source: artifacts
+          target: ${{ secrets.DEV_APP_PATH }}
+          strip_components: 1
 
-      # Copying files to remote server
-      - run: |
-          scp eureka-server/target/eureka-server-0.0.1-SNAPSHOT.jar \
-          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }}/eureka-server.jar
-      - run: |
-          scp api-gateway/target/api-gateway-0.0.1-SNAPSHOT.jar \
-          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }}/api-gateway.jar
-      - run: |
-          scp zerone-admin/target/zerone-admin-0.0.1-SNAPSHOT.jar \
-          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }}/admin.jar
-      - run: |
-          scp zerone-backend/target/zerone-backend-0.0.1-SNAPSHOT.jar \
-          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }}/backend.jar
-      - run: |
-          scp /builds/javapro_team34/zerone-backend-multimodule/docker-compose.yaml \
-          ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }}:${{ secrets.DEV_APP_PATH }}/
-
-      # Starting docker compose
-      - run: ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "docker compose down"
-      - run: ssh ${{ secrets.DEV_USER }}@${{ secrets.DEV_HOST }} "docker compose up -d"
+      - name: executing remote ssh commands
+        uses: appleboy/ssh-action@v0.1.10
+        env:
+          DEV_APP_PATH: ${{ secrets.DEV_APP_PATH }}
+        with:
+          host: ${{ secrets.DEV_HOST }}
+          username: ${{ secrets.DEV_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.DEV_HOST_SSH_PORT }}
+          envs: DEV_APP_PATH
+          script: |
+            mv $DEV_APP_PATH/docker-compose.yaml ~/docker-compose.yaml
+            docker compose down
+            docker compose up -d
