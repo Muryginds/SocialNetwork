@@ -57,6 +57,9 @@ class PostServiceTest implements PostMockUtils {
   @Mock
   private NotificationService notificationService;
 
+  @Mock
+  private TagService tagService;
+
   private final MockedStatic<CurrentUserUtils> utilsMockedStatic = Mockito.mockStatic(CurrentUserUtils.class);
 
   @InjectMocks
