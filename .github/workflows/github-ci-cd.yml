@@ -100,7 +100,8 @@ jobs:
           -Dsonar.java.coveragePlugin=jacoco
 
   package:
-    if: github.ref_name == 'master'
+    if: always()
+    #if: github.ref_name == 'master'
     needs: sonarcloud
     runs-on: ubuntu-latest
     steps:
@@ -121,7 +122,8 @@ jobs:
           path: '*/target/*.jar'
 
   deploy:
-    if: github.ref_name == 'master'
+    if: always()
+    #if: github.ref_name == 'master'
     needs: package
     runs-on: ubuntu-latest
     steps:
@@ -134,10 +136,15 @@ jobs:
 
       # Configure ssh - connection
       - run: which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )
-      - run: eval $(ssh-agent -s)
-      - run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | ssh-add -
       - run: mkdir -p ~/.ssh
       - run: chmod 700 ~/.ssh
+      - run: echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+      - run: chmod 700 ~/.ssh/id_rsa
+#      - run: eval "$(ssh-agent -s)"
+#      - run: ssh-add ~/.ssh/id_rsa
+      - uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - run: ssh-keyscan ${{ secrets.DEV_HOST }} >> ~/.ssh/known_hosts
       - run: echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
       - run: chmod 644 ~/.ssh/known_hosts
