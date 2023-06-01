@@ -158,7 +158,7 @@ jobs:
           username: ${{ secrets.DEV_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.DEV_HOST_SSH_PORT }}
-          envs: DEV_APP_PATH,BACKUP_PATH,GITHUB_RUN_ID
+          envs: DEV_APP_PATH,BACKUP_PATH,GITHUB_RUN_NUMBER
           script: |
             [ ! -f $DEV_APP_PATH/api-gateway.jar ] || mv $DEV_APP_PATH/api-gateway.jar $BACKUP_PATH/api-gateway-build-$GITHUB_RUN_NUMBER.jar
             [ ! -f $DEV_APP_PATH/eureka-server.jar ] || mv $DEV_APP_PATH/eureka-server.jar $BACKUP_PATH/eureka-server-build-$GITHUB_RUN_NUMBER.jar
