@@ -50,6 +50,7 @@ services:
     environment:
       SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
       KAFKA_BROKERCONNECT: "kafka:9092"
+      SPRING_MAIL_PASSWORD: pyrTEZQd58GNC7i1MTPD
     depends_on:
       - kafka
       - zookeeper
@@ -137,6 +138,7 @@ services:
       SPRING_DATASOURCE_PASSWORD: password
       SPRING_PROFILES_ACTIVE: prod
       EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://eureka-server:8761/eureka
+      SPRING_MAIL_PASSWORD: pyrTEZQd58GNC7i1MTPD
       TZ: "Europe/Moscow"
     ports:
       - "8083:8083"
