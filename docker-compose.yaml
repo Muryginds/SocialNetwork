@@ -197,7 +197,6 @@ services:
 
   grafana:
     container_name: grafana
-    image: grafana/grafana:9.5.1
     build: './config/grafana'
     ports:
       - "3000:3000"
