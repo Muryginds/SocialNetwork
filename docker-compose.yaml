@@ -207,10 +207,6 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
-    networks:
-      monitoring:
-        aliases:
-          - grafana
     depends_on:
       - prometheus
     deploy:
@@ -227,10 +223,6 @@ services:
       - "9090:9090"
     volumes:
       - ./config/prometheus:/etc/prometheus
-    networks:
-      monitoring:
-        aliases:
-          - prometheus
     deploy:
       restart_policy:
         condition: on-failure
@@ -255,9 +247,6 @@ services:
         delay: 3s
         max_attempts: 5
         window: 60s
-
-networks:
-  monitoring:
 
 volumes:
   postgres:
