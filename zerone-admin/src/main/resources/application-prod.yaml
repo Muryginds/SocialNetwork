@@ -1,10 +1,18 @@
 spring:
   datasource:
-    url: jdbc:postgresql://zerone-network.ru:5432/skillbox?stringtype=unspecified
+    url: jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified
+    username: skillbox
+    password: password
   jpa:
     show-sql: false
     hibernate:
       ddl-auto: none
 
+TZ: "Europe/Moscow"
+EUREKA:
+  CLIENT:
+    SERVICE-URL:
+      DEFAULTZONE: http://eureka-server:8761/eureka
+
 microservices:
-  host: zerone-network.ru
+  host: zerone-net.ru

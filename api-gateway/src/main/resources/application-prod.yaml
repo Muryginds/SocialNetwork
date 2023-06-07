@@ -1,0 +1,5 @@
+TZ: "Europe/Moscow"
+EUREKA:
+  CLIENT:
+    SERVICE-URL:
+      DEFAULTZONE: http://eureka-server:8761/eureka
