@@ -3,10 +3,10 @@ name: Github ci-cd
 on:
   push:
     branches:
-      - "master"
+      - 'master'
   pull_request:
     branches:
-      - "*"
+      - '*'
 
 env:
   BACKEND_CLASSPATH: 'zerone-backend/src/main/resources/'
@@ -14,7 +14,7 @@ env:
 jobs:
   migration:
     runs-on: ubuntu-latest
-#    if: github.ref_name == 'master'
+    if: github.ref_name == 'master'
     steps:
       - name: Creating a project copy
         uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-  #if: always()
+    if: always()
     needs: migration
     steps:
     - name: Creating a project copy
@@ -46,7 +46,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    #if: always() && needs.build.result == 'success'
+    if: always() && needs.build.result == 'success'
     needs: build
     steps:
       - name: Creating a project copy
@@ -61,7 +61,7 @@ jobs:
         run: mvn test
 
   sonarcloud:
-    #if: always() && needs.test.result == 'success'
+    if: always() && needs.test.result == 'success'
     runs-on: ubuntu-latest
     needs: test
     steps:
@@ -100,9 +100,8 @@ jobs:
           -Dsonar.java.coveragePlugin=jacoco
 
   package:
-    if: always()
-    #if: github.ref_name == 'master'
-    #needs: sonarcloud
+    if: always() && github.ref_name == 'master'
+    needs: sonarcloud
     runs-on: ubuntu-latest
     steps:
       - name: Creating a project copy
@@ -134,8 +133,7 @@ jobs:
           path: ~/artifacts
 
   deploy:
-    if: always()
-    #if: github.ref_name == 'master'
+    if: always() && github.ref_name == 'master'
     needs: package
     runs-on: ubuntu-latest
     steps:
@@ -190,3 +188,19 @@ jobs:
             mv $DEV_APP_PATH/docker-compose.yaml ~/docker-compose.yaml
             docker compose down
             docker compose up -d
+
+    migration_rollback:
+      if: failure() && github.ref_name == 'master' && needs.migration.result == 'success'
+      needs: deploy
+      steps:
+        - name: Creating a project copy
+          uses: actions/checkout@v3
+        - name: Updating database
+          uses: liquibase-github-actions/rollback-one-update@v4.21.1
+          with:
+            changelogFile: ${{ secrets.DATABASE_CHANGELOG_PATH }}
+            classpath: ${{ env.BACKEND_CLASSPATH }}
+            url: ${{ secrets.DATABASE_URL }}
+            username: ${{ secrets.DATABASE_USERNAME }}
+            password: ${{ secrets.DATABASE_PASSWORD }}
+            logLevel: INFO
