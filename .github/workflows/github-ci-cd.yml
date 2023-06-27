@@ -190,6 +190,7 @@ jobs:
             docker compose up -d
 
   rollback:
+    runs-on: ubuntu-latest
     if: failure() && github.ref_name == 'master' && needs.migration.result == 'success'
     needs: deploy
     steps:
