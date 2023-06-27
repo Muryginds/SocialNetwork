@@ -189,7 +189,7 @@ jobs:
             docker compose down
             docker compose up -d
 
-    migration_rollback:
+    rollback:
       if: failure() && github.ref_name == 'master' && needs.migration.result == 'success'
       needs: deploy
       steps:
