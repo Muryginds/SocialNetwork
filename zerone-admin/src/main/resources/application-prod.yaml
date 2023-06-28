@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified
     username: skillbox
-    password: password
+    password: ENC(0uNxV70bH/ooGzE+SOLsd/PkWf44lvOnMw3VeU2aTkIvZyHJNwuYDTwzjofbrZu6)
   jpa:
     show-sql: false
     hibernate:

@@ -6,7 +6,7 @@ spring:
     name: zerone-admin
   datasource:
     url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
-    password: password
+    password: ENC(0uNxV70bH/ooGzE+SOLsd/PkWf44lvOnMw3VeU2aTkIvZyHJNwuYDTwzjofbrZu6)
     username: skillbox
   jpa:
     hibernate:
@@ -24,7 +24,7 @@ spring:
     host: smtp.mail.ru
     port: 465
     username: zerone34@mail.ru
-    password: pyrTEZQd58GNC7i1MTPD
+    password: ENC(jcDsq662xhGKTdNufgg+2SG3c6Qf+IR2wWQALKD4SzI54Aqvg4VXrq6cFwDtulVmph3MtX27IMHxcnEZgPyZMw==)
     test-connection: true
     properties:
       mail:
@@ -39,7 +39,7 @@ spring:
 cloudinary:
   cloud_name: "zeroneproject"
   api_key: "551572451498292"
-  api_secret: "bmOA13-uV_37Hm9Vfu4E_heObw4"
+  api_secret: ENC(kDYzWjyIh7DTZrgGlual+lLCzaq4ExOPdYUEPYZBJoDpAMmK4GsJ9teO9x88uhv1iSajJdVulBbuANPI0GSvmw==)
 
 avatar:
   url: C:\fff\zerone\avatars
@@ -55,3 +55,7 @@ eureka:
 
 microservices:
   host: localhost
+
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD}
