@@ -10,6 +10,7 @@ on:
 
 env:
   BACKEND_CLASSPATH: 'zerone-backend/src/main/resources/'
+  ENCRYPTION_KEY: ${{ secrets.JASYPT_ENCRYPTOR_PASSWORD }}
 
 jobs:
   migration:
@@ -58,7 +59,7 @@ jobs:
           java-version: '19'
           cache: 'maven'
       - name: Build with Maven
-        run: mvn test
+        run: mvn test -Djasypt.encryptor.password=${{ env.ENCRYPTION_KEY }}
 
   sonarcloud:
     if: always() && needs.test.result == 'success'
@@ -97,7 +98,8 @@ jobs:
           -Dsonar.organization=muryginds \
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.login=$SONAR_TOKEN \
-          -Dsonar.java.coveragePlugin=jacoco
+          -Dsonar.java.coveragePlugin=jacoco \
+          -Djasypt.encryptor.password=${{ env.ENCRYPTION_KEY }}
 
   package:
     if: always() && github.ref_name == 'master'
@@ -119,7 +121,7 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Creating packages
-        run: mvn package -Dmaven.test.skip
+        run: mvn package
       - run: mkdir -p ~/artifacts
       - run: mv */target/eureka-server*.jar ~/artifacts/eureka-server.jar
       - run: mv */target/api-gateway*.jar ~/artifacts/api-gateway.jar
