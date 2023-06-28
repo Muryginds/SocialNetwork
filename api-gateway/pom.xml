@@ -9,10 +9,6 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<properties>
-		<org.springframework.cloud.gateway.version>4.0.4</org.springframework.cloud.gateway.version>
-	</properties>
-
 	<artifactId>api-gateway</artifactId>
 
 	<dependencies>
@@ -24,12 +20,10 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway</artifactId>
-			<version>${org.springframework.cloud.gateway.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-			<version>${org.springframework.cloud.eureka-client.version}</version>
 		</dependency>
 	</dependencies>
 

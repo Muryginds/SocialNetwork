@@ -46,6 +46,10 @@
         <org.springdoc.version>2.0.4</org.springdoc.version>
         <spring-cloud.version>2022.0.2</spring-cloud.version>
         <org.springframework.cloud.eureka-client.version>4.0.1</org.springframework.cloud.eureka-client.version>
+        <org.springframework.cloud.eureka-server.version>4.0.1</org.springframework.cloud.eureka-server.version>
+        <org.springframework.cloud.gateway.version>4.0.4</org.springframework.cloud.gateway.version>
+        <com.github.ulisesbocchio.version>3.0.5</com.github.ulisesbocchio.version>
+        <com.github.kuliginstepan.version>4.0.0</com.github.kuliginstepan.version>
     </properties>
 
     <modules>
@@ -86,6 +90,11 @@
                 <groupId>org.bouncycastle</groupId>
                 <artifactId>bcprov-jdk18on</artifactId>
                 <version>${org.bouncycastle.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.ulisesbocchio</groupId>
+                <artifactId>jasypt-spring-boot-starter</artifactId>
+                <version>${com.github.ulisesbocchio.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
@@ -166,6 +175,11 @@
                 <version>${spring-cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.github.kuliginstepan</groupId>
+                <artifactId>dadata-client</artifactId>
+                <version>${com.github.kuliginstepan.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
