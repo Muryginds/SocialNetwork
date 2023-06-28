@@ -238,7 +238,7 @@
 						<configuration>
 							<jdbc>
 								<driver>org.postgresql.Driver</driver>
-								<url>jdbc:postgresql://zerone-net.ru:49408/skillbox?stringtype=unspecified</url>
+								<url>jdbc:postgresql://zerone-net.ru:5432/skillbox?stringtype=unspecified</url>
 								<user>skillbox</user>
 								<password>password</password>
 							</jdbc>

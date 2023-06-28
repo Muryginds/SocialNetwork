@@ -50,6 +50,7 @@ services:
     environment:
       SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
       KAFKA_BROKERCONNECT: "kafka:9092"
+      SPRING_MAIL_PASSWORD: pyrTEZQd58GNC7i1MTPD
     depends_on:
       - kafka
       - zookeeper
@@ -105,13 +106,7 @@ services:
     container_name: backend
     image: eclipse-temurin:19-jdk-jammy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified
-      SPRING_DATASOURCE_USERNAME: skillbox
-      SPRING_DATASOURCE_PASSWORD: password
       SPRING_PROFILES_ACTIVE: prod
-      SPRING_DATA_REDIS_HOST: redis
-      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://eureka-server:8761/eureka
-      TZ: "Europe/Moscow"
     ports:
       -  "8088:8088"
       -  "1111:1111"
@@ -132,12 +127,7 @@ services:
     container_name: admin
     image: eclipse-temurin:19-jdk-jammy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/skillbox?stringtype=unspecified
-      SPRING_DATASOURCE_USERNAME: skillbox
-      SPRING_DATASOURCE_PASSWORD: password
       SPRING_PROFILES_ACTIVE: prod
-      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://eureka-server:8761/eureka
-      TZ: "Europe/Moscow"
     ports:
       - "8083:8083"
     volumes:
@@ -157,8 +147,7 @@ services:
     container_name: eureka-server
     image: eclipse-temurin:19-jdk-jammy
     environment:
-      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://eureka-server:8761/eureka
-      TZ: "Europe/Moscow"
+      SPRING_PROFILES_ACTIVE: prod
     ports:
       - "8761:8761"
     volumes:
@@ -178,8 +167,7 @@ services:
     container_name: api-gateway
     image: eclipse-temurin:19-jdk-jammy
     environment:
-      EUREKA_CLIENT_SERVICE-URL_DEFAULTZONE: http://eureka-server:8761/eureka
-      TZ: "Europe/Moscow"
+      SPRING_PROFILES_ACTIVE: prod
     ports:
       - "8086:8086"
     volumes:
@@ -197,19 +185,14 @@ services:
 
   grafana:
     container_name: grafana
-    image: grafana/grafana:9.5.1
     build: './config/grafana'
     ports:
       - "3000:3000"
     volumes:
-      - ./grafana:/var/lib/grafana
+      - ./config/grafana:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=admin
-    networks:
-      monitoring:
-        aliases:
-          - grafana
     depends_on:
       - prometheus
     deploy:
@@ -225,39 +208,13 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
-      - ./prometheus:/prometheus
-    networks:
-      monitoring:
-        aliases:
-          - prometheus
+      - ./config/prometheus:/etc/prometheus
     deploy:
       restart_policy:
         condition: on-failure
         delay: 3s
         max_attempts: 5
         window: 60s
-
-  sonarqube:
-    container_name: sonarqube
-    image: sonarqube
-    ports:
-      - "9000:9000"
-    volumes:
-      - sonarqube_data:/opt/sonarqube/data
-      - sonarqube_conf:/opt/sonarqube/conf
-      - sonarqube_extensions:/opt/sonarqube/extensions
-    depends_on:
-      - postgres
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 3s
-        max_attempts: 5
-        window: 60s
-
-networks:
-  monitoring:
 
 volumes:
   postgres:

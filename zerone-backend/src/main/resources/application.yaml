@@ -78,7 +78,7 @@ vk-api:
   version: 5.131
 
 google-drive:
-  app_name: 'ZeroneSocialNetLogs'
+  app_name: 'zerone-logs'
   tokens_path: 'tokens'
   credentials_path: '/credentials.json'
   space: 'drive'
