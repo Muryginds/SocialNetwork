@@ -42,6 +42,12 @@ jobs:
         distribution: 'temurin'
         java-version: '19'
         cache: 'maven'
+    - name: Cache Maven packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2
+        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+        restore-keys: ${{ runner.os }}-m2
     - name: Build with Maven
       run: mvn compile
 
@@ -58,6 +64,12 @@ jobs:
           distribution: 'temurin'
           java-version: '19'
           cache: 'maven'
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
       - name: Build with Maven
         run: mvn test -Djasypt.encryptor.password=${{ env.ENCRYPTION_KEY }}
 
