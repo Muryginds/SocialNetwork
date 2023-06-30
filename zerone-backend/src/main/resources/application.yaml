@@ -8,7 +8,7 @@ spring:
     bootstrap-servers: "0.0.0.0:29092"
   datasource:
     url: jdbc:postgresql://localhost:5432/skillbox?stringtype=unspecified
-    password: password
+    password: ENC(+dNfPpTN2mOluglR/AsSUOBEDFQ+hLWB95yRV65Zn8EEhq23VZHxLzZ6JgbVlHLj)
     username: skillbox
   jpa:
     hibernate:
@@ -29,12 +29,12 @@ spring:
       host: 0.0.0.0
       database: 0
       port: 6379
-      password: password123
+      password: ENC(wJAAIHbtNA66iwW9zR5R1bY1Nnwo+sr2nSklkdJPikyY3SCxXanHtw4572Mv9j4h)
       timeout: 60000
 
 jwt:
   token:
-    secret: tyiuroiuopyiuioytidgfhdfqwerzxcqwer
+    secret: ENC(9jWZnwRnrWO4KzoYwZkbgScVRkefKOLGBYE6eZMvIxldd3Q9XpL4s2MkfniUCb9Cc6Dx8qNLLS78ZYqB84A0ovk+kQO+kbPRY+dUKxHC5LI=)
     expired: 360000000
 
 blacklist:
@@ -61,7 +61,7 @@ management:
 cloudinary:
   cloud_name: "zeroneproject"
   api_key: "551572451498292"
-  api_secret: "bmOA13-uV_37Hm9Vfu4E_heObw4"
+  api_secret: ENC(dgE0iZNQUsK+UvOkqHGMbulzmuJhwyFCdfC0LWqkYM7Eyt6VuaX/hDU2Q6ZJjq8b9bfsVtFc7A0YoU9e7YEV1g==)
   max_file_size: 10485760 # 10MB
   max_image_width: 5000
   max_image_height: 5000
@@ -71,7 +71,7 @@ cloudinary:
   invalidate: true
 
 vk-api:
-  access-token: a37d0c0ca37d0c0ca37d0c0c4aa06fe252aa37da37d0c0cc7793a5be33eac3846e483d9
+  access-token: ENC(s8z3ziBwCQL3OkhvdDVox4trWeL0fVtkWMM70oPyfFgIMPpHZaiI4rK++2uy2+rWL5io2LX5bDG29GwDrvEWi0mg8FfCkJ10WK5tfnGD1dg9GGK69cEf26JM0qOeiPPHe7KKfvvt71I2OlbVYspWWQ==)
   root-url: https://api.vk.com/method
   find-countries-method-uri: /database.getCountries
   find-cities-method-uri: /database.getCities
@@ -119,7 +119,11 @@ eureka:
 
 dadata:
   client:
-    token: 0046c3e4e5392d96172a2915269374edc3a67d9d
+    token: ENC(nlH2r4Liy7IlV6pI89cJ+0Z4vJB9gbDMu7WMBOLCHLGKS0lTFE7YtG91KkoIMpi7OARrXFNMOVh4SVOWn30g4ZP8SYqxxP5LW+SYjpHOeZk=)
 
 ip-check:
   url: "http://checkip.amazonaws.com/"
+
+jasypt:
+  encryptor:
+    password: ${JASYPT_ENCRYPTOR_PASSWORD}

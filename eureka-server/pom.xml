@@ -11,15 +11,10 @@
 
 	<artifactId>eureka-server</artifactId>
 
-	<properties>
-		<org.springframework.cloud.eureka-server.version>4.0.1</org.springframework.cloud.eureka-server.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
-			<version>${org.springframework.cloud.eureka-server.version}</version>
 		</dependency>
 	</dependencies>
 
