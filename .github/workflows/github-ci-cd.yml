@@ -133,7 +133,7 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Creating packages
-        run: mvn package
+        run: mvn package -Djasypt.encryptor.password=${{ env.ENCRYPTION_KEY }}
       - run: mkdir -p ~/artifacts
       - run: mv */target/eureka-server*.jar ~/artifacts/eureka-server.jar
       - run: mv */target/api-gateway*.jar ~/artifacts/api-gateway.jar
