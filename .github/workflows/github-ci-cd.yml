@@ -11,6 +11,7 @@ on:
 env:
   BACKEND_CLASSPATH: 'zerone-backend/src/main/resources/'
   ENCRYPTION_KEY: ${{ secrets.JASYPT_ENCRYPTOR_PASSWORD }}
+  DB_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
 
 jobs:
   migration:
@@ -49,7 +50,7 @@ jobs:
         key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ runner.os }}-m2
     - name: Build with Maven
-      run: mvn compile
+      run: mvn compile -Ddb_password=${{ env.DB_PASSWORD}}
 
   test:
     runs-on: ubuntu-latest
@@ -71,7 +72,7 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Build with Maven
-        run: mvn test -Djasypt.encryptor.password=${{ env.ENCRYPTION_KEY }}
+        run: mvn test -Djasypt.encryptor.password=${{ env.ENCRYPTION_KEY }} -Ddb_password=${{ env.DB_PASSWORD}}
 
   sonarcloud:
     if: always() && needs.test.result == 'success'
@@ -111,7 +112,8 @@ jobs:
           -Dsonar.host.url=https://sonarcloud.io \
           -Dsonar.login=$SONAR_TOKEN \
           -Dsonar.java.coveragePlugin=jacoco \
-          -Djasypt.encryptor.password=${{ env.ENCRYPTION_KEY }}
+          -Djasypt.encryptor.password=${{ env.ENCRYPTION_KEY }} \
+          -Ddb_password=${{ env.DB_PASSWORD}}
 
   package:
     if: always() && github.ref_name == 'master'
@@ -133,7 +135,7 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
       - name: Creating packages
-        run: mvn package -Djasypt.encryptor.password=${{ env.ENCRYPTION_KEY }}
+        run: mvn package -Djasypt.encryptor.password=${{ env.ENCRYPTION_KEY }} -Ddb_password=${{ env.DB_PASSWORD}}
       - run: mkdir -p ~/artifacts
       - run: mv */target/eureka-server*.jar ~/artifacts/eureka-server.jar
       - run: mv */target/api-gateway*.jar ~/artifacts/api-gateway.jar
