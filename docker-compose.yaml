@@ -86,7 +86,7 @@ services:
         max_attempts: 5
         window: 60s
     environment:
-      REDIS_PASSWORD: pwd:${MY_SECRET_KEY}
+      REDIS_PASSWORD: pwd:${REDIS_PASSWORD}
     volumes:
       - redis:/data/redis
 
