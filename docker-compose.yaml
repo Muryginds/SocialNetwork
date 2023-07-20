@@ -50,7 +50,7 @@ services:
     environment:
       SPRING_KAFKA_BOOTSTRAP-SERVERS: kafka:9092
       KAFKA_BROKERCONNECT: "kafka:9092"
-      SPRING_MAIL_PASSWORD: pyrTEZQd58:${MAIL_PASSWORD}
+      SPRING_MAIL_PASSWORD: ${MAIL_PASSWORD}
     depends_on:
       - kafka
       - zookeeper
@@ -61,7 +61,7 @@ services:
     environment:
       POSTGRES_DB: skillbox
       POSTGRES_USER: skillbox
-      POSTGRES_PASSWORD: pwd:${PG_PASSWORD}
+      POSTGRES_PASSWORD: ${PG_PASSWORD}
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
@@ -86,7 +86,7 @@ services:
         max_attempts: 5
         window: 60s
     environment:
-      REDIS_PASSWORD: pwd:${REDIS_PASSWORD}
+      REDIS_PASSWORD: ${REDIS_PASSWORD}
     volumes:
       - redis:/data/redis
 
@@ -113,7 +113,7 @@ services:
     volumes:
       - ./jars:/app
     working_dir: /app
-    command: java -jar backend.jar -Djasypt.encryptor.password=${ENCRYPTION_KEY} -Ddb_password=${PG_PASSWORD}
+    command: java -Djasypt.encryptor.password=${ENCRYPTION_KEY} -Ddb_password=${PG_PASSWORD} -jar backend.jar
     depends_on:
       - api-gateway
     deploy:
@@ -133,7 +133,7 @@ services:
     volumes:
       - ./jars:/app
     working_dir: /app
-    command: java -jar admin.jar -Djasypt.encryptor.password=${ENCRYPTION_KEY}
+    command: java -Djasypt.encryptor.password=${ENCRYPTION_KEY} -jar admin.jar
     depends_on:
       - api-gateway
     deploy:
@@ -192,7 +192,7 @@ services:
       - ./config/grafana:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=adm:${GRAFANA_PASSWORD}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
     depends_on:
       - prometheus
     deploy:

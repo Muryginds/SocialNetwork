@@ -204,20 +204,3 @@ jobs:
             mv $DEV_APP_PATH/docker-compose.yaml ~/docker-compose.yaml
             docker compose down
             docker compose up -d
-
-  rollback:
-    runs-on: ubuntu-latest
-    if: failure() && github.ref_name == 'master' && needs.migration.result == 'success'
-    needs: deploy
-    steps:
-      - name: Creating a project copy
-        uses: actions/checkout@v3
-      - name: Updating database
-        uses: liquibase-github-actions/rollback-one-update@v4.21.1
-        with:
-          changelogFile: ${{ secrets.DATABASE_CHANGELOG_PATH }}
-          classpath: ${{ env.BACKEND_CLASSPATH }}
-          url: ${{ secrets.DATABASE_URL }}
-          username: ${{ secrets.DATABASE_USERNAME }}
-          password: ${{ secrets.DATABASE_PASSWORD }}
-          logLevel: INFO
