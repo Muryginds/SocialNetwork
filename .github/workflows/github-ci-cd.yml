@@ -174,10 +174,10 @@ jobs:
           port: ${{ secrets.DEV_HOST_SSH_PORT }}
           envs: DEV_APP_PATH,BACKUP_PATH,GITHUB_RUN_NUMBER
           script: |
-            [ ! -f $DEV_APP_PATH/api-gateway.jar ] || mv $DEV_APP_PATH/api-gateway.jar $BACKUP_PATH/api-gateway-build-$GITHUB_RUN_NUMBER.jar
-            [ ! -f $DEV_APP_PATH/eureka-server.jar ] || mv $DEV_APP_PATH/eureka-server.jar $BACKUP_PATH/eureka-server-build-$GITHUB_RUN_NUMBER.jar
-            [ ! -f $DEV_APP_PATH/admin.jar ] || mv $DEV_APP_PATH/admin.jar $BACKUP_PATH/admin-build-$GITHUB_RUN_NUMBER.jar
-            [ ! -f $DEV_APP_PATH/backend.jar ] || mv $DEV_APP_PATH/backend.jar $BACKUP_PATH/backend-build-$GITHUB_RUN_NUMBER.jar
+            [ ! -f $DEV_APP_PATH/api-gateway.jar ] || mv $DEV_APP_PATH/api-gateway.jar $BACKUP_PATH/$GITHUB_RUN_NUMBER-api-gateway-build.jar
+            [ ! -f $DEV_APP_PATH/eureka-server.jar ] || mv $DEV_APP_PATH/eureka-server.jar $BACKUP_PATH/$GITHUB_RUN_NUMBER-eureka-server-build.jar
+            [ ! -f $DEV_APP_PATH/admin.jar ] || mv $DEV_APP_PATH/admin.jar $BACKUP_PATH/$GITHUB_RUN_NUMBER-admin-build.jar
+            [ ! -f $DEV_APP_PATH/backend.jar ] || mv $DEV_APP_PATH/backend.jar $BACKUP_PATH/$GITHUB_RUN_NUMBER-backend-build.jar
 
       - name: copy files via ssh
         uses: appleboy/scp-action@v0.1.4
