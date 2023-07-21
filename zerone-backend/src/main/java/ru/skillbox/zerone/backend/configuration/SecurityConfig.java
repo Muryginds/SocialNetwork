@@ -60,6 +60,7 @@ public class SecurityConfig {
                 "/api/v1/account/register",
                 "/api/v1/support",
                 "/actuator/prometheus",
+                "/actuator/health",
                 "/api/v1/platform/languages",
                 "/changeemail/complete",
                 "/v3/api-docs/**",
