@@ -8,17 +8,17 @@
 
 <h3>Key Features</h2>
 
-- Enhanced User Profiles: Create user profiles, complete with personal information, profile photos, alerts settings, and an intuitive address-filling assistant for a smoother registration process.
-- Secure Privacy Settings: Protect your account with robust security measures. Easily change your account password and email, ensuring your information remains confidential.
-- Content Sharing: Share your thoughts, news, photos, articles, and engaging comments with your friends and connections. Express appreciation for posts through the "like" feature, fostering a positive and supportive community.
-- Socialization: Build meaningful connections by adding friends to your network. Take control of your social circle by utilizing the blacklist feature.
-- Real-Time Messaging: Stay connected with your contacts through instant messaging using WebSocket technology. Experience real-time communication without any delays.
-- Moderation panel: Moderate comments, posts or even user avatars.
+- <b>Enhanced User Profiles:</b> Create user profiles, complete with personal information, profile photos, alerts settings, and an intuitive address-filling assistant for a smoother registration process.
+- <b>Secure Privacy Settings:</b> Protect your account with robust security measures. Easily change your account password and email, ensuring your information remains confidential.
+- <b>Content Sharing:</b> Share your thoughts, news, photos, articles, and engaging comments with your friends and connections. Express appreciation for posts through the "like" feature, fostering a positive and supportive community.
+- <b>Socialization:</b> Build meaningful connections by adding friends to your network. Take control of your social circle by utilizing the blacklist feature.
+- <b>Real-Time Messaging:</b> Stay connected with your contacts through instant messaging using WebSocket technology. Experience real-time communication without any delays.
+- <b>Moderation panel:</b> Moderate comments, posts or even user avatars.
 
 <h3>Technology Stack</h2>
 <h4>ConnectHub is built on a solid foundation of modern and reliable technologies</h4>
 
-- <b>Spring Boot 3.0.6:</b> Security, Security, Data, Cloud, Web, AOP, Test
+- <b>Spring Boot 3.0.6:</b> Security, Data, Cloud, Web, AOP, Test
 - <b>Postgres:</b> A reliable and efficient PostgreSQL database for data storage and management.
 - <b>Docker:</b> Containerize the application for easier deployment and scalability.
 - <b>Logback:</b> A high-performance logging framework for effective log management.
@@ -32,6 +32,7 @@
 - <b>Testcontainers:</b> Ensuring reliable and reproducible testing using containerization.
 - <b>Monitoring (Prometheus, Grafana):</b> Keeping track of system metrics and health for performance optimization.
 - <b>GitHub Actions (CI/CD):</b> Automating continuous integration and deployment to streamline the development process.
+- <b>Sonar</b>: Static code analyser improves code quality
 
 <h3>Microservice Architecture</h2>
 <h4>ConnectHub follows a microservice architecture to ensure modularity and scalability</h4>
@@ -46,7 +47,8 @@
 <h3>Additional Libraries</h2>
 <h4>In addition to the powerful technology stack, ConnectHub utilizes the following libraries for enhanced functionality</h4>
 
-- <b>Jasypt Spring Boot:</b> Ensures secure encryption and decryption of sensitive data.
-- <b>Bouncy Castle:</b> Provides cryptographic services to bolster security measures.
-- <b>MapStruct:</b> Simplifies Java bean mappings for efficient data manipulation.
-- <b>Netty Socket.IO:</b> Facilitates WebSocket communication for real-time messaging.
+- <b><a href="https://github.com/ulisesbocchio/jasypt-spring-boot">Jasypt Spring Boot:</a></b> Ensures secure encryption and decryption of sensitive data.
+- <b><a href="https://www.bouncycastle.org/java.html">Bouncy Castle:</a></b> Provides cryptographic services to bolster security measures.
+- <b><a href="https://mapstruct.org">MapStruct:</a></b> Simplifies Java bean mappings for efficient data manipulation.
+- <b><a href="https://github.com/mrniko/netty-socketio">Netty Socket.IO:</a></b> Facilitates WebSocket communication for real-time messaging.
+- <b><a href="https://sonarcloud.io/project/overview?id=Muryginds_SocialNetwork">Sonarcloud.io:</a></b> Static code analyser.
