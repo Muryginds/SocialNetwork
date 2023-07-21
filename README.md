@@ -1,4 +1,8 @@
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Muryginds_SocialNetwork&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Muryginds_SocialNetwork)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Muryginds_SocialNetwork&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Muryginds_SocialNetwork)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=Muryginds_SocialNetwork&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=Muryginds_SocialNetwork)
+[![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=Muryginds_SocialNetwork&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=Muryginds_SocialNetwork)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Muryginds_SocialNetwork&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Muryginds_SocialNetwork)
 
 <h2><a href="http://zerone-net.ru">Zerone Network</a></h2>
 
